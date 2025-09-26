@@ -1,0 +1,32 @@
+tool:
+  id: plugin-manager
+  name: Plugin Manager Tool
+  summary: Simulate plugin management operations.
+  category: specialized
+  version: v1
+
+schema:
+  shared_fields:
+    - lang
+  request:
+    type: object
+    properties:
+      op:
+        type: string
+      name:
+        type: string
+    required: [op]
+    additionalProperties: false
+  response:
+    type: object
+    properties:
+      result:
+        type: string
+    required: [result]
+
+adapters:
+  - language: python
+    template: schema_stub
+    deps:
+      python:
+        requirements: []

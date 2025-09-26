@@ -1,0 +1,50 @@
+tool:
+  id: error
+  name: Error Tool
+  summary: Report error state toggles.
+  category: control-flow
+  version: v1
+
+schema:
+  shared_fields:
+    - lang
+  request:
+    type: object
+    properties:
+      thrown:
+        type: boolean
+        default: False
+    additionalProperties: false
+  response:
+    type: object
+    properties:
+      thrown:
+        type: boolean
+    required: [thrown]
+
+adapters:
+  - language: python
+    template: error_toggle
+    deps:
+      python:
+        requirements: []
+  - language: node
+    template: error_toggle
+    deps:
+      node:
+        packages: []
+  - language: go
+    template: error_toggle
+    deps:
+      go:
+        modules: []
+  - language: rust
+    template: error_toggle
+    deps:
+      rust:
+        crates: []
+  - language: dotnet
+    template: error_toggle
+    deps:
+      dotnet:
+        packages: []

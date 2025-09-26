@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://promptware.dev/schemas/tools/marketplace-uploader.v1.json",
+  "type": "object",
+  "properties": {
+    "tool": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "artifact": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "tool",
+    "version",
+    "artifact"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,63 @@
+python:
+  requirements:
+    allow:
+      - requests
+      - jsonschema
+      - demo-package
+  env:
+    PIP_INDEX_URL: https://pypi.org/simple
+    PIP_DISABLE_PIP_VERSION_CHECK: "1"
+
+node:
+  packages:
+    allow:
+      - axios
+      - js-yaml
+  registry:
+    url: https://registry.npmjs.org/
+    always_auth: false
+    token_env: NPM_TOKEN
+    cache_ttl_days: 7
+  env:
+    NPM_CONFIG_STRICT_SSL: "true"
+
+go:
+  modules:
+    allow:
+      - github.com/prompthub/example@v1
+      - gopkg.in/yaml.v3
+  env:
+    GOPRIVATE: internal.example.com
+
+dotnet:
+  packages:
+    allow:
+      - Newtonsoft.Json
+      - YamlDotNet
+  cache_ttl_days: 30
+  feeds:
+    - name: nuget.org
+      url: https://api.nuget.org/v3/index.json
+    - name: internal
+      url: https://nuget.example.com/v3/index.json
+      token_env: NUGET_INTERNAL_PAT
+      username: svc-account
+  env:
+    DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: "1"
+
+rust:
+  crates:
+    allow:
+      - serde
+      - serde_json
+      - reqwest
+      - serde_yaml
+      - regex
+  registries:
+    - name: crates-io
+      index: https://github.com/rust-lang/crates.io-index
+    - name: internal
+      index: https://git.example.com/rust/index
+      token_env: CARGO_INTERNAL_TOKEN
+  env:
+    CARGO_REGISTRIES_CRATES_IO_PROTOCOL: sparse

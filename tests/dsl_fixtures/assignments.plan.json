@@ -1,0 +1,42 @@
+{
+  "actions": [
+    {
+      "alias": "fetch",
+      "expects": {
+        "ok": true
+      },
+      "payload": {
+        "method": "GET",
+        "url": "https://example.com"
+      },
+      "result": "fetch",
+      "retry": {
+        "delay": 0.0,
+        "max": 1
+      },
+      "type": "call"
+    },
+    {
+      "target": "summary",
+      "type": "let",
+      "value": {
+        "__ref__": [
+          "fetch",
+          "data",
+          "summary"
+        ]
+      }
+    },
+    {
+      "target": "attempt_limit",
+      "type": "let",
+      "value": 3
+    }
+  ],
+  "deps": {},
+  "files": [],
+  "lang": "python",
+  "tools": {
+    "fetch": "http"
+  }
+}

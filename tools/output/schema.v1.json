@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://promptware.dev/schemas/tools/output.v1.json",
+  "type": "object",
+  "properties": {
+    "target": {
+      "type": "string",
+      "enum": [
+        "file",
+        "stdout"
+      ]
+    },
+    "path": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "mode": {
+      "type": "integer"
+    }
+  },
+  "required": [
+    "target",
+    "content"
+  ],
+  "additionalProperties": false
+}

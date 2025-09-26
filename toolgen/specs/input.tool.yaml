@@ -1,0 +1,41 @@
+tool:
+  id: input
+  name: Input Tool
+  summary: Read content from files.
+  category: input-output
+  version: v1
+
+schema:
+  shared_fields:
+    - lang
+  request:
+    type: object
+    properties:
+      source:
+        type: string
+        enum: [file]
+      path:
+        type: string
+      encoding:
+        type: string
+        default: utf-8
+    required: [source, path]
+    additionalProperties: false
+  response:
+    type: object
+    properties:
+      content:
+        type: string
+    required: [content]
+
+adapters:
+  - language: python
+    template: schema_stub
+    deps:
+      python:
+        requirements: []
+
+policy:
+  network: deny
+  filesystem: read
+  secrets: deny

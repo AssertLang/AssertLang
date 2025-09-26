@@ -1,0 +1,111 @@
+tool:
+  id: http
+  name: HTTP Tool
+  summary: Perform HTTP requests with configurable headers, body, and timeout.
+  category: specialized
+  version: v1
+
+envelope:
+  capabilities: false
+  health: false
+  streaming: false
+  long_running: false
+
+schema:
+  shared_fields:
+    - lang
+    - runtime
+    - limits
+  request:
+    type: object
+    properties:
+      method:
+        type: string
+        enum: [GET, POST, PUT, PATCH, DELETE]
+      url:
+        type: string
+        format: uri
+      headers:
+        type: object
+        additionalProperties:
+          type: string
+      body:
+        type: [string, 'null']
+      timeout_sec:
+        type: number
+        minimum: 1
+        maximum: 120
+    required: [url]
+    additionalProperties: false
+  response:
+    type: object
+    properties:
+      status:
+        type: integer
+      headers:
+        type: object
+      body:
+        type: string
+    required: [status, body]
+
+operations:
+  - id: request
+    summary: Execute a single HTTP request.
+    example:
+      request:
+        method: GET
+        url: https://example.com
+        timeout_sec: 5
+      response:
+        status: 200
+        body: ""
+
+adapters:
+  - language: python
+    template: http_client
+    deps:
+      python:
+        requirements: [requests>=2.31]
+  - language: node
+    template: http_client
+    deps:
+      node:
+        packages: []
+  - language: go
+    template: http_client
+    deps:
+      go:
+        modules: []
+  - language: rust
+    template: http_client
+    deps:
+      rust:
+        crates: [reqwest, serde_json]
+  - language: dotnet
+    template: http_client
+    deps:
+      dotnet:
+        packages: []
+
+policy:
+  network: allow
+  filesystem: deny
+  secrets: deny
+  timeout_sec: 60
+
+telemetry:
+  emit:
+    - channel: tool.http.request
+      fields: [method, url]
+
+testing:
+  cases:
+    - description: Requires a URL to be provided.
+      request: {}
+      expect:
+        ok: False
+        error.code: E_ARGS
+
+marketplace:
+  tags: [network, http]
+  maturity: beta

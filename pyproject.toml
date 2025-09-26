@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "promptware"
+version = "0.1.0"
+description = "Promptware mcpd daemon, runners, and CLI"
+requires-python = ">=3.10"
+readme = "README.md"
+authors = [{ name = "Promptware Team" }]
+dependencies = [
+  "click>=8",
+  "flask>=2.3",
+  "requests>=2",
+  "werkzeug>=2.3",
+  "uvicorn>=0.23",
+  "PyYAML>=6",
+  "jsonschema>=4",
+  "websocket-client>=1.7",
+]
+
+[project.scripts]
+mcp = "cli.mcp:main"
+promptware = "cli.promptware:main"
+
+[tool.black]
+line-length = 100
+target-version = ['py310']
+
+[tool.ruff]
+line-length = 100
+select = ["E", "F", "I"]
+ignore = []
+
+[tool.setuptools]
+packages = { find = { include = ["daemon*", "cli*", "language*", "tools*"] } }

@@ -1,0 +1,114 @@
+tool:
+  id: validate-data
+  name: Validate Data Tool
+  summary: Validate JSON documents against JSON Schema.
+  category: data
+  version: v1
+
+envelope:
+  capabilities: false
+  health: false
+  streaming: false
+  long_running: false
+
+schema:
+  shared_fields:
+    - lang
+  request:
+    type: object
+    properties:
+      format:
+        type: string
+        enum: [json]
+      schema:
+        type: object
+      content:
+        type: string
+    required: [format, schema, content]
+    additionalProperties: false
+  response:
+    type: object
+    properties:
+      valid:
+        type: boolean
+      issues:
+        type: array
+        items:
+          type: string
+    required: [valid, issues]
+
+operations:
+  - id: validate
+    summary: Validate a JSON payload.
+    example:
+      request:
+        format: json
+        schema:
+          type: object
+          required: [foo]
+        content: '{"foo": 1}'
+      response:
+        valid: true
+        issues: []
+
+adapters:
+  - language: python
+    template: json_validator
+    deps:
+      python:
+        requirements: [jsonschema]
+  - language: node
+    template: json_validator
+    deps:
+      node:
+        packages: [ajv]
+  - language: go
+    template: json_validator
+    deps:
+      go:
+        modules: [github.com/xeipuuv/gojsonschema]
+  - language: rust
+    template: json_validator
+    deps:
+      rust:
+        crates: [jsonschema]
+  - language: dotnet
+    template: json_validator
+    deps:
+      dotnet:
+        packages: [NJsonSchema]
+
+policy:
+  network: deny
+  filesystem: deny
+  secrets: deny
+
+telemetry:
+  emit:
+    - channel: tool.validate
+      fields: [format]
+
+testing:
+  cases:
+    - description: Valid JSON
+      request:
+        format: json
+        schema:
+          type: object
+          required: [foo]
+        content: '{"foo": 1}'
+      expect:
+        data.valid: True
+    - description: Invalid JSON
+      request:
+        format: json
+        schema:
+          type: object
+          required: [foo]
+        content: '{"bar": 2}'
+      expect:
+        data.valid: False
+
+marketplace:
+  tags: [validation]
+  maturity: beta

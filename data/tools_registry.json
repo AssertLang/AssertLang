@@ -1,0 +1,1131 @@
+{
+  "tools": {
+    "api-auth": {
+      "adapters": [
+        {
+          "deps": {
+            "python": {
+              "requirements": []
+            }
+          },
+          "language": "python",
+          "template": "auth_header"
+        },
+        {
+          "deps": {
+            "node": {
+              "packages": []
+            }
+          },
+          "language": "node",
+          "template": "auth_header"
+        },
+        {
+          "deps": {
+            "go": {
+              "modules": []
+            }
+          },
+          "language": "go",
+          "template": "auth_header"
+        },
+        {
+          "deps": {
+            "rust": {
+              "crates": []
+            }
+          },
+          "language": "rust",
+          "template": "auth_header"
+        },
+        {
+          "deps": {
+            "dotnet": {
+              "packages": []
+            }
+          },
+          "language": "dotnet",
+          "template": "auth_header"
+        }
+      ],
+      "category": "specialized",
+      "envelope": {
+        "capabilities": false,
+        "health": false,
+        "long_running": false,
+        "streaming": false
+      },
+      "id": "api-auth",
+      "name": "API Auth Tool",
+      "policy": {
+        "filesystem": "deny",
+        "network": "deny",
+        "secrets": "allow"
+      },
+      "summary": "Generate API auth headers (API key, bearer).",
+      "version": "v1"
+    },
+    "async": {
+      "adapters": [
+        {
+          "deps": {
+            "python": {
+              "requirements": []
+            }
+          },
+          "language": "python",
+          "template": "async_simulator"
+        },
+        {
+          "deps": {
+            "node": {
+              "packages": []
+            }
+          },
+          "language": "node",
+          "template": "async_simulator"
+        },
+        {
+          "deps": {
+            "go": {
+              "modules": []
+            }
+          },
+          "language": "go",
+          "template": "async_simulator"
+        },
+        {
+          "deps": {
+            "rust": {
+              "crates": []
+            }
+          },
+          "language": "rust",
+          "template": "async_simulator"
+        },
+        {
+          "deps": {
+            "dotnet": {
+              "packages": []
+            }
+          },
+          "language": "dotnet",
+          "template": "async_simulator"
+        }
+      ],
+      "category": "control-flow",
+      "envelope": {},
+      "id": "async",
+      "name": "Async Tool",
+      "policy": {},
+      "summary": "Simulate async execution results.",
+      "version": "v1"
+    },
+    "auth": {
+      "adapters": [
+        {
+          "deps": {
+            "python": {
+              "requirements": []
+            }
+          },
+          "language": "python",
+          "template": "auth_header"
+        },
+        {
+          "deps": {
+            "node": {
+              "packages": []
+            }
+          },
+          "language": "node",
+          "template": "auth_header"
+        },
+        {
+          "deps": {
+            "go": {
+              "modules": []
+            }
+          },
+          "language": "go",
+          "template": "auth_header"
+        },
+        {
+          "deps": {
+            "rust": {
+              "crates": []
+            }
+          },
+          "language": "rust",
+          "template": "auth_header"
+        },
+        {
+          "deps": {
+            "dotnet": {
+              "packages": []
+            }
+          },
+          "language": "dotnet",
+          "template": "auth_header"
+        }
+      ],
+      "category": "specialized",
+      "envelope": {
+        "capabilities": false,
+        "health": false,
+        "long_running": false,
+        "streaming": false
+      },
+      "id": "auth",
+      "name": "Auth Tool",
+      "policy": {
+        "filesystem": "deny",
+        "network": "deny",
+        "secrets": "allow"
+      },
+      "summary": "Produce authentication headers for API calls (API key, JWT).",
+      "version": "v1"
+    },
+    "branch": {
+      "adapters": [
+        {
+          "deps": {
+            "python": {
+              "requirements": []
+            }
+          },
+          "language": "python",
+          "template": "branch_select"
+        },
+        {
+          "deps": {
+            "node": {
+              "packages": []
+            }
+          },
+          "language": "node",
+          "template": "branch_select"
+        },
+        {
+          "deps": {
+            "go": {
+              "modules": []
+            }
+          },
+          "language": "go",
+          "template": "branch_select"
+        },
+        {
+          "deps": {
+            "rust": {
+              "crates": []
+            }
+          },
+          "language": "rust",
+          "template": "branch_select"
+        },
+        {
+          "deps": {
+            "dotnet": {
+              "packages": []
+            }
+          },
+          "language": "dotnet",
+          "template": "branch_select"
+        }
+      ],
+      "category": "control-flow",
+      "envelope": {},
+      "id": "branch",
+      "name": "Branch Tool",
+      "policy": {},
+      "summary": "Select a branch based on value/cases mapping.",
+      "version": "v1"
+    },
+    "conditional": {
+      "adapters": [
+        {
+          "deps": {
+            "python": {
+              "requirements": []
+            }
+          },
+          "language": "python",
+          "template": "conditional_eval"
+        },
+        {
+          "deps": {
+            "node": {
+              "packages": []
+            }
+          },
+          "language": "node",
+          "template": "conditional_eval"
+        },
+        {
+          "deps": {
+            "go": {
+              "modules": []
+            }
+          },
+          "language": "go",
+          "template": "conditional_eval"
+        },
+        {
+          "deps": {
+            "rust": {
+              "crates": [
+                "regex"
+              ]
+            }
+          },
+          "language": "rust",
+          "template": "conditional_eval"
+        },
+        {
+          "deps": {
+            "dotnet": {
+              "packages": []
+            }
+          },
+          "language": "dotnet",
+          "template": "conditional_eval"
+        }
+      ],
+      "category": "control-flow",
+      "envelope": {
+        "capabilities": false,
+        "health": false,
+        "long_running": false,
+        "streaming": false
+      },
+      "id": "conditional",
+      "name": "Conditional Tool",
+      "policy": {
+        "filesystem": "deny",
+        "network": "deny",
+        "secrets": "deny"
+      },
+      "summary": "Evaluate simple conditions (==, !=, regex).",
+      "version": "v1"
+    },
+    "custom-tool-template": {
+      "adapters": [
+        {
+          "deps": {
+            "python": {
+              "requirements": []
+            }
+          },
+          "language": "python",
+          "template": "loop_counter"
+        },
+        {
+          "deps": {
+            "node": {
+              "packages": []
+            }
+          },
+          "language": "node",
+          "template": "loop_counter"
+        },
+        {
+          "deps": {
+            "go": {
+              "modules": []
+            }
+          },
+          "language": "go",
+          "template": "loop_counter"
+        },
+        {
+          "deps": {
+            "rust": {
+              "crates": []
+            }
+          },
+          "language": "rust",
+          "template": "loop_counter"
+        },
+        {
+          "deps": {
+            "dotnet": {
+              "packages": []
+            }
+          },
+          "language": "dotnet",
+          "template": "loop_counter"
+        }
+      ],
+      "category": "specialized",
+      "envelope": {},
+      "id": "custom-tool-template",
+      "name": "Custom Tool Template",
+      "policy": {},
+      "summary": "Provide template scaffolding metadata.",
+      "version": "v1"
+    },
+    "encryption": {
+      "adapters": [
+        {
+          "deps": {
+            "python": {
+              "requirements": []
+            }
+          },
+          "language": "python",
+          "template": "schema_stub"
+        }
+      ],
+      "category": "specialized",
+      "envelope": {},
+      "id": "encryption",
+      "name": "Encryption Tool",
+      "policy": {},
+      "summary": "Provide basic hashing utilities.",
+      "version": "v1"
+    },
+    "error": {
+      "adapters": [
+        {
+          "deps": {
+            "python": {
+              "requirements": []
+            }
+          },
+          "language": "python",
+          "template": "schema_stub"
+        }
+      ],
+      "category": "control-flow",
+      "envelope": {},
+      "id": "error",
+      "name": "Error Tool",
+      "policy": {},
+      "summary": "Report error state toggles.",
+      "version": "v1"
+    },
+    "error-log": {
+      "adapters": [
+        {
+          "deps": {
+            "python": {
+              "requirements": []
+            }
+          },
+          "language": "python",
+          "template": "error_log_collector"
+        },
+        {
+          "deps": {
+            "node": {
+              "packages": []
+            }
+          },
+          "language": "node",
+          "template": "error_log_collector"
+        },
+        {
+          "deps": {
+            "go": {
+              "modules": []
+            }
+          },
+          "language": "go",
+          "template": "error_log_collector"
+        },
+        {
+          "deps": {
+            "rust": {
+              "crates": []
+            }
+          },
+          "language": "rust",
+          "template": "error_log_collector"
+        },
+        {
+          "deps": {
+            "dotnet": {
+              "packages": []
+            }
+          },
+          "language": "dotnet",
+          "template": "error_log_collector"
+        }
+      ],
+      "category": "specialized",
+      "envelope": {},
+      "id": "error-log",
+      "name": "Error Log Tool",
+      "policy": {},
+      "summary": "Collect error log summaries.",
+      "version": "v1"
+    },
+    "http": {
+      "adapters": [
+        {
+          "deps": {
+            "python": {
+              "requirements": [
+                "requests>=2.31"
+              ]
+            }
+          },
+          "language": "python",
+          "template": "http_client"
+        },
+        {
+          "deps": {
+            "node": {
+              "packages": []
+            }
+          },
+          "language": "node",
+          "template": "http_client"
+        },
+        {
+          "deps": {
+            "go": {
+              "modules": []
+            }
+          },
+          "language": "go",
+          "template": "http_client"
+        },
+        {
+          "deps": {
+            "rust": {
+              "crates": [
+                "reqwest",
+                "serde_json"
+              ]
+            }
+          },
+          "language": "rust",
+          "template": "http_client"
+        },
+        {
+          "deps": {
+            "dotnet": {
+              "packages": []
+            }
+          },
+          "language": "dotnet",
+          "template": "http_client"
+        }
+      ],
+      "category": "specialized",
+      "envelope": {
+        "capabilities": false,
+        "health": false,
+        "long_running": false,
+        "streaming": false
+      },
+      "id": "http",
+      "name": "HTTP Tool",
+      "policy": {
+        "filesystem": "deny",
+        "network": "allow",
+        "secrets": "deny",
+        "timeout_sec": 60
+      },
+      "summary": "Perform HTTP requests with configurable headers, body, and timeout.",
+      "version": "v1"
+    },
+    "input": {
+      "adapters": [
+        {
+          "deps": {
+            "python": {
+              "requirements": []
+            }
+          },
+          "language": "python",
+          "template": "schema_stub"
+        }
+      ],
+      "category": "input-output",
+      "envelope": {},
+      "id": "input",
+      "name": "Input Tool",
+      "policy": {
+        "filesystem": "read",
+        "network": "deny",
+        "secrets": "deny"
+      },
+      "summary": "Read content from files.",
+      "version": "v1"
+    },
+    "logger": {
+      "adapters": [
+        {
+          "deps": {
+            "python": {
+              "requirements": []
+            }
+          },
+          "language": "python",
+          "template": "stdout_logger"
+        },
+        {
+          "deps": {
+            "node": {
+              "packages": []
+            }
+          },
+          "language": "node",
+          "template": "stdout_logger"
+        },
+        {
+          "deps": {
+            "go": {
+              "modules": []
+            }
+          },
+          "language": "go",
+          "template": "stdout_logger"
+        }
+      ],
+      "category": "specialized",
+      "envelope": {
+        "capabilities": false,
+        "health": false,
+        "long_running": false,
+        "streaming": true
+      },
+      "id": "logger",
+      "name": "Logger Tool",
+      "policy": {
+        "filesystem": "read",
+        "network": "deny",
+        "retry": {
+          "max_attempts": 1
+        },
+        "secrets": "deny",
+        "timeout_sec": 5
+      },
+      "summary": "Structured logging sink with stdout forwarding.",
+      "version": "v1"
+    },
+    "loop": {
+      "adapters": [
+        {
+          "deps": {
+            "python": {
+              "requirements": []
+            }
+          },
+          "language": "python",
+          "template": "schema_stub"
+        }
+      ],
+      "category": "control-flow",
+      "envelope": {
+        "capabilities": false,
+        "health": false,
+        "long_running": false,
+        "streaming": false
+      },
+      "id": "loop",
+      "name": "Loop Tool",
+      "policy": {
+        "filesystem": "deny",
+        "network": "deny",
+        "secrets": "deny"
+      },
+      "summary": "Iterate items and report iteration count.",
+      "version": "v1"
+    },
+    "marketplace-uploader": {
+      "adapters": [
+        {
+          "deps": {
+            "python": {
+              "requirements": []
+            }
+          },
+          "language": "python",
+          "template": "schema_stub"
+        }
+      ],
+      "category": "specialized",
+      "envelope": {},
+      "id": "marketplace-uploader",
+      "name": "Marketplace Uploader Tool",
+      "policy": {},
+      "summary": "Simulate marketplace uploads and return artifact paths.",
+      "version": "v1"
+    },
+    "media-control": {
+      "adapters": [
+        {
+          "deps": {
+            "python": {
+              "requirements": []
+            }
+          },
+          "language": "python",
+          "template": "schema_stub"
+        }
+      ],
+      "category": "specialized",
+      "envelope": {},
+      "id": "media-control",
+      "name": "Media Control Tool",
+      "policy": {},
+      "summary": "Placeholder media control operations.",
+      "version": "v1"
+    },
+    "output": {
+      "adapters": [
+        {
+          "deps": {
+            "python": {
+              "requirements": []
+            }
+          },
+          "language": "python",
+          "template": "output_writer"
+        },
+        {
+          "deps": {
+            "node": {
+              "packages": []
+            }
+          },
+          "language": "node",
+          "template": "output_writer"
+        },
+        {
+          "deps": {
+            "go": {
+              "modules": []
+            }
+          },
+          "language": "go",
+          "template": "output_writer"
+        },
+        {
+          "deps": {
+            "rust": {
+              "crates": []
+            }
+          },
+          "language": "rust",
+          "template": "output_writer"
+        },
+        {
+          "deps": {
+            "dotnet": {
+              "packages": []
+            }
+          },
+          "language": "dotnet",
+          "template": "output_writer"
+        }
+      ],
+      "category": "input-output",
+      "envelope": {
+        "capabilities": false,
+        "health": false,
+        "long_running": false,
+        "streaming": false
+      },
+      "id": "output",
+      "name": "Output Tool",
+      "policy": {
+        "filesystem": "write",
+        "network": "deny",
+        "secrets": "deny"
+      },
+      "summary": "Write content to stdout or files.",
+      "version": "v1"
+    },
+    "plugin-manager": {
+      "adapters": [
+        {
+          "deps": {
+            "python": {
+              "requirements": []
+            }
+          },
+          "language": "python",
+          "template": "schema_stub"
+        }
+      ],
+      "category": "specialized",
+      "envelope": {},
+      "id": "plugin-manager",
+      "name": "Plugin Manager Tool",
+      "policy": {},
+      "summary": "Simulate plugin management operations.",
+      "version": "v1"
+    },
+    "rest": {
+      "adapters": [
+        {
+          "deps": {
+            "python": {
+              "requirements": [
+                "requests"
+              ]
+            }
+          },
+          "language": "python",
+          "template": "rest_client"
+        },
+        {
+          "deps": {
+            "node": {
+              "packages": []
+            }
+          },
+          "language": "node",
+          "template": "rest_client"
+        },
+        {
+          "deps": {
+            "go": {
+              "modules": []
+            }
+          },
+          "language": "go",
+          "template": "rest_client"
+        },
+        {
+          "deps": {
+            "rust": {
+              "crates": [
+                "reqwest",
+                "serde_json"
+              ]
+            }
+          },
+          "language": "rust",
+          "template": "rest_client"
+        },
+        {
+          "deps": {
+            "dotnet": {
+              "packages": []
+            }
+          },
+          "language": "dotnet",
+          "template": "rest_client"
+        }
+      ],
+      "category": "specialized",
+      "envelope": {
+        "capabilities": false,
+        "health": false,
+        "long_running": false,
+        "streaming": false
+      },
+      "id": "rest",
+      "name": "REST Tool",
+      "policy": {
+        "filesystem": "deny",
+        "network": "allow",
+        "secrets": "deny"
+      },
+      "summary": "Perform REST requests relative to a base URL.",
+      "version": "v1"
+    },
+    "scheduler": {
+      "adapters": [
+        {
+          "deps": {
+            "python": {
+              "requirements": []
+            }
+          },
+          "language": "python",
+          "template": "schema_stub"
+        }
+      ],
+      "category": "specialized",
+      "envelope": {},
+      "id": "scheduler",
+      "name": "Scheduler Tool",
+      "policy": {},
+      "summary": "Simulate scheduling operations.",
+      "version": "v1"
+    },
+    "storage": {
+      "adapters": [
+        {
+          "deps": {
+            "python": {
+              "requirements": []
+            }
+          },
+          "language": "python",
+          "template": "storage_fs"
+        },
+        {
+          "deps": {
+            "node": {
+              "packages": []
+            }
+          },
+          "language": "node",
+          "template": "storage_fs"
+        },
+        {
+          "deps": {
+            "go": {
+              "modules": []
+            }
+          },
+          "language": "go",
+          "template": "storage_fs"
+        },
+        {
+          "deps": {
+            "rust": {
+              "crates": []
+            }
+          },
+          "language": "rust",
+          "template": "storage_fs"
+        },
+        {
+          "deps": {
+            "dotnet": {
+              "packages": []
+            }
+          },
+          "language": "dotnet",
+          "template": "storage_fs"
+        }
+      ],
+      "category": "data",
+      "envelope": {
+        "capabilities": false,
+        "health": false,
+        "long_running": false,
+        "streaming": false
+      },
+      "id": "storage",
+      "name": "Storage Tool",
+      "policy": {
+        "filesystem": "readwrite",
+        "network": "deny",
+        "secrets": "deny",
+        "timeout_sec": 30
+      },
+      "summary": "Filesystem-oriented storage operations (put/get/list/delete).",
+      "version": "v1"
+    },
+    "thread": {
+      "adapters": [
+        {
+          "deps": {
+            "python": {
+              "requirements": []
+            }
+          },
+          "language": "python",
+          "template": "schema_stub"
+        }
+      ],
+      "category": "control-flow",
+      "envelope": {},
+      "id": "thread",
+      "name": "Thread Tool",
+      "policy": {},
+      "summary": "Simulate threading operations.",
+      "version": "v1"
+    },
+    "timing": {
+      "adapters": [
+        {
+          "deps": {
+            "python": {
+              "requirements": []
+            }
+          },
+          "language": "python",
+          "template": "schema_stub"
+        }
+      ],
+      "category": "specialized",
+      "envelope": {},
+      "id": "timing",
+      "name": "Timing Tool",
+      "policy": {},
+      "summary": "Measure elapsed time for sleep operations.",
+      "version": "v1"
+    },
+    "tracer": {
+      "adapters": [
+        {
+          "deps": {
+            "python": {
+              "requirements": []
+            }
+          },
+          "language": "python",
+          "template": "schema_stub"
+        }
+      ],
+      "category": "specialized",
+      "envelope": {},
+      "id": "tracer",
+      "name": "Tracer Tool",
+      "policy": {},
+      "summary": "Emit simple trace IDs.",
+      "version": "v1"
+    },
+    "transform": {
+      "adapters": [
+        {
+          "deps": {
+            "python": {
+              "requirements": [
+                "pyyaml"
+              ]
+            }
+          },
+          "language": "python",
+          "template": "transform_convert"
+        },
+        {
+          "deps": {
+            "node": {
+              "packages": [
+                "js-yaml"
+              ]
+            }
+          },
+          "language": "node",
+          "template": "transform_convert"
+        },
+        {
+          "deps": {
+            "go": {
+              "modules": [
+                "gopkg.in/yaml.v3"
+              ]
+            }
+          },
+          "language": "go",
+          "template": "transform_convert"
+        },
+        {
+          "deps": {
+            "rust": {
+              "crates": [
+                "serde_yaml"
+              ]
+            }
+          },
+          "language": "rust",
+          "template": "transform_convert"
+        },
+        {
+          "deps": {
+            "dotnet": {
+              "packages": [
+                "YamlDotNet"
+              ]
+            }
+          },
+          "language": "dotnet",
+          "template": "transform_convert"
+        }
+      ],
+      "category": "data",
+      "envelope": {
+        "capabilities": false,
+        "health": false,
+        "long_running": false,
+        "streaming": false
+      },
+      "id": "transform",
+      "name": "Transform Tool",
+      "policy": {
+        "filesystem": "deny",
+        "network": "deny",
+        "secrets": "deny"
+      },
+      "summary": "Convert structured data between JSON and YAML.",
+      "version": "v1"
+    },
+    "validate-data": {
+      "adapters": [
+        {
+          "deps": {
+            "python": {
+              "requirements": [
+                "jsonschema"
+              ]
+            }
+          },
+          "language": "python",
+          "template": "json_validator"
+        },
+        {
+          "deps": {
+            "node": {
+              "packages": [
+                "ajv"
+              ]
+            }
+          },
+          "language": "node",
+          "template": "json_validator"
+        },
+        {
+          "language": "go",
+          "template": "json_validator",
+          "deps": {
+            "go": {
+              "modules": [
+                "github.com/xeipuuv/gojsonschema"
+              ]
+            }
+          }
+        },
+        {
+          "language": "rust",
+          "template": "json_validator",
+          "deps": {
+            "rust": {
+              "crates": [
+                "jsonschema"
+              ]
+            }
+          }
+        },
+        {
+          "language": "dotnet",
+          "template": "json_validator",
+          "deps": {
+            "dotnet": {
+              "packages": [
+                "NJsonSchema"
+              ]
+            }
+          }
+        }
+      ],
+      "category": "data",
+      "envelope": {
+        "capabilities": false,
+        "health": false,
+        "long_running": false,
+        "streaming": false
+      },
+      "id": "validate-data",
+      "name": "Validate Data Tool",
+      "policy": {
+        "filesystem": "deny",
+        "network": "deny",
+        "secrets": "deny"
+      },
+      "summary": "Validate JSON documents against JSON Schema.",
+      "version": "v1"
+    }
+  }
+}
