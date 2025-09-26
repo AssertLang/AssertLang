@@ -1,0 +1,51 @@
+{
+  "actions": [
+    {
+      "alias": "send",
+      "expects": {},
+      "payload": {
+        "message": "hi"
+      },
+      "result": "send",
+      "retry": {
+        "delay": 0.0,
+        "max": 1
+      },
+      "type": "call"
+    },
+    {
+      "cases": [
+        {
+          "actions": [
+            {
+              "target": "info.status",
+              "type": "let",
+              "value": "ready"
+            }
+          ],
+          "label": "case_send_data_ok",
+          "when": "${send.data.ok}"
+        },
+        {
+          "actions": [
+            {
+              "target": "info.status",
+              "type": "let",
+              "value": "fallback"
+            }
+          ],
+          "label": "case_1",
+          "when": null
+        }
+      ],
+      "source": "send",
+      "type": "fanout"
+    }
+  ],
+  "deps": {},
+  "files": [],
+  "lang": "python",
+  "tools": {
+    "send": "echo"
+  }
+}

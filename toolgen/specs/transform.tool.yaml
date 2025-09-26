@@ -1,0 +1,104 @@
+tool:
+  id: transform
+  name: Transform Tool
+  summary: Convert structured data between JSON and YAML.
+  category: data
+  version: v1
+
+envelope:
+  capabilities: false
+  health: false
+  streaming: false
+  long_running: false
+
+schema:
+  shared_fields:
+    - lang
+  request:
+    type: object
+    properties:
+      from:
+        type: string
+        enum: [json, yaml]
+      to:
+        type: string
+        enum: [json, yaml]
+      content:
+        type: string
+    required: [from, to, content]
+    additionalProperties: false
+  response:
+    type: object
+    properties:
+      content:
+        type: string
+    required: [content]
+
+operations:
+  - id: convert
+    summary: Convert payload between json and yaml.
+    example:
+      request:
+        from: json
+        to: yaml
+        content: '{"a": 1}'
+      response:
+        content: 'a: 1\n'
+
+adapters:
+  - language: python
+    template: transform_convert
+    deps:
+      python:
+        requirements: [pyyaml]
+  - language: node
+    template: transform_convert
+    deps:
+      node:
+        packages: [js-yaml]
+  - language: go
+    template: transform_convert
+    deps:
+      go:
+        modules: [gopkg.in/yaml.v3]
+  - language: rust
+    template: transform_convert
+    deps:
+      rust:
+        crates: [serde_yaml]
+  - language: dotnet
+    template: transform_convert
+    deps:
+      dotnet:
+        packages: [YamlDotNet]
+
+policy:
+  network: deny
+  filesystem: deny
+  secrets: deny
+
+telemetry:
+  emit:
+    - channel: tool.transform
+      fields: [from, to]
+
+testing:
+  cases:
+    - description: JSON to YAML
+      request:
+        from: json
+        to: yaml
+        content: '{"value": 2}'
+      expect:
+        data.content: "value: 2\n"
+    - description: YAML to JSON
+      request:
+        from: yaml
+        to: json
+        content: 'value: 3'
+      expect:
+        data.content: '{\n  "value": 3\n}'
+
+marketplace:
+  tags: [transform, data]
+  maturity: beta

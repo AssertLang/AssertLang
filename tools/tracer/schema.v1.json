@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://promptware.dev/schemas/tools/tracer.v1.json",
+  "type": "object",
+  "properties": {
+    "op": {
+      "type": "string",
+      "enum": [
+        "start",
+        "stop"
+      ]
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "http",
+        "cpu",
+        "mem"
+      ]
+    },
+    "exporter": {
+      "type": "string",
+      "enum": [
+        "json"
+      ]
+    }
+  },
+  "required": [
+    "op",
+    "kind"
+  ],
+  "additionalProperties": false
+}

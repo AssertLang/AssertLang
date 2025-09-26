@@ -1,0 +1,32 @@
+tool:
+  id: thread
+  name: Thread Tool
+  summary: Simulate threading operations.
+  category: control-flow
+  version: v1
+
+schema:
+  shared_fields:
+    - lang
+  request:
+    type: object
+    properties:
+      tasks:
+        type: array
+    required: [tasks]
+    additionalProperties: false
+  response:
+    type: object
+    properties:
+      results:
+        type: array
+      duration_ms:
+        type: integer
+    required: [results, duration_ms]
+
+adapters:
+  - language: python
+    template: schema_stub
+    deps:
+      python:
+        requirements: []

@@ -1,0 +1,50 @@
+tool:
+  id: async
+  name: Async Tool
+  summary: Simulate async execution results.
+  category: control-flow
+  version: v1
+
+schema:
+  shared_fields:
+    - lang
+  request:
+    type: object
+    properties:
+      tasks:
+        type: array
+    required: [tasks]
+    additionalProperties: false
+  response:
+    type: object
+    properties:
+      results:
+        type: array
+    required: [results]
+
+adapters:
+  - language: python
+    template: async_simulator
+    deps:
+      python:
+        requirements: []
+  - language: node
+    template: async_simulator
+    deps:
+      node:
+        packages: []
+  - language: go
+    template: async_simulator
+    deps:
+      go:
+        modules: []
+  - language: rust
+    template: async_simulator
+    deps:
+      rust:
+        crates: []
+  - language: dotnet
+    template: async_simulator
+    deps:
+      dotnet:
+        packages: []

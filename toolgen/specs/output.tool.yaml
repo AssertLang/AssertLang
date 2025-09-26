@@ -1,0 +1,66 @@
+tool:
+  id: output
+  name: Output Tool
+  summary: Write content to stdout or files.
+  category: input-output
+  version: v1
+
+envelope:
+  capabilities: false
+  health: false
+  streaming: false
+  long_running: false
+
+schema:
+  shared_fields:
+    - lang
+  request:
+    type: object
+    properties:
+      target:
+        type: string
+        enum: [stdout, file]
+      content:
+        type: string
+      path:
+        type: string
+    required: [target]
+    additionalProperties: false
+  response:
+    type: object
+    properties:
+      written:
+        type: boolean
+    required: [written]
+
+adapters:
+  - language: python
+    template: output_writer
+    deps:
+      python:
+        requirements: []
+  - language: node
+    template: output_writer
+    deps:
+      node:
+        packages: []
+  - language: go
+    template: output_writer
+    deps:
+      go:
+        modules: []
+  - language: rust
+    template: output_writer
+    deps:
+      rust:
+        crates: []
+  - language: dotnet
+    template: output_writer
+    deps:
+      dotnet:
+        packages: []
+
+policy:
+  network: deny
+  filesystem: write
+  secrets: deny

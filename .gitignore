@@ -1,0 +1,7 @@
+.mcpd/
+.venv/
+__pycache__/
+.run*
+run.log
+*.pyc
+

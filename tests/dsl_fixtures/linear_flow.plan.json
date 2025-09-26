@@ -1,0 +1,72 @@
+{
+  "actions": [
+    {
+      "alias": "fetch",
+      "expects": {
+        "status": 200
+      },
+      "payload": {
+        "url": "https://api.example.com"
+      },
+      "result": "resp",
+      "retry": {
+        "delay": 0.0,
+        "max": 1
+      },
+      "type": "call"
+    },
+    {
+      "condition": "${resp.data.count} > 10",
+      "else": [
+        {
+          "alias": "notify",
+          "expects": {},
+          "payload": {
+            "message": "Low volume"
+          },
+          "result": "notify",
+          "retry": {
+            "delay": 0.0,
+            "max": 1
+          },
+          "type": "call"
+        }
+      ],
+      "then": [
+        {
+          "alias": "notify",
+          "expects": {},
+          "payload": {
+            "message": "High volume"
+          },
+          "result": "notify",
+          "retry": {
+            "delay": 0.0,
+            "max": 1
+          },
+          "type": "call"
+        }
+      ],
+      "type": "if"
+    }
+  ],
+  "deps": {
+    "python": {
+      "requirements": [
+        "flask==2.3.3"
+      ]
+    }
+  },
+  "files": [
+    {
+      "content": "from flask import Flask\napp = Flask(__name__)",
+      "path": "app.py"
+    }
+  ],
+  "lang": "python",
+  "start": "python app.py",
+  "tools": {
+    "fetch": "rest.get",
+    "notify": "notifier"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "actions": [
+    {
+      "branches": [
+        {
+          "actions": [
+            {
+              "alias": "fetch",
+              "expects": {
+                "ok": true
+              },
+              "payload": {
+                "method": "GET",
+                "url": "https://example.com"
+              },
+              "result": "fetch",
+              "retry": {
+                "delay": 0.0,
+                "max": 1
+              },
+              "type": "call"
+            }
+          ],
+          "name": "primary"
+        },
+        {
+          "actions": [
+            {
+              "alias": "fetch",
+              "expects": {},
+              "payload": {
+                "method": "GET",
+                "url": "https://backup.example.com"
+              },
+              "result": "fetch",
+              "retry": {
+                "delay": 0.0,
+                "max": 1
+              },
+              "type": "call"
+            }
+          ],
+          "name": "backup"
+        }
+      ],
+      "type": "parallel"
+    }
+  ],
+  "deps": {},
+  "files": [],
+  "lang": "python",
+  "tools": {
+    "fetch": "http"
+  }
+}

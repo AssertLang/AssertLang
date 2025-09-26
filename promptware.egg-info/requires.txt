@@ -1,0 +1,7 @@
+click>=8
+flask>=2.3
+requests>=2
+werkzeug>=2.3
+uvicorn>=0.23
+PyYAML>=6
+jsonschema>=4
