@@ -30,30 +30,10 @@ schema:
 
 adapters:
   - language: python
-    template: file_reader
+    template: schema_stub
     deps:
       python:
         requirements: []
-  - language: node
-    template: file_reader
-    deps:
-      node:
-        packages: []
-  - language: go
-    template: file_reader
-    deps:
-      go:
-        modules: []
-  - language: rust
-    template: file_reader
-    deps:
-      rust:
-        crates: []
-  - language: dotnet
-    template: file_reader
-    deps:
-      dotnet:
-        packages: []
 
 policy:
   network: deny

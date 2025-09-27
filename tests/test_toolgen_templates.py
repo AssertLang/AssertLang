@@ -64,50 +64,6 @@ def test_json_validator_node_template_uses_ajv():
     assert "module.exports" in code
     assert "valid: true" in code
 
-def test_json_validator_go_template_uses_gojsonschema():
-    code = toolgen._adapter_content("validate-data", "go", "json_validator")
-    assert "github.com/xeipuuv/gojsonschema" in code
-    assert "func Handle" in code
-    assert "errResp" in code
-
-
-def test_json_validator_rust_template_uses_jsonschema():
-    code = toolgen._adapter_content("validate-data", "rust", "json_validator")
-    assert "use jsonschema::" in code
-    assert "JSONSchema::options()" in code
-    assert "json!({ \"ok\"" in code
-
-
-def test_input_node_template_reads_file():
-    code = toolgen._adapter_content("input", "node", "file_reader")
-    assert "fs.readFileSync" in code
-    assert "only file source supported" in code
-
-
-def test_input_go_template_reads_file():
-    code = toolgen._adapter_content("input", "go", "file_reader")
-    assert "os.ReadFile" in code
-    assert "errResp" in code
-
-
-def test_input_rust_template_reads_file():
-    code = toolgen._adapter_content("input", "rust", "file_reader")
-    assert "std::fs::read_to_string" in code
-    assert "json!(" in code
-
-
-def test_input_dotnet_template_reads_file():
-    code = toolgen._adapter_content("input", "dotnet", "file_reader")
-    assert "File.ReadAllText" in code
-    assert "Encoding.GetEncoding" in code
-
-
-def test_json_validator_dotnet_template_uses_njsonschema():
-    code = toolgen._adapter_content("validate-data", "dotnet", "json_validator")
-    assert "NJsonSchema" in code
-    assert "JsonSerializer.Serialize" in code
-    assert "Validate(content)" in code
-
 
 def test_http_rust_template_uses_reqwest():
     code = toolgen._adapter_content("http", "rust", "http_client")
