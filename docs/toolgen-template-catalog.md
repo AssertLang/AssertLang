@@ -14,7 +14,7 @@ This catalog lists the Promptware tool specifications currently checked in under
 | error-log | Collect error log summaries. | python:error_log_collector, node:error_log_collector, go:error_log_collector, rust:error_log_collector, dotnet:error_log_collector |
 | error | Report error state toggles. | python:error_toggle, node:error_toggle, go:error_toggle, rust:error_toggle, dotnet:error_toggle |
 | http | Perform HTTP requests with configurable headers, body, and timeout. | python:http_client, node:http_client, go:http_client, rust:http_client, dotnet:http_client |
-| input | Read content from files. | python:file_reader, node:file_reader, go:file_reader, rust:file_reader, dotnet:file_reader |
+| input | Read content from files. | python:schema_stub |
 | logger | Structured logging sink with stdout forwarding. | python:stdout_logger, node:stdout_logger, go:stdout_logger |
 | loop | Iterate items and report iteration count. | python:loop_counter, node:loop_counter, go:loop_counter, rust:loop_counter, dotnet:loop_counter |
 | marketplace-uploader | Simulate marketplace uploads and return artifact paths. | python:schema_stub |
@@ -28,7 +28,7 @@ This catalog lists the Promptware tool specifications currently checked in under
 | timing | Measure elapsed time for sleep operations. | python:schema_stub |
 | tracer | Emit simple trace IDs. | python:schema_stub |
 | transform | Convert structured data between JSON and YAML. | python:transform_convert, node:transform_convert, go:transform_convert, rust:transform_convert, dotnet:transform_convert |
-| validate-data | Validate JSON documents against JSON Schema. | python:json_validator, node:json_validator, go:json_validator, rust:json_validator, dotnet:json_validator |
+| validate-data | Validate JSON documents against JSON Schema. | python:json_validator, node:json_validator |
 
 ## Next Steps
 - Extend specs with additional adapters (Node, Go, Rust, .NET) so multi-runtime programs can be generated automatically.

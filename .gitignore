@@ -1,7 +1,9 @@
 .mcpd/
-.venv/
 __pycache__/
-.run*
-run.log
+.pytest_cache/
 *.pyc
+env/
+venv/
+*.log
+*.sock
 

@@ -62,21 +62,6 @@ adapters:
     deps:
       node:
         packages: [ajv]
-  - language: go
-    template: json_validator
-    deps:
-      go:
-        modules: [github.com/xeipuuv/gojsonschema]
-  - language: rust
-    template: json_validator
-    deps:
-      rust:
-        crates: [jsonschema]
-  - language: dotnet
-    template: json_validator
-    deps:
-      dotnet:
-        packages: [NJsonSchema]
 
 policy:
   network: deny
