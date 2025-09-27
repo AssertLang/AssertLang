@@ -535,13 +535,49 @@
     "input": {
       "adapters": [
         {
+          "language": "python",
+          "template": "file_reader",
           "deps": {
             "python": {
               "requirements": []
             }
-          },
-          "language": "python",
-          "template": "schema_stub"
+          }
+        },
+        {
+          "language": "node",
+          "template": "file_reader",
+          "deps": {
+            "node": {
+              "packages": []
+            }
+          }
+        },
+        {
+          "language": "go",
+          "template": "file_reader",
+          "deps": {
+            "go": {
+              "modules": []
+            }
+          }
+        },
+        {
+          "language": "rust",
+          "template": "file_reader",
+          "deps": {
+            "rust": {
+              "crates": []
+            }
+          }
+        },
+        {
+          "language": "dotnet",
+          "template": "file_reader",
+          "deps": {
+            "dotnet": {
+              "packages": []
+            }
+          }
         }
       ],
       "category": "input-output",
@@ -1055,26 +1091,26 @@
     "validate-data": {
       "adapters": [
         {
+          "language": "python",
+          "template": "json_validator",
           "deps": {
             "python": {
               "requirements": [
                 "jsonschema"
               ]
             }
-          },
-          "language": "python",
-          "template": "json_validator"
+          }
         },
         {
+          "language": "node",
+          "template": "json_validator",
           "deps": {
             "node": {
               "packages": [
                 "ajv"
               ]
             }
-          },
-          "language": "node",
-          "template": "json_validator"
+          }
         },
         {
           "language": "go",
