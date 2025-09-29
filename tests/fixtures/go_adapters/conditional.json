@@ -1,0 +1,34 @@
+{
+  "cases": [
+    {
+      "name": "regex_match",
+      "payload": {
+        "left": "alpha",
+        "op": "regex",
+        "right": "^a"
+      },
+      "expected": {
+        "ok": true,
+        "version": "v1",
+        "data": {
+          "pass": true
+        }
+      }
+    },
+    {
+      "name": "unsupported_op",
+      "payload": {
+        "left": "alpha",
+        "op": "startsWith",
+        "right": "a"
+      },
+      "expected": {
+        "ok": false,
+        "version": "v1",
+        "error": {
+          "code": "E_ARGS"
+        }
+      }
+    }
+  ]
+}

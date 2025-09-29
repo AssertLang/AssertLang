@@ -19,3 +19,4 @@ def test_encryption_hash():
     res = encryption_adapter.handle({'op': 'hash', 'alg': 'sha256', 'data': 'abc'})
     assert res['ok'] and len(res['data']['result']) == 64
 
+

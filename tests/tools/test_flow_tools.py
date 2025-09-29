@@ -20,3 +20,4 @@ def test_branch_select():
     assert res['ok'] is True
     assert res['data']['selected'] == 'A'
 
+

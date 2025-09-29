@@ -1,0 +1,33 @@
+{
+  "cases": [
+    {
+      "name": "generates_default_bearer_header",
+      "payload": {
+        "type": "apiKey",
+        "token": "secret-token"
+      },
+      "expected": {
+        "ok": true,
+        "version": "v1",
+        "data": {
+          "headers": {
+            "Authorization": "Bearer secret-token"
+          }
+        }
+      }
+    },
+    {
+      "name": "requires_type_field",
+      "payload": {
+        "token": "secret-token"
+      },
+      "expected": {
+        "ok": false,
+        "version": "v1",
+        "error": {
+          "code": "E_ARGS"
+        }
+      }
+    }
+  ]
+}

@@ -26,7 +26,7 @@
 - [x] Audit tool implementations against schemas, adding adapter-focused tests per tool family.
 - [ ] Remove committed build artifacts (`runners/dotnet/bin`, `runners/dotnet/obj`) and add build steps instead.
 - [ ] Add CI job that runs test batches sequentially (`tools`, `verbs`, `runners`, `e2e`).
-- [ ] Build smoke tests for generated adapters in other languages once templates land.
+- [x] Build smoke tests for generated adapters in other languages once templates land (Node/Go/Rust/.NET harnesses implemented; docs under `docs/testing-*-adapter-smoke-tests.md`).
 
 ## 5. Documentation & DX
 - [ ] Update `/docs` to reflect dynamic port behavior and the refined plan/start pipeline.

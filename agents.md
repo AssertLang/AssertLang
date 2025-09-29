@@ -20,6 +20,22 @@ Cross-cutting inflight: expand timeline coverage (httpcheck/report/stop done), r
 
 Assume cross-language adapters and dependency bootstrap beyond Python/Node are still TODO.
 
+Wave 1 status: DSL grammar, interpreter orchestration, and timeline docs/tests all verified via `python3 -m pytest tests/test_dsl_parser.py tests/test_dsl_interpreter.py tests/test_cli_run.py`.
+
+### Wave 2 Kickoff
+
+Focus: unlock cross-language tooling so toolgen output, runners, and SDKs stay in lockstep.
+
+Immediate next steps:
+- Finalise Node/Go/Rust/.NET adapter templates in toolgen, including smoke-test scaffolds and language-specific build notes.
+- Audit runner parity (start/stop/timeline/policy hooks) across Python/Node/Go/.NET and capture gaps in `STATUS.md` for follow-up.
+- Draft the host SDK surface for Python/Node, covering MCP verb wrappers, timeline helpers, and error taxonomy alignment.
+- Wire the `scripts/run_test_batches.sh` workflow into CI/make targets so heavy suites can run without macOS timeouts.
+
+Dependencies & blockers:
+- Need confirmation on template packaging conventions for non-Python languages (namespaces, publish flow).
+- SDK docs will live under `docs/sdk/`; cross-link to runner docs once they land.
+
 ## Implementation Roadmap
 1. **Runner Ecosystem (Phase 0)**
    - ✅ Single-envelope cleanup & regression tests for Python/Node/Go/.NET runners.
