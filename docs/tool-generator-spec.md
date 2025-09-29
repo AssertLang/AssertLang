@@ -42,6 +42,12 @@ A generator run consumes a `toolgen.yaml` (or JSON) manifest with these sections
 - `error_status`, `error_log_scanner`, `plugin_manager`, `marketplace_uploader`, `custom_template_helper`, `noop_ok` — misc helpers for admin tools.
 
 > Additional language templates follow the same naming; use `_package_name` (tool id → package-safe) when referencing adapters. See `docs/toolgen-template-catalog.md` for the up-to-date inventory of specs and rendered templates.
+>
+> Runtime-specific conventions now live in dedicated guides:
+> - Node (`docs/toolgen-node-adapter-template.md`)
+> - Go (`docs/toolgen-go-adapter-template.md`)
+> - Rust (`docs/toolgen-rust-adapter-template.md`)
+> - .NET (`docs/toolgen-dotnet-adapter-template.md`)
 
 ## Outputs (Generator Artifacts)
 For each tool spec the generator produces:

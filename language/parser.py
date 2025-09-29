@@ -693,3 +693,4 @@ def _normalise_case_label(condition: Optional[str], index: int, existing: Set[st
         candidate = f"{base}_{counter}"
         counter += 1
     return candidate
+

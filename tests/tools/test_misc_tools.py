@@ -24,3 +24,4 @@ def test_logger():
     assert res['ok'] is True
     assert res['data']['logged']
 
+

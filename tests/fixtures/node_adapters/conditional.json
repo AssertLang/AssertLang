@@ -1,0 +1,34 @@
+{
+  "cases": [
+    {
+      "name": "equals_passes",
+      "payload": {
+        "left": "alpha",
+        "op": "==",
+        "right": "alpha"
+      },
+      "expected": {
+        "ok": true,
+        "version": "v1",
+        "data": {
+          "pass": true
+        }
+      }
+    },
+    {
+      "name": "unsupported_operator",
+      "payload": {
+        "left": "alpha",
+        "op": "startsWith",
+        "right": "a"
+      },
+      "expected": {
+        "ok": false,
+        "version": "v1",
+        "error": {
+          "code": "E_ARGS"
+        }
+      }
+    }
+  ]
+}

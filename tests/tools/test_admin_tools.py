@@ -26,3 +26,4 @@ def test_custom_tool_template(tmp_path, monkeypatch):
     assert res['ok'] is True
     assert Path('schemas/tools/mytool.v1.json').exists()
 
+

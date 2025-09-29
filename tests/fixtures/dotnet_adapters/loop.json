@@ -1,0 +1,30 @@
+{
+  "cases": [
+    {
+      "name": "counts_iterations",
+      "payload": {
+        "items": [1, 2, 3, 4]
+      },
+      "expected": {
+        "ok": true,
+        "version": "v1",
+        "data": {
+          "iterations": 4
+        }
+      }
+    },
+    {
+      "name": "requires_items_list",
+      "payload": {
+        "items": "nope"
+      },
+      "expected": {
+        "ok": false,
+        "version": "v1",
+        "error": {
+          "code": "E_ARGS"
+        }
+      }
+    }
+  ]
+}

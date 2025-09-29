@@ -48,3 +48,4 @@ def test_http_tool_performs_request(monkeypatch):
     res = rest_adapter.handle({'base': 'https://example.com', 'path': '/', 'method': 'GET'})
     assert res['ok']
 
+
