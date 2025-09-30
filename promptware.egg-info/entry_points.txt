@@ -1,3 +1,4 @@
 [console_scripts]
 mcp = cli.mcp:main
-promptware = cli.promptware:main
+promptware = cli.main:main
+pw = cli.main:main

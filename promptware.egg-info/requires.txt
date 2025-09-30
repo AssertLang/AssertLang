@@ -5,3 +5,4 @@ werkzeug>=2.3
 uvicorn>=0.23
 PyYAML>=6
 jsonschema>=4
+websocket-client>=1.7
