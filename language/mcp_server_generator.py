@@ -7,7 +7,7 @@ Generates FastAPI-based MCP servers from .pw agent definitions.
 from __future__ import annotations
 
 from typing import Any, Dict, List
-from language.agent_parser import AgentDefinition, ExposeBlock, ObservabilityConfig
+from language.agent_parser import AgentDefinition, ExposeBlock, ObservabilityConfig, WorkflowDefinition, WorkflowStep
 
 
 def generate_python_mcp_server(agent: AgentDefinition) -> str:
@@ -25,6 +25,10 @@ def generate_python_mcp_server(agent: AgentDefinition) -> str:
 
     # Imports
     code_parts.append(_generate_imports(agent))
+
+    # Temporal workflows and activities (if enabled)
+    if agent.temporal and agent.workflows:
+        code_parts.append(_generate_temporal_workflows(agent))
 
     # FastAPI app initialization
     code_parts.append(_generate_app_init(agent))
@@ -72,6 +76,16 @@ from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader, Cons
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from opentelemetry.sdk.resources import Resource"""
         base_imports += otel_imports
+
+    # Add Temporal imports if workflows enabled
+    if agent.temporal and agent.workflows:
+        temporal_imports = """
+import asyncio
+from datetime import timedelta
+from temporalio import workflow, activity
+from temporalio.client import Client
+from temporalio.worker import Worker"""
+        base_imports += temporal_imports
 
     return base_imports
 
@@ -144,6 +158,20 @@ agent_state: Dict[str, Any] = {{
     "requests_handled": 0
 }}'''
 
+    # Add Temporal client initialization if workflows enabled
+    if agent.temporal and agent.workflows:
+        init_code += '''
+
+# Temporal client (global)
+temporal_client: Optional[Client] = None
+
+async def get_temporal_client() -> Client:
+    """Get or create Temporal client."""
+    global temporal_client
+    if temporal_client is None:
+        temporal_client = await Client.connect("localhost:7233")
+    return temporal_client'''
+
     # Add LLM initialization if agent uses LLM
     if agent.llm:
         # Parse LLM spec (e.g., "anthropic claude-3-5-sonnet-20241022")
@@ -202,8 +230,11 @@ def _generate_verb_handler(expose: ExposeBlock, agent: AgentDefinition) -> str:
     request_counter.add(1, {{"verb": "{expose.verb}", "agent": "{agent.name}"}})
     request_duration.record(duration, {{"verb": "{expose.verb}"}})'''
 
-    # Generate handler body based on whether agent uses LLM
-    if agent.llm and expose.prompt_template:
+    # Generate handler body based on type
+    if agent.temporal and expose.verb == "workflow.execute@v1":
+        # Special handler for workflow execution
+        handler_body = _generate_workflow_execution_handler(agent)
+    elif agent.llm and expose.prompt_template:
         # AI-powered handler using LangChain
         handler_body = _generate_ai_handler_body(expose, agent, param_names)
     elif agent.llm:
@@ -244,6 +275,45 @@ def _generate_verb_handler(expose: ExposeBlock, agent: AgentDefinition) -> str:
 
     agent_state["requests_handled"] += 1
 {observability_setup}{handler_body}{observability_record}'''
+
+
+def _generate_workflow_execution_handler(agent: AgentDefinition) -> str:
+    """Generate handler for workflow.execute@v1 verb."""
+    if not agent.workflows:
+        return _generate_mock_handler_body(ExposeBlock(verb="workflow.execute@v1"))
+
+    workflow_def = agent.workflows[0]
+    workflow_class_name = workflow_def.name.replace("@", "_").replace(".", "_").title() + "Workflow"
+
+    return f'''    # Execute Temporal workflow
+    try:
+        workflow_id = params.get("workflow_id")
+        workflow_params = params.get("params", {{}})
+
+        # Get Temporal client
+        client = asyncio.run(get_temporal_client())
+
+        # Start workflow execution
+        handle = asyncio.run(
+            client.start_workflow(
+                {workflow_class_name}.run,
+                **workflow_params,
+                id=workflow_id,
+                task_queue="{agent.name}-task-queue",
+            )
+        )
+
+        return {{
+            "execution_id": handle.id,
+            "status": "running"
+        }}
+    except Exception as e:
+        return {{
+            "error": {{
+                "code": "E_RUNTIME",
+                "message": f"Workflow execution failed: {{str(e)}}"
+            }}
+        }}'''
 
 
 def _generate_mock_handler_body(expose: ExposeBlock) -> str:
@@ -465,6 +535,135 @@ async def list_verbs():
         "agent": "{agent.name}",
         "verbs": {[f'"{e.verb}"' for e in agent.exposes]}
     }}'''
+
+
+def _generate_temporal_workflows(agent: AgentDefinition) -> str:
+    """Generate Temporal workflow and activity classes."""
+    code_parts = []
+
+    for workflow_def in agent.workflows:
+        # Generate activity functions for each step
+        for step in workflow_def.steps:
+            code_parts.append(_generate_activity_function(step, workflow_def))
+
+        # Generate workflow class
+        code_parts.append(_generate_workflow_class(workflow_def, agent))
+
+    return "\n\n".join(code_parts)
+
+
+def _generate_activity_function(step: WorkflowStep, workflow_def: WorkflowDefinition) -> str:
+    """Generate a Temporal activity function."""
+    activity_name = step.activity
+
+    # Parse timeout (e.g., "10m" -> timedelta(minutes=10))
+    timeout_code = ""
+    if step.timeout:
+        timeout_code = f", start_to_close_timeout=timedelta({_parse_timeout(step.timeout)})"
+
+    return f'''@activity.defn(name="{activity_name}"{timeout_code})
+async def {activity_name}(**kwargs) -> Dict[str, Any]:
+    """
+    Activity: {activity_name}
+    Workflow: {workflow_def.name}
+    """
+    # TODO: Implement actual activity logic
+    print(f"Executing activity: {activity_name}")
+    return {{"status": "completed"}}'''
+
+
+def _generate_workflow_class(workflow_def: WorkflowDefinition, agent: AgentDefinition) -> str:
+    """Generate a Temporal workflow class."""
+    workflow_name = workflow_def.name.replace("@", "_").replace(".", "_")
+
+    # Build workflow steps execution
+    steps_code = []
+    for i, step in enumerate(workflow_def.steps):
+        activity_name = step.activity
+
+        # Build retry policy
+        retry_policy = ""
+        if step.retry > 0:
+            retry_policy = f", retry_policy=workflow.RetryPolicy(maximum_attempts={step.retry})"
+
+        # Build activity execution
+        step_code = f'''        # Step {i+1}: {activity_name}
+        result_{i} = await workflow.execute_activity(
+            {activity_name},
+            schedule_to_close_timeout=timedelta(minutes=10){retry_policy}
+        )'''
+
+        # Add compensation logic if on_failure is specified
+        if step.on_failure:
+            step_code += f'''
+        if result_{i}.get("status") != "completed":
+            # Compensation: {step.on_failure}
+            await workflow.execute_activity(
+                {step.on_failure},
+                schedule_to_close_timeout=timedelta(minutes=5)
+            )
+            raise workflow.ApplicationError("Step {activity_name} failed")'''
+
+        # Add approval wait if required
+        if step.requires_approval:
+            step_code += f'''
+
+        # Wait for approval before continuing
+        await workflow.wait_condition(lambda: workflow_state.get("approved_{i}", False))'''
+
+        steps_code.append(step_code)
+
+    steps_execution = "\n\n".join(steps_code)
+
+    # Build params and returns
+    param_types = ", ".join([f"{p['name']}: {_map_pw_type_to_python(p['type'])}" for p in workflow_def.params])
+    return_type = "Dict[str, Any]"
+
+    return f'''@workflow.defn(name="{workflow_def.name}")
+class {workflow_name.title()}Workflow:
+    """
+    Temporal workflow: {workflow_def.name}
+
+    Parameters: {", ".join([p["name"] for p in workflow_def.params])}
+    Returns: {", ".join([r["name"] for r in workflow_def.returns])}
+    """
+
+    def __init__(self):
+        self.workflow_state = {{}}
+
+    @workflow.run
+    async def run(self, {param_types}) -> {return_type}:
+        """Execute workflow steps."""
+{steps_execution}
+
+        # Return workflow result
+        return {{
+            {", ".join([f'"{r["name"]}": "value"' for r in workflow_def.returns])}
+        }}'''
+
+
+def _parse_timeout(timeout_str: str) -> str:
+    """Parse timeout string (e.g., '10m', '5s') to timedelta args."""
+    if timeout_str.endswith('m'):
+        return f"minutes={timeout_str[:-1]}"
+    elif timeout_str.endswith('s'):
+        return f"seconds={timeout_str[:-1]}"
+    elif timeout_str.endswith('h'):
+        return f"hours={timeout_str[:-1]}"
+    else:
+        return f"seconds={timeout_str}"
+
+
+def _map_pw_type_to_python(pw_type: str) -> str:
+    """Map .pw types to Python type hints."""
+    type_map = {
+        "string": "str",
+        "int": "int",
+        "bool": "bool",
+        "object": "Dict[str, Any]",
+        "array": "List[Any]"
+    }
+    return type_map.get(pw_type, "Any")
 
 
 def _generate_server_startup(agent: AgentDefinition) -> str:

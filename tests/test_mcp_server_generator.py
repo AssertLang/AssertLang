@@ -366,3 +366,189 @@ expose process@v1:
 
     # Verify it's valid Python
     compile(code, "<generated>", "exec")
+
+
+def test_generate_temporal_workflow_server():
+    """Test generating Temporal workflow server."""
+    pw_code = """
+lang python
+agent deployment-manager
+port 23456
+temporal: true
+
+workflow deploy_service@v1:
+  params:
+    service string
+    version string
+  returns:
+    deployment_id string
+    status string
+
+  steps:
+    - activity: build_image
+      timeout: 10m
+      retry: 3
+
+    - activity: run_tests
+      timeout: 5m
+      retry: 2
+
+expose workflow.execute@v1:
+  params:
+    workflow_id string
+    params object
+  returns:
+    execution_id string
+    status string
+"""
+    code = generate_mcp_server_from_pw(pw_code)
+
+    # Check Temporal imports
+    assert "from temporalio import workflow, activity" in code
+    assert "from temporalio.client import Client" in code
+    assert "from temporalio.worker import Worker" in code
+
+    # Check activity definitions
+    assert "@activity.defn(name=\"build_image\"" in code
+    assert "async def build_image(**kwargs)" in code
+    assert "@activity.defn(name=\"run_tests\"" in code
+    assert "async def run_tests(**kwargs)" in code
+
+    # Check workflow class
+    assert "@workflow.defn(name=\"deploy_service@v1\")" in code
+    assert "class Deploy_Service_V1Workflow:" in code
+    assert "@workflow.run" in code
+
+    # Check retry policies
+    assert "retry_policy=workflow.RetryPolicy(maximum_attempts=3)" in code
+    assert "retry_policy=workflow.RetryPolicy(maximum_attempts=2)" in code
+
+    # Check Temporal client initialization
+    assert "temporal_client: Optional[Client] = None" in code
+    assert "async def get_temporal_client()" in code
+    assert "Client.connect(\"localhost:7233\")" in code
+
+    # Check workflow execution handler
+    assert "def handle_workflow_execute_v1" in code
+    assert "client.start_workflow" in code
+    assert "deployment-manager-task-queue" in code
+
+    # Verify it's valid Python
+    compile(code, "<generated>", "exec")
+
+
+def test_temporal_workflow_compensation_logic():
+    """Test Temporal workflow with compensation activities."""
+    pw_code = """
+lang python
+agent deployment-manager
+temporal: true
+
+workflow deploy@v1:
+  params:
+    service string
+  returns:
+    status string
+
+  steps:
+    - activity: deploy_to_staging
+      timeout: 3m
+      on_failure: rollback_staging
+
+    - activity: deploy_to_production
+      timeout: 5m
+      on_failure: rollback_production
+
+expose workflow.execute@v1:
+  params:
+    workflow_id string
+    params object
+  returns:
+    execution_id string
+    status string
+"""
+    code = generate_mcp_server_from_pw(pw_code)
+
+    # Check compensation logic
+    assert "on_failure: rollback_staging" in code or "rollback_staging" in code
+    assert "on_failure: rollback_production" in code or "rollback_production" in code
+    assert 'if result_' in code  # Check for failure condition
+    assert "workflow.ApplicationError" in code
+
+    compile(code, "<generated>", "exec")
+
+
+def test_temporal_workflow_approval_step():
+    """Test Temporal workflow with approval required."""
+    pw_code = """
+lang python
+agent deployment-manager
+temporal: true
+
+workflow deploy@v1:
+  params:
+    service string
+  returns:
+    status string
+
+  steps:
+    - activity: deploy_to_production
+      timeout: 5m
+      requires_approval: true
+
+expose workflow.execute@v1:
+  params:
+    workflow_id string
+    params object
+  returns:
+    execution_id string
+    status string
+"""
+    code = generate_mcp_server_from_pw(pw_code)
+
+    # Check approval wait condition
+    assert "workflow.wait_condition" in code
+    assert "approved_" in code
+
+    compile(code, "<generated>", "exec")
+
+
+def test_temporal_workflow_timeout_parsing():
+    """Test parsing different timeout formats."""
+    pw_code = """
+lang python
+agent test-agent
+temporal: true
+
+workflow test@v1:
+  params:
+    input string
+  returns:
+    output string
+
+  steps:
+    - activity: step1
+      timeout: 10m
+
+    - activity: step2
+      timeout: 30s
+
+    - activity: step3
+      timeout: 2h
+
+expose workflow.execute@v1:
+  params:
+    workflow_id string
+    params object
+  returns:
+    execution_id string
+    status string
+"""
+    code = generate_mcp_server_from_pw(pw_code)
+
+    # Check timeout parsing
+    assert "timedelta(minutes=10)" in code
+    assert "timedelta(seconds=30)" in code
+    assert "timedelta(hours=2)" in code
+
+    compile(code, "<generated>", "exec")
