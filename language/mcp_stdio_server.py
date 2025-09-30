@@ -6,8 +6,9 @@ Implements the MCP protocol directly over stdin/stdout.
 """
 import sys
 import json
+import os
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 
 
 def load_agent_definition(agent_file: str) -> Dict[str, Any]:
@@ -25,7 +26,7 @@ def load_agent_definition(agent_file: str) -> Dict[str, Any]:
 
         agent = parse_agent_pw(agent_content)
 
-        # Extract verbs
+        # Extract verbs with full expose block info
         verbs = []
         for expose in agent.exposes:
             verb_name = expose.verb  # Already includes version like "review.analyze@v1"
@@ -60,17 +61,21 @@ def load_agent_definition(agent_file: str) -> Dict[str, Any]:
                     "type": "object",
                     "properties": properties,
                     "required": required
-                }
+                },
+                # Store expose block for execution
+                "_expose": expose
             })
 
         return {
             "agent_name": agent.name,
+            "agent": agent,
             "verbs": verbs
         }
     except Exception as e:
         import traceback
         return {
             "agent_name": "unknown",
+            "agent": None,
             "verbs": [],
             "error": f"{str(e)}\n{traceback.format_exc()}"
         }
@@ -83,6 +88,133 @@ class MCPStdioServer:
         self.agent_file = agent_file
         self.agent_info = load_agent_definition(agent_file)
         self.initialized = False
+        self.llm = None
+
+        # Initialize LLM if agent uses it
+        agent = self.agent_info.get("agent")
+        if agent and agent.llm:
+            self._init_llm(agent)
+
+    def _init_llm(self, agent):
+        """Initialize LLM client."""
+        try:
+            # Parse LLM spec (e.g., "anthropic claude-3-5-sonnet-20241022")
+            llm_parts = agent.llm.split()
+            provider = llm_parts[0] if llm_parts else "anthropic"
+            model_name = " ".join(llm_parts[1:]) if len(llm_parts) > 1 else "claude-3-5-sonnet-20241022"
+
+            if provider == "anthropic":
+                from langchain_anthropic import ChatAnthropic
+                self.llm = ChatAnthropic(
+                    model=model_name,
+                    api_key=os.environ.get("ANTHROPIC_API_KEY"),
+                    temperature=0,
+                )
+            else:
+                # Unsupported provider
+                pass
+        except ImportError:
+            # LangChain not available
+            pass
+        except Exception:
+            # LLM initialization failed
+            pass
+
+    def _execute_verb(self, verb_name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
+        """Execute a verb and return result."""
+        # Find the verb definition
+        verb_def = None
+        for verb in self.agent_info.get("verbs", []):
+            if verb["name"] == verb_name:
+                verb_def = verb
+                break
+
+        if not verb_def:
+            return {
+                "error": f"Verb not found: {verb_name}"
+            }
+
+        expose = verb_def.get("_expose")
+        agent = self.agent_info.get("agent")
+
+        # Check if this is an AI-powered verb
+        if self.llm and expose and expose.prompt_template:
+            return self._execute_ai_verb(expose, agent, arguments)
+        else:
+            # Mock implementation for non-AI verbs
+            return self._execute_mock_verb(expose, arguments)
+
+    def _execute_ai_verb(self, expose, agent, arguments: Dict[str, Any]) -> Dict[str, Any]:
+        """Execute AI-powered verb using LangChain."""
+        try:
+            from langchain_core.messages import HumanMessage, SystemMessage
+
+            # Build prompt with parameters
+            param_str = "\n".join([f"    {k}: {v}" for k, v in arguments.items()])
+            user_prompt = f"""{expose.prompt_template}
+
+Input parameters:
+{param_str}
+"""
+
+            # Build messages
+            messages = []
+            if agent and agent.prompt_template:
+                messages.append(SystemMessage(content=agent.prompt_template))
+            messages.append(HumanMessage(content=user_prompt))
+
+            # Call LLM
+            response = self.llm.invoke(messages)
+            result_text = response.content
+
+            # Try to parse as JSON if returns specify structured data
+            if expose.returns:
+                try:
+                    # If response looks like JSON, parse it
+                    if result_text.strip().startswith("{"):
+                        return json.loads(result_text)
+                except:
+                    pass
+
+                # Return as first return field
+                return {
+                    expose.returns[0]["name"]: result_text
+                }
+
+            return {"result": result_text}
+
+        except Exception as e:
+            import traceback
+            return {
+                "error": f"LLM execution failed: {str(e)}",
+                "traceback": traceback.format_exc()
+            }
+
+    def _execute_mock_verb(self, expose, arguments: Dict[str, Any]) -> Dict[str, Any]:
+        """Execute mock verb for non-AI handlers."""
+        if not expose or not expose.returns:
+            return {"result": "ok", "arguments": arguments}
+
+        # Build mock return values based on return types
+        result = {}
+        for ret in expose.returns:
+            ret_type = ret.get("type", "string")
+            ret_name = ret.get("name", "result")
+
+            if ret_type == "string":
+                result[ret_name] = f"{ret_name}_value"
+            elif ret_type == "int":
+                result[ret_name] = 0
+            elif ret_type == "bool":
+                result[ret_name] = True
+            elif ret_type == "object":
+                result[ret_name] = {}
+            elif ret_type == "array":
+                result[ret_name] = []
+            else:
+                result[ret_name] = None
+
+        return result
 
     def handle_request(self, request: Dict[str, Any]) -> Dict[str, Any]:
         """Handle incoming MCP request."""
@@ -111,11 +243,20 @@ class MCPStdioServer:
             if not self.initialized:
                 return self._error_response(request_id, -32002, "Server not initialized")
 
+            # Filter out internal fields from verbs before returning
+            tools = []
+            for verb in self.agent_info.get("verbs", []):
+                tools.append({
+                    "name": verb["name"],
+                    "description": verb["description"],
+                    "inputSchema": verb["inputSchema"]
+                })
+
             return {
                 "jsonrpc": "2.0",
                 "id": request_id,
                 "result": {
-                    "tools": self.agent_info.get("verbs", [])
+                    "tools": tools
                 }
             }
 
@@ -126,24 +267,30 @@ class MCPStdioServer:
             tool_name = params.get("name")
             tool_args = params.get("arguments", {})
 
-            # For now, return a placeholder response
-            # In production, this would call the actual verb handler
-            return {
-                "jsonrpc": "2.0",
-                "id": request_id,
-                "result": {
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": json.dumps({
-                                "message": f"Called {tool_name}",
-                                "arguments": tool_args,
-                                "note": "This is a placeholder response. Full implementation coming soon."
-                            }, indent=2)
-                        }
-                    ]
+            # Execute the verb
+            try:
+                result = self._execute_verb(tool_name, tool_args)
+
+                # Format result as MCP response
+                return {
+                    "jsonrpc": "2.0",
+                    "id": request_id,
+                    "result": {
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": json.dumps(result, indent=2)
+                            }
+                        ]
+                    }
                 }
-            }
+            except Exception as e:
+                import traceback
+                return self._error_response(
+                    request_id,
+                    -32603,
+                    f"Verb execution failed: {str(e)}\n{traceback.format_exc()}"
+                )
 
         else:
             return self._error_response(request_id, -32601, f"Method not found: {method}")
