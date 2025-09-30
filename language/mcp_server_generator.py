@@ -53,7 +53,16 @@ from fastapi.responses import JSONResponse
 import uvicorn
 from typing import Any, Dict, Optional
 from datetime import datetime
-import time"""
+import time
+import sys
+from pathlib import Path
+
+# Add project root to path for tool registry imports
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
+
+from tools.registry import get_registry
+from language.tool_executor import ToolExecutor"""
 
     # Add LangChain imports if agent uses LLM
     if agent.llm:
@@ -156,7 +165,12 @@ agent_state: Dict[str, Any] = {{
     "agent_name": "{agent.name}",
     "started_at": datetime.now().isoformat(),
     "requests_handled": 0
-}}'''
+}}
+
+# Tool executor (if agent has tools)
+tool_executor = None
+if {repr(agent.tools)}:
+    tool_executor = ToolExecutor({repr(agent.tools)})'''
 
     # Add Temporal client initialization if workflows enabled
     if agent.temporal and agent.workflows:
@@ -423,96 +437,225 @@ def _format_returns_doc(returns: List[Dict[str, str]]) -> str:
 
 
 def _generate_mcp_endpoint(agent: AgentDefinition) -> str:
-    """Generate main MCP JSON-RPC endpoint."""
+    """Generate main MCP JSON-RPC endpoint with full MCP protocol support."""
 
-    # Build verb routing
+    # Build tool schemas for tools/list method
+    tool_schemas = []
+    for expose in agent.exposes:
+        # Build input schema from parameters
+        properties = {}
+        required = []
+        for param in expose.params:
+            param_name = param["name"]
+            param_type = param["type"]
+
+            # Convert Promptware types to JSON Schema types
+            json_schema_type = param_type
+            if param_type == "int":
+                json_schema_type = "integer"
+            elif param_type == "bool":
+                json_schema_type = "boolean"
+
+            properties[param_name] = {
+                "type": json_schema_type,
+                "description": f"Parameter: {param_name}"
+            }
+            required.append(param_name)
+
+        tool_schemas.append({
+            "name": expose.verb,
+            "description": expose.prompt_template or f"Execute {expose.verb}",
+            "inputSchema": {
+                "type": "object",
+                "properties": properties,
+                "required": required
+            }
+        })
+
+    tool_schemas_json = repr(tool_schemas)
+
+    # Build verb routing for tools/call
     verb_routes = []
     for i, expose in enumerate(agent.exposes):
         handler_name = expose.verb.replace(".", "_").replace("@", "_")
         prefix = "if" if i == 0 else "elif"
-        verb_routes.append(f'''        {prefix} method == "{expose.verb}":
-            result = handle_{handler_name}(params)
-            if "error" in result:
-                return JSONResponse(
-                    status_code=400,
-                    content={{
-                        "ok": False,
-                        "version": "v1",
-                        "error": result["error"]
-                    }}
-                )''')
+        verb_routes.append(f'''            {prefix} verb_name == "{expose.verb}":
+                verb_result = handle_{handler_name}(verb_params)''')
 
     verb_routing = "\n".join(verb_routes)
 
     return f'''@app.post("/mcp")
 async def mcp_endpoint(request: Request):
     """
-    Main MCP endpoint - handles JSON-RPC requests.
+    Main MCP endpoint - implements full MCP JSON-RPC protocol.
 
-    Request format:
-    {{
-        "method": "verb.name@v1",
-        "params": {{...}}
-    }}
-
-    Response format:
-    {{
-        "ok": true,
-        "version": "v1",
-        "data": {{...}}
-    }}
+    Supports methods:
+    - initialize: Return server capabilities
+    - tools/list: List all available tools
+    - tools/call: Execute a tool/verb
     """
     try:
         body = await request.json()
         method = body.get("method")
         params = body.get("params", {{}})
+        request_id = body.get("id", 1)
 
         if not method:
             return JSONResponse(
                 status_code=400,
                 content={{
-                    "ok": False,
-                    "version": "v1",
+                    "jsonrpc": "2.0",
+                    "id": request_id,
                     "error": {{
-                        "code": "E_ARGS",
-                        "message": "Missing 'method' in request"
+                        "code": -32600,
+                        "message": "Invalid Request: missing method"
                     }}
                 }}
             )
 
-        # Route to appropriate handler
+        # Handle MCP protocol methods
+        if method == "initialize":
+            # Return server capabilities
+            return JSONResponse(
+                content={{
+                    "jsonrpc": "2.0",
+                    "id": request_id,
+                    "result": {{
+                        "protocolVersion": "0.1.0",
+                        "capabilities": {{
+                            "tools": {{}},
+                            "prompts": {{}}
+                        }},
+                        "serverInfo": {{
+                            "name": "{agent.name}",
+                            "version": "v1"
+                        }}
+                    }}
+                }}
+            )
+
+        elif method == "tools/list":
+            # Return tool schemas
+            return JSONResponse(
+                content={{
+                    "jsonrpc": "2.0",
+                    "id": request_id,
+                    "result": {{
+                        "tools": {tool_schemas_json}
+                    }}
+                }}
+            )
+
+        elif method == "tools/call":
+            # Execute tool with full MCP envelope
+            tool_name = params.get("name")
+            verb_params = params.get("arguments", {{}})
+
+            if not tool_name:
+                return JSONResponse(
+                    status_code=400,
+                    content={{
+                        "jsonrpc": "2.0",
+                        "id": request_id,
+                        "error": {{
+                            "code": -32602,
+                            "message": "Invalid params: missing tool name"
+                        }}
+                    }}
+                )
+
+            agent_state["requests_handled"] += 1
+
+            # Execute tools first (if agent has tools)
+            tool_results = {{}}
+            tools_executed = []
+            if tool_executor and tool_executor.has_tools():
+                tool_results = tool_executor.execute_tools(verb_params)
+                tools_executed = list(tool_results.keys())
+
+            # Route to appropriate verb handler
+            verb_name = tool_name
+            verb_result = None
+
 {verb_routing}
+            else:
+                return JSONResponse(
+                    status_code=404,
+                    content={{
+                        "jsonrpc": "2.0",
+                        "id": request_id,
+                        "error": {{
+                            "code": -32601,
+                            "message": f"Method not found: {{tool_name}}"
+                        }}
+                    }}
+                )
+
+            # Check for errors
+            if verb_result and "error" in verb_result:
+                return JSONResponse(
+                    status_code=400,
+                    content={{
+                        "jsonrpc": "2.0",
+                        "id": request_id,
+                        "error": {{
+                            "code": -32000,
+                            "message": verb_result["error"].get("message", "Unknown error")
+                        }}
+                    }}
+                )
+
+            # Determine mode (IDE-integrated vs standalone AI)
+            import os
+            has_api_key = bool(os.environ.get("ANTHROPIC_API_KEY"))
+            mode = "standalone_ai" if (has_api_key and {bool(agent.llm)}) else "ide_integrated"
+
+            # Build MCP-compliant response
+            response_data = {{
+                "input_params": verb_params,
+                "tool_results": tool_results,
+                "metadata": {{
+                    "mode": mode,
+                    "agent_name": "{agent.name}",
+                    "timestamp": datetime.now().isoformat(),
+                    "tools_executed": tools_executed
+                }}
+            }}
+
+            # Merge verb result into response
+            if verb_result:
+                response_data.update(verb_result)
+
+            return JSONResponse(
+                content={{
+                    "jsonrpc": "2.0",
+                    "id": request_id,
+                    "result": response_data
+                }}
+            )
+
         else:
             return JSONResponse(
                 status_code=404,
                 content={{
-                    "ok": False,
-                    "version": "v1",
+                    "jsonrpc": "2.0",
+                    "id": request_id,
                     "error": {{
-                        "code": "E_METHOD",
-                        "message": f"Unknown method: {{method}}"
+                        "code": -32601,
+                        "message": f"Method not found: {{method}}"
                     }}
                 }}
             )
-
-        # Success response
-        return JSONResponse(
-            content={{
-                "ok": True,
-                "version": "v1",
-                "data": result
-            }}
-        )
 
     except Exception as e:
         return JSONResponse(
             status_code=500,
             content={{
-                "ok": False,
-                "version": "v1",
+                "jsonrpc": "2.0",
+                "id": body.get("id", 1) if "body" in locals() else 1,
                 "error": {{
-                    "code": "E_RUNTIME",
-                    "message": str(e)
+                    "code": -32603,
+                    "message": f"Internal error: {{str(e)}}"
                 }}
             }}
         )
