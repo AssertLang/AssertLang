@@ -20,6 +20,13 @@ from language.agent_parser import parse_agent_pw
 from language.mcp_server_generator import generate_python_mcp_server
 from language.nodejs_server_generator import generate_nodejs_mcp_server
 from language.go_server_generator import generate_go_mcp_server
+from language.mcp_config_generator import (
+    generate_configs_for_project,
+    generate_quick_setup_instructions,
+    scan_agents_in_directory,
+    generate_agent_mcp_config,
+    generate_cursor_config
+)
 
 
 def get_generator(lang: str):
@@ -216,6 +223,77 @@ def command_test(args):
         sys.exit(1)
 
 
+def command_mcp_config(args):
+    """Generate MCP configuration for editors (Cursor, Windsurf, etc)."""
+
+    # Determine directory to scan
+    if args.directory:
+        project_dir = Path(args.directory)
+    elif args.agent_file:
+        # Single agent file
+        project_dir = Path(args.agent_file).parent
+    else:
+        # Current directory
+        project_dir = Path.cwd()
+
+    if not project_dir.exists():
+        print(f"❌ Error: Directory not found: {project_dir}")
+        sys.exit(1)
+
+    print(f"🔍 Scanning for .pw agent files in {project_dir}...")
+
+    # Scan for agents
+    agent_files = scan_agents_in_directory(project_dir)
+
+    if not agent_files:
+        print(f"❌ No .pw files found in {project_dir}")
+        sys.exit(1)
+
+    print(f"   Found {len(agent_files)} agent(s):")
+    for pw_file, agent_name, port in agent_files:
+        print(f"   • {agent_name} (port {port}) - {pw_file.name}")
+
+    # Generate configs
+    editor = args.editor.lower()
+
+    print(f"\n🔨 Generating MCP config for {editor.title()}...")
+
+    try:
+        config_json = generate_configs_for_project(
+            project_dir,
+            editor=editor,
+            output_dir=args.output if args.output else None
+        )
+
+        # Determine config path
+        if args.output:
+            config_path = Path(args.output) / "mcp.json"
+        elif editor == "cursor":
+            config_path = project_dir / ".cursor" / "mcp.json"
+        elif editor == "windsurf":
+            config_path = project_dir / ".windsurf" / "mcp.json"
+        elif editor == "cline":
+            config_path = project_dir / ".vscode" / "mcp.json"
+        else:
+            config_path = project_dir / "mcp.json"
+
+        print(f"✅ Configuration saved to: {config_path}")
+        print(f"\nConfiguration content:")
+        print("=" * 60)
+        print(config_json)
+        print("=" * 60)
+
+        # Show setup instructions
+        instructions = generate_quick_setup_instructions(editor, config_path)
+        print(instructions)
+
+    except Exception as e:
+        print(f"❌ Error generating config: {e}")
+        import traceback
+        traceback.print_exc()
+        sys.exit(1)
+
+
 def command_version(args):
     """Show version information."""
     print("Promptware v0.3.0")
@@ -265,6 +343,19 @@ For more info: https://github.com/3CH0xyz/promptware
     test_parser = subparsers.add_parser("test", help="Test agent definition")
     test_parser.add_argument("agent_file", help=".pw agent definition file")
     test_parser.set_defaults(func=command_test)
+
+    # MCP Config command
+    mcp_parser = subparsers.add_parser("mcp-config", help="Generate MCP config for editors")
+    mcp_parser.add_argument("--editor", "-e", default="cursor",
+                           choices=["cursor", "windsurf", "cline"],
+                           help="Target editor (default: cursor)")
+    mcp_parser.add_argument("--directory", "-d",
+                           help="Directory to scan for .pw files (default: current)")
+    mcp_parser.add_argument("--agent-file", "-a",
+                           help="Single .pw file (alternative to --directory)")
+    mcp_parser.add_argument("--output", "-o",
+                           help="Output directory for config file")
+    mcp_parser.set_defaults(func=command_mcp_config)
 
     # Version command
     version_parser = subparsers.add_parser("version", help="Show version")
