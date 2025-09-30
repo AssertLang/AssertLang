@@ -129,19 +129,40 @@ def generate_agent_mcp_config(
     Returns:
         MCPServerConfig for the agent
     """
+    import sys
+
     if use_python:
-        # Use promptware CLI to run the agent
-        return MCPServerConfig(
-            name=agent_name,
-            command="promptware",
-            args=["run", str(pw_file.absolute())]
-        )
+        # Use Python directly to run the CLI (works without promptware in PATH)
+        # Find cli/main.py relative to pw_file
+        project_root = pw_file.parent
+        while not (project_root / "cli" / "main.py").exists():
+            if project_root.parent == project_root:
+                # Reached root, use current approach
+                break
+            project_root = project_root.parent
+
+        cli_path = project_root / "cli" / "main.py"
+
+        if cli_path.exists():
+            # Use Python + cli/main.py directly
+            return MCPServerConfig(
+                name=agent_name,
+                command=sys.executable,  # Current Python interpreter
+                args=[str(cli_path.absolute()), "run", str(pw_file.absolute())]
+            )
+        else:
+            # Fallback to promptware command
+            return MCPServerConfig(
+                name=agent_name,
+                command="promptware",
+                args=["run", str(pw_file.absolute())]
+            )
     else:
         # Use generated server file
         server_file = pw_file.with_name(f"{agent_name}_server.py")
         return MCPServerConfig(
             name=agent_name,
-            command="python3",
+            command=sys.executable,
             args=[str(server_file.absolute())]
         )
 
@@ -182,6 +203,9 @@ def generate_configs_for_project(
             output_dir = project_dir / ".windsurf"
         elif editor == "cline":
             output_dir = project_dir / ".vscode"
+    else:
+        # Ensure output_dir is a Path object
+        output_dir = Path(output_dir)
 
     output_file = output_dir / "mcp.json"
 
