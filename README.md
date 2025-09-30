@@ -1,35 +1,58 @@
 # 🚀 Promptware
 
-Promptware is a new programming language for the AI-native era.  
-It turns natural language prompts into running software — fast, reproducible, and language-agnostic.
+Promptware is a domain-specific language (`.pw`) for writing language-agnostic software.
+Write once in `.pw`, run in Python, Node.js, Go, Rust, or .NET — fast, reproducible, and portable.
 
-- One port → 23456 (reserved for Promptware)  
-- Five verbs → `plan`, `apply`, `run`, `validate`, `report`  
-- Numeric universality → tool families arranged as 2–3–4–5–6  
+- One port → 23456 (reserved for Promptware)
+- Five verbs → `plan`, `apply`, `run`, `validate`, `report`
+- Numeric universality → tool families arranged as 2–3–4–5–6
 - File extension → `.pw`
 
-Promptware is designed to be agent-native: AI coding agents can invoke it directly through MCP.  
+Promptware is designed to be agent-native: AI coding agents can invoke it directly through MCP.
 Programs are ephemeral: spin up, run, validate, and vanish — unless persisted.
 
 ---
 
 ## ✨ Why Promptware?
-- Simplicity over syntax: minimal verbs instead of complex languages.  
-- Universality: bindings for Python, Go, Rust, TypeScript.  
-- Ephemeral execution: live microservices in seconds.  
-- Community extensibility: anyone can build and share tools.  
+- Language-agnostic: write `.pw` once, target Python/Node/Go/Rust/.NET
+- MCP verbs as primitives: minimal, universal building blocks
+- Multi-language tool adapters: 36 tools work across all backends
+- Ephemeral execution: live microservices in seconds
+- Community extensibility: anyone can build and share tools
 
 ---
 
 ## 📦 Quickstart
 
 ```bash
-# Run a prompt directly
-promptware run "create a REST API that returns 'hello world'"
+# Write a .pw file
+cat > hello.pw << 'EOF'
+lang python
+start python app.py
+
+file app.py:
+  from http.server import BaseHTTPRequestHandler, HTTPServer
+  class Handler(BaseHTTPRequestHandler):
+      def do_GET(self):
+          self.send_response(200)
+          self.wfile.write(b'Hello, World!')
+  HTTPServer(('127.0.0.1', 8000), Handler).serve_forever()
+EOF
+
+# Run it
+promptware run hello.pw
 
 # Output:
 # ✅ PASS: http://127.0.0.1:23456/apps/ab12cd/
 # Artifacts in .mcpd/ab12cd/
+```
+
+**Target different languages:**
+```bash
+# Same .pw code, different backend
+promptware run hello.pw --lang python
+promptware run hello.pw --lang node
+promptware run hello.pw --lang go
 ```
 
 ---
@@ -37,8 +60,8 @@ promptware run "create a REST API that returns 'hello world'"
 This repository contains the Promptware mcpd daemon, gateway, runners, CLI, schemas, and tests.
 
 - Gateway port: 23456
-- CLI: `mcp run "Create a web service that responds 'Hello, World!'"`
-- Timeline schema: `schemas/timeline_event.schema.json` (also published at https://promptware.dev/schemas/timeline-event.json) for validating interpreter/daemon `events` payloads.
+- CLI: `promptware run myapp.pw`
+- Timeline schema: `schemas/timeline_event.schema.json` for validating interpreter/daemon event payloads
 
 ---
 

@@ -2963,7 +2963,7 @@ def handle(request: Dict[str, Any]) -> Dict[str, Any]:
         return error('E_ARGS', 'data must be a string')
     digest = hashlib.sha256(data.encode('utf-8')).hexdigest()
     return ok({'result': digest})
-"""
+
 def handle(request: Dict[str, Any]) -> Dict[str, Any]:
     if not isinstance(request, dict):
         return error('E_SCHEMA', 'request must be an object')
@@ -3820,33 +3820,6 @@ public static class Adapter {
   };
 }
 """ % tool_id
-        if language == "cpp":
-            return (
-                "#include <map>
-"
-                "#include <string>
-"
-                "
-"
-                "static const char* VERSION = "v1";
-"
-                "
-"
-                "std::map<std::string,std::string> handle(const std::map<std::string,std::string>* request) {{
-"
-                "    if (request == nullptr) {{
-"
-                "        return {{ {{"ok", "false"}}, {{"version", VERSION}}, {{"error.code", "E_SCHEMA"}}, {{"error.message", "request must be an object"}} }};
-"
-                "    }}
-"
-                "    // TODO: validate request against schemas/tools/{tool_id}.v1.json
-"
-                "    return {{ {{"ok", "true"}}, {{"version", VERSION}} }};
-"
-                "}}
-"
-            ).format(tool_id=tool_id)
     raise ValueError(f"no adapter template for {language}:{template_name}")
 
 def _render_adapter(tool_id: str, adapter_cfg: Dict[str, Any], repo_root: Path) -> Path:

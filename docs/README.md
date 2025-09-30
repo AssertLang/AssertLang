@@ -1,8 +1,8 @@
 Promptware
 
-Prompted, not programmed.
+Write once, run anywhere.
 
-Promptware is a new programming paradigm where software is ephemeral, prompt-driven, and agent-native. Instead of writing code, users (or AI coding agents) express intent in natural language. Promptware transforms those prompts into working applications — spun up, validated, and exposed instantly at a single memorable port: 23456.
+Promptware is a domain-specific language (`.pw`) for writing language-agnostic software. Write `.pw` code once, run it in Python, Node.js, Go, Rust, .NET, Java, C++, or Next.js — fast, reproducible, and portable. All applications are exposed at a single memorable port: 23456.
 
 ⸻
 
@@ -23,13 +23,32 @@ git clone <repo-url>
 cd promptware
 make install   # or `pip install -e .` once package is scaffolded
 
-Run a prompt
+Run a .pw file
 
-mcp run "Create a web service that responds 'Hello, World!'"
+# Create hello.pw
+cat > hello.pw << 'EOF'
+lang python
+start python app.py
+
+file app.py:
+  from http.server import BaseHTTPRequestHandler, HTTPServer
+  class Handler(BaseHTTPRequestHandler):
+      def do_GET(self):
+          self.send_response(200)
+          self.wfile.write(b'Hello, World!')
+  if __name__ == '__main__':
+      import os
+      port = int(os.environ.get('PORT', '8000'))
+      server = HTTPServer(('127.0.0.1', port), Handler)
+      server.serve_forever()
+EOF
+
+# Run it
+promptware run hello.pw
 
 Output:
 
-✅ PASS: http://127.0.0.1:23456/apps/ab12cd/ (or the fallback port announced by the CLI)
+✅ PASS: http://127.0.0.1:23456/apps/ab12cd/
 Artifacts in .mcpd/ab12cd/
 
 
@@ -65,8 +84,8 @@ See the /docs folder for:
 ⸻
 
 🔑 Core Commands
-	•	mcp run "<prompt>" → Full pipeline: prompt → app → validation
-	•	mcp change <task_id> "<delta>" → Apply patch + restart
+	•	promptware run <file.pw> → Full pipeline: .pw DSL → app → validation
+	•	promptware change <task_id> "<delta>" → Apply patch + restart
 	•	mcp list → Show tasks, status, URLs
 	•	mcp open <task_id> → Open artifacts and preview URL
 	•	mcp export <task_id> <dir> → Export source tree
@@ -79,8 +98,9 @@ See the /docs folder for:
 ⸻
 
 ✅ MVP Acceptance Criteria
-	•	Prompt → File Plan → Files → Run → Validate → Report all automated.
-	•	First runner: Python Flask Hello World.
+	•	.pw DSL → File Plan → Files → Run → Validate → Report all automated.
+	•	First runner: Python (working).
+	•	Node.js and Go runners (working).
 	•	User sees working endpoint on Port 23456.
 	•	Artifacts logged in .mcpd/<task_id>/.
 

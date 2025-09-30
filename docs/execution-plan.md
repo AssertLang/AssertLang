@@ -58,26 +58,26 @@ Validation: `python3 -m pytest tests/test_dsl_parser.py tests/test_dsl_interpret
   - [x] Define Go adapter template (module layout, build, tests) (`docs/toolgen-go-adapter-template.md`).
   - [x] Define Rust adapter template (Cargo integration notes, blocking clients) (`docs/toolgen-rust-adapter-template.md`).
   - [x] Define .NET adapter template (SDK-style build, testing) (`docs/toolgen-dotnet-adapter-template.md`).
-  - [ ] Update toolgen CLI docs to cover multi-language flags and template selection.
+  - [x] Update toolgen CLI docs to cover multi-language flags and template selection (`docs/toolgen-cli-usage.md`).
 
 - Runner parity
-  - [ ] Compare timeline payloads for Python vs Node runners and log deltas.
+  - [x] Compare timeline payloads for Python vs Node runners and log deltas (`docs/runner-timeline-parity.md`).
   - [ ] Verify health/stop semantics for Go/.NET envelopes; align error codes.
-  - [ ] Document required policy hooks per runner (network/filesystem/secrets).
-  - [ ] Capture outstanding work items in `STATUS.md` for follow-up sprints.
+  - [x] Document required policy hooks per runner (network/filesystem/secrets) (`docs/policy-hooks.md`).
+  - [x] Capture outstanding work items in `STATUS.md` for follow-up sprints.
 
 - Host SDK shims
   - [x] Decide documentation home (`docs/sdk/`) and seed structure.
-  - [ ] Nail down package names and versioning strategy for Python/Node SDKs.
-  - [ ] Prototype MCP verb wrappers with timeline helper utilities.
-  - [ ] Draft quick-start docs and examples for integrating the SDKs.
-  - [ ] Decide on distribution (PyPI/npm) and establish publish checklists.
+  - [x] Nail down package names and versioning strategy (`docs/sdk/package-design.md`).
+  - [x] Prototype MCP verb wrappers with timeline helper utilities (`sdks/python/`).
+  - [x] Draft quick-start docs and examples for integrating the SDKs (`docs/sdk/quickstart.md`).
+  - [x] Decide on distribution (PyPI/npm via `pyproject.toml` and publish checklists in package-design.md).
 
 - CI batching
-  - [ ] Integrate `scripts/run_test_batches.sh` into `make test`.
-  - [ ] Update CI config to call the batch script sequentially.
-  - [ ] Add documentation on interpreting batch outputs and reruns.
-  - [ ] Measure runtime vs full `pytest` and capture results in the README.
+  - [x] Integrate `scripts/run_test_batches.sh` into `make test` (added `make test-batches` target).
+  - [x] Update CI config to call the batch script sequentially (`.github/workflows/test.yml`).
+  - [x] Add documentation on interpreting batch outputs and reruns (`docs/test-batches.md`).
+  - [x] Measure runtime vs full `pytest` and capture results (documented in `docs/test-batches.md`).
   - [x] Implement Node adapter smoke-test harness (`tests/tools/test_node_adapters.py`).
   - [x] Implement Go adapter smoke-test harness (`tests/tools/test_go_adapters.py`).
   - [x] Implement Rust adapter smoke-test harness (`tests/tools/test_rust_adapters.py`).

@@ -18,6 +18,12 @@ from typing import Any, Dict, Optional, List, Union
 
 import yaml
 
+# Import DSL parser
+try:
+    from language.parser import parse_pw
+except ImportError:
+    parse_pw = None  # Fallback if not available
+
 from .deps_utils import trim_cache
 
 
@@ -173,235 +179,43 @@ class MCPDaemon:
 
     # Verb: plan.create@v1
     def plan_create_v1(self, prompt: str, lang: str = "python") -> dict:
-        # Minimal deterministic plan for Hello World Flask
-        if lang == "python":
-            plan = {
-            "files": [
-                {
-                    "path": "app.py",
-                    "content": (
-                        "import os\n"
-                        "from http.server import BaseHTTPRequestHandler, HTTPServer\n\n"
-                        "class Handler(BaseHTTPRequestHandler):\n"
-                        "    def do_GET(self):\n"
-                        "        self.send_response(200)\n"
-                        "        self.send_header('Content-Type', 'text/plain')\n"
-                        "        self.end_headers()\n"
-                        "        self.wfile.write(b'Hello, World!')\n\n"
-                        "    def log_message(self, *_args, **_kwargs):\n"
-                        "        return\n\n"
-                        "if __name__ == '__main__':\n"
-                        "    port = int(os.environ.get('PORT', '8000'))\n"
-                        "    server = HTTPServer(('127.0.0.1', port), Handler)\n"
-                        "    server.serve_forever()\n"
-                    ),
-                    "mode": 0o644,
-                }
-            ],
-            "start": "python app.py",
-            "assumptions": ["Using Python standard library HTTP server"],
-            "lang": "python",
-            "deps": {"python": {"requirements": []}},
-        }
-        elif lang == "node":
-            plan = {
-                "files": [
-                    {
-                        "path": "server.js",
-                        "content": (
-                            "const http=require('http');\n"
-                            "const host='127.0.0.1';\n"
-                            "const port=process.env.PORT?Number(process.env.PORT):0;\n"
-                            "const srv=http.createServer((req,res)=>{res.statusCode=200;res.setHeader('Content-Type','text/plain');res.end('Hello, World!');});\n"
-                            "srv.listen(port,host,()=>{console.log('up:'+port)});\n"
-                        ),
-                        "mode": 0o644,
-                    }
-                ],
-                "start": "node server.js",
-                "assumptions": ["Using Node built-in http"],
-                "lang": "node",
-                "deps": {"node": {"packages": []}},
+        """Parse .pw DSL input into execution plan."""
+        if parse_pw is None:
+            return {
+                "ok": False,
+                "version": "v1",
+                "error": {"code": "E_RUNTIME", "message": "DSL parser not available"}
             }
-        elif lang == "nextjs":
-            plan = {
-                "files": [
-                    {
-                        "path": "package.json",
-                        "content": (
-                            "{\n"
-                            "  \"name\": \"pw-next-hello\",\n"
-                            "  \"private\": true,\n"
-                            "  \"scripts\": {\n"
-                            "    \"build\": \"next build\",\n"
-                            "    \"start\": \"next start -p $PORT -H 127.0.0.1\"\n"
-                            "  },\n"
-                            "  \"dependencies\": {\n"
-                            "    \"next\": \"14.2.5\",\n"
-                            "    \"react\": \"18.3.1\",\n"
-                            "    \"react-dom\": \"18.3.1\"\n"
-                            "  }\n"
-                            "}\n"
-                        ),
-                        "mode": 0o644,
-                    },
-                    {
-                        "path": "next.config.js",
-                        "content": (
-                            "/** @type {import('next').NextConfig} */\n"
-                            "const nextConfig = { reactStrictMode: true };\n"
-                            "module.exports = nextConfig;\n"
-                        ),
-                        "mode": 0o644,
-                    },
-                    {
-                        "path": "pages/index.js",
-                        "content": (
-                            "export default function Home(){ return (<div>Hello, World!</div>); }\n"
-                        ),
-                        "mode": 0o644,
-                    }
-                ],
-                "start": "npm run start",
-                "assumptions": ["Using Next.js dev server on leased PORT"],
-                "lang": "nextjs",
-                "deps": {"node": {"packages": []}},
+
+        # Parse DSL input
+        try:
+            parsed = parse_pw(prompt)
+        except Exception as e:
+            return {
+                "ok": False,
+                "version": "v1",
+                "error": {"code": "E_PARSE", "message": f"Failed to parse .pw input: {str(e)}"}
             }
-        elif lang == "go":
-            plan = {
-                "files": [
-                    {
-                        "path": "main.go",
-                        "content": (
-                            "package main\n\n"
-                            "import (\n\t\"fmt\"\n\t\"net/http\"\n\t\"os\"\n)\n\n"
-                            "func main(){\n"
-                            "\tport := os.Getenv(\"PORT\")\n"
-                            "\tif port==\"\" { port = \"0\" }\n"
-                            "\thttp.HandleFunc(\"/\", func(w http.ResponseWriter, r *http.Request){ fmt.Fprint(w, \"Hello, World!\") })\n"
-                            "\thttp.ListenAndServe(\":\"+port, nil)\n"
-                            "}\n"
-                        ),
-                        "mode": 0o644,
-                    }
-                ],
-                "start": "go run main.go",
-                "assumptions": ["Using Go net/http minimal server"],
-                "lang": "go",
-                "deps": {"go": {"modules": []}},
-            }
-        elif lang == "rust":
-            plan = {
-                "files": [
-                    {
-                        "path": "main.rs",
-                        "content": (
-                            "use std::env;\nuse std::io::Write;\nuse std::net::{TcpListener};\n\nfn main(){\n"
-                            "    let port_str = env::var(\"PORT\").unwrap_or(\"0\".to_string());\n"
-                            "    let port: u16 = port_str.parse().unwrap_or(0);\n"
-                            "    let addr = format!(\"127.0.0.1:{}\", port);\n"
-                            "    let listener = TcpListener::bind(addr).unwrap();\n"
-                            "    for stream in listener.incoming(){\n"
-                            "        if let Ok(mut s) = stream {\n"
-                            "            let body = \"Hello, World!\";\n"
-                            "            let resp = format!(\"HTTP/1.1 200 OK\\r\\nContent-Length: {}\\r\\nContent-Type: text/plain\\r\\n\\r\\n{}\", body.len(), body);\n"
-                            "            let _ = s.write_all(resp.as_bytes());\n"
-                            "        }\n"
-                            "    }\n"
-                            "}\n"
-                        ),
-                        "mode": 0o644,
-                    }
-                ],
-                "start": "rustc main.rs && ./main",
-                "assumptions": ["Using Rust std::net minimal server"],
-                "lang": "rust",
-                "deps": {"rust": {"crates": []}},
-            }
-        elif lang == "java":
-            plan = {
-                "files": [
-                    {
-                        "path": "Main.java",
-                        "content": (
-                            "import com.sun.net.httpserver.*;\nimport java.io.*;\nimport java.net.*;\n\n"
-                            "public class Main {\n"
-                            "  public static void main(String[] args) throws Exception {\n"
-                            "    String p = System.getenv(\"PORT\");\n"
-                            "    int port = (p==null||p.isEmpty()) ? 0 : Integer.parseInt(p);\n"
-                            "    HttpServer server = HttpServer.create(new InetSocketAddress(\"127.0.0.1\", port), 0);\n"
-                            "    server.createContext(\"/\", exchange -> {\n"
-                            "      byte[] resp = \"Hello, World!\".getBytes();\n"
-                            "      exchange.sendResponseHeaders(200, resp.length);\n"
-                            "      OutputStream os = exchange.getResponseBody(); os.write(resp); os.close();\n"
-                            "    });\n"
-                            "    server.start();\n"
-                            "  }\n"
-                            "}\n"
-                        ),
-                        "mode": 0o644,
-                    }
-                ],
-                "start": "javac --add-modules jdk.httpserver Main.java && java --add-modules jdk.httpserver Main",
-                "assumptions": ["Using Java HttpServer minimal server"],
-                "lang": "java",
-                "deps": {"java": {"maven": []}},
-            }
-        elif lang == ".net":
-            plan = {
-            "files": [
-                {
-                    "path": "Program.cs",
-                    "content": (
-                        "var builder = WebApplication.CreateBuilder(args);\n"
-                        "var app = builder.Build();\n"
-                        "app.MapGet(\"/\", () => \"Hello, World!\");\n"
-                        "var portEnv = Environment.GetEnvironmentVariable(\"PORT\");\n"
-                        "var port = string.IsNullOrEmpty(portEnv) ? 0 : int.Parse(portEnv);\n"
-                        "app.Urls.Add($\"http://127.0.0.1:{port}\");\n"
-                        "app.Run();\n"
-                    ),
-                    "mode": 0o644,
-                }
-            ],
-            "start": "dotnet new web -n App -o app -f net8.0 --force >/dev/null 2>&1 && mv Program.cs app/Program.cs && cd app && dotnet restore && dotnet build -c Release && dotnet bin/Release/net8.0/App.dll",
-            "assumptions": ["Using .NET 8 Kestrel minimal API"],
-            "lang": ".net",
-            "deps": {"dotnet": {"packages": []}},
-        }
-        elif lang == "cpp":
-            plan = {
-                "files": [
-                    {
-                        "path": "main.cpp",
-                        "content": (
-                            "#include <arpa/inet.h>\n#include <netinet/in.h>\n#include <sys/socket.h>\n#include <signal.h>\n#include <unistd.h>\n#include <cstring>\n#include <string>\n#include <cstdlib>\n#include <iostream>\n\n"
-                            "int main(){\n"
-                            "  const char* p = getenv(\"PORT\"); int port = p? atoi(p): 0;\n"
-                            "  signal(SIGPIPE, SIG_IGN);\n"
-                            "  int s = socket(AF_INET, SOCK_STREAM, 0);\n"
-                            "  sockaddr_in addr{}; addr.sin_family=AF_INET; addr.sin_addr.s_addr=htonl(INADDR_LOOPBACK); addr.sin_port=htons(port);\n"
-                            "  int opt=1; setsockopt(s,SOL_SOCKET,SO_REUSEADDR,&opt,sizeof(opt));\n"
-                            "  bind(s,(sockaddr*)&addr,sizeof(addr)); listen(s, 16);\n"
-                            "  std::cerr << \"ready\" << std::endl;\n"
-                            "  while(true){ int c = accept(s,nullptr,nullptr); if(c<0) continue;\n"
-                            "    const char* body=\"Hello, World!\"; char hdr[256];\n"
-                            "    int n = snprintf(hdr,sizeof(hdr),\"HTTP/1.1 200 OK\\r\\nContent-Type: text/plain\\r\\nContent-Length: %zu\\r\\n\\r\\n\", strlen(body));\n"
-                            "    send(c,hdr,n,0); send(c,body,strlen(body),0); close(c);\n"
-                            "  }\n"
-                            "}\n"
-                        ),
-                        "mode": 0o644,
-                    }
-                ],
-                "start": "g++ -O2 -std=c++17 main.cpp -o app && ./app",
-                "assumptions": ["Using raw sockets minimal HTTP server"],
-                "lang": "cpp",
-                "deps": {},
-            }
+
+        # Check if valid DSL was found
+        if parsed.plan:
+            # Valid DSL found, return the plan
+            plan = parsed.plan
+            # Ensure lang is set from plan or parameter
+            if 'lang' not in plan:
+                plan['lang'] = lang
+            return {"ok": True, "version": "v1", "data": plan}
         else:
-            return {"ok": False, "version": "v1", "error": {"code": "E_UNSUPPORTED", "message": f"unsupported lang {lang}"}}
-        return {"ok": True, "version": "v1", "data": plan}
+            # No valid DSL, return error
+            error_preview = parsed.prompt[:100] if parsed.prompt else "empty input"
+            return {
+                "ok": False,
+                "version": "v1",
+                "error": {
+                    "code": "E_SYNTAX",
+                    "message": f"Invalid .pw syntax. Expected DSL format, got: {error_preview}"
+                }
+            }
 
     # Verb: fs.apply@v1
     def fs_apply_v1(self, task_id: str, writes: list[dict]) -> dict:
