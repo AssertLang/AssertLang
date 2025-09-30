@@ -1150,13 +1150,15 @@ Call fetch.url@v1 from test-tool-agent with url https://httpbin.org/get
 **Session 5 End:** 2025-09-30 01:35 PM - Verb execution implemented ✅
 **Session 6 End:** 2025-09-30 01:40 PM - Debugging MCP tool registration
 **Session 7 End:** 2025-09-30 03:45 PM - Tool integration and dual-mode architecture ✅
-**Session 8 Start:** 2025-09-30 (Current) - Ready to test tool execution
+**Session 8 End:** 2025-09-30 04:34 PM - Tool execution verified, all tests passing ✅
+**Session 9 End:** 2025-09-30 05:43 PM - Comprehensive testing, standalone AI mode verified ✅
+**Session 10 Start:** 2025-09-30 06:15 PM (Current) - Documentation & planning
 **Branch:** CC45
-**Last Commit:** 1882536 (Implement tool integration and dual-mode architecture)
+**Last Commit:** a6a9742 (Add economical test for standalone AI mode)
 **Working Tree:** Clean ✅
-**Tests Passing:** 71/71 (tool integration tests pending)
-**MCP Status:** test-tool-agent has GREEN DOT (already running) ✅
-**Next Action:** Test tool execution in Cursor (NO RESTART NEEDED) → Verify real tool calls work
+**Tests Passing:** 104+ tests (71 original + 33 tool integration)
+**MCP Status:** All 11 tools working, stdio transport production-ready ✅
+**Next Action:** Update all documentation, plan HTTP transport implementation
 
 ---
 
@@ -1533,3 +1535,178 @@ When you start Session 9:
    - Add automated tests (test_tool_registry.py, test_tool_executor.py)
    - Test standalone mode with ANTHROPIC_API_KEY
    - Document any issues found with other agents
+
+
+---
+
+## Session 10: Vision Clarification & Documentation Update (CURRENT SESSION)
+
+**Goal:** Clarify product vision and update all documentation
+
+**Status:** In Progress - Documentation overhaul
+
+### Major Clarity Achieved
+
+**Question:** What is Promptware actually building?
+
+**Answer Discovered:** Universal polyglot service protocol (not just IDE tools)
+
+### The Two Tracks Explained
+
+**stdio Transport (Track 2) - ✅ COMPLETE**
+- **What:** MCP tools exposed to IDEs via stdin/stdout
+- **Use case:** Cursor/VSCode tools, CLI applications
+- **Status:** Production-ready, 11 tools working
+- **Example:** `code-reviewer` tool in Cursor
+
+**HTTP Transport (Track 1) - 🔨 NEXT**
+- **What:** MCP services communicating over HTTP
+- **Use case:** Microservices, polyglot backends, distributed systems
+- **Status:** 80% built, needs integration
+- **Example:** Python service calling Node.js service
+
+### Key Insight: They're The Same Product
+
+**Not** "IDE tools" vs "agent coordination"
+
+**But** Same .pw protocol, different transports:
+- stdio = IDE integration
+- HTTP = service-to-service
+
+```pw
+service user-service
+lang python
+
+expose user.get@v1:
+  params: user_id string
+  returns: name string, email string
+```
+
+Deploy as:
+1. **stdio** → IDE tool (Cursor)
+2. **HTTP** → Microservice (port 23450)
+
+### Terminology Correction
+
+**OLD (Wrong):**
+- "agents" = .pw files
+- "agent communication" = HTTP servers
+
+**NEW (Correct):**
+- "services/tools" = .pw files
+- "stdio transport" = IDE tools
+- "HTTP transport" = microservices
+- Real agents = Cursor AI (uses our tools)
+
+### What We Built (Sessions 1-9)
+
+✅ **stdio MCP Transport - Complete**
+- Native stdio server (`mcp_stdio_server.py`)
+- Tool registry & executor
+- 11 working tools in Cursor
+- Dual-mode (IDE-integrated + standalone AI)
+- 104+ tests passing
+- Real tool execution (http, storage, etc.)
+- AI processing with prompts
+
+### What We Need (Sessions 10+)
+
+🔨 **HTTP MCP Transport - To Build**
+- Update HTTP server generator
+- Python MCP client library
+- Service-to-service communication
+- Cross-language support (Python ↔ Node)
+- Integration tests
+- Production features
+
+### Documentation Created This Session
+
+**New Files:**
+1. `docs/execution-plan-v2.md`
+   - Unified vision (stdio + HTTP transports)
+   - Clear roadmap for next 6 weeks
+   - Market positioning vs gRPC/Thrift
+   - Success metrics defined
+
+2. `docs/http-transport-integration.md`
+   - 6-week implementation plan
+   - 4 phases with detailed tasks
+   - Hour estimates for each task
+   - Testing strategy
+   - Risk mitigation
+
+**Files To Update:**
+- [ ] `docs/execution-plan.md` → Replace with v2
+- [ ] `docs/CLAUDE.md` → Add HTTP transport context
+- [ ] `docs/agents.md` → Rename to services.md, fix terminology
+- [ ] `docs/framework-overview.md` → Update with correct terminology
+- [ ] `README.md` → Update with unified vision
+
+### Vision Statement (Refined)
+
+**Promptware = Universal polyglot service protocol for AI-native systems**
+
+**Before Promptware:**
+- gRPC = Complex protobuf, no AI integration
+- REST = No types, no contracts, manual docs
+- GraphQL = Frontend-focused, complex servers
+
+**With Promptware:**
+- Simple .pw DSL (easier than protobuf)
+- AI-native (prompts built in)
+- MCP standard (growing ecosystem)
+- Tool integration (services can use tools)
+- Dual transport (stdio + HTTP)
+- Works in any language
+
+**Tagline:** "gRPC for the AI era"
+
+### Market Position
+
+**Competing With:**
+- gRPC (Google)
+- Thrift (Facebook)  
+- Cap'n Proto
+
+**Our Advantages:**
+1. Simpler DSL (.pw vs protobuf)
+2. AI-first design
+3. MCP standard protocol
+4. Tool integration
+5. Dual-mode deployment
+
+### Next Session Priorities
+
+**Immediate:**
+1. Finish documentation updates
+2. Commit all new docs
+3. Replace old execution-plan.md
+
+**Short-term (Next Week):**
+1. Audit HTTP server generator
+2. Design Python client library
+3. Start Phase 1 implementation
+
+**Medium-term (Next Month):**
+1. Two-service demo working
+2. Python ↔ Node communication
+3. Production features
+
+---
+
+## Session 10 Tasks Completed
+
+- [x] Clarified stdio vs HTTP vision
+- [x] Created execution-plan-v2.md
+- [x] Created http-transport-integration.md
+- [x] Updated SESSION_SUMMARY.md
+- [ ] Update remaining docs (in progress)
+- [ ] Commit documentation overhaul
+
+---
+
+**Session 10 End Time:** TBD
+**Working On:** Documentation updates
+**Ready For:** HTTP transport implementation (Wave 3)
+
+
