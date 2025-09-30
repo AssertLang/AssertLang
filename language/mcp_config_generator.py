@@ -142,13 +142,16 @@ def generate_agent_mcp_config(
             project_root = project_root.parent
 
         cli_path = project_root / "cli" / "main.py"
+        stdio_server_path = project_root / "language" / "mcp_stdio_server.py"
 
-        if cli_path.exists():
-            # Use Python + cli/main.py directly
+        if cli_path.exists() and stdio_server_path.exists():
+            # Use native stdio MCP server
+            # Communicates directly via MCP protocol over stdin/stdout
             return MCPServerConfig(
                 name=agent_name,
                 command=sys.executable,  # Current Python interpreter
-                args=[str(cli_path.absolute()), "run", str(pw_file.absolute())]
+                args=[str(stdio_server_path.absolute()), str(pw_file.absolute())],
+                env={"PYTHONPATH": str(project_root.absolute())}
             )
         else:
             # Fallback to promptware command
