@@ -1150,8 +1150,261 @@ Call fetch.url@v1 from test-tool-agent with url https://httpbin.org/get
 **Session 5 End:** 2025-09-30 01:35 PM - Verb execution implemented ✅
 **Session 6 End:** 2025-09-30 01:40 PM - Debugging MCP tool registration
 **Session 7 End:** 2025-09-30 03:45 PM - Tool integration and dual-mode architecture ✅
+**Session 8 Start:** 2025-09-30 (Current) - Ready to test tool execution
 **Branch:** CC45
-**Last Commit:** 38e536b (Update session summary - verb execution complete)
-**Uncommitted:** Tool integration work (ready to test)
+**Last Commit:** 1882536 (Implement tool integration and dual-mode architecture)
+**Working Tree:** Clean ✅
 **Tests Passing:** 71/71 (tool integration tests pending)
-**Next Action:** RESTART CURSOR → Test tool-integrated agent → Document results
+**MCP Status:** test-tool-agent has GREEN DOT (already running) ✅
+**Next Action:** Test tool execution in Cursor (NO RESTART NEEDED) → Verify real tool calls work
+
+---
+
+## Session 8: Testing Tool Execution (CURRENT SESSION)
+
+**Goal:** Verify tool integration works end-to-end in Cursor
+
+**Status:** Code complete and committed. test-tool-agent is ALREADY RUNNING (green dot).
+
+**Important Discovery:** User reports test-tool-agent already has green dot in Cursor. This means the MCP server process has already loaded the new code since it was running when we committed. NO RESTART NEEDED.
+
+---
+
+### Current State
+
+**What's Ready:**
+1. ✅ Tool registry implemented (`tools/registry.py`)
+2. ✅ Tool executor implemented (`language/tool_executor.py`)
+3. ✅ Dual-mode execution in MCP stdio server
+4. ✅ Test agent created (`examples/test_tool_integration.pw`)
+5. ✅ Test agent added to `.cursor/mcp.json`
+6. ✅ All changes committed (commit 1882536)
+7. ✅ test-tool-agent showing GREEN DOT in Cursor
+
+**Architecture:**
+- Agents now execute real tools before returning responses
+- Tool results are returned in structured format
+- Supports two modes:
+  - **IDE mode** (no ANTHROPIC_API_KEY): Returns tool_results for Cursor's AI
+  - **Standalone mode** (with ANTHROPIC_API_KEY): Agent's LLM processes results
+
+---
+
+### Next Steps - IMMEDIATE TESTING
+
+**STEP 1: Test Tool Execution (No Restart Needed)**
+
+Since test-tool-agent already has green dot, we can test immediately.
+
+**Test in Cursor Composer:**
+```
+Call the fetch.url@v1 tool from test-tool-agent with these parameters:
+- url: https://httpbin.org/get
+- method: GET
+```
+
+**Expected Result:**
+- Real HTTP request executes
+- Actual response data from httpbin.org
+- Response structure:
+  ```json
+  {
+    "input_params": {"url": "...", "method": "GET"},
+    "tool_results": {
+      "http": {
+        "ok": true,
+        "data": {
+          "status": 200,
+          "headers": {...},
+          "body": "actual API response"
+        }
+      }
+    },
+    "metadata": {
+      "mode": "ide_integrated",
+      "tools_executed": ["http"],
+      "timestamp": "..."
+    },
+    "summary": "http: success",
+    "status": 200,
+    "body": "...",
+    "summary": "..."
+  }
+  ```
+
+**Success Criteria:**
+- ✅ No "tool not found" errors
+- ✅ Real HTTP request executed (not mock)
+- ✅ Actual API response data returned
+- ✅ tool_results.http.data contains real response
+- ✅ Cursor's AI can interpret and explain the data
+
+---
+
+**STEP 2: Test Different URLs**
+
+Try:
+```
+Use fetch.url@v1 to get https://api.github.com/zen
+```
+
+**Expected:** Different real response, GitHub's zen message
+
+---
+
+**STEP 3: Test POST Request**
+
+Try:
+```
+Call fetch.url@v1 to POST to https://httpbin.org/post with method POST
+```
+
+**Expected:** POST request executes, response shows method="POST"
+
+---
+
+**STEP 4: Verify Other Agents Still Work**
+
+Test an existing agent to ensure tool integration didn't break them:
+
+```
+Call review.approve@v1 from code-reviewer with:
+- review_id: "test-123"
+- approved: true
+- comments: "LGTM"
+```
+
+**Expected:**
+- Still works (may return mock data since no tools configured)
+- No crashes or errors
+- Response includes metadata.mode="ide_integrated"
+
+---
+
+**STEP 5: Test Error Handling**
+
+Try invalid URL:
+```
+Call fetch.url@v1 with url: "not-a-valid-url"
+```
+
+**Expected:**
+- Tool execution fails gracefully
+- Error envelope returned: `{"ok": false, "error": {...}}`
+- No crash
+
+---
+
+### If Tests Succeed
+
+1. **Document results** - Note which tests passed
+2. **Take screenshots** - Show successful tool execution
+3. **Update SESSION_SUMMARY.md** - Mark Session 8 complete
+4. **Commit documentation update**
+5. **Move to Phase 2** - Test all 11 agents per `docs/mcp-testing-plan.md`
+
+---
+
+### If Tests Fail
+
+**Possible Issues & Diagnosis:**
+
+1. **"Tool not found: http"**
+   - Check: `ls tools/http/adapters/adapter_py.py`
+   - Check: PYTHONPATH in `.cursor/mcp.json`
+   - Fix: Ensure tools/ directory accessible
+
+2. **Import errors**
+   - Symptom: "ModuleNotFoundError: No module named 'tools'"
+   - Check: PYTHONPATH in MCP config
+   - Fix: Restart Cursor to reload env vars
+
+3. **Tool execution fails**
+   - Symptom: `{"ok": false, "error": {...}}`
+   - Check: Error message in response
+   - Check: `pip list | grep requests` (http tool needs requests library)
+   - Fix: `pip install requests` if missing
+
+4. **No tool_results in response**
+   - Symptom: Response has metadata but no tool_results
+   - Check: Agent .pw file has `tools:` section
+   - Check: Tool loading succeeded (add logging)
+   - Debug: Test tool registry directly
+
+5. **Response is still mock data**
+   - Symptom: Generic mock values instead of real HTTP response
+   - Check: Tool executor actually ran
+   - Debug: Add logging to `_execute_verb()` in mcp_stdio_server.py
+
+---
+
+### Manual Testing Commands (If Needed)
+
+If Cursor tests fail, test directly via stdio:
+
+```bash
+# Test tool loading
+python3 -c "from tools.registry import get_registry; print(get_registry().list_available_tools())"
+
+# Test tool execution
+python3 -c "from tools.registry import get_registry; r = get_registry(); t = r.get_tool('http'); print(t.execute({'url': 'https://httpbin.org/get', 'method': 'GET'}))"
+
+# Test MCP server with tool call
+printf '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}\n{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"fetch.url@v1","arguments":{"url":"https://httpbin.org/get","method":"GET"}}}\n' | \
+  python3 language/mcp_stdio_server.py examples/test_tool_integration.pw
+```
+
+---
+
+### Testing Checklist
+
+- [ ] Test 1: Basic HTTP GET (httpbin.org/get)
+- [ ] Test 2: Different URL (api.github.com/zen)
+- [ ] Test 3: POST request
+- [ ] Test 4: Existing agent still works (code-reviewer)
+- [ ] Test 5: Error handling (invalid URL)
+- [ ] Document all test results
+- [ ] Take screenshots of successful execution
+- [ ] Update session summary with findings
+
+---
+
+### After Testing Complete
+
+**If all tests pass:**
+
+1. Commit session summary update:
+   ```bash
+   git add docs/SESSION_SUMMARY.md
+   git commit -m "Session 8: Tool execution verified in Cursor
+
+   All tests passed:
+   - Real HTTP requests execute successfully
+   - Tool results returned with actual data
+   - IDE mode working correctly
+   - Error handling functional
+   - Existing agents still work
+
+   🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+   Co-Authored-By: Claude <noreply@anthropic.com>"
+   ```
+
+2. Push all commits:
+   ```bash
+   git push origin CC45
+   ```
+
+3. Continue with comprehensive testing from `docs/mcp-testing-plan.md`
+
+4. Add automated tests:
+   - `tests/test_tool_registry.py`
+   - `tests/test_tool_executor.py`
+   - `tests/test_dual_mode_execution.py`
+
+**If tests fail:**
+
+1. Debug the failure using manual commands above
+2. Fix the issue
+3. Test again
+4. Document what was broken and how it was fixed
