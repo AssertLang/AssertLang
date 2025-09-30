@@ -6,8 +6,8 @@ Promptware Manifesto & Development Guide
 
 Vision
 
-Promptware is the future of software creation: prompted, not programmed.
-Instead of static code written and maintained over months or years, applications become ephemeral artifacts generated on demand from natural language intent. A user (or AI coding agent) simply describes what they want, and Promptware turns that into a live, validated application — running instantly at a single, stable port: 23456.
+Promptware is the future of software creation: language-agnostic, not language-locked.
+Instead of writing Python, Node, Go, Rust, or .NET separately, you write once in .pw and target any backend language. Applications become ephemeral artifacts compiled on demand from .pw DSL source. A user (or AI coding agent) writes .pw code, and Promptware turns that into a live, validated application — running instantly at a single, stable port: 23456.
 
 Core principles:
 	•	Simplicity → minimal, universal building blocks (five verbs).
@@ -21,9 +21,9 @@ Core principles:
 Core Verbs
 
 Promptware defines five verbs, the smallest surface necessary to cover the full lifecycle of ephemeral software:
-	1.	plan.create@v1 → transform a natural language prompt into a file plan.
+	1.	plan.create@v1 → parse .pw DSL source into an execution plan.
 	2.	fs.apply@v1 → write files from that plan into the sandbox.
-	3.	run.start@v1 → start the program inside a controlled runner.
+	3.	run.start@v1 → start the program inside a controlled runner (Python/Node/Go/Rust/.NET).
 	4.	httpcheck.assert@v1 → validate outputs with probes (status, body checks).
 	5.	report.finish@v1 → package source, artifacts, logs, and a verdict.
 
@@ -55,16 +55,19 @@ Artifacts
 ⸻
 
 Workflow
-	1.	User/agent runs:
+	1.	User/agent writes .pw file:
 
-mcp run "Create a web service that responds 'Hello, World!'"
+lang python
+tool rest.server as api
+call api port=8080
 
 
-	2.	plan.create generates file plan.
-	3.	fs.apply writes source files.
-	4.	run.start spawns runner on UDS.
-	5.	httpcheck.assert validates expected responses.
-	6.	report.finish returns verdict + URL + artifacts.
+	2.	User runs: promptware run myapp.pw
+	3.	plan.create parses .pw DSL into execution plan.
+	4.	fs.apply writes generated source files.
+	5.	run.start spawns runner (Python/Node/Go/etc.).
+	6.	httpcheck.assert validates expected responses.
+	7.	report.finish returns verdict + URL + artifacts.
 
 Example output:
 
@@ -103,9 +106,9 @@ Identity
 	•	Framework name: Promptware
 	•	Anchor: Port 23456
 	•	Taglines:
-	•	Promptware: Software at the Speed of Thought.
+	•	Promptware: Write Once, Run Anywhere.
 	•	Port 23456: One Port to Rule Them All.
-	•	Prompted, not programmed.
+	•	One Language, Eight Backends.
 
 ⸻
 
@@ -116,14 +119,14 @@ Promptware is not:
 	•	A coding assistant (not just snippets, but end-to-end apps).
 	•	IDE tooling (it’s a framework-level system).
 
-Instead, it’s a category-defining standard for ephemeral, just-in-time software. Similar to how Docker standardized containers, Promptware standardizes prompt-driven applications.
+Instead, it's a category-defining standard for ephemeral, just-in-time software. Similar to how Docker standardized containers, Promptware standardizes language-agnostic application deployment.
 
 ⸻
 
 Closing
 
-The future of software is ephemeral, bespoke, and prompt-driven. Promptware defines the smallest possible universal language and architecture to make this future real.
+The future of software is ephemeral, bespoke, and language-agnostic. Promptware defines the smallest possible universal language and architecture to make this future real.
 
 One port. Five verbs. Infinite software.
-Promptware. Prompted, not programmed.
+Promptware. Write once, run anywhere.
 

@@ -1,4 +1,4 @@
-.PHONY: install run run-hold e2e test lint format clean
+.PHONY: install run run-hold e2e test test-batches lint format clean
 
 VENV=.venv
 
@@ -18,6 +18,9 @@ e2e:
 
 test:
 	. $(VENV)/bin/activate; pytest -q || true
+
+test-batches:
+	. $(VENV)/bin/activate; bash scripts/run_test_batches.sh
 
 lint:
 	. $(VENV)/bin/activate; python -m pip install ruff || true
