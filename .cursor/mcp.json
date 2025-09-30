@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "ai-code-reviewer": {
-      "command": "/opt/homebrew/opt/python@3.13/bin/python3.13",
+      "command": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/.venv/bin/python3",
       "args": [
         "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/mcp_stdio_server.py",
         "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/examples/ai_code_reviewer.pw"
@@ -11,7 +11,7 @@
       }
     },
     "deployment-manager": {
-      "command": "/opt/homebrew/opt/python@3.13/bin/python3.13",
+      "command": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/.venv/bin/python3",
       "args": [
         "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/mcp_stdio_server.py",
         "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/examples/deployment_workflow.pw"
@@ -21,7 +21,7 @@
       }
     },
     "monitored-service": {
-      "command": "/opt/homebrew/opt/python@3.13/bin/python3.13",
+      "command": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/.venv/bin/python3",
       "args": [
         "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/mcp_stdio_server.py",
         "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/examples/observable_agent.pw"
@@ -31,7 +31,7 @@
       }
     },
     "code-reviewer": {
-      "command": "/opt/homebrew/opt/python@3.13/bin/python3.13",
+      "command": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/.venv/bin/python3",
       "args": [
         "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/mcp_stdio_server.py",
         "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/examples/devops_suite/code_reviewer_agent.pw"
@@ -41,7 +41,7 @@
       }
     },
     "orchestrator": {
-      "command": "/opt/homebrew/opt/python@3.13/bin/python3.13",
+      "command": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/.venv/bin/python3",
       "args": [
         "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/mcp_stdio_server.py",
         "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/examples/orchestrator_agent.pw"
@@ -51,7 +51,7 @@
       }
     },
     "unnamed": {
-      "command": "/opt/homebrew/opt/python@3.13/bin/python3.13",
+      "command": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/.venv/bin/python3",
       "args": [
         "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/mcp_stdio_server.py",
         "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/dsl_fixtures/fanout_condition.pw"
@@ -61,7 +61,7 @@
       }
     },
     "data-processor": {
-      "command": "/opt/homebrew/opt/python@3.13/bin/python3.13",
+      "command": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/.venv/bin/python3",
       "args": [
         "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/mcp_stdio_server.py",
         "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/examples/cross_language/data_processor.pw"
@@ -71,7 +71,7 @@
       }
     },
     "cache-service": {
-      "command": "/opt/homebrew/opt/python@3.13/bin/python3.13",
+      "command": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/.venv/bin/python3",
       "args": [
         "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/mcp_stdio_server.py",
         "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/examples/cross_language/cache_service.pw"
@@ -81,7 +81,7 @@
       }
     },
     "deployment-orchestrator": {
-      "command": "/opt/homebrew/opt/python@3.13/bin/python3.13",
+      "command": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/.venv/bin/python3",
       "args": [
         "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/mcp_stdio_server.py",
         "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/examples/devops_suite/deployment_orchestrator.pw"
@@ -91,10 +91,20 @@
       }
     },
     "test-runner": {
-      "command": "/opt/homebrew/opt/python@3.13/bin/python3.13",
+      "command": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/.venv/bin/python3",
       "args": [
         "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/mcp_stdio_server.py",
         "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/examples/devops_suite/test_runner_agent.pw"
+      ],
+      "env": {
+        "PYTHONPATH": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware"
+      }
+    },
+    "test-tool-agent": {
+      "command": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/.venv/bin/python3",
+      "args": [
+        "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/mcp_stdio_server.py",
+        "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/examples/test_tool_integration.pw"
       ],
       "env": {
         "PYTHONPATH": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware"

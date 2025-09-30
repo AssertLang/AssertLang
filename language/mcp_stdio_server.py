@@ -149,11 +149,15 @@ class MCPStdioServer:
             pass
 
     def _execute_verb(self, verb_name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
-        """Execute a verb and return result."""
+        """Execute a verb with tool execution and dual-mode support."""
         # Find the verb definition
         verb_def = None
         for verb in self.agent_info.get("verbs", []):
-            if verb["name"] == verb_name:
+            original_name = verb["name"]
+            # Also match mangled version: remove dots and @
+            mangled_name = original_name.replace(".", "_").replace("@", "")
+
+            if verb_name == original_name or verb_name == mangled_name:
                 verb_def = verb
                 break
 
@@ -165,24 +169,116 @@ class MCPStdioServer:
         expose = verb_def.get("_expose")
         agent = self.agent_info.get("agent")
 
-        # Check if this is an AI-powered verb
-        if self.llm and expose and expose.prompt_template:
-            return self._execute_ai_verb(expose, agent, arguments)
-        else:
-            # Mock implementation for non-AI verbs
-            return self._execute_mock_verb(expose, arguments)
+        # STEP 1: Execute tools to get real data
+        tool_results = {}
+        if agent and agent.tools:
+            from language.tool_executor import ToolExecutor
+            executor = ToolExecutor(agent.tools)
+            if executor.has_tools():
+                tool_results = executor.execute_tools(arguments)
 
-    def _execute_ai_verb(self, expose, agent, arguments: Dict[str, Any]) -> Dict[str, Any]:
-        """Execute AI-powered verb using LangChain."""
+        # STEP 2: Decide execution mode
+        has_api_key = bool(os.environ.get("ANTHROPIC_API_KEY"))
+        has_prompts = bool(expose and expose.prompt_template)
+
+        if has_api_key and has_prompts:
+            # Mode 2: Standalone AI processing
+            return self._execute_ai_mode(expose, agent, arguments, tool_results)
+        else:
+            # Mode 1: IDE-integrated (return structured data)
+            return self._execute_ide_mode(expose, agent, arguments, tool_results)
+
+    def _execute_ide_mode(self, expose, agent, arguments: Dict[str, Any], tool_results: Dict[str, Any]) -> Dict[str, Any]:
+        """Execute verb in IDE-integrated mode (return structured data for IDE's AI)."""
+        from datetime import datetime
+
+        # Build response structure
+        response = {
+            "input_params": arguments,
+            "metadata": {
+                "mode": "ide_integrated",
+                "agent_name": agent.name if agent else "unknown",
+                "timestamp": datetime.now().isoformat()
+            }
+        }
+
+        # Add tool results if any
+        if tool_results:
+            response["tool_results"] = tool_results
+            response["metadata"]["tools_executed"] = list(tool_results.keys())
+
+            # Generate human-readable summary from tool results
+            summary_parts = []
+            for tool_name, result in tool_results.items():
+                if isinstance(result, dict):
+                    if result.get("ok"):
+                        summary_parts.append(f"{tool_name}: success")
+                    else:
+                        error_msg = result.get("error", {}).get("message", "failed")
+                        summary_parts.append(f"{tool_name}: {error_msg}")
+
+            if summary_parts:
+                response["summary"] = "; ".join(summary_parts)
+
+        # Match return schema if specified
+        if expose and expose.returns:
+            for ret in expose.returns:
+                ret_name = ret.get("name", "result")
+                ret_type = ret.get("type", "string")
+
+                # Try to extract from tool results
+                value_found = False
+                for tool_name, result in tool_results.items():
+                    if isinstance(result, dict) and result.get("ok"):
+                        data = result.get("data", {})
+                        if ret_name in data:
+                            response[ret_name] = data[ret_name]
+                            value_found = True
+                            break
+
+                # Provide intelligent default if not found
+                if not value_found and ret_name not in response:
+                    response[ret_name] = self._smart_default_for_type(ret_type, tool_results)
+
+        return response
+
+    def _smart_default_for_type(self, ret_type: str, tool_results: Dict) -> Any:
+        """Generate smart default value based on type and tool results."""
+        if ret_type == "array":
+            # Return empty array by default
+            return []
+        elif ret_type == "int":
+            return 0
+        elif ret_type == "bool":
+            return False
+        elif ret_type == "string":
+            # Try to summarize tool results
+            if tool_results:
+                success_count = sum(1 for r in tool_results.values() if isinstance(r, dict) and r.get("ok"))
+                return f"Executed {success_count}/{len(tool_results)} tools successfully"
+            return "No data available"
+        else:
+            return None
+
+    def _execute_ai_mode(self, expose, agent, arguments: Dict[str, Any], tool_results: Dict[str, Any]) -> Dict[str, Any]:
+        """Execute verb in standalone mode with agent's own AI processing."""
         try:
             from langchain_core.messages import HumanMessage, SystemMessage
 
-            # Build prompt with parameters
+            # Build enhanced prompt with tool results
             param_str = "\n".join([f"    {k}: {v}" for k, v in arguments.items()])
+
+            tool_summary = ""
+            if tool_results:
+                tool_summary = "\n\nTool execution results:\n"
+                tool_summary += json.dumps(tool_results, indent=2)
+
             user_prompt = f"""{expose.prompt_template}
 
 Input parameters:
-{param_str}
+{param_str}{tool_summary}
+
+Analyze the above data and provide your response in the required JSON format.
 """
 
             # Build messages
@@ -200,16 +296,34 @@ Input parameters:
                 try:
                     # If response looks like JSON, parse it
                     if result_text.strip().startswith("{"):
-                        return json.loads(result_text)
+                        parsed = json.loads(result_text)
+                        # Add metadata
+                        parsed["metadata"] = {
+                            "mode": "standalone_ai",
+                            "agent_name": agent.name if agent else "unknown",
+                            "llm_model": getattr(self.llm, "model", "unknown"),
+                            "tools_executed": list(tool_results.keys()) if tool_results else []
+                        }
+                        return parsed
                 except:
                     pass
 
                 # Return as first return field
                 return {
-                    expose.returns[0]["name"]: result_text
+                    expose.returns[0]["name"]: result_text,
+                    "metadata": {
+                        "mode": "standalone_ai",
+                        "tools_executed": list(tool_results.keys()) if tool_results else []
+                    }
                 }
 
-            return {"result": result_text}
+            return {
+                "result": result_text,
+                "metadata": {
+                    "mode": "standalone_ai",
+                    "tools_executed": list(tool_results.keys()) if tool_results else []
+                }
+            }
 
         except Exception as e:
             import traceback

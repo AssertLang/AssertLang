@@ -695,14 +695,463 @@ python3 -m pytest tests/ -q
 
 ---
 
+### Session 7: Tool Integration & Dual-Mode Architecture (CURRENT SESSION)
+
+**Goal:** Implement real tool execution with dual-mode support (IDE + standalone)
+
+**Status:** ✅ COMPLETE - Ready for testing in Cursor
+
+---
+
+#### What Was Accomplished
+
+**1. Tool Registry Created** (`tools/registry.py`)
+- Dynamically loads tools from `tools/` directory
+- Discovers adapters in `tools/{tool_name}/adapters/adapter_py.py`
+- Loads JSON schemas from `schemas/tools/{tool_name}.v1.json`
+- Caches loaded tools for performance
+- Provides `execute_tool()` method with envelope format
+
+**2. Tool Executor Created** (`language/tool_executor.py`)
+- Loads tools referenced by agents
+- Maps verb parameters to tool inputs
+- Executes multiple tools with error handling
+- Aggregates results from all tools
+- Returns tool results in structured format
+
+**3. Dual-Mode Architecture Implemented** (`language/mcp_stdio_server.py`)
+- **Mode detection:** Checks for `ANTHROPIC_API_KEY` environment variable
+- **IDE mode** (no API key):
+  - Executes agent's tools to get real data
+  - Returns structured response with `tool_results`
+  - Includes metadata: mode, tools executed, timestamp
+  - Cursor's built-in AI interprets the data
+- **Standalone mode** (with API key):
+  - Executes agent's tools to get real data
+  - Processes data with agent's own LLM (Claude)
+  - Returns AI-analyzed results
+  - Includes metadata: mode, LLM model, tools executed
+
+**4. Test Agent Created** (`examples/test_tool_integration.pw`)
+- Simple agent using the `http` tool (which exists)
+- Exposes `fetch.url@v1` verb
+- Parameters: url, method
+- Returns: status, body, summary
+
+**5. Testing Completed**
+- ✅ Tool registry loads `http` tool successfully
+- ✅ Tool executor executes HTTP request
+- ✅ Real data returned from https://httpbin.org/get
+- ✅ IDE mode response structure validated
+- ✅ Tool results include actual API response (status 200, headers, body)
+- ✅ Added `test-tool-agent` to `.cursor/mcp.json` (11 servers total)
+
+**Files Created:**
+- `tools/registry.py` (145 lines) - Tool discovery and loading
+- `language/tool_executor.py` (88 lines) - Tool execution orchestration
+- `examples/test_tool_integration.pw` (11 lines) - Test agent with http tool
+- `docs/dual-mode-architecture.md` (567 lines) - Complete design document
+- `docs/mcp-testing-plan.md` (430 lines) - Comprehensive testing plan
+
+**Files Modified:**
+- `language/mcp_stdio_server.py` - Added dual-mode execution logic
+  - Updated `_execute_verb()` to execute tools first
+  - Added `_execute_ide_mode()` for IDE-integrated execution
+  - Renamed `_execute_ai_verb()` to `_execute_ai_mode()` with tool results
+  - Added `_smart_default_for_type()` helper
+- `.cursor/mcp.json` - Added test-tool-agent configuration
+
+**Verification:**
+```bash
+# Test tool loading and execution
+printf '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"fetch.url@v1","arguments":{"url":"https://httpbin.org/get","method":"GET"}}}\n' | \
+  python3 language/mcp_stdio_server.py examples/test_tool_integration.pw
+
+# Result: Real HTTP request executed, actual response data returned
+{
+  "tool_results": {
+    "http": {
+      "ok": true,
+      "data": {
+        "status": 200,
+        "headers": {...},
+        "body": "actual API response"
+      }
+    }
+  },
+  "metadata": {
+    "mode": "ide_integrated",
+    "tools_executed": ["http"]
+  }
+}
+```
+
+---
+
+#### Architecture Overview
+
+**Dual-Mode Execution Flow:**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ User Request in Cursor Composer                              │
+└─────────────────────┬───────────────────────────────────────┘
+                      │
+                      ▼
+┌─────────────────────────────────────────────────────────────┐
+│ MCP Stdio Server                                             │
+│  1. Parse verb call                                          │
+│  2. Execute tools (ToolExecutor)                             │
+│     → Load tool from registry                                │
+│     → Execute tool.handle(params)                            │
+│     → Return tool results                                    │
+│  3. Decide mode (check ANTHROPIC_API_KEY)                    │
+└─────────────────────┬───────────────────────────────────────┘
+                      │
+          ┌───────────┴───────────┐
+          │                       │
+          ▼                       ▼
+┌─────────────────┐     ┌─────────────────┐
+│ IDE Mode        │     │ Standalone Mode │
+│ (no API key)    │     │ (with API key)  │
+│                 │     │                 │
+│ Return:         │     │ 1. Call agent   │
+│ - tool_results  │     │    LLM with     │
+│ - metadata      │     │    tool results │
+│ - summary       │     │ 2. Return AI    │
+│                 │     │    analysis     │
+│ Cursor's AI     │     │                 │
+│ interprets data │     │ Self-contained  │
+└─────────────────┘     └─────────────────┘
+```
+
+---
+
+#### Current Git State
+
+```bash
+Branch: CC45
+Uncommitted changes:
+  M  .cursor/mcp.json                      # Added test-tool-agent
+  M  language/mcp_stdio_server.py          # Dual-mode logic
+  A  language/tool_executor.py             # New file
+  A  tools/registry.py                     # New file
+  A  examples/test_tool_integration.pw     # New file
+  A  docs/dual-mode-architecture.md        # New file
+  A  docs/mcp-testing-plan.md              # New file
+
+Working tree: Clean except for MCP work
+Tests: 71/71 passing (tool integration tests pending)
+```
+
+---
+
+## Next Actions - IMMEDIATE (Session 8 Start)
+
+### STEP 1: Restart Cursor ⚠️ REQUIRED
+
+Cursor must restart to reload the MCP config with the new `test-tool-agent`.
+
+**Why:** Cursor only reads `.cursor/mcp.json` at startup.
+
+---
+
+### STEP 2: Verify MCP Servers Connected
+
+**Action:** Open Cursor Settings → Tools & MCP
+
+**Expected:**
+- 11 servers listed (10 original + test-tool-agent)
+- All showing green dots (connected)
+- `test-tool-agent` shows: 1 tool (fetch.url@v1)
+
+**If any show red dots:**
+- Check Cursor logs for errors
+- Verify Python path exists: `.venv/bin/python3`
+- Test manually: `printf '...' | python3 language/mcp_stdio_server.py examples/test_tool_integration.pw`
+
+---
+
+### STEP 3: Test Tool-Integrated Agent in Cursor Composer
+
+**Action:** Open Cursor Composer (Cmd+Shift+I or similar)
+
+**Test 1: Simple HTTP Fetch**
+
+Type in composer:
+```
+Call the fetch.url@v1 tool from test-tool-agent with these parameters:
+- url: https://httpbin.org/get
+- method: GET
+```
+
+**Expected Result:**
+- Tool executes real HTTP request
+- Response includes actual data from httpbin.org
+- Shows tool_results with http tool success
+- Status code 200
+- Real headers and body from API
+- Cursor's AI summarizes the response
+
+**Success criteria:**
+- ✅ No "tool not found" errors
+- ✅ Real HTTP request executed
+- ✅ Actual API response returned (not mock data)
+- ✅ Response includes `tool_results.http.data`
+- ✅ Cursor's AI can read and explain the data
+
+---
+
+**Test 2: Different URL**
+
+Type in composer:
+```
+Use fetch.url@v1 to get https://api.github.com/zen
+```
+
+**Expected:**
+- Different real data returned
+- GitHub's zen message in response body
+- Tool executes successfully
+
+---
+
+**Test 3: POST Request**
+
+Type in composer:
+```
+Call fetch.url@v1 to POST to https://httpbin.org/post with method POST
+```
+
+**Expected:**
+- POST request executed
+- Response shows method="POST"
+- Real response from httpbin.org
+
+---
+
+### STEP 4: Test Other Existing Agents
+
+Now that tool integration works, test the original agents to see if they still work:
+
+**Test 4: Mock Agent (no tools)**
+
+```
+Call review.approve@v1 from code-reviewer with:
+- review_id: "test-123"
+- approved: true
+- comments: "LGTM"
+```
+
+**Expected:**
+- Still returns mock data (agent has no tools configured, only AI prompts)
+- Response includes metadata showing mode="ide_integrated"
+- No tool_results (no tools to execute)
+
+---
+
+**Test 5: Agent with Missing Tools**
+
+```
+Call review.analyze@v1 from ai-code-reviewer with:
+- repo: "facebook/react"
+- pr_number: 12345
+```
+
+**Expected:**
+- Agent references tools: github_fetch_pr, security_scanner, code_analyzer
+- These tools don't exist yet
+- Response shows tool execution attempted but tools not found
+- Returns intelligent defaults for return schema
+- No crash or error
+
+---
+
+### STEP 5: Test Standalone Mode (with API Key)
+
+**Action:** Add API key to one agent's config
+
+Edit `.cursor/mcp.json`, find `test-tool-agent` entry, add to `env` section:
+```json
+"env": {
+  "PYTHONPATH": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware",
+  "ANTHROPIC_API_KEY": "sk-ant-your-key-here"
+}
+```
+
+**Action:** Restart Cursor again (required to reload env vars)
+
+**Test 6: Standalone Mode Execution**
+
+```
+Call fetch.url@v1 from test-tool-agent with url https://httpbin.org/get
+```
+
+**Expected:**
+- Tool executes (same as before)
+- Agent's LLM processes the tool results
+- Response includes AI analysis of the HTTP response
+- Metadata shows mode="standalone_ai"
+- More intelligent summary than IDE mode
+
+**Compare:**
+- IDE mode: Returns raw tool results for Cursor's AI
+- Standalone mode: Agent's AI analyzes tool results first
+
+---
+
+### STEP 6: Document Findings
+
+**After testing, note:**
+
+1. **Which tests passed/failed**
+2. **Tool execution quality**
+   - Did real HTTP requests work?
+   - Was data accurate?
+   - Any errors or timeouts?
+3. **IDE mode vs Standalone mode**
+   - Quality differences in responses
+   - Latency differences
+   - Cost implications (standalone mode uses API calls)
+4. **Agent behavior**
+   - Agents with tools vs without tools
+   - Missing tool handling
+   - Error messages quality
+
+---
+
+### STEP 7: Next Development Tasks
+
+**After testing succeeds:**
+
+1. **Create missing tools** for existing agents:
+   - `github_fetch_pr` - Fetch PR data from GitHub API
+   - `security_scanner` - Run security scans on code
+   - `code_analyzer` - Parse and analyze code structure
+
+2. **Add automated tests:**
+   - `tests/test_tool_registry.py`
+   - `tests/test_tool_executor.py`
+   - `tests/test_dual_mode_execution.py`
+
+3. **Commit all changes:**
+   ```bash
+   git add .
+   git commit -m "Implement tool integration and dual-mode architecture
+
+   - Add tool registry for dynamic tool loading
+   - Add tool executor for agent tool execution
+   - Implement dual-mode: IDE-integrated and standalone AI
+   - Add test agent with http tool
+   - Update MCP server with tool execution logic
+   - Add comprehensive testing plan and design docs
+
+   Agents now execute real tools and return actual data.
+   Supports both IDE mode (no API key) and standalone mode (with key)."
+   ```
+
+4. **Push to remote:**
+   ```bash
+   git push origin CC45
+   ```
+
+5. **Continue comprehensive testing** from `docs/mcp-testing-plan.md`:
+   - Phase 2: Test all 11 servers
+   - Phase 3: Edge cases
+   - Phase 4: AI execution quality
+   - Phase 5: Real-world scenarios
+
+---
+
+## Troubleshooting
+
+### Issue: Tool not found
+
+**Symptom:** "Tool not found: http"
+
+**Diagnosis:**
+- Check tool exists: `ls tools/http/adapters/adapter_py.py`
+- Check PYTHONPATH: Tool registry needs to import from tools/
+- Test registry directly: `python3 -c "from tools.registry import get_registry; print(get_registry().list_available_tools())"`
+
+**Fix:**
+- Ensure PYTHONPATH includes project root
+- Verify adapter file exists and has `handle()` function
+
+---
+
+### Issue: Import errors
+
+**Symptom:** "ModuleNotFoundError: No module named 'tools'"
+
+**Diagnosis:**
+- PYTHONPATH not set correctly in MCP config
+- Tool executor can't find tools/ directory
+
+**Fix:**
+- Verify `.cursor/mcp.json` has `PYTHONPATH` in env section
+- Check path is absolute and correct
+- Restart Cursor after changing config
+
+---
+
+### Issue: Tool execution fails
+
+**Symptom:** Tool returns error envelope: `{"ok": false, "error": {...}}`
+
+**Diagnosis:**
+- Tool execution raised exception
+- Check tool-specific requirements (e.g., http needs requests library)
+- Network errors, timeouts, etc.
+
+**Fix:**
+- Check tool's error message in response
+- Verify dependencies installed: `pip install requests` (for http tool)
+- Test tool directly: `python3 -c "from tools.http.adapters.adapter_py import handle; print(handle({...}))"`
+
+---
+
+### Issue: Response missing tool_results
+
+**Symptom:** Response has metadata but no tool_results
+
+**Diagnosis:**
+- Agent has no tools configured in .pw file
+- Tool loading failed silently
+- ToolExecutor.has_tools() returned False
+
+**Fix:**
+- Check agent .pw file has `tools:` section
+- Verify tools listed exist
+- Add logging to see which tools loaded
+
+---
+
+## Key Differences from Previous Sessions
+
+**Session 6:** Only tested mock execution, no real tools
+**Session 7:** ✅ Real tool execution implemented and tested
+
+**Before:** Agents returned placeholder mock data
+**Now:** Agents execute real tools and return actual data
+
+**Before:** Only one mode (AI with API key, or mock without)
+**Now:** Two modes (IDE-integrated and standalone AI)
+
+**Before:** No tool infrastructure integrated
+**Now:** Full tool registry, executor, and integration
+
+---
+
 **Session 1 End:** 2025-09-30 09:45 AM
 **Session 2 End:** 2025-09-30 10:30 AM
 **Session 3 End:** 2025-09-30 12:30 PM
 **Session 4 End:** 2025-09-30 01:00 PM - JSON Schema fix, green dots confirmed ✅
 **Session 5 End:** 2025-09-30 01:35 PM - Verb execution implemented ✅
 **Session 6 End:** 2025-09-30 01:40 PM - Debugging MCP tool registration
+**Session 7 End:** 2025-09-30 03:45 PM - Tool integration and dual-mode architecture ✅
 **Branch:** CC45
 **Last Commit:** 38e536b (Update session summary - verb execution complete)
-**Uncommitted:** Many working tree changes from previous sessions (unrelated to MCP)
-**Tests Passing:** 71/71 (MCP stdio server tests pending)
-**Next Action:** Enable all disabled MCP servers in Cursor → Restart Cursor → Test tool calls
+**Uncommitted:** Tool integration work (ready to test)
+**Tests Passing:** 71/71 (tool integration tests pending)
+**Next Action:** RESTART CURSOR → Test tool-integrated agent → Document results
