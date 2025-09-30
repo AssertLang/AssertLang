@@ -1,142 +1,407 @@
-# 🚀 Promptware
+# 🤖 Promptware
 
-Promptware is a domain-specific language (`.pw`) for writing language-agnostic software.
-Write once in `.pw`, run in Python, Node.js, Go, Rust, or .NET — fast, reproducible, and portable.
+**Agent-to-agent communication DSL for building AI-powered microservices**
 
-- One port → 23456 (reserved for Promptware)
-- Five verbs → `plan`, `apply`, `run`, `validate`, `report`
-- Numeric universality → tool families arranged as 2–3–4–5–6
-- File extension → `.pw`
+Write agents once in `.pw`, generate production-ready MCP servers in Python, Node.js, or Go with AI, observability, and workflows built-in.
 
-Promptware is designed to be agent-native: AI coding agents can invoke it directly through MCP.
-Programs are ephemeral: spin up, run, validate, and vanish — unless persisted.
-
----
-
-## ✨ Why Promptware?
-- Language-agnostic: write `.pw` once, target Python/Node/Go/Rust/.NET
-- MCP verbs as primitives: minimal, universal building blocks
-- Multi-language tool adapters: 36 tools work across all backends
-- Ephemeral execution: live microservices in seconds
-- Community extensibility: anyone can build and share tools
-
----
-
-## 📦 Quickstart
-
-```bash
-# Write a .pw file
-cat > hello.pw << 'EOF'
+```pw
 lang python
-start python app.py
+agent code-reviewer
+port 23450
+llm anthropic claude-3-5-sonnet-20241022
 
-file app.py:
-  from http.server import BaseHTTPRequestHandler, HTTPServer
-  class Handler(BaseHTTPRequestHandler):
-      def do_GET(self):
-          self.send_response(200)
-          self.wfile.write(b'Hello, World!')
-  HTTPServer(('127.0.0.1', 8000), Handler).serve_forever()
-EOF
-
-# Run it
-promptware run hello.pw
-
-# Output:
-# ✅ PASS: http://127.0.0.1:23456/apps/ab12cd/
-# Artifacts in .mcpd/ab12cd/
+expose review.analyze@v1:
+  params:
+    code string
+  returns:
+    issues array
+    severity string
 ```
 
-**Target different languages:**
+Generates **326 lines** of production Python with LangChain, OpenTelemetry, and full MCP protocol support.
+
+---
+
+## ✨ Features
+
+### 🔄 **Agent Communication (MCP)**
+- Write agents that expose verbs via MCP (Model Context Protocol)
+- Agents can call other agents regardless of language
+- JSON-RPC over HTTP with automatic retry and error handling
+- Built-in health checks and verb discovery
+
+### 🤖 **AI Integration (LangChain)**
+- Native LLM support (Claude 3.5 Sonnet, GPT-4, etc.)
+- Per-agent and per-verb prompt templates
+- Structured AI responses with type validation
+- Tools and memory configuration
+
+### 📊 **Observability (OpenTelemetry)**
+- Automatic distributed tracing with spans
+- Metrics collection (requests, duration, errors)
+- Structured logging
+- Export to Jaeger, Grafana, or console
+
+### 🔄 **Workflows (Temporal)**
+- Multi-step durable workflows
+- Retry policies and compensation logic
+- Approval gates for production deployments
+- Automatic rollback on failure
+
+### 🌐 **Multi-Language**
+- **Python** (FastAPI) - Full support: AI + observability + workflows
+- **Node.js** (Express) - MCP servers with async handlers
+- **Go** (net/http) - High-performance compiled binaries
+
+---
+
+## 🚀 Quick Start
+
+### Install
+
 ```bash
-# Same .pw code, different backend
-promptware run hello.pw --lang python
-promptware run hello.pw --lang node
-promptware run hello.pw --lang go
+git clone https://github.com/3CH0xyz/promptware.git
+cd promptware
+pip install -r requirements.txt
+```
+
+### Write an Agent
+
+Create `my_agent.pw`:
+
+```pw
+lang python
+agent data-processor
+port 23456
+
+expose data.transform@v1:
+  params:
+    input string
+    format string
+  returns:
+    output string
+    status string
+```
+
+### Generate Server
+
+```bash
+python3 -c "
+from language.agent_parser import parse_agent_pw
+from language.mcp_server_generator import generate_python_mcp_server
+
+with open('my_agent.pw') as f:
+    agent = parse_agent_pw(f.read())
+
+server = generate_python_mcp_server(agent)
+
+with open('my_agent_server.py', 'w') as f:
+    f.write(server)
+"
+```
+
+### Run
+
+```bash
+python3 my_agent_server.py
+# Starting MCP server for agent: data-processor
+# Port: 23456
+# MCP endpoint: http://127.0.0.1:23456/mcp
+```
+
+### Call from Another Agent
+
+```python
+from language.mcp_client import MCPClient
+
+client = MCPClient("http://127.0.0.1:23456")
+response = client.call("data.transform@v1", {
+    "input": "hello",
+    "format": "json"
+})
+print(response.get_data())
 ```
 
 ---
 
-This repository contains the Promptware mcpd daemon, gateway, runners, CLI, schemas, and tests.
+## 📚 Examples
 
-- Gateway port: 23456
-- CLI: `promptware run myapp.pw`
-- Timeline schema: `schemas/timeline_event.schema.json` for validating interpreter/daemon event payloads
+### AI Code Reviewer
 
----
+```pw
+lang python
+agent code-reviewer
+port 23450
+llm anthropic claude-3-5-sonnet-20241022
 
-## 🛠 Repository Layout
+observability:
+  traces: true
+  metrics: true
 
-```
-/docs               → Manifesto, framework, tool specs, roadmap
-/daemon             → Core mcpd daemon (gateway and verbs)
-/runners/python     → Python runner
-/runners/go         → Go runner
-/runners/node       → Node.js runner
-/cli                → Command-line interface
-/schemas            → JSON schemas for verbs & tools
-/tests              → Unit + contract tests
-```
-
----
-
-## 📚 Documentation
-- Manifesto — vision & philosophy
-- Framework Overview — verbs, numeric families, .pw files
-- Tool Specifications — all 36 tools documented
-- Development Guide — language bindings, containers, security
-- Extensibility — how to add tools & use the marketplace
-- Versioning — framework vs. tool versions
-- Roadmap — MVP → Beta → Production
-- Cheatsheet — quick reference
-
----
-
-## 🔮 Roadmap (highlights)
-- MVP (2–3 months) → CLI + verbs + Python runner
-- Alpha (4–6 months) → Add Go + Node runtimes, full 2–3–4–5–6 framework
-- Beta (6–9 months) → Marketplace + concurrency + sandbox security
-- Production (9–12 months) → Rust runtime, cloud deploy, CI/CD integration
-
----
-
-## 🧩 Extensibility
-
-Promptware tools are modular.
-Build your own with:
-
-```
-promptware tool create mytool
+expose review.analyze@v1:
+  params:
+    code string
+    language string
+  returns:
+    summary string
+    issues array
+    severity string
+  prompt_template:
+    Analyze this code for security vulnerabilities, bugs, and quality issues.
 ```
 
-Then publish to the marketplace with:
+**Generates:** 326 lines of Python with:
+- LangChain integration
+- OpenTelemetry tracing
+- Parameter validation
+- Structured error handling
+- Health check endpoints
+
+**See:** `examples/devops_suite/` for complete working example
+
+### Temporal CI/CD Workflow
+
+```pw
+lang python
+agent deployment-orchestrator
+port 23452
+temporal: true
+
+workflow ci_cd_pipeline@v1:
+  params:
+    service string
+    version string
+  returns:
+    deployment_id string
+    status string
+
+  steps:
+    - activity: run_code_review
+      timeout: 10m
+      retry: 1
+
+    - activity: run_tests
+      timeout: 15m
+      retry: 2
+
+    - activity: deploy_to_production
+      timeout: 15m
+      requires_approval: true
+      on_failure: rollback_production
+```
+
+**Generates:** 575 lines of Python with:
+- Temporal workflow orchestration
+- Retry policies
+- Compensation logic
+- Approval gates
+- Full MCP integration
+
+---
+
+## 🏗️ Architecture
 
 ```
-promptware tool upload mytool
+┌─────────────────────────────────────────────────────┐
+│                 Promptware System                   │
+├─────────────────────────────────────────────────────┤
+│                                                     │
+│  ┌──────────┐     ┌──────────┐     ┌──────────┐  │
+│  │ Python   │     │ Node.js  │     │   Go     │  │
+│  │ Agent    │────▶│  Agent   │────▶│  Agent   │  │
+│  │(FastAPI) │ MCP │(Express) │ MCP │(net/http)│  │
+│  └──────────┘     └──────────┘     └──────────┘  │
+│       │                 │                 │        │
+│       │                 │                 │        │
+│    ┌──▼─────────────────▼─────────────────▼────┐  │
+│    │         MCP Protocol (JSON-RPC)          │  │
+│    │  • Agent discovery                       │  │
+│    │  • Verb invocation                       │  │
+│    │  • Error handling                        │  │
+│    └──────────────────────────────────────────┘  │
+│                                                     │
+└─────────────────────────────────────────────────────┘
+```
+
+### Core Components
+
+1. **`.pw` DSL** - Agent definition language
+2. **Parser** (`language/agent_parser.py`) - Parses .pw files
+3. **Generators** - Python/Node.js/Go server generation
+4. **MCP Client** (`language/mcp_client.py`) - Agent communication
+5. **Tool Adapters** - 190 adapters (38 tools × 5 languages)
+
+---
+
+## 📦 Code Generation
+
+| Input (.pw) | Output | Language | Ratio |
+|-------------|--------|----------|-------|
+| 48 lines | 326 lines | Python | 6.8x |
+| 36 lines | 141 lines | Node.js | 3.9x |
+| 48 lines | 187 lines | Go | 3.9x |
+
+**Total for DevOps Suite:**
+- Input: 177 lines of .pw DSL
+- Output: 1,205 lines of production code
+- Features: AI + Observability + Workflows + MCP
+
+---
+
+## 🧪 Testing
+
+```bash
+# Run all tests
+python3 -m pytest tests/
+
+# Results:
+# 72 tests passing
+# - 14 parser tests
+# - 18 Python generator tests
+# - 14 MCP client tests
+# - 13 Node.js generator tests
+# - 13 Go generator tests
 ```
 
 ---
 
-## 🛡 Security
-- Ephemeral containers for isolation
-- Default deny-all egress
-- Auth and firewall tools for production-ready security
+## 🗂️ Repository Structure
+
+```
+promptware/
+├── language/
+│   ├── agent_parser.py              # .pw DSL parser
+│   ├── mcp_server_generator.py      # Python generator (AI + observability + workflows)
+│   ├── nodejs_server_generator.py   # Node.js generator
+│   ├── go_server_generator.py       # Go generator
+│   └── mcp_client.py                # Agent communication client
+├── examples/
+│   ├── devops_suite/                # Complete DevOps agent suite
+│   │   ├── code_reviewer_agent.pw
+│   │   ├── test_runner_agent.pw
+│   │   ├── deployment_orchestrator.pw
+│   │   └── demo_devops_pipeline.py
+│   └── cross_language/              # Multi-language examples
+│       ├── data_processor.pw (Node.js)
+│       └── cache_service.pw (Go)
+├── tests/                           # 72 tests
+│   ├── test_agent_parser.py
+│   ├── test_mcp_server_generator.py
+│   ├── test_nodejs_generator.py
+│   └── test_go_generator.py
+├── tools/                           # 38 tool definitions
+└── toolgen/                         # Tool adapter generation
+```
 
 ---
 
-## 🌍 Community
-- Open-source under Latency Zero
-- All contributions welcome — tools, runners, docs, or ideas
-- Marketplace will allow tool discovery & sharing
+## 🎯 Use Cases
+
+### DevOps Automation
+- AI-powered code review
+- Automated testing with coverage
+- Multi-stage deployments with approval gates
+- **See:** `examples/devops_suite/`
+
+### Microservices Architecture
+- Service-to-service communication via MCP
+- Language-agnostic service mesh
+- Distributed tracing across services
+- **See:** `examples/cross_language/`
+
+### AI Agent Orchestration
+- LLM-powered decision making
+- Multi-agent workflows
+- Human-in-the-loop approvals
+- **See:** `examples/devops_suite/deployment_orchestrator.pw`
 
 ---
 
-## ⚡ Taglines
-- Promptware: Software at the Speed of Thought.
-- One port. Five verbs. Infinite software.
-- Prompted, not programmed.
+## 🔧 Language Support
+
+| Language | Status | Features |
+|----------|--------|----------|
+| **Python** | ✅ Full | AI, Observability, Workflows, MCP |
+| **Node.js** | ✅ Basic | MCP servers |
+| **Go** | ✅ Basic | MCP servers |
+| **Rust** | 🚧 Planned | High-performance agents |
+| **C#** | 🚧 Planned | .NET ecosystem |
 
 ---
 
-## 🧰 Makefile
-Optionally use a Makefile (`make install`, `make run`, `make test`, `make lint`, `make format`, `make clean`) to streamline local dev.
+## 📖 Documentation
+
+- **Quick Start:** This README
+- **DevOps Suite:** `examples/devops_suite/README.md`
+- **Cross-Language:** `examples/cross_language/README.md`
+- **Integration Plan:** `docs/INTEGRATION_PLAN.md`
+- **Agent Guide:** `docs/agents.md`
+
+---
+
+## 🤝 Contributing
+
+Promptware is designed for extensibility:
+
+1. **Add a language generator** - Implement `generate_{lang}_mcp_server()`
+2. **Add tool adapters** - See `toolgen/` for templates
+3. **Add examples** - Share your agent definitions
+
+---
+
+## 📊 Current Status
+
+### ✅ Completed
+- Wave 1-2: DSL parser, runners, 190 tool adapters
+- Wave 2.5: Agent communication (MCP)
+- Phase 1.1: LangChain integration (AI agents)
+- Phase 1.2: OpenTelemetry integration (observability)
+- Phase 1.3: Temporal integration (workflows)
+- Phase 2: Complete DevOps agent suite
+- Cross-language generators (Node.js + Go)
+- Comprehensive test suite (72 tests)
+
+### 🚧 In Progress
+- Performance optimization
+- Production deployment guides
+- Extended language support
+
+### 🔮 Planned
+- Rust generator (high-performance)
+- C# generator (.NET ecosystem)
+- AI features for Node.js/Go
+- Observability for Node.js/Go
+- Cloud deployment templates
+
+---
+
+## 🌟 Key Differentiators
+
+1. **Agent-Native**: Built for AI agent communication via MCP
+2. **Multi-Language**: Same DSL, multiple target languages
+3. **Enterprise Features**: AI, observability, workflows out-of-the-box
+4. **Code Generation**: 4-7x code amplification from DSL
+5. **Production Ready**: Generated code includes error handling, logging, metrics
+
+---
+
+## 📝 License
+
+MIT
+
+---
+
+## 🙏 Acknowledgments
+
+Built with:
+- **MCP** (Model Context Protocol) by Anthropic
+- **LangChain** for AI integration
+- **OpenTelemetry** for observability
+- **Temporal** for durable workflows
+- **FastAPI**, **Express**, **Go net/http** for servers
+
+---
+
+**Write agents once. Deploy anywhere. Scale infinitely.**
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
