@@ -1,0 +1,13 @@
+lang python
+start python app.py
+
+tool http as client
+
+file app.py:
+  import json
+  
+  # This would use the http tool adapter
+  print("App would make HTTP request using tool: http")
+  print("Tool adapters available: Python, Node, Go, Rust, .NET")
+  
+call client method="GET" url="https://api.example.com/status"

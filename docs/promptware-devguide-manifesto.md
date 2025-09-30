@@ -6,28 +6,51 @@ Promptware Manifesto & Development Guide
 
 Vision
 
-Promptware is the future of software creation: language-agnostic, not language-locked.
-Instead of writing Python, Node, Go, Rust, or .NET separately, you write once in .pw and target any backend language. Applications become ephemeral artifacts compiled on demand from .pw DSL source. A user (or AI coding agent) writes .pw code, and Promptware turns that into a live, validated application — running instantly at a single, stable port: 23456.
+Promptware is the universal protocol for autonomous agent communication in cloud-native AI systems.
+
+Instead of agents written in different languages (Python, Node, Go, Rust, .NET) using incompatible protocols, all agents speak `.pw` — a shared MCP-based language for bidirectional coordination. Agents expose capabilities as MCP verbs and call other agents' verbs, enabling language-agnostic orchestration at scale.
 
 Core principles:
-	•	Simplicity → minimal, universal building blocks (five verbs).
-	•	Universality → polyglot runners make it language-neutral.
-	•	Ephemerality → apps spin up, do their job, and vanish or evolve via patches.
-	•	Agent-native → designed so AI coding agents can operate seamlessly.
-	•	Proof-oriented → every run produces verifiable logs, artifacts, and verdicts.
+	•	Agent-first → designed for autonomous agents coordinating via MCP, not just apps.
+	•	Bidirectional → agents both expose verbs AND call other agents' verbs.
+	•	Language-agnostic → same `.pw` definitions work across Python/Node/Go/Rust/.NET/Java/C++.
+	•	MCP-native → built on Model Context Protocol for AI-native infrastructure.
+	•	Cloud-native → port 23456 standard, service discovery, health monitoring.
+	•	Polyglot → write agent once in `.pw`, deploy in any language.
 
 ⸻
 
-Core Verbs
+Core Concepts
 
-Promptware defines five verbs, the smallest surface necessary to cover the full lifecycle of ephemeral software:
-	1.	plan.create@v1 → parse .pw DSL source into an execution plan.
-	2.	fs.apply@v1 → write files from that plan into the sandbox.
-	3.	run.start@v1 → start the program inside a controlled runner (Python/Node/Go/Rust/.NET).
-	4.	httpcheck.assert@v1 → validate outputs with probes (status, body checks).
-	5.	report.finish@v1 → package source, artifacts, logs, and a verdict.
+### Agents as MCP Peers
 
-These verbs are versioned (@v1, @v2) so the framework can evolve without breaking clients.
+Agents are autonomous programs that:
+	1.	**Expose MCP verbs** → define capabilities other agents can call
+	2.	**Call other agents' verbs** → coordinate with peers via `.pw` syntax
+	3.	**Run on port 23456** → standard port for agent MCP servers
+	4.	**Speak `.pw` protocol** → language-agnostic coordination layer
+
+### MCP Verbs
+
+Agents define custom MCP verbs using `expose` blocks in `.pw`:
+
+```pw
+expose task.execute@v1:
+  params:
+    task_id string
+    priority int
+  returns:
+    status string
+    result object
+```
+
+Other agents call these verbs:
+
+```pw
+call code-reviewer review.submit@v1 pr_url="https://..."
+```
+
+All verbs are versioned (@v1, @v2) for compatibility.
 
 ⸻
 
