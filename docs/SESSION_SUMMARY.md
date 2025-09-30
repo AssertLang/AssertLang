@@ -92,7 +92,7 @@ printf '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}\n{"jsonrpc":"
 - Removed `mcp_stdio_bridge.py` (failed approach)
 - Cleaned up whitespace-only changes
 
-### Session 5: Verb Execution Implementation (CURRENT SESSION)
+### Session 5: Verb Execution Implementation
 
 **Goal:** Implement real verb execution in `tools/call` method
 
@@ -170,6 +170,73 @@ printf '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}\n{"jsonrpc":"
   1. Reload config file
   2. Shut down old MCP processes
   3. Start new servers with updated commands
+
+### Session 6: MCP Tool Registration Debugging (CURRENT SESSION)
+
+**Goal:** Verify MCP tools are callable from Cursor AI
+
+**Status:** Partial success - servers connect but tools not registered in Cursor AI session
+
+**Findings:**
+
+1. **MCP Servers Connected:**
+   - 10 servers defined in `.cursor/mcp.json`
+   - All show in Cursor Settings → Tools & MCP
+   - Green dots indicate successful connection
+
+2. **Problem Discovered:**
+   - Only 4 of 10 servers are ENABLED in Cursor:
+     - ✅ ai-code-reviewer (2 tools)
+     - ✅ deployment-manager (1 tool)
+     - ✅ monitored-service (2 tools)
+     - ✅ MCP_DOCKER (13 tools) - unrelated to Promptware
+   - 6 servers are DISABLED:
+     - ❌ code-reviewer
+     - ❌ orchestrator
+     - ❌ unnamed
+     - ❌ data-processor
+     - ❌ cache-service
+     - ❌ deployment-orchestrator
+     - ❌ test-runner (not visible in screenshot but expected)
+
+3. **Tool Call Attempt Failed:**
+   - User asked Cursor AI to call `review.analyze@v1`
+   - Cursor AI recognized the intent: "Ran review_analyzev1"
+   - Error: "the review.analyze@v1 tool isn't registered in this session, so I can't execute it here"
+   - AI fell back to manual code review instead
+
+4. **Environment Details:**
+   - User running Claude Code CLI (this conversation)
+   - Cursor using GPT-5 for chat/AI features
+   - No ANTHROPIC_API_KEY (expected - AI verbs will use mock responses)
+   - MCP servers running Python 3.13 via stdio
+
+**Root Cause Analysis:**
+
+The issue appears to be that Cursor needs servers explicitly ENABLED via UI toggle, not just defined in config. The green connection indicator shows the server process is running, but disabled servers don't expose their tools to the AI chat session.
+
+**Next Steps for User:**
+
+1. **Enable disabled servers:**
+   - Go to Cursor Settings → Tools & MCP
+   - Toggle ON the 6 disabled servers
+   - Check for error messages when enabling
+
+2. **If enabling succeeds:**
+   - Restart Cursor again
+   - All 10 servers should show as enabled with tool counts
+   - Retry test: Ask AI to call `review.analyze@v1` tool
+
+3. **If enabling fails:**
+   - Note the error message
+   - May need to debug individual server stdio communication
+   - Check Cursor logs for detailed error info
+
+**Screenshots Captured:**
+- `Screenshot 2025-09-30 at 1.27.03 PM.png` - MCP autocomplete showing ai-code-reviewer
+- `Screenshot 2025-09-30 at 1.32.38 PM.png` - @code-reviewer showing file suggestions, not agent
+- `Screenshot 2025-09-30 at 1.36.22 PM.png` - Cursor AI attempted tool call but tool not registered
+- `Screenshot 2025-09-30 at 1.36.43 PM.png` - MCP settings showing 4 enabled, 6 disabled servers
 
 ---
 
@@ -475,40 +542,42 @@ When you start:
 
 1. **Read this file first** - You're reading it now!
 
-2. **Understand current state (Session 5 END):**
+2. **Understand current state (Session 6 END):**
    - MCP stdio server created ✅ (Session 3)
    - JSON Schema type fix applied ✅ (Session 4)
    - Verb execution implemented ✅ (Session 5)
    - All code committed to CC45 branch ✅
-   - **Waiting for:** User to restart Cursor and test AI execution
+   - **Session 6 findings:** MCP servers connect but 6/10 are DISABLED in Cursor UI
+   - **Current blocker:** Disabled servers don't expose tools to AI chat
 
 3. **Check git status:**
    ```bash
    git status
    git log --oneline -5
-   # Should see: 4a22d35 Implement real verb execution...
+   # Should see: 38e536b Update session summary - verb execution complete
    ```
 
 4. **First thing to ask user:**
-   - "Did you restart Cursor after Session 5?"
-   - "Do you have ANTHROPIC_API_KEY set in your environment?"
-   - "Try calling: @code-reviewer analyze this code: def foo(): return x + y"
-   - If works → Get screenshot of AI response
-   - If fails → Debug LLM initialization and API key
+   - "Did you enable the disabled MCP servers in Cursor Settings?"
+   - "After enabling, did you restart Cursor?"
+   - "Are all 10 servers now showing as enabled with tool counts?"
+   - If yes → Test tool call: Ask AI to use `review_analyze@v1` tool
+   - If no → Check error messages when trying to enable servers
 
-5. **Priority tasks for Session 6:**
-   - **FIRST:** Verify AI verb execution works in Cursor
-   - Document test results (screenshot + which verbs work)
+5. **Priority tasks for Session 7:**
+   - **FIRST:** Verify all MCP servers can be enabled in Cursor UI
+   - If servers enable successfully, test tool calls from AI chat
+   - Document which servers work and which fail
+   - Debug any failing servers (check stdio output, JSON-RPC responses)
    - Add tests for stdio server (`tests/test_mcp_stdio_server.py`)
-   - Update pyproject.toml version to 0.3.0
-   - Push commits to origin
 
-6. **Session 5 Summary:**
-   - Implemented full verb execution in `tools/call`
-   - Added LangChain integration for AI verbs
-   - Mock handler for non-AI verbs
-   - Tested locally - both modes working
-   - Commit: 4a22d35
+6. **Session 6 Summary:**
+   - User restarted Cursor successfully
+   - MCP servers show green dots (connected)
+   - Only 4/10 enabled: ai-code-reviewer, deployment-manager, monitored-service, MCP_DOCKER
+   - 6/10 disabled: code-reviewer, orchestrator, unnamed, data-processor, cache-service, deployment-orchestrator
+   - Tool call test failed: "tool isn't registered in this session"
+   - Root cause: Disabled servers don't expose tools to AI
 
 7. **Reference documents:**
    - This file (SESSION_SUMMARY.md) ← You are here
@@ -518,18 +587,18 @@ When you start:
 8. **Important context:**
    - MCP stdio server is native implementation (Session 3)
    - Verb execution uses LangChain for AI, mock for others (Session 5)
-   - All servers show GREEN in Cursor (verified Session 4)
-   - Cursor restart required after code changes to reload servers
-   - ANTHROPIC_API_KEY needed for AI verbs to work
+   - Servers connect (green dots) but need explicit enabling in UI (Session 6)
+   - User has no ANTHROPIC_API_KEY (expected - mock responses only)
+   - Cursor running GPT-5 for AI chat features
 
-9. **Testing checklist for Session 6:**
-   - [ ] Cursor restarted
-   - [ ] ANTHROPIC_API_KEY set
-   - [ ] Test @code-reviewer with code snippet
-   - [ ] Verify AI response (not mock)
+9. **Testing checklist for Session 7:**
+   - [ ] User enabled all 6 disabled servers
+   - [ ] User restarted Cursor after enabling
+   - [ ] All 10 servers show enabled + tool counts
+   - [ ] Test tool call from AI chat
+   - [ ] Verify mock response received
    - [ ] Screenshot for documentation
-   - [ ] Try other AI-powered agents
-   - [ ] Document which agents work
+   - [ ] Test multiple servers to ensure consistency
 
 ---
 
@@ -631,8 +700,9 @@ python3 -m pytest tests/ -q
 **Session 3 End:** 2025-09-30 12:30 PM
 **Session 4 End:** 2025-09-30 01:00 PM - JSON Schema fix, green dots confirmed ✅
 **Session 5 End:** 2025-09-30 01:35 PM - Verb execution implemented ✅
+**Session 6 End:** 2025-09-30 01:40 PM - Debugging MCP tool registration
 **Branch:** CC45
-**Last Commit:** 4a22d35 (Implement real verb execution in MCP stdio server)
-**Uncommitted:** docs/SESSION_SUMMARY.md only
+**Last Commit:** 38e536b (Update session summary - verb execution complete)
+**Uncommitted:** Many working tree changes from previous sessions (unrelated to MCP)
 **Tests Passing:** 71/71 (MCP stdio server tests pending)
-**Next Action:** User restarts Cursor → Test AI execution → Verify real responses
+**Next Action:** Enable all disabled MCP servers in Cursor → Restart Cursor → Test tool calls
