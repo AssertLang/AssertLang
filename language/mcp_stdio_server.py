@@ -11,6 +11,31 @@ from pathlib import Path
 from typing import Dict, Any, List, Optional
 
 
+def generate_tool_description(verb_name: str, expose) -> str:
+    """Generate AI-friendly tool description."""
+    # Extract action from verb name (e.g., "review.analyze@v1" -> "analyze")
+    action = verb_name.split('.')[-1].split('@')[0]
+
+    # Get category from first part (e.g., "review.analyze@v1" -> "review")
+    parts = verb_name.split('.')
+    category = parts[0] if len(parts) > 1 else "general"
+
+    # Use prompt template if available (first line as summary)
+    if expose.prompt_template:
+        # Get first meaningful line from prompt
+        lines = [l.strip() for l in expose.prompt_template.strip().split('\n') if l.strip()]
+        if lines:
+            return lines[0]
+
+    # Fallback: Generate from parameters and action
+    param_names = [p.get("name", "") for p in expose.params]
+    if param_names:
+        params_str = ", ".join(param_names)
+        return f"{action.capitalize()} {category} - accepts {params_str}"
+
+    return f"{action.capitalize()} {category} operation"
+
+
 def load_agent_definition(agent_file: str) -> Dict[str, Any]:
     """Parse .pw file to extract agent info."""
     try:
@@ -54,9 +79,12 @@ def load_agent_definition(agent_file: str) -> Dict[str, Any]:
                 if param_required:
                     required.append(param_name)
 
+            # Generate helpful description from verb name and prompt
+            description = generate_tool_description(verb_name, expose)
+
             verbs.append({
                 "name": verb_name,
-                "description": f"Promptware verb: {verb_name}",
+                "description": description,
                 "inputSchema": {
                     "type": "object",
                     "properties": properties,
