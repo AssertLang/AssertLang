@@ -1,0 +1,368 @@
+"""Tests for MCP server generator."""
+
+import pytest
+from language.mcp_server_generator import (
+    generate_python_mcp_server,
+    generate_mcp_server_from_pw,
+)
+from language.agent_parser import parse_agent_pw
+
+
+def test_generate_basic_server():
+    """Test generating basic MCP server."""
+    pw_code = """
+lang python
+agent test-agent
+port 23456
+
+expose test.run@v1:
+  params:
+    name string
+  returns:
+    result bool
+"""
+    code = generate_mcp_server_from_pw(pw_code)
+
+    # Check essential components
+    assert "from fastapi import FastAPI" in code
+    assert "app = FastAPI" in code
+    assert "test-agent" in code
+    assert "def handle_test_run_v1" in code
+    assert "@app.post(\"/mcp\")" in code
+    assert "port=23456" in code
+
+
+def test_server_has_health_endpoint():
+    """Test that generated server has health check."""
+    pw_code = """
+lang python
+agent health-test
+
+expose status.check@v1:
+  returns:
+    status string
+"""
+    code = generate_mcp_server_from_pw(pw_code)
+
+    assert "@app.get(\"/health\")" in code
+    assert "health_check" in code
+
+
+def test_server_has_verbs_endpoint():
+    """Test that generated server lists exposed verbs."""
+    pw_code = """
+lang python
+agent verb-lister
+
+expose verb1.execute@v1:
+  returns:
+    result string
+
+expose verb2.execute@v1:
+  returns:
+    result string
+"""
+    code = generate_mcp_server_from_pw(pw_code)
+
+    assert "@app.get(\"/verbs\")" in code
+    assert "list_verbs" in code
+    assert "verb1.execute@v1" in code
+    assert "verb2.execute@v1" in code
+
+
+def test_handler_function_generation():
+    """Test that handler functions are generated correctly."""
+    pw_code = """
+lang python
+agent handler-test
+
+expose task.execute@v1:
+  params:
+    task_id string
+    priority int
+  returns:
+    status string
+    result object
+"""
+    code = generate_mcp_server_from_pw(pw_code)
+
+    # Check handler function exists
+    assert "def handle_task_execute_v1(params: Dict[str, Any])" in code
+
+    # Check parameter validation
+    assert 'if "task_id" not in params' in code
+    assert 'if "priority" not in params' in code
+    assert '"E_ARGS"' in code
+
+    # Check return values
+    assert '"status"' in code
+    assert '"result"' in code
+
+
+def test_multiple_verbs():
+    """Test generating server with multiple exposed verbs."""
+    pw_code = """
+lang python
+agent multi-verb
+
+expose verb1@v1:
+  params:
+    input string
+  returns:
+    output string
+
+expose verb2@v1:
+  params:
+    data int
+  returns:
+    result int
+"""
+    code = generate_mcp_server_from_pw(pw_code)
+
+    # Check both handlers exist
+    assert "def handle_verb1_v1" in code
+    assert "def handle_verb2_v1" in code
+
+    # Check routing
+    assert 'if method == "verb1@v1"' in code
+    assert 'if method == "verb2@v1"' in code
+
+
+def test_mcp_endpoint_structure():
+    """Test MCP endpoint has correct structure."""
+    pw_code = """
+lang python
+agent endpoint-test
+
+expose test@v1:
+  returns:
+    ok bool
+"""
+    code = generate_mcp_server_from_pw(pw_code)
+
+    # Check endpoint structure
+    assert "@app.post(\"/mcp\")" in code
+    assert "async def mcp_endpoint" in code
+    assert "await request.json()" in code
+    assert '"ok": True' in code
+    assert '"version": "v1"' in code
+    assert '"data": result' in code
+
+
+def test_error_handling():
+    """Test that error handling is included."""
+    pw_code = """
+lang python
+agent error-test
+
+expose test@v1:
+  params:
+    required string
+  returns:
+    result string
+"""
+    code = generate_mcp_server_from_pw(pw_code)
+
+    # Check error codes
+    assert '"E_ARGS"' in code
+    assert '"E_METHOD"' in code
+    assert '"E_RUNTIME"' in code
+
+    # Check error responses
+    assert '"ok": False' in code
+    assert '"error"' in code
+
+
+def test_server_startup_code():
+    """Test that server startup code is generated."""
+    pw_code = """
+lang python
+agent startup-test
+port 12345
+
+expose test@v1:
+  returns:
+    ok bool
+"""
+    code = generate_mcp_server_from_pw(pw_code)
+
+    assert 'if __name__ == "__main__":' in code
+    assert "uvicorn.run" in code
+    assert "port=12345" in code
+    assert 'host="127.0.0.1"' in code
+
+
+def test_generated_code_is_valid_python():
+    """Test that generated code is syntactically valid Python."""
+    pw_code = """
+lang python
+agent syntax-test
+
+expose test.verb@v1:
+  params:
+    input string
+  returns:
+    output string
+"""
+    code = generate_mcp_server_from_pw(pw_code)
+
+    # Try to compile the generated code
+    compile(code, "<generated>", "exec")
+
+
+def test_complete_agent_example():
+    """Test generating server from complete agent definition."""
+    pw_code = """
+lang python
+agent code-reviewer
+port 23456
+
+expose review.submit@v1:
+  params:
+    pr_url string
+  returns:
+    review_id string
+    status string
+
+expose review.status@v1:
+  params:
+    review_id string
+  returns:
+    status string
+    comments array
+"""
+    code = generate_mcp_server_from_pw(pw_code)
+
+    # Check agent metadata
+    assert "code-reviewer" in code
+    assert "port=23456" in code
+
+    # Check both verbs
+    assert "def handle_review_submit_v1" in code
+    assert "def handle_review_status_v1" in code
+
+    # Check parameters
+    assert '"pr_url"' in code
+    assert '"review_id"' in code
+
+    # Check return types
+    assert '"status"' in code
+    assert '"comments"' in code
+
+
+def test_generate_ai_agent_server():
+    """Test generating AI agent server with LangChain."""
+    pw_code = """
+lang python
+agent ai-assistant
+port 23456
+llm anthropic claude-3-5-sonnet-20241022
+
+expose chat.send@v1:
+  params:
+    message string
+  returns:
+    response string
+  prompt_template:
+    You are a helpful assistant. Respond to the user's message.
+"""
+    code = generate_mcp_server_from_pw(pw_code)
+
+    # Check LangChain imports
+    assert "from langchain_anthropic import ChatAnthropic" in code
+    assert "from langchain_core.messages import HumanMessage" in code
+
+    # Check LLM initialization
+    assert "llm = ChatAnthropic" in code
+    assert "claude-3-5-sonnet-20241022" in code
+    assert "ANTHROPIC_API_KEY" in code
+
+    # Check AI handler
+    assert "# AI-powered handler using LangChain" in code
+    assert "llm.invoke(messages)" in code
+    assert "You are a helpful assistant" in code
+
+
+def test_generate_ai_agent_with_global_prompt():
+    """Test AI agent with global system prompt."""
+    pw_code = """
+lang python
+agent code-reviewer
+llm anthropic claude-3-5-sonnet-20241022
+
+prompt_template:
+  You are an expert code reviewer.
+  Analyze code for bugs and security issues.
+
+expose review.analyze@v1:
+  params:
+    code string
+  returns:
+    analysis string
+"""
+    code = generate_mcp_server_from_pw(pw_code)
+
+    # Check global prompt is included
+    assert "AGENT_SYSTEM_PROMPT" in code
+    assert "expert code reviewer" in code
+    assert "SystemMessage(content=AGENT_SYSTEM_PROMPT)" in code or "AGENT_SYSTEM_PROMPT" in code
+
+
+def test_generate_ai_agent_with_tools():
+    """Test AI agent with tools list."""
+    pw_code = """
+lang python
+agent tooled-agent
+llm anthropic claude-3-5-sonnet-20241022
+
+tools:
+  - github_fetch_pr
+  - security_scanner
+
+expose review.submit@v1:
+  params:
+    pr_url string
+  returns:
+    review_id string
+  prompt_template:
+    Review the PR and return a review ID.
+"""
+    agent = parse_agent_pw(pw_code)
+
+    # Verify tools are parsed
+    assert len(agent.tools) == 2
+    assert "github_fetch_pr" in agent.tools
+    assert "security_scanner" in agent.tools
+
+    # Generate server
+    code = generate_python_mcp_server(agent)
+
+    # LangChain should be present
+    assert "ChatAnthropic" in code
+    assert "Review the PR and return a review ID" in code
+
+
+def test_ai_agent_error_handling():
+    """Test AI agent includes error handling for LLM calls."""
+    pw_code = """
+lang python
+agent ai-agent
+llm anthropic claude-3-5-sonnet-20241022
+
+expose process@v1:
+  params:
+    input string
+  returns:
+    output string
+  prompt_template:
+    Process this input.
+"""
+    code = generate_mcp_server_from_pw(pw_code)
+
+    # Check error handling
+    assert "except Exception as e:" in code
+    assert "E_RUNTIME" in code
+    assert "LLM call failed" in code
+
+    # Verify it's valid Python
+    compile(code, "<generated>", "exec")
