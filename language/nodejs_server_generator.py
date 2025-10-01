@@ -1,4 +1,9 @@
 """
+DEPRECATED: Use language.mcp_server_generator_nodejs instead.
+
+This module is deprecated and will be removed in a future version.
+Use the new unified generator system in language.mcp_server_generator_nodejs.
+
 Node.js MCP Server Generator for Promptware agents.
 
 Generates Express-based MCP servers from .pw agent definitions.
