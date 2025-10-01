@@ -355,7 +355,9 @@ def cmd_generate(args) -> int:
     if args.output:
         output_dir = Path(args.output)
     else:
-        output_dir = Path(f"./generated/{agent.name}")
+        # Include language in directory name to prevent conflicts
+        lang_suffix = "" if args.lang == "python" else f"-{args.lang}"
+        output_dir = Path(f"./generated/{agent.name}{lang_suffix}")
 
     # Generate server code
     generators = {
