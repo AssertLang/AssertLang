@@ -8,6 +8,9 @@ from __future__ import annotations
 
 from typing import Any, Dict, List
 from language.agent_parser import AgentDefinition, ExposeBlock, ObservabilityConfig, WorkflowDefinition, WorkflowStep
+from language.mcp_error_handling import get_python_error_middleware, get_validation_helpers
+from language.mcp_health_checks import get_python_health_check, get_health_endpoints_pattern
+from language.mcp_security import get_python_security_middleware
 
 
 def generate_python_mcp_server(agent: AgentDefinition) -> str:
@@ -55,6 +58,7 @@ from typing import Any, Dict, Optional
 from datetime import datetime
 import time
 import sys
+import os
 from pathlib import Path
 
 # Add project root to path for tool registry imports
@@ -149,7 +153,15 @@ app = FastAPI(
     title="{agent.name}",
     description="Promptware MCP Agent",
     version="v1"
-)'''
+)
+
+{get_python_error_middleware()}
+
+{get_python_health_check()}
+
+{get_validation_helpers("python")}
+
+{get_python_security_middleware()}'''
 
     # Auto-instrument FastAPI if observability enabled
     if agent.observability and agent.observability.traces:
@@ -169,8 +181,8 @@ agent_state: Dict[str, Any] = {{
 
 # Tool executor (if agent has tools)
 tool_executor = None
-if {repr(agent.tools)}:
-    tool_executor = ToolExecutor({repr(agent.tools)})'''
+if {agent.tools}:
+    tool_executor = ToolExecutor({agent.tools})'''
 
     # Add Temporal client initialization if workflows enabled
     if agent.temporal and agent.workflows:
@@ -482,7 +494,11 @@ def _generate_mcp_endpoint(agent: AgentDefinition) -> str:
         verb_routes.append(f'''            {prefix} verb_name == "{expose.verb}":
                 verb_result = handle_{handler_name}(verb_params)''')
 
-    verb_routing = "\n".join(verb_routes)
+    # If no verbs defined, add a catch-all if statement
+    if not verb_routes:
+        verb_routing = "            if False:  # No verbs defined\n                pass"
+    else:
+        verb_routing = "\n".join(verb_routes)
 
     return f'''@app.post("/mcp")
 async def mcp_endpoint(request: Request):
@@ -661,15 +677,9 @@ async def mcp_endpoint(request: Request):
         )
 
 
-@app.get("/health")
-async def health_check():
-    """Health check endpoint."""
-    return {{
-        "status": "healthy",
-        "agent": "{agent.name}",
-        "uptime": agent_state.get("requests_handled", 0)
-    }}
+{get_health_endpoints_pattern("python", agent.name)["health"]}
 
+{get_health_endpoints_pattern("python", agent.name)["ready"]}
 
 @app.get("/verbs")
 async def list_verbs():
