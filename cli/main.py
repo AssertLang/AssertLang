@@ -1,6 +1,19 @@
 #!/usr/bin/env python3
 """
-Promptware CLI - Command-line interface for agent generation and management.
+DEPRECATED: This CLI has been replaced by promptware.cli
+
+This module is deprecated and will be removed in a future version.
+The new CLI is in promptware/cli.py and includes:
+- Configuration management (promptware config)
+- Safety features (--yes, --dry-run, --quiet)
+- NO_COLOR support
+- Improved UX and error handling
+
+Use 'promptware' command instead (automatically uses promptware.cli via setup.py).
+
+---
+
+OLD Promptware CLI - Command-line interface for agent generation and management.
 
 Usage:
     promptware generate <agent.pw>              Generate MCP server
