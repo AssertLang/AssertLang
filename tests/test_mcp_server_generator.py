@@ -123,13 +123,13 @@ expose verb2@v1:
     assert "def handle_verb1_v1" in code
     assert "def handle_verb2_v1" in code
 
-    # Check routing
-    assert 'if method == "verb1@v1"' in code
-    assert 'if method == "verb2@v1"' in code
+    # Check routing uses verb_name variable (MCP tools/call format)
+    assert 'verb_name == "verb1@v1"' in code
+    assert 'verb_name == "verb2@v1"' in code
 
 
 def test_mcp_endpoint_structure():
-    """Test MCP endpoint has correct structure."""
+    """Test MCP endpoint has correct structure (JSON-RPC 2.0)."""
     pw_code = """
 lang python
 agent endpoint-test
@@ -144,13 +144,17 @@ expose test@v1:
     assert "@app.post(\"/mcp\")" in code
     assert "async def mcp_endpoint" in code
     assert "await request.json()" in code
-    assert '"ok": True' in code
-    assert '"version": "v1"' in code
-    assert '"data": result' in code
+    # JSON-RPC 2.0 format
+    assert '"jsonrpc": "2.0"' in code
+    assert '"result":' in code
+    # MCP protocol methods
+    assert 'method == "initialize"' in code
+    assert 'method == "tools/list"' in code
+    assert 'method == "tools/call"' in code
 
 
 def test_error_handling():
-    """Test that error handling is included."""
+    """Test that error handling is included (JSON-RPC 2.0 format)."""
     pw_code = """
 lang python
 agent error-test
@@ -163,14 +167,15 @@ expose test@v1:
 """
     code = generate_mcp_server_from_pw(pw_code)
 
-    # Check error codes
-    assert '"E_ARGS"' in code
-    assert '"E_METHOD"' in code
-    assert '"E_RUNTIME"' in code
+    # Check JSON-RPC error codes are used
+    assert "-32600" in code or "-32602" in code  # Invalid Request or Invalid Params
+    assert "-32601" in code  # Method not found
+    assert "-32000" in code  # Server error
 
-    # Check error responses
-    assert '"ok": False' in code
+    # Check error response structure (JSON-RPC 2.0)
     assert '"error"' in code
+    assert '"code":' in code
+    assert '"message":' in code
 
 
 def test_server_startup_code():
