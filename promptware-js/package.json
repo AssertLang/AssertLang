@@ -4,6 +4,13 @@
   "description": "Node.js client library for Promptware MCP services",
   "main": "index.js",
   "type": "module",
+  "files": [
+    "index.js",
+    "client.js",
+    "registry.js",
+    "sdk.js",
+    "sdk.d.ts"
+  ],
   "scripts": {
     "test": "node --test"
   },
@@ -11,14 +18,29 @@
     "promptware",
     "mcp",
     "rpc",
-    "microservices"
+    "microservices",
+    "sdk",
+    "agent",
+    "client"
   ],
   "author": "Promptware",
   "license": "MIT",
   "dependencies": {
-    "axios": "^1.6.0"
+    "axios": "^1.6.0",
+    "glob": "^10.3.10",
+    "ajv": "^8.12.0",
+    "ajv-formats": "^2.1.1",
+    "js-yaml": "^4.1.0"
   },
   "devDependencies": {
-    "chai": "^5.0.0"
+    "chai": "^5.0.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.2.0"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./sdk": "./sdk.js",
+    "./client": "./client.js",
+    "./registry": "./registry.js"
   }
 }
