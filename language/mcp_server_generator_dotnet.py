@@ -7,8 +7,7 @@ C# uses compile-time tool imports (no dynamic loading like Python/Node.js).
 
 from __future__ import annotations
 
-from typing import Any, Dict, List
-from language.agent_parser import AgentDefinition, ExposeBlock
+from language.agent_parser import AgentDefinition
 from language.mcp_error_handling import get_csharp_error_middleware, get_validation_helpers
 from language.mcp_health_checks import get_csharp_health_check, get_health_endpoints_pattern
 from language.mcp_security import get_csharp_security_middleware
@@ -238,7 +237,6 @@ def _generate_mcp_endpoint(agent: AgentDefinition) -> str:
     import json
     tool_schemas_json = json.dumps(tool_schemas, indent=2)
 
-    has_tools = "true" if agent.tools else "false"
     tools_init = "ToolRegistry.ExecuteTools(verbParams)" if agent.tools else "new Dictionary<string, Dictionary<string, object>>()"
 
     return f"""// MCP endpoint handler

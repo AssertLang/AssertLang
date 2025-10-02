@@ -1,26 +1,24 @@
+import asyncio
+import os
+import time
+from datetime import datetime, timedelta
+from typing import Any, Dict, Optional
+
+import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
-import uvicorn
-from typing import Any, Dict, Optional
-from datetime import datetime
-import time
-import os
 from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import HumanMessage, SystemMessage
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
-from opentelemetry import trace, metrics
+from opentelemetry import metrics, trace
+from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+from opentelemetry.sdk.metrics import MeterProvider
+from opentelemetry.sdk.metrics.export import ConsoleMetricExporter, PeriodicExportingMetricReader
+from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExporter
-from opentelemetry.sdk.metrics import MeterProvider
-from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader, ConsoleMetricExporter
-from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
-from opentelemetry.sdk.resources import Resource
-import asyncio
-from datetime import timedelta
-from temporalio import workflow, activity
+from temporalio import activity, workflow
 from temporalio.client import Client
-from temporalio.worker import Worker
+
 
 @activity.defn(name="fetch_code_changes", start_to_close_timeout=timedelta(minutes=5))
 async def fetch_code_changes(**kwargs) -> Dict[str, Any]:
@@ -29,7 +27,7 @@ async def fetch_code_changes(**kwargs) -> Dict[str, Any]:
     Workflow: ci_cd_pipeline@v1
     """
     # TODO: Implement actual activity logic
-    print(f"Executing activity: fetch_code_changes")
+    print("Executing activity: fetch_code_changes")
     return {"status": "completed"}
 
 @activity.defn(name="run_code_review", start_to_close_timeout=timedelta(minutes=10))
@@ -39,7 +37,7 @@ async def run_code_review(**kwargs) -> Dict[str, Any]:
     Workflow: ci_cd_pipeline@v1
     """
     # TODO: Implement actual activity logic
-    print(f"Executing activity: run_code_review")
+    print("Executing activity: run_code_review")
     return {"status": "completed"}
 
 @activity.defn(name="run_tests", start_to_close_timeout=timedelta(minutes=15))
@@ -49,7 +47,7 @@ async def run_tests(**kwargs) -> Dict[str, Any]:
     Workflow: ci_cd_pipeline@v1
     """
     # TODO: Implement actual activity logic
-    print(f"Executing activity: run_tests")
+    print("Executing activity: run_tests")
     return {"status": "completed"}
 
 @activity.defn(name="build_artifacts", start_to_close_timeout=timedelta(minutes=20))
@@ -59,7 +57,7 @@ async def build_artifacts(**kwargs) -> Dict[str, Any]:
     Workflow: ci_cd_pipeline@v1
     """
     # TODO: Implement actual activity logic
-    print(f"Executing activity: build_artifacts")
+    print("Executing activity: build_artifacts")
     return {"status": "completed"}
 
 @activity.defn(name="deploy_to_staging", start_to_close_timeout=timedelta(minutes=10))
@@ -69,7 +67,7 @@ async def deploy_to_staging(**kwargs) -> Dict[str, Any]:
     Workflow: ci_cd_pipeline@v1
     """
     # TODO: Implement actual activity logic
-    print(f"Executing activity: deploy_to_staging")
+    print("Executing activity: deploy_to_staging")
     return {"status": "completed"}
 
 @activity.defn(name="run_smoke_tests", start_to_close_timeout=timedelta(minutes=5))
@@ -79,7 +77,7 @@ async def run_smoke_tests(**kwargs) -> Dict[str, Any]:
     Workflow: ci_cd_pipeline@v1
     """
     # TODO: Implement actual activity logic
-    print(f"Executing activity: run_smoke_tests")
+    print("Executing activity: run_smoke_tests")
     return {"status": "completed"}
 
 @activity.defn(name="deploy_to_production", start_to_close_timeout=timedelta(minutes=15))
@@ -89,7 +87,7 @@ async def deploy_to_production(**kwargs) -> Dict[str, Any]:
     Workflow: ci_cd_pipeline@v1
     """
     # TODO: Implement actual activity logic
-    print(f"Executing activity: deploy_to_production")
+    print("Executing activity: deploy_to_production")
     return {"status": "completed"}
 
 @activity.defn(name="verify_deployment", start_to_close_timeout=timedelta(minutes=5))
@@ -99,7 +97,7 @@ async def verify_deployment(**kwargs) -> Dict[str, Any]:
     Workflow: ci_cd_pipeline@v1
     """
     # TODO: Implement actual activity logic
-    print(f"Executing activity: verify_deployment")
+    print("Executing activity: verify_deployment")
     return {"status": "completed"}
 
 @workflow.defn(name="ci_cd_pipeline@v1")
@@ -118,7 +116,7 @@ class Ci_Cd_Pipeline_V1Workflow:
     async def run(self, service: str, version: str, branch: str, commit_sha: str) -> Dict[str, Any]:
         """Execute workflow steps."""
         # Step 1: fetch_code_changes
-        result_0 = await workflow.execute_activity(
+        await workflow.execute_activity(
             fetch_code_changes,
             schedule_to_close_timeout=timedelta(minutes=10), retry_policy=workflow.RetryPolicy(maximum_attempts=2)
         )
@@ -150,7 +148,7 @@ class Ci_Cd_Pipeline_V1Workflow:
             raise workflow.ApplicationError("Step run_tests failed")
 
         # Step 4: build_artifacts
-        result_3 = await workflow.execute_activity(
+        await workflow.execute_activity(
             build_artifacts,
             schedule_to_close_timeout=timedelta(minutes=10), retry_policy=workflow.RetryPolicy(maximum_attempts=1)
         )
@@ -169,7 +167,7 @@ class Ci_Cd_Pipeline_V1Workflow:
             raise workflow.ApplicationError("Step deploy_to_staging failed")
 
         # Step 6: run_smoke_tests
-        result_5 = await workflow.execute_activity(
+        await workflow.execute_activity(
             run_smoke_tests,
             schedule_to_close_timeout=timedelta(minutes=10), retry_policy=workflow.RetryPolicy(maximum_attempts=1)
         )
@@ -191,7 +189,7 @@ class Ci_Cd_Pipeline_V1Workflow:
         await workflow.wait_condition(lambda: workflow_state.get("approved_6", False))
 
         # Step 8: verify_deployment
-        result_7 = await workflow.execute_activity(
+        await workflow.execute_activity(
             verify_deployment,
             schedule_to_close_timeout=timedelta(minutes=10), retry_policy=workflow.RetryPolicy(maximum_attempts=2)
         )
@@ -348,7 +346,7 @@ def handle_deployment_status_v1(params: Dict[str, Any]) -> Dict[str, Any]:
         span.set_attribute("agent", "deployment-orchestrator")
         # Generic AI handler
         try:
-            user_prompt = f"Process the following request for deployment.status@v1:\n"
+            user_prompt = "Process the following request for deployment.status@v1:\n"
             user_prompt += f"Parameters: {params.get('deployment_id')}"
 
             messages = [HumanMessage(content=user_prompt)]
@@ -562,11 +560,11 @@ async def list_verbs():
     }
 
 if __name__ == "__main__":
-    print(f"Starting MCP server for agent: deployment-orchestrator")
-    print(f"Port: 23452")
-    print(f"Exposed verbs: ['workflow.execute@v1', 'deployment.status@v1', 'deployment.approve@v1']")
-    print(f"Health check: http://127.0.0.1:23452/health")
-    print(f"MCP endpoint: http://127.0.0.1:23452/mcp")
+    print("Starting MCP server for agent: deployment-orchestrator")
+    print("Port: 23452")
+    print("Exposed verbs: ['workflow.execute@v1', 'deployment.status@v1', 'deployment.approve@v1']")
+    print("Health check: http://127.0.0.1:23452/health")
+    print("MCP endpoint: http://127.0.0.1:23452/mcp")
 
     uvicorn.run(
         app,

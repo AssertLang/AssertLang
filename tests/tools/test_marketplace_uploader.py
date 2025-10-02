@@ -1,4 +1,3 @@
-from pathlib import Path
 
 from tools.marketplace_uploader.adapters import adapter_py
 

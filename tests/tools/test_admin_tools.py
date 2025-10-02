@@ -1,8 +1,8 @@
 from pathlib import Path
 
+from tools.custom_tool_template.adapters import adapter_py as template
 from tools.marketplace_uploader.adapters import adapter_py as uploader
 from tools.plugin_manager.adapters import adapter_py as plugin
-from tools.custom_tool_template.adapters import adapter_py as template
 
 
 def test_marketplace_uploader(tmp_path):

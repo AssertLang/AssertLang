@@ -7,10 +7,9 @@ Rust uses compile-time tool imports (no dynamic loading).
 
 from __future__ import annotations
 
-from typing import Any, Dict, List
 from language.agent_parser import AgentDefinition, ExposeBlock
-from language.mcp_error_handling import get_rust_error_middleware, get_validation_helpers
-from language.mcp_health_checks import get_rust_health_check, get_health_endpoints_pattern
+from language.mcp_error_handling import get_rust_error_middleware
+from language.mcp_health_checks import get_health_endpoints_pattern, get_rust_health_check
 from language.mcp_security import get_rust_security_middleware
 
 

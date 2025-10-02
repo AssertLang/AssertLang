@@ -1,13 +1,12 @@
 """Tests for MCP client library."""
 
-import pytest
 from language.mcp_client import (
-    MCPClient,
-    MCPResponse,
-    MCPError,
     AgentRegistry,
-    register_agent,
+    MCPClient,
+    MCPError,
+    MCPResponse,
     get_agent_client,
+    register_agent,
 )
 
 

@@ -3,28 +3,28 @@ Unit tests for Promptware MCP client library.
 
 Tests the client API, transport layer, and error handling.
 """
-import pytest
-import json
-from unittest.mock import Mock, patch, MagicMock
-import requests
-from pathlib import Path
 import sys
+from pathlib import Path
+from unittest.mock import MagicMock, Mock, patch
+
+import requests
+
+import pytest
 
 # Add project root to path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
 from promptware.client import MCPClient, call_verb
-from promptware.transport import HTTPTransport
 from promptware.exceptions import (
-    MCPError,
     ConnectionError,
-    TimeoutError,
-    ServiceUnavailableError,
-    InvalidVerbError,
     InvalidParamsError,
+    InvalidVerbError,
     ProtocolError,
+    ServiceUnavailableError,
+    TimeoutError,
 )
+from promptware.transport import HTTPTransport
 
 
 def test_mcp_client_initialization():
@@ -317,7 +317,7 @@ def test_call_verb_default_address():
             mock_client.call.return_value = mock_result
             MockClient.return_value.__enter__.return_value = mock_client
 
-            result = call_verb(
+            call_verb(
                 service="user-service",
                 verb="user.get@v1",
                 params={"user_id": "123"}

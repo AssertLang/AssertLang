@@ -1,9 +1,9 @@
 import time
+
 import requests
-from pathlib import Path
+from click.testing import CliRunner
 
 from cli.mcp import main as mcp_main
-from click.testing import CliRunner
 
 
 def test_run_hello_world():

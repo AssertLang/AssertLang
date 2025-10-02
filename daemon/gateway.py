@@ -1,13 +1,13 @@
 import os
-import socket
 import selectors
+import signal
+import socket
 import threading
+import time
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse
-import requests
-import signal
-import time
 
+import requests
 
 GATEWAY_PORT = 23456
 GATEWAY_PIDFILE = os.path.join('.mcpd', 'gateway.pid')
@@ -55,7 +55,7 @@ class UDSToHTTPProxyHandler(BaseHTTPRequestHandler):
 
         req_lines = [
             f"{self.command} {backend_path} HTTP/1.1",
-            f"Host: uds",
+            "Host: uds",
             "Connection: close",
         ]
         for k, v in self.headers.items():

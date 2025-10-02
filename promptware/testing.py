@@ -10,13 +10,14 @@ Provides comprehensive testing capabilities for MCP agents:
 """
 
 import json
-import time
 import statistics
-from typing import Dict, Any, List, Optional
+import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from datetime import datetime
+from typing import Any, Dict, List, Optional
+
 import requests
-from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
 @dataclass
@@ -201,7 +202,7 @@ class AgentTester:
 
         if verbose:
             print(f"\n{'='*60}")
-            print(f"📊 Test Summary")
+            print("📊 Test Summary")
             print(f"{'='*60}")
             print(f"Total:    {summary['total']}")
             print(f"Passed:   {summary['passed']} ✓")
@@ -303,7 +304,7 @@ class AgentTester:
 
         if verbose:
             print(f"\n{'='*60}")
-            print(f"📈 Load Test Results")
+            print("📈 Load Test Results")
             print(f"{'='*60}")
             print(f"Total Requests:  {result.total_requests}")
             print(
@@ -312,14 +313,14 @@ class AgentTester:
                 f"Failed:          {result.failed} ({result.failed/result.total_requests*100:.1f}%)")
             print(f"Duration:        {result.total_duration_s:.2f}s")
             print(f"RPS:             {result.requests_per_second:.1f}")
-            print(f"\nLatency:")
+            print("\nLatency:")
             print(f"  Average:       {result.avg_latency_ms:.1f}ms")
             print(f"  Min:           {result.min_latency_ms:.1f}ms")
             print(f"  Max:           {result.max_latency_ms:.1f}ms")
             print(f"  P95:           {result.p95_latency_ms:.1f}ms")
             print(f"  P99:           {result.p99_latency_ms:.1f}ms")
             if result.errors:
-                print(f"\nErrors:")
+                print("\nErrors:")
                 for error in result.errors[:5]:
                     print(f"  - {error}")
             print(f"{'='*60}\n")

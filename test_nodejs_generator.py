@@ -13,6 +13,7 @@ sys.path.insert(0, str(project_root))
 
 from language.mcp_server_generator_nodejs import generate_nodejs_server_from_pw
 
+
 def main():
     # Read the .pw file
     pw_file = project_root / "examples/demo/user_service.pw"
@@ -21,7 +22,7 @@ def main():
     with open(pw_file, 'r') as f:
         pw_code = f.read()
 
-    print(f"Generating Node.js server...")
+    print("Generating Node.js server...")
 
     # Generate Node.js server code
     js_code = generate_nodejs_server_from_pw(pw_code)

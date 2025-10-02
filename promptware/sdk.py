@@ -11,13 +11,14 @@ Features:
 - Request/response logging
 """
 
-import requests
-import time
 import logging
-from typing import Any, Dict, Optional, List, Callable
+import time
 from dataclasses import dataclass
 from enum import Enum
 from threading import Lock
+from typing import Any, Callable, Dict, List, Optional
+
+import requests
 
 logger = logging.getLogger(__name__)
 
@@ -75,7 +76,7 @@ class CircuitBreaker:
 
             return result
 
-        except Exception as e:
+        except Exception:
             with self._lock:
                 self.failures += 1
                 self.last_failure_time = time.time()

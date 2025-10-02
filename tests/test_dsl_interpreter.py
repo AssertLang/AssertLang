@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import pytest
-
 from language.interpreter import ActionExecutor, PWExecutionError
 from language.parser import parse_pw
 

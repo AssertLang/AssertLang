@@ -7,9 +7,8 @@ Go uses compile-time tool imports (no dynamic loading like Python/Node.js).
 
 from __future__ import annotations
 
-from typing import Any, Dict, List
 from language.agent_parser import AgentDefinition, ExposeBlock
-from language.mcp_error_handling import get_go_error_middleware, get_validation_helpers
+from language.mcp_error_handling import get_go_error_middleware
 from language.mcp_health_checks import get_go_health_check, get_health_endpoints_pattern
 from language.mcp_security import get_go_security_middleware
 

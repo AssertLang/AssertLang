@@ -16,7 +16,9 @@ Architecture:
 
 import asyncio
 import sys
+
 import requests
+
 sys.path.insert(0, '../..')
 
 from language.mcp_client import MCPClient
@@ -38,7 +40,7 @@ def login(username, password):
     return result
 """
 
-    print(f"\n📝 Submitting code for review...")
+    print("\n📝 Submitting code for review...")
     print(f"Code:\n{sample_code}")
 
     try:
@@ -53,7 +55,7 @@ def login(username, password):
 
         if response.is_success():
             data = response.get_data()
-            print(f"\n✅ Review completed!")
+            print("\n✅ Review completed!")
             print(f"Summary: {data.get('summary', 'N/A')}")
             print(f"Issues: {data.get('issues', [])}")
             print(f"Severity: {data.get('severity', 'N/A')}")
@@ -73,7 +75,7 @@ async def demo_test_execution():
 
     client = MCPClient("http://127.0.0.1:23451")
 
-    print(f"\n🧪 Running test suite...")
+    print("\n🧪 Running test suite...")
 
     try:
         response = client.call(
@@ -87,7 +89,7 @@ async def demo_test_execution():
 
         if response.is_success():
             data = response.get_data()
-            print(f"\n✅ Tests started!")
+            print("\n✅ Tests started!")
             print(f"Test ID: {data.get('test_id', 'N/A')}")
             print(f"Status: {data.get('status', 'N/A')}")
             print(f"Total: {data.get('total_tests', 0)}")
@@ -109,7 +111,7 @@ async def demo_deployment_workflow():
 
     client = MCPClient("http://127.0.0.1:23452")
 
-    print(f"\n🚀 Starting CI/CD pipeline...")
+    print("\n🚀 Starting CI/CD pipeline...")
     print("   Steps: Review → Test → Build → Stage → Smoke Test → Prod (approval) → Verify")
 
     try:
@@ -128,15 +130,15 @@ async def demo_deployment_workflow():
 
         if response.is_success():
             data = response.get_data()
-            print(f"\n✅ Pipeline started!")
+            print("\n✅ Pipeline started!")
             print(f"Execution ID: {data.get('execution_id', 'N/A')}")
             print(f"Status: {data.get('status', 'N/A')}")
-            print(f"\nWorkflow includes:")
-            print(f"  - Code review analysis")
-            print(f"  - Automated testing")
-            print(f"  - Staging deployment")
-            print(f"  - Production approval gate")
-            print(f"  - Rollback on failure")
+            print("\nWorkflow includes:")
+            print("  - Code review analysis")
+            print("  - Automated testing")
+            print("  - Staging deployment")
+            print("  - Production approval gate")
+            print("  - Rollback on failure")
         else:
             print(f"\n❌ Pipeline failed: {response.error}")
 
@@ -152,17 +154,17 @@ async def demo_agent_communication():
     print("DEMO 4: Multi-Agent Communication (MCP)")
     print("="*60)
 
-    print(f"\n🔗 Demonstrating agent-to-agent communication...")
-    print(f"   Architecture: Orchestrator → Code Reviewer → Test Runner")
+    print("\n🔗 Demonstrating agent-to-agent communication...")
+    print("   Architecture: Orchestrator → Code Reviewer → Test Runner")
 
-    print(f"\n📡 Checking agents:")
+    print("\n📡 Checking agents:")
     for name, url in [
         ("code-reviewer", "http://127.0.0.1:23450"),
         ("test-runner", "http://127.0.0.1:23451"),
         ("deployment-orchestrator", "http://127.0.0.1:23452")
     ]:
         try:
-            client = MCPClient(url, timeout=2)
+            MCPClient(url, timeout=2)
             response = requests.get(f"{url}/health", timeout=2)
             if response.status_code == 200:
                 print(f"   ✅ {name}: {url}")

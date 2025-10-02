@@ -1,13 +1,12 @@
+import os
+from datetime import datetime
+from typing import Any, Dict
+
+import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
-import uvicorn
-from typing import Any, Dict, Optional
-from datetime import datetime
-import os
 from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import HumanMessage, SystemMessage
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
 
 # MCP Server for agent: ai-code-reviewer
 app = FastAPI(
@@ -268,11 +267,11 @@ async def list_verbs():
     }
 
 if __name__ == "__main__":
-    print(f"Starting MCP server for agent: ai-code-reviewer")
-    print(f"Port: 23456")
-    print(f"Exposed verbs: ['review.analyze@v1', 'review.submit@v1']")
-    print(f"Health check: http://127.0.0.1:23456/health")
-    print(f"MCP endpoint: http://127.0.0.1:23456/mcp")
+    print("Starting MCP server for agent: ai-code-reviewer")
+    print("Port: 23456")
+    print("Exposed verbs: ['review.analyze@v1', 'review.submit@v1']")
+    print("Health check: http://127.0.0.1:23456/health")
+    print("MCP endpoint: http://127.0.0.1:23456/mcp")
 
     uvicorn.run(
         app,
