@@ -1,4 +1,4 @@
-# For Greg: How to Use Promptware Locally
+# For Dave: How to Use Promptware Locally
 
 **What this is:** Your personal guide to using Promptware for your coding needs.
 
@@ -42,7 +42,7 @@ port 4000
 llm anthropic claude-3-5-sonnet-20241022
 
 prompt_template:
-  You are Greg's coding assistant.
+  You are Dave's coding assistant.
   Help with Python, JavaScript, and general development.
   Be practical and give working code.
 
