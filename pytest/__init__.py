@@ -43,8 +43,9 @@ mark = _Mark()
 
 
 class _RaisesContext:
-    def __init__(self, expected: type[BaseException]) -> None:
+    def __init__(self, expected: type[BaseException], match: str | None = None) -> None:
         self.expected = expected
+        self.match = match
 
     def __enter__(self) -> None:
         return None
@@ -54,11 +55,19 @@ class _RaisesContext:
             raise AssertionError(f"Did not raise {self.expected.__name__}")
         if not issubclass(exc_type, self.expected):
             return False
+        if self.match is not None:
+            import re
+
+            message = str(exc_value)
+            if not re.search(self.match, message):
+                raise AssertionError(
+                    f"Exception message '{message}' does not match pattern '{self.match}'"
+                )
         return True
 
 
-def raises(expected: type[BaseException]) -> _RaisesContext:
-    return _RaisesContext(expected)
+def raises(expected: type[BaseException], match: str | None = None) -> _RaisesContext:
+    return _RaisesContext(expected, match)
 
 
 def iter_parametrization(func: Callable[..., Any]):
