@@ -17,7 +17,6 @@ import logging
 from typing import Any, Dict, Optional, List, Callable
 from dataclasses import dataclass
 from enum import Enum
-from functools import wraps
 from threading import Lock
 
 logger = logging.getLogger(__name__)
@@ -83,7 +82,8 @@ class CircuitBreaker:
 
                 if self.failures >= self.threshold:
                     self.state = CircuitState.OPEN
-                    logger.error(f"Circuit breaker OPEN after {self.failures} failures")
+                    logger.error(
+                        f"Circuit breaker OPEN after {self.failures} failures")
 
             raise
 
@@ -204,7 +204,8 @@ class Agent:
     def __getattr__(self, name: str) -> VerbProxy:
         """Enable dynamic verb calls via dot notation."""
         if name.startswith('_'):
-            raise AttributeError(f"'{type(self).__name__}' object has no attribute '{name}'")
+            raise AttributeError(
+                f"'{type(self).__name__}' object has no attribute '{name}'")
         return VerbProxy(self, name)
 
     def health(self) -> Dict[str, Any]:
@@ -313,12 +314,15 @@ class Agent:
                     timeout,
                 )
             except CircuitBreakerError:
-                raise ConnectionError("Circuit breaker is open - service unavailable")
+                raise ConnectionError(
+                    "Circuit breaker is open - service unavailable")
             except (requests.Timeout, requests.ConnectionError) as e:
                 if attempt == self.config.max_retries:
-                    raise ConnectionError(f"Failed after {attempt + 1} attempts: {e}")
+                    raise ConnectionError(
+                        f"Failed after {attempt + 1} attempts: {e}")
 
-                logger.warning(f"Attempt {attempt + 1} failed, retrying in {delay}s: {e}")
+                logger.warning(
+                    f"Attempt {attempt + 1} failed, retrying in {delay}s: {e}")
                 time.sleep(delay)
                 delay *= self.config.retry_backoff
 

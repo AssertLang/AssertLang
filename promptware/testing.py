@@ -12,7 +12,7 @@ Provides comprehensive testing capabilities for MCP agents:
 import json
 import time
 import statistics
-from typing import Dict, Any, List, Optional, Callable
+from typing import Dict, Any, List, Optional
 from dataclasses import dataclass, field
 from datetime import datetime
 import requests
@@ -126,7 +126,8 @@ class AgentTester:
             # Missing required parameter test
             if required:
                 missing_param = required[0]
-                invalid_params = {k: v for k, v in test_params.items() if k != missing_param}
+                invalid_params = {
+                    k: v for k, v in test_params.items() if k != missing_param}
                 test_cases.append(TestCase(
                     name=f"test_{verb_name.replace('.', '_').replace('@', '_')}_missing_param",
                     verb=verb_name,
@@ -187,7 +188,8 @@ class AgentTester:
             self.coverage[test_case.verb] = True
 
         # Calculate coverage
-        coverage_pct = (sum(self.coverage.values()) / len(self.coverage) * 100) if self.coverage else 0
+        coverage_pct = (sum(self.coverage.values()) /
+                        len(self.coverage) * 100) if self.coverage else 0
 
         summary = {
             "total": len(test_cases),
@@ -260,7 +262,8 @@ class AgentTester:
 
         # Execute load test with thread pool
         with ThreadPoolExecutor(max_workers=concurrency) as executor:
-            futures = [executor.submit(make_request, i) for i in range(num_requests)]
+            futures = [executor.submit(make_request, i)
+                       for i in range(num_requests)]
 
             for i, future in enumerate(as_completed(futures), 1):
                 success, latency, error = future.result()
@@ -274,7 +277,8 @@ class AgentTester:
                         errors.append(error)
 
                 if verbose and i % 10 == 0:
-                    print(f"  Progress: {i}/{num_requests} ({successful} ok, {failed} failed)")
+                    print(
+                        f"  Progress: {i}/{num_requests} ({successful} ok, {failed} failed)")
 
         total_duration = time.time() - start_time
 
@@ -289,8 +293,10 @@ class AgentTester:
             avg_latency_ms=statistics.mean(latencies),
             min_latency_ms=min(latencies),
             max_latency_ms=max(latencies),
-            p95_latency_ms=latencies[int(len(latencies) * 0.95)] if latencies else 0,
-            p99_latency_ms=latencies[int(len(latencies) * 0.99)] if latencies else 0,
+            p95_latency_ms=latencies[int(
+                len(latencies) * 0.95)] if latencies else 0,
+            p99_latency_ms=latencies[int(
+                len(latencies) * 0.99)] if latencies else 0,
             requests_per_second=num_requests / total_duration,
             errors=list(set(errors))[:10]  # First 10 unique errors
         )
@@ -300,8 +306,10 @@ class AgentTester:
             print(f"📈 Load Test Results")
             print(f"{'='*60}")
             print(f"Total Requests:  {result.total_requests}")
-            print(f"Successful:      {result.successful} ({result.successful/result.total_requests*100:.1f}%)")
-            print(f"Failed:          {result.failed} ({result.failed/result.total_requests*100:.1f}%)")
+            print(
+                f"Successful:      {result.successful} ({result.successful/result.total_requests*100:.1f}%)")
+            print(
+                f"Failed:          {result.failed} ({result.failed/result.total_requests*100:.1f}%)")
             print(f"Duration:        {result.total_duration_s:.2f}s")
             print(f"RPS:             {result.requests_per_second:.1f}")
             print(f"\nLatency:")
@@ -393,7 +401,8 @@ class AgentTester:
 
             # Validate expected fields
             result_data = response.get("result", {})
-            missing_fields = [f for f in test_case.expected_fields if f not in result_data]
+            missing_fields = [
+                f for f in test_case.expected_fields if f not in result_data]
 
             if missing_fields:
                 return TestResult(
