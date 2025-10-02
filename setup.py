@@ -106,6 +106,7 @@ setup(
             "mypy>=1.6.0",
             "ipython>=8.17.0",
             "ipdb>=0.13.13",
+            "click>=8.0.0",
         ],
 
         # Documentation dependencies
