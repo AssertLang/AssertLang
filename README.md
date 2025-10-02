@@ -1,8 +1,15 @@
 # 🤖 Promptware
 
+[![CI/CD](https://img.shields.io/github/actions/workflow/status/promptware/promptware/ci.yml?branch=main&style=flat-square&logo=github)](https://github.com/promptware/promptware/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+[![Python Version](https://img.shields.io/badge/python-3.10+-blue.svg?style=flat-square&logo=python)](https://www.python.org/downloads/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](CONTRIBUTING.md)
+[![Discord](https://img.shields.io/badge/Discord-Join%20Us-5865F2?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/promptware)
+
 **Production-ready MCP agent framework with multi-language support**
 
-Define agents once in `.pw`, generate production-hardened MCP servers in **Python**, **Node.js**, **Go**, **C#**, or **Rust** - complete with AI, observability, security, and testing built-in.
+Modern applications need **microservices that speak the same protocol** but run in **different languages**. Writing production servers from scratch is time-consuming—error handling, health checks, rate limiting, testing, and client SDKs easily turn 20 lines of logic into 350+ lines of boilerplate. **Promptware solves this:** define agents once in `.pw`, instantly generate production-hardened MCP servers in Python, Node.js, Go, C#, or Rust—complete with **17.5x code amplification**, **190 tool adapters**, and **5 production languages** ready to deploy.
 
 ```pw
 agent user-service
@@ -358,6 +365,28 @@ console.log(result);
 
 ---
 
+## 💡 Why Promptware?
+
+**Choose Promptware when you need:**
+- **Polyglot microservices** - Build services in the best language for each job while maintaining protocol consistency
+- **Production quality by default** - Error handling, health checks, rate limiting, security headers, and observability without configuration
+- **Rapid prototyping** - Go from idea to running server in 5 minutes with 17.5x code amplification
+- **Enterprise-grade SDKs** - Circuit breakers, retry logic, and connection pooling out of the box
+- **MCP-native architecture** - First-class support for Model Context Protocol, perfect for AI agent systems
+
+**Consider alternatives when:**
+- You need a complex custom protocol (not JSON-RPC/MCP)
+- You're building a monolithic application (not microservices)
+- You require language-specific optimizations that don't fit the generated patterns
+- Your team needs complete control over every line of server code
+
+**Promptware vs Alternatives:**
+- **vs OpenAPI/Swagger** - Promptware generates complete production servers with middleware, not just API definitions
+- **vs gRPC** - MCP protocol is simpler (JSON-RPC) and includes AI agent primitives; use gRPC for high-performance internal services
+- **vs Manual coding** - 17.5x faster development with consistent patterns across languages and automatic test generation
+
+---
+
 ## 📚 Documentation
 
 ### Guides
@@ -470,6 +499,17 @@ Automate deployment pipelines:
 - Test orchestration
 - Progressive deployments
 - Rollback automation
+
+---
+
+## 🏢 Used By
+
+**Using Promptware in production?** We'd love to hear from you! Share your story in [GitHub Discussions](https://github.com/promptware/promptware/discussions/categories/show-and-tell) and we'll feature you here.
+
+**Organizations & Projects:**
+- *Your company/project here*
+- *Add your use case*
+- *Help us build the showcase*
 
 ---
 
@@ -710,6 +750,19 @@ spec:
 
 ---
 
+## 👥 Community
+
+Join the Promptware community:
+
+- **Discord** - [Join our server](https://discord.gg/promptware) for real-time chat, support, and discussions
+- **GitHub Discussions** - [Ask questions, share ideas](https://github.com/promptware/promptware/discussions) and show off your projects
+- **Twitter/X** - [@promptware](https://twitter.com/promptware) for updates and announcements
+- **Office Hours** - Weekly community calls (schedule TBD - watch Discord for announcements)
+
+We're here to help you succeed with Promptware!
+
+---
+
 ## 🤝 Contributing
 
 Contributions welcome! Areas:
@@ -752,6 +805,14 @@ See [Development Guide](docs/development-guide.md) for details.
 
 ---
 
+## 📈 Star History
+
+Track Promptware's growth:
+
+[![Star History Chart](https://api.star-history.com/svg?repos=promptware/promptware&type=Date)](https://star-history.com/#promptware/promptware&Date)
+
+---
+
 ## 📝 License
 
 MIT
@@ -768,10 +829,28 @@ Built with:
 
 ---
 
+## 🚀 Get Started Now
+
 **Write agents once. Deploy in any language. Production-ready out of the box.**
 
 ```bash
-promptware init my-agent && promptware generate my-agent.pw --lang python
+# Install Promptware
+git clone https://github.com/promptware/promptware.git
+cd promptware && pip install -e .
+
+# Create and generate your first agent
+promptware init my-agent --template api
+promptware generate my-agent.pw --lang python
+
+# Start building the future of microservices
 ```
 
-🤖 Built with [Promptware](https://github.com/promptware/promptware)
+**Love Promptware?** Star us on GitHub to show your support and help others discover the project!
+
+**Questions or feedback?** Join our [Discord community](https://discord.gg/promptware) or start a [discussion](https://github.com/promptware/promptware/discussions).
+
+**Want to contribute?** Check out our [Contributing Guide](docs/development-guide.md) and help make Promptware even better!
+
+---
+
+Built with ❤️ by the Promptware community

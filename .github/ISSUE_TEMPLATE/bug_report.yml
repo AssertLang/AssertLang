@@ -1,74 +1,132 @@
 name: Bug Report
-description: Report a bug or unexpected behavior
+description: Report a bug or unexpected behavior in Promptware
+title: "[Bug]: "
 labels: ["bug"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to report this bug!
+        Thanks for taking the time to report this bug! Please fill out the information below to help us investigate.
 
   - type: textarea
     id: description
     attributes:
       label: Description
-      description: A clear description of the bug
-      placeholder: What happened? What did you expect to happen?
+      description: A clear and concise description of what the bug is.
+      placeholder: Tell us what happened
     validations:
       required: true
 
   - type: textarea
-    id: reproduction
+    id: steps-to-reproduce
     attributes:
       label: Steps to Reproduce
-      description: How can we reproduce this issue?
+      description: Detailed steps to reproduce the behavior
       placeholder: |
-        1. Run command...
-        2. Do action...
-        3. See error...
+        1. Run command '...'
+        2. Use .pw file with '...'
+        3. See error
     validations:
       required: true
 
   - type: textarea
-    id: pw-file
+    id: expected-behavior
     attributes:
-      label: .pw File (if applicable)
-      description: Share your .pw file if relevant
-      render: shell
+      label: Expected Behavior
+      description: What did you expect to happen?
+      placeholder: Describe the expected outcome
+    validations:
+      required: true
 
   - type: textarea
-    id: error
+    id: actual-behavior
     attributes:
-      label: Error Message
-      description: Full error message and stack trace
-      render: shell
-
-  - type: input
-    id: version
-    attributes:
-      label: Promptware Version
-      description: Run `promptware --version`
-      placeholder: "1.1.0"
+      label: Actual Behavior
+      description: What actually happened?
+      placeholder: Describe what actually occurred
     validations:
       required: true
 
-  - type: input
-    id: python
-    attributes:
-      label: Python Version
-      placeholder: "3.11"
-    validations:
-      required: true
-
-  - type: input
+  - type: dropdown
     id: os
     attributes:
       label: Operating System
-      placeholder: "macOS 14, Ubuntu 22.04, Windows 11"
+      description: Which operating system are you using?
+      options:
+        - macOS
+        - Linux
+        - Windows
+        - Other
     validations:
       required: true
 
-  - type: textarea
-    id: additional
+  - type: input
+    id: python-version
     attributes:
-      label: Additional Context
-      description: Any other relevant information
+      label: Python Version
+      description: Output of `python --version`
+      placeholder: e.g., Python 3.11.5
+    validations:
+      required: true
+
+  - type: input
+    id: promptware-version
+    attributes:
+      label: Promptware Version
+      description: Output of `promptware --version` or commit hash if using from source
+      placeholder: e.g., 0.1.0 or commit abc123
+    validations:
+      required: true
+
+  - type: dropdown
+    id: language-generated
+    attributes:
+      label: Target Language (if relevant)
+      description: Which language were you generating code for?
+      options:
+        - Python
+        - Node.js
+        - Go
+        - Rust
+        - .NET
+        - C++
+        - Not applicable
+    validations:
+      required: false
+
+  - type: textarea
+    id: code-sample
+    attributes:
+      label: Code Sample
+      description: Minimal .pw file or code snippet that reproduces the issue
+      placeholder: |
+        ```promptware
+        server calculator "A simple calculator"
+        tool add(a: number, b: number) -> number
+        ```
+      render: text
+    validations:
+      required: false
+
+  - type: textarea
+    id: error-messages
+    attributes:
+      label: Error Messages / Logs
+      description: Full error messages, stack traces, or relevant log output
+      placeholder: Paste error messages here
+      render: shell
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      description: Please confirm the following before submitting
+      options:
+        - label: I have searched existing issues to ensure this is not a duplicate
+          required: true
+        - label: I am using the latest version of Promptware
+          required: true
+        - label: I have included all relevant information above
+          required: true
