@@ -14,6 +14,7 @@ daemon/deps_utils.py
 daemon/gateway.py
 daemon/mcpd.py
 daemon/uds_shim.py
+docs/AI-DEVELOPMENT-WORKFLOWS.md
 docs/CLAUDE_ADDENDUM.md
 docs/Claude.md
 docs/README.md
@@ -109,7 +110,9 @@ examples/cross_language/data_processor.pw
 examples/devops_suite/code_reviewer_agent.pw
 examples/devops_suite/deployment_orchestrator.pw
 examples/devops_suite/test_runner_agent.pw
+generated/order-service/order-service_server.py
 generated/test-tool-agent/test-tool-agent_server.py
+generated/user-service/user-service_server.py
 language/__init__.py
 language/agent_parser.py
 language/dsl_utils.py

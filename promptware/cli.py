@@ -8,6 +8,7 @@ Usage:
     promptware test <agent-url> [--auto] [--load] [--coverage]
     promptware list-tools [--lang LANGUAGE]
     promptware init <name> [--template TEMPLATE]
+    promptware ai-guide
     promptware version
     promptware help [COMMAND]
 
@@ -17,6 +18,7 @@ Commands:
     test        Test running MCP agent
     list-tools  List all available tools
     init        Create new .pw agent from template
+    ai-guide    Show AI agent onboarding guide (copy/paste to AI agents)
     version     Show version information
     help        Show help for commands
 """
@@ -295,6 +297,13 @@ For more help: promptware help <command>
     # config path
     config_path = config_subparsers.add_parser('path', help='Show config file path')
     config_path.add_argument('--project', action='store_true', help='Show project config path')
+
+    # AI Guide command
+    ai_guide_parser = subparsers.add_parser(
+        'ai-guide',
+        help='Show AI agent onboarding guide',
+        description='Display the comprehensive guide for AI coding agents to understand Promptware.'
+    )
 
     # Help command
     help_parser = subparsers.add_parser(
@@ -946,6 +955,25 @@ def cmd_config(args) -> int:
     return 0
 
 
+def cmd_ai_guide(args) -> int:
+    """Execute ai-guide command - show AI agent onboarding guide."""
+    guide_path = Path(__file__).parent.parent / "AI-AGENT-GUIDE.md"
+
+    if not guide_path.exists():
+        print(error(f"AI agent guide not found at: {guide_path}"))
+        return 1
+
+    with open(guide_path, 'r') as f:
+        content = f.read()
+
+    print(content)
+    print()
+    print(colored("Copy this entire output and paste it to any AI coding agent.", "ℹ"))
+    print(colored("They will understand how to help you build services with Promptware.", "ℹ"))
+
+    return 0
+
+
 def cmd_help(args) -> int:
     """Execute help command."""
     help_topics = {
@@ -1065,6 +1093,7 @@ def main():
         'list-tools': cmd_list_tools,
         'init': cmd_init,
         'config': cmd_config,
+        'ai-guide': cmd_ai_guide,
         'help': cmd_help,
     }
 
