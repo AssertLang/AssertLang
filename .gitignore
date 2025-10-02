@@ -1,9 +1,86 @@
-.mcpd/
+# Python
 __pycache__/
-.pytest_cache/
-*.pyc
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
 env/
 venv/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+.cursor/
+.claude/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Secrets and credentials
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+credentials.json
+**/secrets/
+**/*.secret
+
+# MCP daemon
+.mcpd/
+
+# Logs
 *.log
 *.sock
 
+# Generated files
+generated/
+*.pyc
+*.pyo
+node_modules/
+bin/
+**/bin/Debug/
+**/bin/Release/
+**/obj/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary
+*.tmp
+*.bak
+*.swp
+.cache/
