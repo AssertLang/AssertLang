@@ -59,6 +59,7 @@ setup(
         # Core dependencies
         "requests>=2.31.0",
         "pyyaml>=6.0.0",
+        "jsonschema>=4.0.0",
 
         # CLI dependencies
         # (argparse is built-in)
