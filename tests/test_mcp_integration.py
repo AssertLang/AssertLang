@@ -39,8 +39,8 @@ def send_jsonrpc(agent_path: str, requests: list) -> list:
     return responses
 
 
-def test_agent_initialize_and_list_tools(agent_path: str) -> Dict[str, Any]:
-    """Test that agent can initialize and list tools."""
+def agent_initialize_and_list_tools(agent_path: str) -> Dict[str, Any]:
+    """Helper: Test that agent can initialize and list tools."""
     requests = [
         {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}},
         {"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}},
@@ -70,10 +70,10 @@ def test_agent_initialize_and_list_tools(agent_path: str) -> Dict[str, Any]:
     }
 
 
-def test_agent_tool_execution(
+def agent_tool_execution(
     agent_path: str, tool_name: str, arguments: Dict[str, Any]
 ) -> Dict[str, Any]:
-    """Test executing a tool on an agent."""
+    """Helper: Test executing a tool on an agent."""
     requests = [
         {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}},
         {
@@ -145,7 +145,7 @@ def test_all_agents_initialize():
 
     for agent_path, _, _ in TEST_AGENTS:
         try:
-            result = test_agent_initialize_and_list_tools(agent_path)
+            result = agent_initialize_and_list_tools(agent_path)
             results[agent_path] = {"status": "pass", "data": result}
             print(f"✅ {agent_path}: {result['tool_count']} tools")
         except Exception as e:
@@ -166,7 +166,7 @@ def test_all_agents_execute_tools():
 
     for agent_path, tool_name, arguments in TEST_AGENTS:
         try:
-            result = test_agent_tool_execution(agent_path, tool_name, arguments)
+            result = agent_tool_execution(agent_path, tool_name, arguments)
             results[agent_path] = {
                 "status": "pass" if result["success"] else "error",
                 "data": result,
@@ -201,7 +201,7 @@ def test_tool_integration_end_to_end():
     3. Actual data returned (not mock)
     4. Tool results present in response
     """
-    result = test_agent_tool_execution(
+    result = agent_tool_execution(
         "examples/test_tool_integration.pw",
         "fetch.url@v1",
         {"url": "https://api.github.com/zen", "method": "GET"},
