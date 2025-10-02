@@ -15,11 +15,12 @@ setup(
     description="Production-ready MCP agent framework with multi-language support",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/promptware/promptware",
+    url="https://github.com/promptware-dev/promptware",
     project_urls={
-        "Documentation": "https://github.com/promptware/promptware/tree/main/docs",
-        "Source": "https://github.com/promptware/promptware",
-        "Issues": "https://github.com/promptware/promptware/issues",
+        "Documentation": "https://github.com/promptware-dev/promptware/tree/main/docs",
+        "Source": "https://github.com/promptware-dev/promptware",
+        "Issues": "https://github.com/promptware-dev/promptware/issues",
+        "Website": "https://promptware.dev",
     },
     packages=find_packages(exclude=["tests", "tests.*", "examples", "examples.*"]),
     classifiers=[
