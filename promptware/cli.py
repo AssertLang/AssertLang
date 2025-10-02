@@ -28,8 +28,6 @@ import sys
 import os
 import shutil
 from pathlib import Path
-from typing import Optional, List
-
 # Add project root to path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
@@ -37,27 +35,33 @@ sys.path.insert(0, str(project_root))
 # Color support and output utilities
 NO_COLOR = os.environ.get('NO_COLOR') is not None or not sys.stdout.isatty()
 
+
 def colored(text: str, emoji: str = "") -> str:
     """Return text with emoji if colors are enabled."""
     if NO_COLOR:
         return text
     return f"{emoji} {text}" if emoji else text
 
+
 def success(text: str) -> str:
     """Format success message."""
     return colored(text, "✓")
+
 
 def error(text: str) -> str:
     """Format error message."""
     return colored(text, "✗")
 
+
 def info(text: str) -> str:
     """Format info message."""
     return colored(text, "ℹ")
 
+
 def warning(text: str) -> str:
     """Format warning message."""
     return colored(text, "⚠️")
+
 
 def confirm_action(message: str, default: bool = False, auto_yes: bool = False) -> bool:
     """Prompt user for confirmation."""
@@ -107,7 +111,8 @@ For more help: promptware help <command>
     )
 
     # Subcommands
-    subparsers = parser.add_subparsers(dest='command', help='Available commands')
+    subparsers = parser.add_subparsers(
+        dest='command', help='Available commands')
 
     # Generate command
     generate_parser = subparsers.add_parser(
@@ -270,36 +275,47 @@ For more help: promptware help <command>
         help='Manage configuration',
         description='View and modify Promptware configuration.'
     )
-    config_subparsers = config_parser.add_subparsers(dest='config_action', help='Config actions')
+    config_subparsers = config_parser.add_subparsers(
+        dest='config_action', help='Config actions')
 
     # config set
-    config_set = config_subparsers.add_parser('set', help='Set configuration value')
-    config_set.add_argument('key', help='Configuration key (e.g., defaults.language)')
+    config_set = config_subparsers.add_parser(
+        'set', help='Set configuration value')
+    config_set.add_argument(
+        'key', help='Configuration key (e.g., defaults.language)')
     config_set.add_argument('value', help='Configuration value')
-    config_set.add_argument('--project', action='store_true', help='Set in project config instead of global')
+    config_set.add_argument('--project', action='store_true',
+                            help='Set in project config instead of global')
 
     # config get
-    config_get = config_subparsers.add_parser('get', help='Get configuration value')
+    config_get = config_subparsers.add_parser(
+        'get', help='Get configuration value')
     config_get.add_argument('key', help='Configuration key')
 
     # config unset
-    config_unset = config_subparsers.add_parser('unset', help='Remove configuration value')
+    config_unset = config_subparsers.add_parser(
+        'unset', help='Remove configuration value')
     config_unset.add_argument('key', help='Configuration key')
-    config_unset.add_argument('--project', action='store_true', help='Remove from project config instead of global')
+    config_unset.add_argument('--project', action='store_true',
+                              help='Remove from project config instead of global')
 
     # config list
     config_subparsers.add_parser('list', help='List all configuration values')
 
     # config edit
-    config_edit = config_subparsers.add_parser('edit', help='Open config file in editor')
-    config_edit.add_argument('--project', action='store_true', help='Edit project config instead of global')
+    config_edit = config_subparsers.add_parser(
+        'edit', help='Open config file in editor')
+    config_edit.add_argument(
+        '--project', action='store_true', help='Edit project config instead of global')
 
     # config path
-    config_path = config_subparsers.add_parser('path', help='Show config file path')
-    config_path.add_argument('--project', action='store_true', help='Show project config path')
+    config_path = config_subparsers.add_parser(
+        'path', help='Show config file path')
+    config_path.add_argument(
+        '--project', action='store_true', help='Show project config path')
 
     # AI Guide command
-    ai_guide_parser = subparsers.add_parser(
+    subparsers.add_parser(
         'ai-guide',
         help='Show AI agent onboarding guide',
         description='Display the comprehensive guide for AI coding agents to understand Promptware.'
@@ -442,7 +458,7 @@ require (
         files_to_create.append((go_mod_file, go_mod_content))
 
     elif args.lang == 'csharp':
-        csproj_content = f"""<Project Sdk="Microsoft.NET.Sdk.Web">
+        csproj_content = """<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
@@ -478,7 +494,8 @@ tokio = {{ version = "1", features = ["full"] }}
         print(colored("\nDry-run mode - no files will be written", "ℹ"))
         print(f"\nWould create in: {output_dir.absolute()}")
         for file_path, content in files_to_create:
-            print(f"  {success('')} {file_path.name} ({len(content)} bytes, {len(content.splitlines())} lines)")
+            print(
+                f"  {success('')} {file_path.name} ({len(content)} bytes, {len(content.splitlines())} lines)")
         return 0
 
     # Confirmation prompt (unless --yes)
@@ -509,11 +526,13 @@ tokio = {{ version = "1", features = ["full"] }}
         promptware_js_src = project_root / "promptware-js"
         promptware_js_dest = output_dir / "promptware-js"
         if promptware_js_src.exists():
-            shutil.copytree(promptware_js_src, promptware_js_dest, dirs_exist_ok=True)
+            shutil.copytree(promptware_js_src,
+                            promptware_js_dest, dirs_exist_ok=True)
             if not args.quiet:
-                print(success(f"Copied: promptware-js/"))
+                print(success("Copied: promptware-js/"))
         else:
-            print(error(f"Warning: promptware-js directory not found at {promptware_js_src}"))
+            print(
+                error(f"Warning: promptware-js directory not found at {promptware_js_src}"))
 
     # Auto-install dependencies (Python and Node.js)
     if args.lang == 'python' and (output_dir / 'requirements.txt').exists():
@@ -530,8 +549,10 @@ tokio = {{ version = "1", features = ["full"] }}
                 if result.returncode == 0:
                     print(success("Dependencies installed!"))
                 else:
-                    print(error(f"Failed to install dependencies: {result.stderr}"))
-                    print("You can install manually with: pip install -r requirements.txt")
+                    print(
+                        error(f"Failed to install dependencies: {result.stderr}"))
+                    print(
+                        "You can install manually with: pip install -r requirements.txt")
 
     elif args.lang == 'nodejs' and (output_dir / 'package.json').exists():
         if not args.quiet:
@@ -547,7 +568,8 @@ tokio = {{ version = "1", features = ["full"] }}
                 if result.returncode == 0:
                     print(success("Dependencies installed!"))
                 else:
-                    print(error(f"Failed to install dependencies: {result.stderr}"))
+                    print(
+                        error(f"Failed to install dependencies: {result.stderr}"))
                     print("You can install manually with: npm install")
 
     # Show next steps
@@ -597,12 +619,13 @@ def cmd_validate(args) -> int:
         print("✓ Syntax valid")
 
         if args.verbose:
-            print(f"\n📋 Agent Details:")
+            print("\n📋 Agent Details:")
             print(f"  Name: {agent.name}")
             print(f"  Port: {agent.port}")
             print(f"  Verbs: {len(agent.exposes)}")
             for expose in agent.exposes:
-                print(f"    - {expose.verb} ({len(expose.params)} params, {len(expose.returns)} returns)")
+                print(
+                    f"    - {expose.verb} ({len(expose.params)} params, {len(expose.returns)} returns)")
 
             if agent.tools:
                 print(f"  Tools: {', '.join(agent.tools)}")
@@ -611,11 +634,11 @@ def cmd_validate(args) -> int:
                 print(f"  LLM: {agent.llm}")
 
             if agent.observability:
-                print(f"  Observability:")
+                print("  Observability:")
                 if agent.observability.traces:
-                    print(f"    - Traces enabled")
+                    print("    - Traces enabled")
                 if agent.observability.metrics:
-                    print(f"    - Metrics enabled")
+                    print("    - Metrics enabled")
 
         return 0
 
@@ -688,7 +711,8 @@ def cmd_test(args) -> int:
         # Generate test params
         input_schema = verb_schema.get('inputSchema', {})
         properties = input_schema.get('properties', {})
-        test_params = tester._generate_test_data(properties, input_schema.get('required', []))
+        test_params = tester._generate_test_data(
+            properties, input_schema.get('required', []))
 
         try:
             result = tester.run_load_test(
@@ -700,7 +724,8 @@ def cmd_test(args) -> int:
             )
 
             if result.failed > result.successful:
-                print("\n⚠️  Load test had more failures than successes", file=sys.stderr)
+                print("\n⚠️  Load test had more failures than successes",
+                      file=sys.stderr)
                 return 1
 
         except Exception as e:
@@ -729,10 +754,11 @@ def cmd_list_tools(args) -> int:
         print("✗ Error: Tools directory not found", file=sys.stderr)
         return 1
 
-    print(f"🛠️  Available Promptware Tools\n")
+    print("🛠️  Available Promptware Tools\n")
 
     # Scan tools directory
-    tool_dirs = sorted([d for d in tools_dir.iterdir() if d.is_dir() and not d.name.startswith('__')])
+    tool_dirs = sorted([d for d in tools_dir.iterdir()
+                       if d.is_dir() and not d.name.startswith('__')])
 
     # Categorize tools
     categories = {
@@ -868,7 +894,7 @@ expose chat.message@v1 (
 
     output_file.write_text(template_code)
     print(f"✓ Created: {output_file}")
-    print(f"\n📝 Next steps:")
+    print("\n📝 Next steps:")
     print(f"  1. Edit {output_file} to customize your agent")
     print(f"  2. Validate: promptware validate {output_file}")
     print(f"  3. Generate: promptware generate {output_file} --lang python")
@@ -969,7 +995,8 @@ def cmd_ai_guide(args) -> int:
     print(content)
     print()
     print(colored("Copy this entire output and paste it to any AI coding agent.", "ℹ"))
-    print(colored("They will understand how to help you build services with Promptware.", "ℹ"))
+    print(colored(
+        "They will understand how to help you build services with Promptware.", "ℹ"))
 
     return 0
 
