@@ -2,12 +2,11 @@ import json
 from types import SimpleNamespace
 
 import pytest
-
-from tools.transform.adapters import adapter_py as transform_adapter
-from tools.validate_data.adapters import adapter_py as validate_adapter
-from tools.storage.adapters import adapter_py as storage_adapter
 from tools.logger.adapters import adapter_py as logger_adapter
 from tools.rest.adapters import adapter_py as rest_adapter
+from tools.storage.adapters import adapter_py as storage_adapter
+from tools.transform.adapters import adapter_py as transform_adapter
+from tools.validate_data.adapters import adapter_py as validate_adapter
 
 
 def test_transform_json_to_yaml():

@@ -6,6 +6,7 @@ Implements CORS, rate limiting, request validation, and security headers.
 
 from typing import Dict
 
+
 def get_python_security_middleware() -> str:
     """Generate Python security middleware (FastAPI)."""
     return '''

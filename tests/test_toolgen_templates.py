@@ -3,7 +3,6 @@ import shutil
 import subprocess
 
 import pytest
-
 from cli import toolgen
 
 

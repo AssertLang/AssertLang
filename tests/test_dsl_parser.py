@@ -2,7 +2,6 @@ import json
 from pathlib import Path
 
 import pytest
-
 from language.parser import PWParseError, _parse_dsl, parse_pw  # type: ignore[attr-defined]
 
 

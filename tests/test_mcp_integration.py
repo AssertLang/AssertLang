@@ -10,7 +10,7 @@ Tests that all agents in .cursor/mcp.json:
 import json
 import subprocess
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any, Dict
 
 
 def send_jsonrpc(agent_path: str, requests: list) -> list:

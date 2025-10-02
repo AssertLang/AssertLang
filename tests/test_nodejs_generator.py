@@ -2,9 +2,7 @@
 Tests for Node.js MCP server generator.
 """
 
-import pytest
-from language.agent_parser import parse_agent_pw
-from language.nodejs_server_generator import generate_nodejs_mcp_server, generate_nodejs_server_from_pw
+from language.nodejs_server_generator import generate_nodejs_server_from_pw
 
 
 def test_basic_nodejs_generation():

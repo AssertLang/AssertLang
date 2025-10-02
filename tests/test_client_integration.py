@@ -3,24 +3,25 @@ Integration tests for Promptware MCP client library.
 
 Tests client against a real generated HTTP server.
 """
-import pytest
-import json
+import importlib.util
+import os
+import sys
+import tempfile
 import threading
 import time
-import tempfile
-import os
-import importlib.util
 from pathlib import Path
-import sys
+
+import pytest
 
 # Add project root to path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
+import uvicorn
+
 from language.mcp_server_generator import generate_mcp_server_from_pw
 from promptware.client import MCPClient, call_verb
-from promptware.exceptions import InvalidVerbError, InvalidParamsError
-import uvicorn
+from promptware.exceptions import InvalidVerbError
 
 
 @pytest.fixture(scope="module")

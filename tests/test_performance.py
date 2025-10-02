@@ -6,11 +6,11 @@ Tests throughput, latency, and resource usage of generated agents.
 
 import subprocess
 import sys
-import time
-import requests
 import threading
+import time
 from pathlib import Path
-from typing import List, Tuple
+
+import requests
 
 
 def start_test_server(pw_file: Path, output_file: Path, port: int) -> subprocess.Popen:
@@ -212,7 +212,7 @@ def test_parser_performance():
     avg_time = (elapsed / num_iterations) * 1000  # ms
     throughput = num_iterations / elapsed
 
-    print(f"\nParser performance:")
+    print("\nParser performance:")
     print(f"  Average parse time: {avg_time:.2f}ms")
     print(f"  Throughput: {throughput:.1f} parses/s")
 

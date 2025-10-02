@@ -3,9 +3,9 @@ Unit tests for tool registry.
 
 Tests tool discovery, loading, and execution.
 """
+
 import pytest
-from pathlib import Path
-from tools.registry import ToolRegistry, get_registry
+from tools.registry import get_registry
 
 
 def test_registry_singleton():
@@ -187,7 +187,7 @@ def test_registry_discovers_multiple_tools():
     for expected in expected_tools:
         # Check if tool exists (may not all be implemented)
         if expected in tools:
-            tool = registry.get_tool(expected)
+            registry.get_tool(expected)
             # If listed, should be loadable (though may fail if adapter missing)
 
 

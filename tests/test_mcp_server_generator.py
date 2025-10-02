@@ -1,11 +1,10 @@
 """Tests for MCP server generator."""
 
-import pytest
-from language.mcp_server_generator import (
-    generate_python_mcp_server,
-    generate_mcp_server_from_pw,
-)
 from language.agent_parser import parse_agent_pw
+from language.mcp_server_generator import (
+    generate_mcp_server_from_pw,
+    generate_python_mcp_server,
+)
 
 
 def test_generate_basic_server():
