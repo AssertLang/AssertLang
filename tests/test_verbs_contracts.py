@@ -1,7 +1,13 @@
+import sys
 import textwrap
 from pathlib import Path
 
 import pytest
+
+# Add project root to path
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
+
 from daemon.mcpd import MCPDaemon, Task
 from schema_utils import assert_events_match_schema
 
