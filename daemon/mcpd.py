@@ -2,19 +2,19 @@ import hashlib
 import html
 import json
 import os
+import random
 import secrets
 import shutil
 import signal
+import socket
 import subprocess
 import sys
 import tempfile
-import random
-import socket
 import time
 from dataclasses import dataclass, field
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, Dict, Optional, List, Union
+from typing import Any, Dict, List, Optional, Union
 
 import yaml
 
@@ -25,7 +25,6 @@ except ImportError:
     parse_pw = None  # Fallback if not available
 
 from .deps_utils import trim_cache
-
 
 ALLOWLIST_KEYS = {
     "python": "requirements",
@@ -607,14 +606,13 @@ class MCPDaemon:
             uds_path = str(socket_path)
             backend_url = f"http://127.0.0.1:{port}"
             route_started = time.perf_counter()
-            shim_proc = subprocess.Popen(
+            subprocess.Popen(
                 [sys.executable, str(Path("daemon/uds_shim.py")), "--uds", uds_path, "--backend", backend_url],
                 cwd=str(Path.cwd()),
                 stdout=log_file,
                 stderr=subprocess.STDOUT,
                 env=env,
             )
-            uds_ready = False
             uds_deadline = time.time() + 10
             while time.time() < uds_deadline:
                 if os.path.exists(uds_path):
@@ -622,7 +620,6 @@ class MCPDaemon:
                         with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as s:
                             s.settimeout(0.5)
                             s.connect(uds_path)
-                            uds_ready = True
                             break
                     except Exception:
                         pass
@@ -682,7 +679,9 @@ class MCPDaemon:
 
     # Verb: httpcheck.assert@v1
     def httpcheck_assert_v1(self, task_id: str, path: str = "/", expect_status: int = 200) -> dict:
-        import requests, time
+        import time
+
+        import requests
 
         task = self.tasks.get(task_id)
         host = "127.0.0.1"

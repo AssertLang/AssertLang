@@ -1,9 +1,8 @@
 """MCP verb implementations."""
 
-import json
 from typing import Any, Literal
 
-from ..errors import PromptwareError, E_JSON, E_RUNTIME
+from ..errors import E_JSON, E_RUNTIME, PromptwareError
 from ..types import MCPEnvelope
 from .transport import Transport
 

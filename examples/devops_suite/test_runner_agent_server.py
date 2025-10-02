@@ -1,17 +1,17 @@
+import time
+from datetime import datetime
+from typing import Any, Dict
+
+import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
-import uvicorn
-from typing import Any, Dict, Optional
-from datetime import datetime
-import time
-from opentelemetry import trace, metrics
+from opentelemetry import metrics, trace
+from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+from opentelemetry.sdk.metrics import MeterProvider
+from opentelemetry.sdk.metrics.export import ConsoleMetricExporter, PeriodicExportingMetricReader
+from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExporter
-from opentelemetry.sdk.metrics import MeterProvider
-from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader, ConsoleMetricExporter
-from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
-from opentelemetry.sdk.resources import Resource
-
 
 # OpenTelemetry setup
 resource = Resource.create({"service.name": "test-runner"})
@@ -291,11 +291,11 @@ async def list_verbs():
     }
 
 if __name__ == "__main__":
-    print(f"Starting MCP server for agent: test-runner")
-    print(f"Port: 23451")
-    print(f"Exposed verbs: ['test.run@v1', 'test.status@v1', 'test.report@v1']")
-    print(f"Health check: http://127.0.0.1:23451/health")
-    print(f"MCP endpoint: http://127.0.0.1:23451/mcp")
+    print("Starting MCP server for agent: test-runner")
+    print("Port: 23451")
+    print("Exposed verbs: ['test.run@v1', 'test.status@v1', 'test.report@v1']")
+    print("Health check: http://127.0.0.1:23451/health")
+    print("MCP endpoint: http://127.0.0.1:23451/mcp")
 
     uvicorn.run(
         app,

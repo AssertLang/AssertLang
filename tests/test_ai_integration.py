@@ -9,9 +9,9 @@ import os
 import subprocess
 import sys
 import time
-import requests
 from pathlib import Path
 
+import requests
 
 # Check if API key is available
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY")

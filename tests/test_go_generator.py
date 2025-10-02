@@ -2,9 +2,7 @@
 Tests for Go MCP server generator.
 """
 
-import pytest
-from language.agent_parser import parse_agent_pw
-from language.go_server_generator import generate_go_mcp_server, generate_go_server_from_pw
+from language.go_server_generator import generate_go_server_from_pw
 
 
 def test_basic_go_generation():

@@ -1,6 +1,6 @@
+from tools.branch.adapters import adapter_py as branch
 from tools.conditional.adapters import adapter_py as conditional
 from tools.loop.adapters import adapter_py as loop
-from tools.branch.adapters import adapter_py as branch
 
 
 def test_conditional_eq():

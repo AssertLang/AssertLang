@@ -1,8 +1,6 @@
-import os
 from pathlib import Path
 
 import pytest
-
 from tools.storage.adapters import adapter_py
 
 

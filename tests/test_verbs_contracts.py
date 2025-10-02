@@ -2,7 +2,6 @@ import textwrap
 from pathlib import Path
 
 import pytest
-
 from daemon.mcpd import MCPDaemon, Task
 from schema_utils import assert_events_match_schema
 

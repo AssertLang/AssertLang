@@ -1,16 +1,13 @@
 import json
-import os
-import sys
-from pathlib import Path
-import signal
 import shutil
+import sys
 import webbrowser
+from pathlib import Path
 
 import click
 
-from daemon.mcpd import MCPDaemon
 from cli.toolgen import toolgen as toolgen_command
-
+from daemon.mcpd import MCPDaemon
 
 REGISTRY_PATH = Path(__file__).resolve().parents[1] / "data" / "tools_registry.json"
 if REGISTRY_PATH.exists():

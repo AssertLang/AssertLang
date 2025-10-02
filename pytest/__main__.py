@@ -81,7 +81,7 @@ def main() -> None:
                     func(**{**params, **injected})
                 except SkipTest as exc:  # pragma: no cover - optional
                     print(f"SKIPPED: {case_label} - {exc}")
-                except Exception as exc:  # noqa: BLE001
+                except Exception:  # noqa: BLE001
                     failures += 1
                     print(f"FAILED: {case_label}")
                     traceback.print_exc()

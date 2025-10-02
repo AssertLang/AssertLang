@@ -6,10 +6,16 @@ Generates FastAPI-based MCP servers from .pw agent definitions.
 
 from __future__ import annotations
 
-from typing import Any, Dict, List
-from language.agent_parser import AgentDefinition, ExposeBlock, ObservabilityConfig, WorkflowDefinition, WorkflowStep
+from typing import Dict, List
+
+from language.agent_parser import (
+    AgentDefinition,
+    ExposeBlock,
+    WorkflowDefinition,
+    WorkflowStep,
+)
 from language.mcp_error_handling import get_python_error_middleware, get_validation_helpers
-from language.mcp_health_checks import get_python_health_check, get_health_endpoints_pattern
+from language.mcp_health_checks import get_health_endpoints_pattern, get_python_health_check
 from language.mcp_security import get_python_security_middleware
 
 
@@ -202,7 +208,7 @@ async def get_temporal_client() -> Client:
     if agent.llm:
         # Parse LLM spec (e.g., "anthropic claude-3-5-sonnet-20241022")
         llm_parts = agent.llm.split()
-        provider = llm_parts[0] if llm_parts else "anthropic"
+        llm_parts[0] if llm_parts else "anthropic"
         model_name = " ".join(llm_parts[1:]) if len(llm_parts) > 1 else "claude-3-5-sonnet-20241022"
 
         llm_init = f'''
@@ -371,7 +377,7 @@ def _generate_mock_handler_body(expose: ExposeBlock) -> str:
 def _generate_ai_handler_body(expose: ExposeBlock, agent: AgentDefinition, param_names: List[str]) -> str:
     """Generate AI-powered handler using LangChain with specific prompt."""
     # Build prompt with parameters
-    param_refs = ", ".join([f"{{params['{p}']}}" for p in param_names])
+    ", ".join([f"{{params['{p}']}}" for p in param_names])
 
     # Format parameters for prompt
     param_placeholders = "\n    ".join([f'{p}: {{params["{p}"]}}' for p in param_names])
