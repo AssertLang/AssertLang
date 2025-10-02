@@ -63,7 +63,6 @@ merge into summary send.case_0 send.case_1
     assert "merge into summary send.case_0 send.case_1" in formatted
 
 
-
 def test_lint_warns_on_empty_fanout_case():
     source = """
 tool echo as send
@@ -106,7 +105,8 @@ state shared:
 """
     formatted = format_text(source)
     assert "state shared:" in formatted
-    assert "call log message=\"hi\"" in formatted
+    assert 'call log message="hi"' in formatted
+
 
 def test_format_text_with_merge_aliases():
     source = """
@@ -114,7 +114,6 @@ merge into summary send.case_0 as first send.case_1 as second
 """
     formatted = format_text(source)
     assert "merge into summary send.case_0 as first send.case_1 as second" in formatted
-
 
 
 def test_format_text_with_merge_aliases():
@@ -131,4 +130,3 @@ merge append into summary send.case_0 as first send.case_1 as second
 """
     formatted = format_text(source)
     assert "merge append into summary send.case_0 as first send.case_1 as second" in formatted
-

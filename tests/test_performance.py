@@ -17,16 +17,13 @@ def start_test_server(pw_file: Path, output_file: Path, port: int) -> subprocess
     """Generate and start a test server."""
     # Generate server
     subprocess.run(
-        [sys.executable, "cli/main.py", "generate",
-         str(pw_file), "-o", str(output_file)],
-        capture_output=True
+        [sys.executable, "cli/main.py", "generate", str(pw_file), "-o", str(output_file)],
+        capture_output=True,
     )
 
     # Start server
     server_process = subprocess.Popen(
-        [sys.executable, str(output_file)],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE
+        [sys.executable, str(output_file)], stdout=subprocess.PIPE, stderr=subprocess.PIPE
     )
 
     # Wait for startup with retries
@@ -63,20 +60,25 @@ def MANUAL_test_python_server_throughput():
     try:
         # Warmup
         for _ in range(10):
-            requests.post("http://127.0.0.1:23500/mcp", json={
-                "method": "data.transform@v1",
-                "params": {"input": "test", "format": "json"}
-            }, timeout=1)
+            requests.post(
+                "http://127.0.0.1:23500/mcp",
+                json={"method": "data.transform@v1", "params": {"input": "test", "format": "json"}},
+                timeout=1,
+            )
 
         # Benchmark
         num_requests = 100
         start_time = time.time()
 
         for _ in range(num_requests):
-            response = requests.post("http://127.0.0.1:23500/mcp", json={
-                "method": "data.transform@v1",
-                "params": {"input": "benchmark", "format": "json"}
-            }, timeout=5)
+            response = requests.post(
+                "http://127.0.0.1:23500/mcp",
+                json={
+                    "method": "data.transform@v1",
+                    "params": {"input": "benchmark", "format": "json"},
+                },
+                timeout=5,
+            )
             assert response.status_code == 200
 
         elapsed = time.time() - start_time
@@ -118,10 +120,14 @@ def MANUAL_test_concurrent_requests():
         def make_requests():
             for _ in range(requests_per_thread):
                 try:
-                    response = requests.post("http://127.0.0.1:23500/mcp", json={
-                        "method": "data.validate@v1",
-                        "params": {"data": "test", "schema": "string"}
-                    }, timeout=5)
+                    response = requests.post(
+                        "http://127.0.0.1:23500/mcp",
+                        json={
+                            "method": "data.validate@v1",
+                            "params": {"data": "test", "schema": "string"},
+                        },
+                        timeout=5,
+                    )
                     results.append(response.status_code)
                 except Exception as e:
                     errors.append(str(e))
@@ -171,9 +177,17 @@ def test_code_generation_speed():
         start_time = time.time()
 
         result = subprocess.run(
-            [sys.executable, "cli/main.py", "generate",
-             str(pw_file), "--lang", lang, "-o", str(output_file)],
-            capture_output=True
+            [
+                sys.executable,
+                "cli/main.py",
+                "generate",
+                str(pw_file),
+                "--lang",
+                lang,
+                "-o",
+                str(output_file),
+            ],
+            capture_output=True,
         )
 
         elapsed = time.time() - start_time
@@ -235,10 +249,14 @@ def MANUAL_test_memory_usage():
     try:
         # Make many requests
         for i in range(1000):
-            requests.post("http://127.0.0.1:23500/mcp", json={
-                "method": "data.transform@v1",
-                "params": {"input": f"test_{i}", "format": "json"}
-            }, timeout=5)
+            requests.post(
+                "http://127.0.0.1:23500/mcp",
+                json={
+                    "method": "data.transform@v1",
+                    "params": {"input": f"test_{i}", "format": "json"},
+                },
+                timeout=5,
+            )
 
         # Server should still respond
         response = requests.get("http://127.0.0.1:23500/health", timeout=5)
