@@ -1,6 +1,6 @@
+from tools.encryption.adapters import adapter_py as encryption_adapter
 from tools.input.adapters import adapter_py as input_adapter
 from tools.output.adapters import adapter_py as output_adapter
-from tools.encryption.adapters import adapter_py as encryption_adapter
 
 
 def test_input_output_file(tmp_path):

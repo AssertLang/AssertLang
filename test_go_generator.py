@@ -13,6 +13,7 @@ sys.path.insert(0, str(project_root))
 
 from language.mcp_server_generator_go import generate_go_server_from_pw
 
+
 def main():
     # Read the .pw file
     pw_file = project_root / "examples/demo/user_service.pw"
@@ -21,7 +22,7 @@ def main():
     with open(pw_file, 'r') as f:
         pw_code = f.read()
 
-    print(f"Generating Go server...")
+    print("Generating Go server...")
 
     # Generate Go server code
     go_code = generate_go_server_from_pw(pw_code)
@@ -38,7 +39,7 @@ def main():
     print(f"  Lines: {len(go_code.splitlines())}")
 
     # Create go.mod
-    go_mod = f"""module user-service-mcp
+    go_mod = """module user-service-mcp
 
 go 1.21
 

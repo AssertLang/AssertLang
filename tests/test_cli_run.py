@@ -5,6 +5,7 @@ from pathlib import Path
 from language.executor import execute_pw_file
 from schema_utils import assert_events_match_schema
 
+
 def test_interpreter_events_via_executor(tmp_path):
     pw_path = Path(tmp_path) / "logger.pw"
     pw_path.write_text(

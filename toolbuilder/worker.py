@@ -1,14 +1,13 @@
 from __future__ import annotations
 
 import time
-from pathlib import Path
 from typing import Optional
 
-from .models import ToolJob, JobStatus, ensure_dirs, ARTIFACT_ROOT
+from .codegen import generate as codegen_generate
+from .models import ARTIFACT_ROOT, JobStatus, ToolJob, ensure_dirs
+from .provider import get_provider
 from .queue import list_jobs, update_job
 from .scaffold import scaffold_tool
-from .provider import get_provider
-from .codegen import generate as codegen_generate
 
 
 def _log(job: ToolJob, msg: str) -> None:
@@ -29,7 +28,7 @@ def process_one(provider_name: str = "anthropic") -> Optional[ToolJob]:
             _log(job, f"scaffolding {job.tool_name} v{job.version}")
             sc = scaffold_tool(job.tool_name, job.version)
             _log(job, f"codegen adapters for {job.tool_name}")
-            gen = codegen_generate(job.tool_name)
+            codegen_generate(job.tool_name)
             prov = get_provider(provider_name)
             _ = prov.generate("implement tool", {"tool": job.tool_name, "version": job.version, "schema": sc["schema"]})
             job.status = JobStatus.succeeded

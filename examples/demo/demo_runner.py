@@ -9,10 +9,9 @@ Architecture:
 
 The order service calls the user service to validate users before creating orders.
 """
+import subprocess
 import sys
 import time
-import subprocess
-import signal
 from pathlib import Path
 
 # Add project root to path
@@ -65,7 +64,7 @@ def wait_for_service(address: str, service_name: str, max_attempts: int = 30):
     for attempt in range(max_attempts):
         try:
             client = MCPClient(address, timeout=1.0, retries=1)
-            result = client.initialize()
+            client.initialize()
             client.close()
             print(f"  ✓ {service_name} is ready!")
             return True
@@ -96,7 +95,7 @@ def demo_user_service():
         "name": "John Doe"
     })
 
-    print(f"   User created:")
+    print("   User created:")
     print(f"   - User ID: {result.get('user_id', 'mock_user_123')}")
     print(f"   - Email: {result.get('email', 'john@example.com')}")
     print(f"   - Name: {result.get('name', 'John Doe')}")
@@ -115,7 +114,7 @@ def demo_user_service():
         "user_id": "mock_user_123"
     })
 
-    print(f"   Retrieved user:")
+    print("   Retrieved user:")
     print(f"   - Email: {result.get('email', 'john@example.com')}")
     print(f"   - Name: {result.get('name', 'John Doe')}")
 
@@ -143,7 +142,7 @@ def demo_order_service():
         "total_amount": "99.99"
     })
 
-    print(f"   Order created:")
+    print("   Order created:")
     print(f"   - Order ID: {result.get('order_id', 'mock_order_456')}")
     print(f"   - User ID: {result.get('user_id', 'mock_user_123')}")
     print(f"   - User Name: {result.get('user_name', 'John Doe')}")
@@ -179,16 +178,16 @@ def demo_service_to_service():
         "total_amount": "1299.99"
     })
 
-    print(f"\n   Order created successfully!")
+    print("\n   Order created successfully!")
     print(f"   - Order ID: {result.get('order_id', 'mock_order_789')}")
     print(f"   - User validated: {result.get('user_name', 'John Doe')}")
 
     # Show that http tool was used for service-to-service call
     if result.get('tool_results') and 'http' in result['tool_results']:
-        print(f"\n   ✓ HTTP tool used for service-to-service communication")
+        print("\n   ✓ HTTP tool used for service-to-service communication")
         http_result = result['tool_results']['http']
         if http_result.get('ok'):
-            print(f"   ✓ User service responded successfully")
+            print("   ✓ User service responded successfully")
 
     order_client.close()
 

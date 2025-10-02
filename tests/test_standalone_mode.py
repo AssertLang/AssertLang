@@ -121,7 +121,7 @@ def test_standalone_mode_single_call():
     if mode == "standalone_ai":
         print("✅ STANDALONE MODE ACTIVE")
         print(f"   LLM Model: {metadata.get('llm_model', 'unknown')}")
-        print(f"   AI processed tool results")
+        print("   AI processed tool results")
 
         # Check if response has AI analysis
         if "summary" in result_data:

@@ -1,8 +1,9 @@
 import argparse
 import os
 import socketserver
-from socketserver import ThreadingMixIn
 from http.server import BaseHTTPRequestHandler
+from socketserver import ThreadingMixIn
+
 import requests
 
 

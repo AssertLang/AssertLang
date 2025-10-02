@@ -4,10 +4,10 @@ Promptware configuration management.
 Supports global and per-project configuration files.
 """
 
+import json
 import os
 from pathlib import Path
-from typing import Optional, Dict, Any
-import json
+from typing import Any, Dict, Optional
 
 try:
     import tomli

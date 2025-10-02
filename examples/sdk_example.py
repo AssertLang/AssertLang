@@ -9,15 +9,15 @@ Demonstrates all SDK features:
 - Error handling
 """
 
+import logging
+
 from promptware.sdk import (
     Agent,
-    AgentError,
-    VerbNotFoundError,
-    InvalidParamsError,
-    ConnectionError,
     CircuitBreakerError,
+    ConnectionError,
+    InvalidParamsError,
+    VerbNotFoundError,
 )
-import logging
 
 # Enable logging to see what's happening
 logging.basicConfig(level=logging.INFO)
@@ -67,20 +67,20 @@ def error_handling():
 
     try:
         # This will fail if verb doesn't exist
-        result = agent.nonexistent.verb()
+        agent.nonexistent.verb()
     except VerbNotFoundError as e:
         print(f"Verb not found: {e}")
 
     try:
         # This will fail if parameters are invalid
-        result = agent.user.create()  # Missing required params
+        agent.user.create()  # Missing required params
     except InvalidParamsError as e:
         print(f"Invalid parameters: {e}")
 
     try:
         # This will fail if service is down
         bad_agent = Agent("http://localhost:9999", timeout=5)
-        result = bad_agent.health()
+        bad_agent.health()
     except ConnectionError as e:
         print(f"Connection failed: {e}")
 
@@ -108,7 +108,7 @@ def circuit_breaker_example():
     """Circuit breaker pattern."""
     print("\n=== Circuit Breaker ===\n")
 
-    agent = Agent(
+    Agent(
         "http://localhost:3000",
         circuit_breaker_threshold=3,  # Open after 3 failures
         circuit_breaker_timeout=10    # Try again after 10 seconds
@@ -123,11 +123,11 @@ def circuit_breaker_example():
 
     for i in range(5):
         try:
-            result = bad_agent.health()
+            bad_agent.health()
         except CircuitBreakerError:
             print(f"Attempt {i+1}: Circuit breaker is OPEN - service unavailable")
             break
-        except ConnectionError as e:
+        except ConnectionError:
             print(f"Attempt {i+1}: Connection failed")
 
 

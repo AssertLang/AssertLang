@@ -7,14 +7,15 @@ Validates that generated HTTP servers:
 3. Return proper MCP-compliant responses
 4. Support dual-mode architecture (IDE vs standalone)
 """
-import pytest
-import json
-from pathlib import Path
-from fastapi.testclient import TestClient
 import importlib.util
+import os
 import sys
 import tempfile
-import os
+from pathlib import Path
+
+from fastapi.testclient import TestClient
+
+import pytest
 
 # Add project root to path
 project_root = Path(__file__).parent.parent

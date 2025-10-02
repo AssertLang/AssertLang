@@ -4,7 +4,6 @@ Shared error handling patterns for MCP server generators.
 Provides consistent error codes, validation, and middleware across all languages.
 """
 
-from typing import Dict, List, Any
 
 # Standard MCP error codes
 ERROR_CODES = {

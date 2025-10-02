@@ -3,12 +3,9 @@ Integration tests for HTTP transport with MCP JSON-RPC 2.0 protocol.
 
 Tests service-to-service communication over HTTP.
 """
+
 import pytest
-import time
-import subprocess
-import signal
-from pathlib import Path
-from promptware import call_verb, MCPClient
+from promptware import MCPClient, call_verb
 from promptware.exceptions import ConnectionError, InvalidVerbError
 
 
