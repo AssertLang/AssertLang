@@ -24,6 +24,7 @@ Commands:
 import argparse
 import sys
 import os
+import shutil
 from pathlib import Path
 from typing import Optional, List
 
@@ -415,6 +416,51 @@ def cmd_generate(args) -> int:
         pkg_file = output_dir / "package.json"
         files_to_create.append((pkg_file, json.dumps(package_json, indent=2)))
 
+    elif args.lang == 'go':
+        go_mod_content = f"""module {agent.name}
+
+go 1.21
+
+require (
+    github.com/gin-gonic/gin v1.9.1
+    github.com/rs/cors v1.10.0
+)
+"""
+        go_mod_file = output_dir / "go.mod"
+        files_to_create.append((go_mod_file, go_mod_content))
+
+    elif args.lang == 'csharp':
+        csproj_content = f"""<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
+  </ItemGroup>
+</Project>
+"""
+        csproj_file = output_dir / f"{agent.name}.csproj"
+        files_to_create.append((csproj_file, csproj_content))
+
+    elif args.lang == 'rust':
+        cargo_toml_content = f"""[package]
+name = "{agent.name}"
+version = "1.0.0"
+edition = "2021"
+
+[dependencies]
+actix-web = "4.4"
+actix-cors = "0.7"
+serde = {{ version = "1.0", features = ["derive"] }}
+serde_json = "1.0"
+tokio = {{ version = "1", features = ["full"] }}
+"""
+        cargo_file = output_dir / "Cargo.toml"
+        files_to_create.append((cargo_file, cargo_toml_content))
+
     # Dry-run mode - show what would be created
     if args.dry_run:
         print(colored("\nDry-run mode - no files will be written", "ℹ"))
@@ -445,6 +491,17 @@ def cmd_generate(args) -> int:
         file_path.write_text(content)
         if not args.quiet:
             print(success(f"Created: {file_path.name}"))
+
+    # Copy promptware-js for Node.js projects
+    if args.lang == 'nodejs':
+        promptware_js_src = project_root / "promptware-js"
+        promptware_js_dest = output_dir / "promptware-js"
+        if promptware_js_src.exists():
+            shutil.copytree(promptware_js_src, promptware_js_dest, dirs_exist_ok=True)
+            if not args.quiet:
+                print(success(f"Copied: promptware-js/"))
+        else:
+            print(error(f"Warning: promptware-js directory not found at {promptware_js_src}"))
 
     # Auto-install dependencies (Python and Node.js)
     if args.lang == 'python' and (output_dir / 'requirements.txt').exists():

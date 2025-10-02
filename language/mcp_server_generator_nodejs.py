@@ -73,8 +73,7 @@ app.use(express.json());
         imports += """
 
 // Tool registry imports
-// NOTE: Update this path to point to your promptware-js installation
-import { getRegistry } from '../../../promptware-js/registry.js';
+import { getRegistry } from './promptware-js/registry.js';
 const toolRegistry = getRegistry();"""
 
     return imports
