@@ -24,7 +24,12 @@ def daemon():
 
 
 def test_plan_create_v1_schema(daemon):
-    res = daemon.plan_create_v1("hello")
+    # Use valid .pw DSL input
+    pw_input = """
+tool logger as log
+call log message="hello"
+    """
+    res = daemon.plan_create_v1(pw_input)
     assert res["ok"] and res["version"] == "v1"
     data = res["data"]
     assert "files" in data and "start" in data and data["lang"] == "python"
