@@ -5,7 +5,6 @@ Provides both a reusable client class and a simple function-based API.
 """
 from typing import Dict, Any, Optional, List
 from .transport import HTTPTransport
-from .exceptions import MCPError, ProtocolError
 
 
 class MCPClient:
