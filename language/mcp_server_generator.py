@@ -686,7 +686,7 @@ async def list_verbs():
     """List all exposed MCP verbs."""
     return {{
         "agent": "{agent.name}",
-        "verbs": {[f'"{e.verb}"' for e in agent.exposes]}
+        "verbs": {[e.verb for e in agent.exposes]}
     }}'''
 
 
