@@ -122,17 +122,27 @@ ps aux | grep test-helper | grep -v grep | awk '{print $2}' | xargs kill
 
 ## For Your Coding Agent
 
-**Copy this entire message to your AI coding agent:**
+**Get the AI guide with one command:**
+
+```bash
+# Show the complete AI agent guide
+promptware ai-guide
+
+# Copy to clipboard (macOS)
+promptware ai-guide | pbcopy
+
+# Save to file
+promptware ai-guide > guide.txt
+```
+
+**Then paste to your AI coding agent:**
 
 ```
-I have Promptware installed locally at /Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware
+I have Promptware installed. Here's the complete guide:
 
-Promptware is a framework for building AI-powered microservices from .pw definition files.
+[paste output from `promptware ai-guide`]
 
-Please read this file to understand how it works:
-/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/AI-AGENT-GUIDE.md
-
-Then help me build services for [your use case].
+Now help me build services for [your use case].
 ```
 
 They'll understand everything and can help you build services.
