@@ -58,6 +58,7 @@ setup(
     install_requires=[
         # Core dependencies
         "requests>=2.31.0",
+        "pyyaml>=6.0.0",
 
         # CLI dependencies
         # (argparse is built-in)
