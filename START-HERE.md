@@ -105,16 +105,19 @@ export ANTHROPIC_API_KEY="your-key-here"
 
 ## For Your Coding Agent
 
-Pass them this context:
+**Easy way to get the full guide:**
 
-**"I have Promptware installed locally. It's a system for building AI-powered services from .pw files. Here are the docs:**
-- Installation & usage: `FOR-DAVE.md`
-- Tutorial: `QUICKSTART.md`
-- Examples: `examples/*.pw`
+```bash
+promptware ai-guide | pbcopy  # Copy to clipboard (macOS)
+```
 
-**Help me build services for [your use case]."**
+Then paste to your AI agent. The guide contains everything they need to help you build services.
 
-They'll understand and help you use it.
+**Alternative:** Just tell them:
+```
+I have Promptware installed. Run `promptware ai-guide` to see the complete documentation.
+Help me build services for [your use case].
+```
 
 ---
 
