@@ -1,6 +1,6 @@
 # START HERE - Promptware is Ready
 
-**Greg, everything is polished and ready for you to use.**
+**Dave, everything is polished and ready for you to use.**
 
 ---
 
@@ -36,7 +36,7 @@ export ANTHROPIC_API_KEY="your-key-here"
 **Choose your path:**
 
 ### Path 1: I Want to Use It Now
-→ Read **`FOR-GREG.md`**
+→ Read **`FOR-DAVE.md`**
 - Personal guide for local experimentation
 - How to build AI services for your coding needs
 - Integration with Cursor
@@ -86,7 +86,7 @@ export ANTHROPIC_API_KEY="your-key-here"
 ## Your Next Steps
 
 **This Week (Try It):**
-1. Follow `FOR-GREG.md`
+1. Follow `FOR-DAVE.md`
 2. Build 2-3 services for your own use
 3. See if it solves real problems for you
 
@@ -108,7 +108,7 @@ export ANTHROPIC_API_KEY="your-key-here"
 Pass them this context:
 
 **"I have Promptware installed locally. It's a system for building AI-powered services from .pw files. Here are the docs:**
-- Installation & usage: `FOR-GREG.md`
+- Installation & usage: `FOR-DAVE.md`
 - Tutorial: `QUICKSTART.md`
 - Examples: `examples/*.pw`
 
@@ -180,7 +180,7 @@ The code is solid. The docs are complete. The strategy is clear.
 
 ```bash
 cd /Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware
-cat FOR-GREG.md
+cat FOR-DAVE.md
 ```
 
 That's your entry point.
