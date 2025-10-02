@@ -30,10 +30,9 @@ def test_ai_code_reviewer_generation():
     # Generate server
     output_file = Path("/tmp/test_code_reviewer_server.py")
     result = subprocess.run(
-        [sys.executable, "cli/main.py", "generate",
-         str(pw_file), "-o", str(output_file)],
+        [sys.executable, "cli/main.py", "generate", str(pw_file), "-o", str(output_file)],
         capture_output=True,
-        text=True
+        text=True,
     )
 
     assert result.returncode == 0
@@ -62,9 +61,8 @@ def test_ai_agent_runtime():
 
     # Generate server
     subprocess.run(
-        [sys.executable, "cli/main.py", "generate",
-         str(pw_file), "-o", str(output_file)],
-        capture_output=True
+        [sys.executable, "cli/main.py", "generate", str(pw_file), "-o", str(output_file)],
+        capture_output=True,
     )
 
     # Start server in background
@@ -72,7 +70,7 @@ def test_ai_agent_runtime():
         [sys.executable, str(output_file)],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        env={**os.environ, "ANTHROPIC_API_KEY": ANTHROPIC_API_KEY}
+        env={**os.environ, "ANTHROPIC_API_KEY": ANTHROPIC_API_KEY},
     )
 
     try:
@@ -94,16 +92,11 @@ def login(username, password):
 
         review_request = {
             "method": "review.analyze@v1",
-            "params": {
-                "code": test_code,
-                "language": "python"
-            }
+            "params": {"code": test_code, "language": "python"},
         }
 
         response = requests.post(
-            "http://127.0.0.1:23450/mcp",
-            json=review_request,
-            timeout=30  # AI calls can take time
+            "http://127.0.0.1:23450/mcp", json=review_request, timeout=30  # AI calls can take time
         )
 
         assert response.status_code == 200
@@ -143,9 +136,8 @@ def test_ai_prompt_templates():
 
     # Generate server
     subprocess.run(
-        [sys.executable, "cli/main.py", "generate",
-         str(pw_file), "-o", str(output_file)],
-        capture_output=True
+        [sys.executable, "cli/main.py", "generate", str(pw_file), "-o", str(output_file)],
+        capture_output=True,
     )
 
     content = output_file.read_text()
@@ -174,9 +166,8 @@ def test_observability_with_ai():
     output_file = Path("/tmp/test_observability_ai.py")
 
     subprocess.run(
-        [sys.executable, "cli/main.py", "generate",
-         str(pw_file), "-o", str(output_file)],
-        capture_output=True
+        [sys.executable, "cli/main.py", "generate", str(pw_file), "-o", str(output_file)],
+        capture_output=True,
     )
 
     content = output_file.read_text()

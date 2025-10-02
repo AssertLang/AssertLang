@@ -24,7 +24,9 @@ def _is_relative_to(path: Path, parent: Path) -> bool:
 
 def test_prepare_dependencies_go(tmp_path, monkeypatch):
     daemon = MCPDaemon()
-    daemon._dependency_allowlist = {"go": {"modules": {"allow": ["github.com/prompthub/example@v1"]}}}
+    daemon._dependency_allowlist = {
+        "go": {"modules": {"allow": ["github.com/prompthub/example@v1"]}}
+    }
 
     calls = []
     monkeypatch.setattr(mcpd.shutil, "which", lambda cmd: f"/usr/bin/{cmd}")
@@ -34,7 +36,12 @@ def test_prepare_dependencies_go(tmp_path, monkeypatch):
         updates = daemon._prepare_dependencies(
             tmp_path,
             "go",
-            {"go": {"modules": ["github.com/prompthub/example@v1"], "module_name": "example.com/app"}},
+            {
+                "go": {
+                    "modules": ["github.com/prompthub/example@v1"],
+                    "module_name": "example.com/app",
+                }
+            },
             {},
             log_file,
         )

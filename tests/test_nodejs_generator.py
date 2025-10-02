@@ -48,8 +48,8 @@ expose data.process@v1:
     assert "function handle_data_process_v1(params)" in code
 
     # Check parameter validation
-    assert 'if (!params.input)' in code
-    assert 'if (!params.format)' in code
+    assert "if (!params.input)" in code
+    assert "if (!params.format)" in code
     assert '"E_ARGS"' in code
 
     # Check return structure

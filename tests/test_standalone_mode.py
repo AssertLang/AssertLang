@@ -8,6 +8,7 @@ COST WARNING: This test makes real API calls to Anthropic.
 
 This test is intentionally minimal to avoid burning through API credits.
 """
+
 import json
 import os
 import subprocess
@@ -58,10 +59,10 @@ def test_standalone_mode_single_call():
                 "arguments": {
                     "code": "def add(a, b): return a + b",
                     "language": "python",
-                    "context": "test"
-                }
-            }
-        }
+                    "context": "test",
+                },
+            },
+        },
     ]
 
     input_data = "\n".join(json.dumps(req) for req in requests) + "\n"
@@ -78,7 +79,7 @@ def test_standalone_mode_single_call():
         text=True,
         cwd=Path(__file__).parent.parent,
         timeout=30,
-        env=env
+        env=env,
     )
 
     if result.returncode != 0:
@@ -111,9 +112,9 @@ def test_standalone_mode_single_call():
     metadata = result_data.get("metadata", {})
     mode = metadata.get("mode")
 
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("Test Results:")
-    print("="*60)
+    print("=" * 60)
     print(f"Mode: {mode}")
     print(f"Agent: {metadata.get('agent_name')}")
     print(f"Tools executed: {metadata.get('tools_executed', [])}")
@@ -139,19 +140,20 @@ def test_standalone_mode_single_call():
     else:
         print(f"❌ Unknown mode: {mode}")
 
-    print("="*60)
+    print("=" * 60)
 
 
 if __name__ == "__main__":
-    print("="*60)
+    print("=" * 60)
     print("Standalone AI Mode Test - ECONOMICAL")
-    print("="*60)
+    print("=" * 60)
     print("\n⚠️  WARNING: This makes ONE real API call to Anthropic")
     print("   Estimated cost: $0.01-0.02 per run")
     print("   Press Ctrl+C within 5 seconds to cancel...")
     print()
 
     import time
+
     try:
         for i in range(5, 0, -1):
             print(f"   Starting in {i}...")

@@ -83,7 +83,7 @@ def command_generate(args):
     print(f"📝 Reading {pw_file}...")
 
     try:
-        with open(pw_file, 'r') as f:
+        with open(pw_file, "r") as f:
             pw_code = f.read()
     except Exception as e:
         print(f"❌ Error reading file: {e}")
@@ -119,7 +119,7 @@ def command_generate(args):
     print(f"💾 Writing to {output_file}...")
 
     try:
-        with open(output_file, 'w') as f:
+        with open(output_file, "w") as f:
             f.write(server_code)
     except Exception as e:
         print(f"❌ Write error: {e}")
@@ -151,7 +151,7 @@ def command_run(args):
     pw_file = Path(args.agent_file)
 
     try:
-        with open(pw_file, 'r') as f:
+        with open(pw_file, "r") as f:
             pw_code = f.read()
         agent = parse_agent_pw(pw_code)
     except Exception as e:
@@ -197,7 +197,7 @@ def command_test(args):
     print(f"🧪 Testing {pw_file}...")
 
     try:
-        with open(pw_file, 'r') as f:
+        with open(pw_file, "r") as f:
             pw_code = f.read()
 
         agent = parse_agent_pw(pw_code)
@@ -211,7 +211,9 @@ def command_test(args):
         if agent.llm:
             print(f"   AI: {agent.llm}")
         if agent.observability:
-            print(f"   Observability: traces={agent.observability.traces}, metrics={agent.observability.metrics}")
+            print(
+                f"   Observability: traces={agent.observability.traces}, metrics={agent.observability.metrics}"
+            )
         if agent.temporal:
             print(f"   Temporal: {len(agent.workflows)} workflows")
 
@@ -229,6 +231,7 @@ def command_test(args):
     except Exception as e:
         print(f"❌ Test failed: {e}")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)
 
@@ -270,9 +273,7 @@ def command_mcp_config(args):
 
     try:
         config_json = generate_configs_for_project(
-            project_dir,
-            editor=editor,
-            output_dir=args.output if args.output else None
+            project_dir, editor=editor, output_dir=args.output if args.output else None
         )
 
         # Determine config path
@@ -300,6 +301,7 @@ def command_mcp_config(args):
     except Exception as e:
         print(f"❌ Error generating config: {e}")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)
 
@@ -330,7 +332,7 @@ Examples:
   promptware version
 
 For more info: https://github.com/3CH0xyz/promptware
-        """
+        """,
     )
 
     subparsers = parser.add_subparsers(dest="command", help="Command to run")
@@ -356,15 +358,20 @@ For more info: https://github.com/3CH0xyz/promptware
 
     # MCP Config command
     mcp_parser = subparsers.add_parser("mcp-config", help="Generate MCP config for editors")
-    mcp_parser.add_argument("--editor", "-e", default="cursor",
-                           choices=["cursor", "windsurf", "cline"],
-                           help="Target editor (default: cursor)")
-    mcp_parser.add_argument("--directory", "-d",
-                           help="Directory to scan for .pw files (default: current)")
-    mcp_parser.add_argument("--agent-file", "-a",
-                           help="Single .pw file (alternative to --directory)")
-    mcp_parser.add_argument("--output", "-o",
-                           help="Output directory for config file")
+    mcp_parser.add_argument(
+        "--editor",
+        "-e",
+        default="cursor",
+        choices=["cursor", "windsurf", "cline"],
+        help="Target editor (default: cursor)",
+    )
+    mcp_parser.add_argument(
+        "--directory", "-d", help="Directory to scan for .pw files (default: current)"
+    )
+    mcp_parser.add_argument(
+        "--agent-file", "-a", help="Single .pw file (alternative to --directory)"
+    )
+    mcp_parser.add_argument("--output", "-o", help="Output directory for config file")
     mcp_parser.set_defaults(func=command_mcp_config)
 
     # Version command

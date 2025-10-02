@@ -288,7 +288,7 @@ expose test.verb@v1:
     # Check main function
     assert "func main()" in code
     assert "http.HandleFunc" in code
-    assert 'http.ListenAndServe' in code
+    assert "http.ListenAndServe" in code
     assert "log.Fatal" in code
 
 
