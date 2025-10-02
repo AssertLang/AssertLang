@@ -102,3 +102,5 @@ LANGCHAIN_INTEGRATION_COMPLETE.md
 PIVOT_SUMMARY.md
 VISION_ALIGNMENT_AUDIT.md
 docs/test-batches.md
+open-source-release/
+.cursor/
