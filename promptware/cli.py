@@ -57,8 +57,11 @@ def warning(text: str) -> str:
     """Format warning message."""
     return colored(text, "⚠️")
 
-def confirm_action(message: str, default: bool = False) -> bool:
+def confirm_action(message: str, default: bool = False, auto_yes: bool = False) -> bool:
     """Prompt user for confirmation."""
+    if auto_yes:
+        return True
+
     suffix = "[Y/n]" if default else "[y/N]"
     response = input(f"{message} {suffix} ").strip().lower()
 
@@ -476,7 +479,7 @@ tokio = {{ version = "1", features = ["full"] }}
         for file_path, content in files_to_create:
             print(f"  • {file_path.name} ({len(content.splitlines())} lines)")
 
-        if not confirm_action("\nProceed?", default=True):
+        if not confirm_action("\nProceed?", default=True, auto_yes=args.yes):
             print("Cancelled.")
             return 0
 
