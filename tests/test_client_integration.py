@@ -3,6 +3,7 @@ Integration tests for Promptware MCP client library.
 
 Tests client against a real generated HTTP server.
 """
+
 import importlib.util
 import os
 import sys
@@ -57,7 +58,7 @@ expose calculate@v1:
     server_code = generate_mcp_server_from_pw(pw_code)
 
     # Save to temp file
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.py', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False) as f:
         f.write(server_code)
         temp_path = f.name
 
@@ -132,11 +133,9 @@ def test_client_call_with_tools(test_server):
     client = MCPClient(test_server)
 
     # Call echo which should trigger http tool execution
-    result = client.call("echo@v1", {
-        "message": "test",
-        "url": "https://httpbin.org/get",
-        "method": "GET"
-    })
+    result = client.call(
+        "echo@v1", {"message": "test", "url": "https://httpbin.org/get", "method": "GET"}
+    )
 
     assert "tool_results" in result
     assert "http" in result["tool_results"]
@@ -172,7 +171,7 @@ def test_call_verb_helper(test_server):
         service="test-integration",
         verb="echo@v1",
         params={"message": "hello from helper"},
-        address=test_server
+        address=test_server,
     )
 
     assert result["input_params"]["message"] == "hello from helper"
@@ -220,5 +219,5 @@ def test_client_multiple_calls(test_server):
     assert result3["input_params"]["b"] == 3
 
 
-if __name__ == '__main__':
-    pytest.main([__file__, '-v', '-s'])
+if __name__ == "__main__":
+    pytest.main([__file__, "-v", "-s"])

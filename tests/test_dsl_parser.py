@@ -286,7 +286,6 @@ def test_parse_pw_golden_fixtures(fixture: Path) -> None:
     assert prog.plan == expected
 
 
-
 def test_parse_pw_bad_indentation_sets_error_code():
     text = """
 tool http as fetch

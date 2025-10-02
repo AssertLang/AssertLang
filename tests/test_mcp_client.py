@@ -12,11 +12,7 @@ from language.mcp_client import (
 
 def test_mcp_response_success():
     """Test MCPResponse with successful call."""
-    response = MCPResponse(
-        ok=True,
-        version="v1",
-        data={"result": "success"}
-    )
+    response = MCPResponse(ok=True, version="v1", data={"result": "success"})
 
     assert response.is_success()
     assert response.get_data() == {"result": "success"}
@@ -25,9 +21,7 @@ def test_mcp_response_success():
 def test_mcp_response_error():
     """Test MCPResponse with error."""
     response = MCPResponse(
-        ok=False,
-        version="v1",
-        error={"code": "E_ARGS", "message": "Missing parameter"}
+        ok=False, version="v1", error={"code": "E_ARGS", "message": "Missing parameter"}
     )
 
     assert not response.is_success()
@@ -51,11 +45,7 @@ def test_mcp_client_initialization():
 
 def test_mcp_client_custom_settings():
     """Test MCP client with custom settings."""
-    client = MCPClient(
-        "http://localhost:8080",
-        timeout=60,
-        retries=5
-    )
+    client = MCPClient("http://localhost:8080", timeout=60, retries=5)
 
     assert client.base_url == "http://localhost:8080"
     assert client.timeout == 60
@@ -136,6 +126,7 @@ def test_mcp_error():
 # Note: The following tests would require a running server
 # They are marked as integration tests
 
+
 def test_call_structure():
     """Test that call method structure is correct (without actual call)."""
     client = MCPClient("http://localhost:23456", timeout=1, retries=1)
@@ -155,7 +146,7 @@ def test_health_check_structure():
     client = MCPClient("http://localhost:23456")
 
     # Method should exist
-    assert hasattr(client, 'health_check')
+    assert hasattr(client, "health_check")
     assert callable(client.health_check)
 
 
@@ -164,5 +155,5 @@ def test_list_verbs_structure():
     client = MCPClient("http://localhost:23456")
 
     # Method should exist
-    assert hasattr(client, 'list_verbs')
+    assert hasattr(client, "list_verbs")
     assert callable(client.list_verbs)
