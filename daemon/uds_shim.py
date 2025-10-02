@@ -33,7 +33,9 @@ class UDSHTTPProxyHandler(BaseHTTPRequestHandler):
         url = f"{self.backend_base}{self.path}"
         fwd_headers = {k: v for k, v in self.headers.items() if k.lower() != "host"}
         try:
-            resp = requests.request(self.command, url, headers=fwd_headers, data=body, timeout=5, allow_redirects=False)
+            resp = requests.request(
+                self.command, url, headers=fwd_headers, data=body, timeout=5, allow_redirects=False
+            )
         except Exception as exc:  # noqa: BLE001
             self.send_error(502, f"Backend error: {exc}")
             return
@@ -78,4 +80,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

@@ -49,5 +49,3 @@ file app.py:
         except Exception:
             time.sleep(0.2)
     raise AssertionError("Service did not respond correctly")
-
-

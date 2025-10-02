@@ -189,7 +189,9 @@ def test_run_start_merges_registry_defaults(monkeypatch, tmp_path, daemon):
 
     monkeypatch.setattr(MCPDaemon, "_prepare_dependencies", fake_prepare, raising=False)
     monkeypatch.setattr(MCPDaemon, "_run_python_runner", fake_runner, raising=False)
-    monkeypatch.setattr(MCPDaemon, "_lease_port", lambda self, task_id, ttl_sec=900: 62010, raising=False)
+    monkeypatch.setattr(
+        MCPDaemon, "_lease_port", lambda self, task_id, ttl_sec=900: 62010, raising=False
+    )
     monkeypatch.setattr(MCPDaemon, "_release_port", lambda self, port: None, raising=False)
 
     daemon._tool_registry = registry
@@ -221,7 +223,9 @@ def test_run_start_policy_conflict(monkeypatch, daemon):
         }
     }
     monkeypatch.setattr(mcpd, "_load_tool_registry", lambda: registry)
-    monkeypatch.setattr(MCPDaemon, "_lease_port", lambda self, task_id, ttl_sec=900: 62011, raising=False)
+    monkeypatch.setattr(
+        MCPDaemon, "_lease_port", lambda self, task_id, ttl_sec=900: 62011, raising=False
+    )
     monkeypatch.setattr(MCPDaemon, "_release_port", lambda self, port: None, raising=False)
 
     daemon._tool_registry = registry
@@ -246,7 +250,9 @@ def test_run_start_dependency_allowlist(monkeypatch, daemon):
 
     allowlist = {"python": {"requirements": {"allow": ["allowed"]}}}
     monkeypatch.setattr(mcpd, "_load_dependency_allowlist", lambda: allowlist)
-    monkeypatch.setattr(MCPDaemon, "_lease_port", lambda self, task_id, ttl_sec=900: 62012, raising=False)
+    monkeypatch.setattr(
+        MCPDaemon, "_lease_port", lambda self, task_id, ttl_sec=900: 62012, raising=False
+    )
     monkeypatch.setattr(MCPDaemon, "_release_port", lambda self, port: None, raising=False)
     daemon._dependency_allowlist = allowlist
 

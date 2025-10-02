@@ -27,7 +27,7 @@ expose test.run@v1:
     assert "app = FastAPI" in code
     assert "test-agent" in code
     assert "def handle_test_run_v1" in code
-    assert "@app.post(\"/mcp\")" in code
+    assert '@app.post("/mcp")' in code
     assert "port=23456" in code
 
 
@@ -43,7 +43,7 @@ expose status.check@v1:
 """
     code = generate_mcp_server_from_pw(pw_code)
 
-    assert "@app.get(\"/health\")" in code
+    assert '@app.get("/health")' in code
     assert "health_check" in code
 
 
@@ -63,7 +63,7 @@ expose verb2.execute@v1:
 """
     code = generate_mcp_server_from_pw(pw_code)
 
-    assert "@app.get(\"/verbs\")" in code
+    assert '@app.get("/verbs")' in code
     assert "list_verbs" in code
     assert "verb1.execute@v1" in code
     assert "verb2.execute@v1" in code
@@ -140,7 +140,7 @@ expose test@v1:
     code = generate_mcp_server_from_pw(pw_code)
 
     # Check endpoint structure
-    assert "@app.post(\"/mcp\")" in code
+    assert '@app.post("/mcp")' in code
     assert "async def mcp_endpoint" in code
     assert "await request.json()" in code
     # JSON-RPC 2.0 format
@@ -413,13 +413,13 @@ expose workflow.execute@v1:
     assert "from temporalio.worker import Worker" in code
 
     # Check activity definitions
-    assert "@activity.defn(name=\"build_image\"" in code
+    assert '@activity.defn(name="build_image"' in code
     assert "async def build_image(**kwargs)" in code
-    assert "@activity.defn(name=\"run_tests\"" in code
+    assert '@activity.defn(name="run_tests"' in code
     assert "async def run_tests(**kwargs)" in code
 
     # Check workflow class
-    assert "@workflow.defn(name=\"deploy_service@v1\")" in code
+    assert '@workflow.defn(name="deploy_service@v1")' in code
     assert "class Deploy_Service_V1Workflow:" in code
     assert "@workflow.run" in code
 
@@ -430,7 +430,7 @@ expose workflow.execute@v1:
     # Check Temporal client initialization
     assert "temporal_client: Optional[Client] = None" in code
     assert "async def get_temporal_client()" in code
-    assert "Client.connect(\"localhost:7233\")" in code
+    assert 'Client.connect("localhost:7233")' in code
 
     # Check workflow execution handler
     assert "def handle_workflow_execute_v1" in code
@@ -476,7 +476,7 @@ expose workflow.execute@v1:
     # Check compensation logic
     assert "on_failure: rollback_staging" in code or "rollback_staging" in code
     assert "on_failure: rollback_production" in code or "rollback_production" in code
-    assert 'if result_' in code  # Check for failure condition
+    assert "if result_" in code  # Check for failure condition
     assert "workflow.ApplicationError" in code
 
     compile(code, "<generated>", "exec")
