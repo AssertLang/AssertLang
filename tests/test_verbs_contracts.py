@@ -32,7 +32,10 @@ call log message="hello"
     res = daemon.plan_create_v1(pw_input)
     assert res["ok"] and res["version"] == "v1"
     data = res["data"]
-    assert "files" in data and "start" in data and data["lang"] == "python"
+    # Verify the plan has expected structure from DSL parser
+    assert "files" in data and "lang" in data
+    assert data["lang"] == "python"
+    assert "actions" in data or "tools" in data  # DSL parser returns actions/tools
 
 
 def test_fs_apply_v1(daemon):
