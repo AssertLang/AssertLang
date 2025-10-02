@@ -1,50 +1,78 @@
 name: Feature Request
-description: Suggest a new feature or enhancement
+description: Suggest a new feature or enhancement for Promptware
+title: "[Feature]: "
 labels: ["enhancement"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for suggesting a new feature!
+        Thanks for suggesting a new feature! Please provide as much detail as possible.
 
   - type: textarea
-    id: problem
+    id: description
     attributes:
-      label: Problem Statement
-      description: What problem does this feature solve?
-      placeholder: I'm trying to... but currently...
+      label: Feature Description
+      description: A clear and concise description of the feature you'd like to see
+      placeholder: I would like Promptware to...
     validations:
       required: true
 
   - type: textarea
-    id: solution
+    id: use-case
+    attributes:
+      label: Use Case / Problem It Solves
+      description: What problem does this feature solve? What use case does it enable?
+      placeholder: |
+        This would help me...
+        Currently, I have to...
+        This would make it possible to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-solution
     attributes:
       label: Proposed Solution
-      description: How would you like this to work?
-      placeholder: I'd like to be able to...
+      description: How would you like this feature to work? Be as specific as possible.
+      placeholder: |
+        The feature could work by...
+        Users would be able to...
+        Example syntax:
+        ```promptware
+        server my-service "Description"
+        new-feature-syntax here
+        ```
     validations:
       required: true
-
-  - type: textarea
-    id: example
-    attributes:
-      label: Example Usage
-      description: Show how you'd use this feature
-      placeholder: |
-        ```pw
-        agent my-service
-        new-feature: enabled
-        ```
-      render: shell
 
   - type: textarea
     id: alternatives
     attributes:
       label: Alternatives Considered
-      description: What alternatives have you considered?
+      description: What alternative solutions or features have you considered?
+      placeholder: |
+        - Alternative 1: ...
+        - Alternative 2: ...
+        - Workaround I'm currently using: ...
+    validations:
+      required: false
+
+  - type: dropdown
+    id: willingness-to-contribute
+    attributes:
+      label: Willingness to Contribute
+      description: Would you be willing to contribute to implementing this feature?
+      options:
+        - Yes, I can submit a PR
+        - Yes, with guidance
+        - No, but I can help test
+        - No
+    validations:
+      required: false
 
   - type: textarea
-    id: additional
+    id: additional-context
     attributes:
       label: Additional Context
-      description: Any other relevant information
+      description: Any other context, screenshots, or examples that would help
+      placeholder: Add any other information here
