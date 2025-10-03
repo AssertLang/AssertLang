@@ -1,0 +1,66 @@
+{
+  "test_framework": "go_expert_agent",
+  "timestamp": "2025-10-03T05:49:19.118392",
+  "go_version": "go version go1.24.3 darwin/arm64",
+  "total_tests": 2,
+  "passed": 2,
+  "failed": 0,
+  "reports": [
+    {
+      "agent_name": "go_minimal",
+      "fixture_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/fixtures/go_minimal.pw",
+      "generated_code_path": "/var/folders/hc/x09q151943x6fxtpjbtr0hrm0000gn/T/tmplv5tc0tj/generated",
+      "syntax_valid": true,
+      "compilation": {
+        "success": true,
+        "build_time_ms": 271.1198329925537,
+        "binary_size_bytes": 10027890,
+        "race_detector_enabled": true,
+        "errors": [],
+        "warnings": []
+      },
+      "server": {
+        "started": true,
+        "health_check_passed": true,
+        "health_response_time_ms": 4.718780517578125,
+        "errors": []
+      },
+      "race_detection": {
+        "races_detected": false,
+        "race_count": 0,
+        "race_details": []
+      },
+      "code_quality_score": 100.0,
+      "errors": [],
+      "timestamp": "2025-10-03T05:49:12.173642"
+    },
+    {
+      "agent_name": "go_with_tools",
+      "fixture_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/fixtures/go_with_tools.pw",
+      "generated_code_path": "/var/folders/hc/x09q151943x6fxtpjbtr0hrm0000gn/T/tmp_y7zmp77/generated",
+      "syntax_valid": true,
+      "compilation": {
+        "success": true,
+        "build_time_ms": 251.83892250061035,
+        "binary_size_bytes": 10028194,
+        "race_detector_enabled": true,
+        "errors": [],
+        "warnings": []
+      },
+      "server": {
+        "started": true,
+        "health_check_passed": true,
+        "health_response_time_ms": 2.4950504302978516,
+        "errors": []
+      },
+      "race_detection": {
+        "races_detected": false,
+        "race_count": 0,
+        "race_details": []
+      },
+      "code_quality_score": 100.0,
+      "errors": [],
+      "timestamp": "2025-10-03T05:49:15.670929"
+    }
+  ]
+}
