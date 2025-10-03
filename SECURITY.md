@@ -74,7 +74,7 @@ This policy applies to:
 
 - **Security issues:** security@promptware.dev or hello@promptware.dev
 - **General questions:** hello@promptware.dev
-- **GitHub Discussions:** https://github.com/promptware-dev/promptware/discussions
+- **GitHub Discussions:** https://github.com/Promptware-dev/promptware/discussions
 
 ---
 
