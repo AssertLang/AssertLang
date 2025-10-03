@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 from typing import Iterable, Mapping
 
-_ROOT = Path(__file__).resolve().parent
+_ROOT = Path(__file__).resolve().parent.parent.parent
 _SCHEMA_PATH = _ROOT / "schemas" / "timeline_event.schema.json"
 
 

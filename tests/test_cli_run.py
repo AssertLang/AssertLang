@@ -8,7 +8,7 @@ project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
 from language.executor import execute_pw_file
-from schema_utils import assert_events_match_schema
+from tests.utils.schema_utils import assert_events_match_schema
 
 
 def test_interpreter_events_via_executor(tmp_path):
