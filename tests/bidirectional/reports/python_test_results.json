@@ -1,0 +1,1249 @@
+{
+  "start_time": 1759482568.888114,
+  "fixtures_dir": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/fixtures",
+  "output_dir": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated",
+  "fixtures_tested": 7,
+  "fixtures_passed": 7,
+  "fixtures_failed": 0,
+  "test_results": [
+    {
+      "fixture": "nodejs_minimal.pw",
+      "stages": {
+        "parse": {
+          "fixture": "nodejs_minimal.pw",
+          "parsed": true,
+          "agent": "AgentDefinition(name='minimal-test-agent', lang='nodejs', port=20100, exposes=[ExposeBlock(verb='echo@v1', params=[{'name': 'message', 'type': 'string'}], returns=[{'name': 'echo', 'type': 'string'}], handler_code=None, prompt_template=None)], calls=[], files=[], llm=None, tools=[], memory=None, prompt_template=None, observability=None, temporal=False, workflows=[])",
+          "errors": []
+        },
+        "generate": {
+          "fixture": "nodejs_minimal.pw",
+          "generated": true,
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-test-agent_server.py",
+          "errors": []
+        },
+        "test": {
+          "fixture": "nodejs_minimal.pw",
+          "agent_name": "minimal-test-agent",
+          "port": 20100,
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-test-agent_server.py",
+          "tests": {
+            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-test-agent_server.py",
+            "port": 20100,
+            "syntax_validation": {
+              "valid": true,
+              "errors": [],
+              "warnings": [],
+              "imports_found": [
+                "fastapi",
+                "fastapi.responses",
+                "uvicorn",
+                "typing",
+                "datetime",
+                "time",
+                "sys",
+                "os",
+                "pathlib",
+                "tools.registry",
+                "language.tool_executor",
+                "logging",
+                "traceback",
+                "functools",
+                "asyncio",
+                "datetime",
+                "typing",
+                "fastapi.middleware.cors",
+                "fastapi.middleware.trustedhost",
+                "slowapi",
+                "slowapi.util",
+                "slowapi.errors",
+                "os"
+              ],
+              "classes_found": [
+                "HealthCheck"
+              ],
+              "functions_found": [
+                "handle_errors",
+                "validate_params",
+                "handle_echo_v1",
+                "__init__"
+              ]
+            },
+            "server_startup": {
+              "started": true,
+              "pid": 16680,
+              "errors": [],
+              "startup_time": 0.5170748233795166
+            },
+            "health_check": {
+              "passed": true,
+              "status_code": 200,
+              "response": {
+                "status": "alive",
+                "uptime_seconds": 0.237227,
+                "timestamp": "2025-10-03T09:09:29.413263+00:00"
+              },
+              "errors": [],
+              "response_time": 0.0016326904296875
+            },
+            "verb_tests": [
+              {
+                "passed": true,
+                "verb": "echo@v1",
+                "params": {
+                  "message": "test_message"
+                },
+                "response": {
+                  "jsonrpc": "2.0",
+                  "id": 1,
+                  "result": {
+                    "input_params": {
+                      "message": "test_message"
+                    },
+                    "tool_results": {},
+                    "metadata": {
+                      "mode": "ide_integrated",
+                      "agent_name": "minimal-test-agent",
+                      "timestamp": "2025-10-03T05:09:29.414943",
+                      "tools_executed": []
+                    },
+                    "echo": "echo_value"
+                  }
+                },
+                "errors": [],
+                "response_time": 0.0016167163848876953
+              }
+            ],
+            "overall_passed": true,
+            "total_duration": 0.6555159091949463,
+            "server_shutdown": {
+              "stopped": true,
+              "errors": []
+            }
+          },
+          "overall_passed": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "fixture": "python_complex.pw",
+      "stages": {
+        "parse": {
+          "fixture": "python_complex.pw",
+          "parsed": true,
+          "agent": "AgentDefinition(name='complex-test-agent', lang='python', port=23472, exposes=[ExposeBlock(verb='task.create@v1', params=[{'name': 'title', 'type': 'string'}, {'name': 'description', 'type': 'string'}, {'name': 'priority', 'type': 'int'}], returns=[{'name': 'task_id', 'type': 'string'}, {'name': 'status', 'type': 'string'}, {'name': 'created_at', 'type': 'string'}], handler_code=None, prompt_template=None), ExposeBlock(verb='task.get@v1', params=[{'name': 'task_id', 'type': 'string'}], returns=[{'name': 'task_id', 'type': 'string'}, {'name': 'title', 'type': 'string'}, {'name': 'description', 'type': 'string'}, {'name': 'priority', 'type': 'int'}, {'name': 'status', 'type': 'string'}, {'name': 'created_at', 'type': 'string'}], handler_code=None, prompt_template=None), ExposeBlock(verb='task.update@v1', params=[{'name': 'task_id', 'type': 'string'}, {'name': 'status', 'type': 'string'}], returns=[{'name': 'task_id', 'type': 'string'}, {'name': 'status', 'type': 'string'}, {'name': 'updated_at', 'type': 'string'}], handler_code=None, prompt_template=None), ExposeBlock(verb='task.list@v1', params=[{'name': 'limit', 'type': 'int'}, {'name': 'offset', 'type': 'int'}], returns=[{'name': 'tasks', 'type': 'array'}, {'name': 'total', 'type': 'int'}], handler_code=None, prompt_template=None)], calls=[], files=[], llm=None, tools=['http', 'storage', 'logger'], memory=None, prompt_template=None, observability=None, temporal=False, workflows=[])",
+          "errors": []
+        },
+        "generate": {
+          "fixture": "python_complex.pw",
+          "generated": true,
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/complex-test-agent_server.py",
+          "errors": []
+        },
+        "test": {
+          "fixture": "python_complex.pw",
+          "agent_name": "complex-test-agent",
+          "port": 23472,
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/complex-test-agent_server.py",
+          "tests": {
+            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/complex-test-agent_server.py",
+            "port": 23472,
+            "syntax_validation": {
+              "valid": true,
+              "errors": [],
+              "warnings": [],
+              "imports_found": [
+                "fastapi",
+                "fastapi.responses",
+                "uvicorn",
+                "typing",
+                "datetime",
+                "time",
+                "sys",
+                "os",
+                "pathlib",
+                "tools.registry",
+                "language.tool_executor",
+                "logging",
+                "traceback",
+                "functools",
+                "asyncio",
+                "datetime",
+                "typing",
+                "fastapi.middleware.cors",
+                "fastapi.middleware.trustedhost",
+                "slowapi",
+                "slowapi.util",
+                "slowapi.errors",
+                "os"
+              ],
+              "classes_found": [
+                "HealthCheck"
+              ],
+              "functions_found": [
+                "handle_errors",
+                "validate_params",
+                "handle_task_create_v1",
+                "handle_task_get_v1",
+                "handle_task_update_v1",
+                "handle_task_list_v1",
+                "__init__"
+              ]
+            },
+            "server_startup": {
+              "started": true,
+              "pid": 16698,
+              "errors": [],
+              "startup_time": 0.5120470523834229
+            },
+            "health_check": {
+              "passed": true,
+              "status_code": 200,
+              "response": {
+                "status": "alive",
+                "uptime_seconds": 0.325163,
+                "timestamp": "2025-10-03T09:09:30.060820+00:00"
+              },
+              "errors": [],
+              "response_time": 0.001550912857055664
+            },
+            "verb_tests": [
+              {
+                "passed": true,
+                "verb": "task.create@v1",
+                "params": {
+                  "title": "test_title",
+                  "description": "test_description",
+                  "priority": 42
+                },
+                "response": {
+                  "jsonrpc": "2.0",
+                  "id": 1,
+                  "result": {
+                    "input_params": {
+                      "title": "test_title",
+                      "description": "test_description",
+                      "priority": 42
+                    },
+                    "tool_results": {
+                      "http": {
+                        "ok": false,
+                        "version": "v1",
+                        "error": {
+                          "code": "E_ARGS",
+                          "message": "url is required"
+                        }
+                      },
+                      "storage": {
+                        "ok": false,
+                        "version": "v1",
+                        "error": {
+                          "code": "E_ARGS",
+                          "message": "path is required"
+                        }
+                      },
+                      "logger": {
+                        "ok": true,
+                        "version": "v1",
+                        "data": {
+                          "logged": true
+                        }
+                      }
+                    },
+                    "metadata": {
+                      "mode": "ide_integrated",
+                      "agent_name": "complex-test-agent",
+                      "timestamp": "2025-10-03T05:09:30.062495",
+                      "tools_executed": [
+                        "http",
+                        "storage",
+                        "logger"
+                      ]
+                    },
+                    "task_id": "task_id_value",
+                    "status": "status_value",
+                    "created_at": "created_at_value"
+                  }
+                },
+                "errors": [],
+                "response_time": 0.00156402587890625
+              },
+              {
+                "passed": true,
+                "verb": "task.get@v1",
+                "params": {
+                  "task_id": "test_task_id"
+                },
+                "response": {
+                  "jsonrpc": "2.0",
+                  "id": 1,
+                  "result": {
+                    "input_params": {
+                      "task_id": "test_task_id"
+                    },
+                    "tool_results": {
+                      "http": {
+                        "ok": false,
+                        "version": "v1",
+                        "error": {
+                          "code": "E_ARGS",
+                          "message": "url is required"
+                        }
+                      },
+                      "storage": {
+                        "ok": false,
+                        "version": "v1",
+                        "error": {
+                          "code": "E_ARGS",
+                          "message": "path is required"
+                        }
+                      },
+                      "logger": {
+                        "ok": true,
+                        "version": "v1",
+                        "data": {
+                          "logged": true
+                        }
+                      }
+                    },
+                    "metadata": {
+                      "mode": "ide_integrated",
+                      "agent_name": "complex-test-agent",
+                      "timestamp": "2025-10-03T05:09:30.063941",
+                      "tools_executed": [
+                        "http",
+                        "storage",
+                        "logger"
+                      ]
+                    },
+                    "task_id": "task_id_value",
+                    "title": "title_value",
+                    "description": "description_value",
+                    "priority": 0,
+                    "status": "status_value",
+                    "created_at": "created_at_value"
+                  }
+                },
+                "errors": [],
+                "response_time": 0.001421213150024414
+              },
+              {
+                "passed": true,
+                "verb": "task.update@v1",
+                "params": {
+                  "task_id": "test_task_id",
+                  "status": "test_status"
+                },
+                "response": {
+                  "jsonrpc": "2.0",
+                  "id": 1,
+                  "result": {
+                    "input_params": {
+                      "task_id": "test_task_id",
+                      "status": "test_status"
+                    },
+                    "tool_results": {
+                      "http": {
+                        "ok": false,
+                        "version": "v1",
+                        "error": {
+                          "code": "E_ARGS",
+                          "message": "url is required"
+                        }
+                      },
+                      "storage": {
+                        "ok": false,
+                        "version": "v1",
+                        "error": {
+                          "code": "E_ARGS",
+                          "message": "path is required"
+                        }
+                      },
+                      "logger": {
+                        "ok": true,
+                        "version": "v1",
+                        "data": {
+                          "logged": true
+                        }
+                      }
+                    },
+                    "metadata": {
+                      "mode": "ide_integrated",
+                      "agent_name": "complex-test-agent",
+                      "timestamp": "2025-10-03T05:09:30.065589",
+                      "tools_executed": [
+                        "http",
+                        "storage",
+                        "logger"
+                      ]
+                    },
+                    "task_id": "task_id_value",
+                    "status": "status_value",
+                    "updated_at": "updated_at_value"
+                  }
+                },
+                "errors": [],
+                "response_time": 0.0016257762908935547
+              },
+              {
+                "passed": true,
+                "verb": "task.list@v1",
+                "params": {
+                  "limit": 42,
+                  "offset": 42
+                },
+                "response": {
+                  "jsonrpc": "2.0",
+                  "id": 1,
+                  "result": {
+                    "input_params": {
+                      "limit": 42,
+                      "offset": 42
+                    },
+                    "tool_results": {
+                      "http": {
+                        "ok": false,
+                        "version": "v1",
+                        "error": {
+                          "code": "E_ARGS",
+                          "message": "url is required"
+                        }
+                      },
+                      "storage": {
+                        "ok": false,
+                        "version": "v1",
+                        "error": {
+                          "code": "E_ARGS",
+                          "message": "path is required"
+                        }
+                      },
+                      "logger": {
+                        "ok": true,
+                        "version": "v1",
+                        "data": {
+                          "logged": true
+                        }
+                      }
+                    },
+                    "metadata": {
+                      "mode": "ide_integrated",
+                      "agent_name": "complex-test-agent",
+                      "timestamp": "2025-10-03T05:09:30.067197",
+                      "tools_executed": [
+                        "http",
+                        "storage",
+                        "logger"
+                      ]
+                    },
+                    "tasks": [],
+                    "total": 0
+                  }
+                },
+                "errors": [],
+                "response_time": 0.0015540122985839844
+              }
+            ],
+            "overall_passed": true,
+            "total_duration": 0.6529841423034668,
+            "server_shutdown": {
+              "stopped": true,
+              "errors": []
+            }
+          },
+          "overall_passed": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "fixture": "python_with_tools.pw",
+      "stages": {
+        "parse": {
+          "fixture": "python_with_tools.pw",
+          "parsed": true,
+          "agent": "AgentDefinition(name='tool-test-agent', lang='python', port=23471, exposes=[ExposeBlock(verb='fetch.data@v1', params=[{'name': 'url', 'type': 'string'}], returns=[{'name': 'status', 'type': 'int'}, {'name': 'data', 'type': 'string'}, {'name': 'cached', 'type': 'bool'}], handler_code=None, prompt_template=None), ExposeBlock(verb='store.item@v1', params=[{'name': 'key', 'type': 'string'}, {'name': 'value', 'type': 'string'}], returns=[{'name': 'stored', 'type': 'bool'}, {'name': 'key', 'type': 'string'}, {'name': 'timestamp', 'type': 'string'}], handler_code=None, prompt_template=None), ExposeBlock(verb='retrieve.item@v1', params=[{'name': 'key', 'type': 'string'}], returns=[{'name': 'found', 'type': 'bool'}, {'name': 'value', 'type': 'string'}, {'name': 'key', 'type': 'string'}], handler_code=None, prompt_template=None)], calls=[], files=[], llm=None, tools=['http', 'storage'], memory=None, prompt_template=None, observability=None, temporal=False, workflows=[])",
+          "errors": []
+        },
+        "generate": {
+          "fixture": "python_with_tools.pw",
+          "generated": true,
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/tool-test-agent_server.py",
+          "errors": []
+        },
+        "test": {
+          "fixture": "python_with_tools.pw",
+          "agent_name": "tool-test-agent",
+          "port": 23471,
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/tool-test-agent_server.py",
+          "tests": {
+            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/tool-test-agent_server.py",
+            "port": 23471,
+            "syntax_validation": {
+              "valid": true,
+              "errors": [],
+              "warnings": [],
+              "imports_found": [
+                "fastapi",
+                "fastapi.responses",
+                "uvicorn",
+                "typing",
+                "datetime",
+                "time",
+                "sys",
+                "os",
+                "pathlib",
+                "tools.registry",
+                "language.tool_executor",
+                "logging",
+                "traceback",
+                "functools",
+                "asyncio",
+                "datetime",
+                "typing",
+                "fastapi.middleware.cors",
+                "fastapi.middleware.trustedhost",
+                "slowapi",
+                "slowapi.util",
+                "slowapi.errors",
+                "os"
+              ],
+              "classes_found": [
+                "HealthCheck"
+              ],
+              "functions_found": [
+                "handle_errors",
+                "validate_params",
+                "handle_fetch_data_v1",
+                "handle_store_item_v1",
+                "handle_retrieve_item_v1",
+                "__init__"
+              ]
+            },
+            "server_startup": {
+              "started": true,
+              "pid": 16714,
+              "errors": [],
+              "startup_time": 0.5078887939453125
+            },
+            "health_check": {
+              "passed": true,
+              "status_code": 200,
+              "response": {
+                "status": "alive",
+                "uptime_seconds": 0.314913,
+                "timestamp": "2025-10-03T09:09:30.709954+00:00"
+              },
+              "errors": [],
+              "response_time": 0.0014758110046386719
+            },
+            "verb_tests": [
+              {
+                "passed": true,
+                "verb": "fetch.data@v1",
+                "params": {
+                  "url": "test_url"
+                },
+                "response": {
+                  "jsonrpc": "2.0",
+                  "id": 1,
+                  "result": {
+                    "input_params": {
+                      "url": "test_url"
+                    },
+                    "tool_results": {
+                      "http": {
+                        "ok": false,
+                        "version": "v1",
+                        "error": {
+                          "code": "E_NETWORK",
+                          "message": "Invalid URL 'test_url': No scheme supplied. Perhaps you meant https://test_url?"
+                        }
+                      },
+                      "storage": {
+                        "ok": false,
+                        "version": "v1",
+                        "error": {
+                          "code": "E_ARGS",
+                          "message": "path is required"
+                        }
+                      }
+                    },
+                    "metadata": {
+                      "mode": "ide_integrated",
+                      "agent_name": "tool-test-agent",
+                      "timestamp": "2025-10-03T05:09:30.711958",
+                      "tools_executed": [
+                        "http",
+                        "storage"
+                      ]
+                    },
+                    "status": 0,
+                    "data": "data_value",
+                    "cached": true
+                  }
+                },
+                "errors": [],
+                "response_time": 0.0019388198852539062
+              },
+              {
+                "passed": true,
+                "verb": "store.item@v1",
+                "params": {
+                  "key": "test_key",
+                  "value": "test_value"
+                },
+                "response": {
+                  "jsonrpc": "2.0",
+                  "id": 1,
+                  "result": {
+                    "input_params": {
+                      "key": "test_key",
+                      "value": "test_value"
+                    },
+                    "tool_results": {
+                      "http": {
+                        "ok": false,
+                        "version": "v1",
+                        "error": {
+                          "code": "E_ARGS",
+                          "message": "url is required"
+                        }
+                      },
+                      "storage": {
+                        "ok": false,
+                        "version": "v1",
+                        "error": {
+                          "code": "E_ARGS",
+                          "message": "path is required"
+                        }
+                      }
+                    },
+                    "metadata": {
+                      "mode": "ide_integrated",
+                      "agent_name": "tool-test-agent",
+                      "timestamp": "2025-10-03T05:09:30.713428",
+                      "tools_executed": [
+                        "http",
+                        "storage"
+                      ]
+                    },
+                    "stored": true,
+                    "key": "key_value",
+                    "timestamp": "timestamp_value"
+                  }
+                },
+                "errors": [],
+                "response_time": 0.0013730525970458984
+              },
+              {
+                "passed": true,
+                "verb": "retrieve.item@v1",
+                "params": {
+                  "key": "test_key"
+                },
+                "response": {
+                  "jsonrpc": "2.0",
+                  "id": 1,
+                  "result": {
+                    "input_params": {
+                      "key": "test_key"
+                    },
+                    "tool_results": {
+                      "http": {
+                        "ok": false,
+                        "version": "v1",
+                        "error": {
+                          "code": "E_ARGS",
+                          "message": "url is required"
+                        }
+                      },
+                      "storage": {
+                        "ok": false,
+                        "version": "v1",
+                        "error": {
+                          "code": "E_ARGS",
+                          "message": "path is required"
+                        }
+                      }
+                    },
+                    "metadata": {
+                      "mode": "ide_integrated",
+                      "agent_name": "tool-test-agent",
+                      "timestamp": "2025-10-03T05:09:30.714762",
+                      "tools_executed": [
+                        "http",
+                        "storage"
+                      ]
+                    },
+                    "found": true,
+                    "value": "value_value",
+                    "key": "key_value"
+                  }
+                },
+                "errors": [],
+                "response_time": 0.001306772232055664
+              }
+            ],
+            "overall_passed": true,
+            "total_duration": 0.69563889503479,
+            "server_shutdown": {
+              "stopped": true,
+              "errors": []
+            }
+          },
+          "overall_passed": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "fixture": "go_minimal.pw",
+      "stages": {
+        "parse": {
+          "fixture": "go_minimal.pw",
+          "parsed": true,
+          "agent": "AgentDefinition(name='minimal-go-agent', lang='go', port=8080, exposes=[ExposeBlock(verb='greet@v1', params=[{'name': 'name', 'type': 'string'}], returns=[{'name': 'message', 'type': 'string'}, {'name': 'timestamp', 'type': 'int'}], handler_code=None, prompt_template=None)], calls=[], files=[], llm=None, tools=[], memory=None, prompt_template=None, observability=None, temporal=False, workflows=[])",
+          "errors": []
+        },
+        "generate": {
+          "fixture": "go_minimal.pw",
+          "generated": true,
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-go-agent_server.py",
+          "errors": []
+        },
+        "test": {
+          "fixture": "go_minimal.pw",
+          "agent_name": "minimal-go-agent",
+          "port": 8080,
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-go-agent_server.py",
+          "tests": {
+            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-go-agent_server.py",
+            "port": 8080,
+            "syntax_validation": {
+              "valid": true,
+              "errors": [],
+              "warnings": [],
+              "imports_found": [
+                "fastapi",
+                "fastapi.responses",
+                "uvicorn",
+                "typing",
+                "datetime",
+                "time",
+                "sys",
+                "os",
+                "pathlib",
+                "tools.registry",
+                "language.tool_executor",
+                "logging",
+                "traceback",
+                "functools",
+                "asyncio",
+                "datetime",
+                "typing",
+                "fastapi.middleware.cors",
+                "fastapi.middleware.trustedhost",
+                "slowapi",
+                "slowapi.util",
+                "slowapi.errors",
+                "os"
+              ],
+              "classes_found": [
+                "HealthCheck"
+              ],
+              "functions_found": [
+                "handle_errors",
+                "validate_params",
+                "handle_greet_v1",
+                "__init__"
+              ]
+            },
+            "server_startup": {
+              "started": true,
+              "pid": 16780,
+              "errors": [],
+              "startup_time": 0.5138711929321289
+            },
+            "health_check": {
+              "passed": true,
+              "status_code": 200,
+              "response": {
+                "status": "alive",
+                "uptime_seconds": 0.324538,
+                "timestamp": "2025-10-03T09:09:31.412275+00:00"
+              },
+              "errors": [],
+              "response_time": 0.001898050308227539
+            },
+            "verb_tests": [
+              {
+                "passed": true,
+                "verb": "greet@v1",
+                "params": {
+                  "name": "test_name"
+                },
+                "response": {
+                  "jsonrpc": "2.0",
+                  "id": 1,
+                  "result": {
+                    "input_params": {
+                      "name": "test_name"
+                    },
+                    "tool_results": {},
+                    "metadata": {
+                      "mode": "ide_integrated",
+                      "agent_name": "minimal-go-agent",
+                      "timestamp": "2025-10-03T05:09:31.413823",
+                      "tools_executed": []
+                    },
+                    "message": "message_value",
+                    "timestamp": 0
+                  }
+                },
+                "errors": [],
+                "response_time": 0.0013947486877441406
+              }
+            ],
+            "overall_passed": true,
+            "total_duration": 0.754608154296875,
+            "server_shutdown": {
+              "stopped": true,
+              "errors": []
+            }
+          },
+          "overall_passed": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "fixture": "nodejs_with_tools.pw",
+      "stages": {
+        "parse": {
+          "fixture": "nodejs_with_tools.pw",
+          "parsed": true,
+          "agent": "AgentDefinition(name='tools-test-agent', lang='nodejs', port=20101, exposes=[ExposeBlock(verb='process.data@v1', params=[{'name': 'input', 'type': 'string'}, {'name': 'format', 'type': 'string'}], returns=[{'name': 'output', 'type': 'string'}, {'name': 'status', 'type': 'string'}, {'name': 'timestamp', 'type': 'int'}], handler_code=None, prompt_template=None), ExposeBlock(verb='health.check@v1', params=[], returns=[{'name': 'healthy', 'type': 'bool'}, {'name': 'uptime', 'type': 'int'}, {'name': 'version', 'type': 'string'}], handler_code=None, prompt_template=None)], calls=[], files=[], llm=None, tools=[], memory=None, prompt_template=None, observability=None, temporal=False, workflows=[])",
+          "errors": []
+        },
+        "generate": {
+          "fixture": "nodejs_with_tools.pw",
+          "generated": true,
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/tools-test-agent_server.py",
+          "errors": []
+        },
+        "test": {
+          "fixture": "nodejs_with_tools.pw",
+          "agent_name": "tools-test-agent",
+          "port": 20101,
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/tools-test-agent_server.py",
+          "tests": {
+            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/tools-test-agent_server.py",
+            "port": 20101,
+            "syntax_validation": {
+              "valid": true,
+              "errors": [],
+              "warnings": [],
+              "imports_found": [
+                "fastapi",
+                "fastapi.responses",
+                "uvicorn",
+                "typing",
+                "datetime",
+                "time",
+                "sys",
+                "os",
+                "pathlib",
+                "tools.registry",
+                "language.tool_executor",
+                "logging",
+                "traceback",
+                "functools",
+                "asyncio",
+                "datetime",
+                "typing",
+                "fastapi.middleware.cors",
+                "fastapi.middleware.trustedhost",
+                "slowapi",
+                "slowapi.util",
+                "slowapi.errors",
+                "os"
+              ],
+              "classes_found": [
+                "HealthCheck"
+              ],
+              "functions_found": [
+                "handle_errors",
+                "validate_params",
+                "handle_process_data_v1",
+                "handle_health_check_v1",
+                "__init__"
+              ]
+            },
+            "server_startup": {
+              "started": true,
+              "pid": 16798,
+              "errors": [],
+              "startup_time": 0.513336181640625
+            },
+            "health_check": {
+              "passed": true,
+              "status_code": 200,
+              "response": {
+                "status": "alive",
+                "uptime_seconds": 0.328749,
+                "timestamp": "2025-10-03T09:09:32.170611+00:00"
+              },
+              "errors": [],
+              "response_time": 0.0018010139465332031
+            },
+            "verb_tests": [
+              {
+                "passed": true,
+                "verb": "process.data@v1",
+                "params": {
+                  "input": "test_input",
+                  "format": "test_format"
+                },
+                "response": {
+                  "jsonrpc": "2.0",
+                  "id": 1,
+                  "result": {
+                    "input_params": {
+                      "input": "test_input",
+                      "format": "test_format"
+                    },
+                    "tool_results": {},
+                    "metadata": {
+                      "mode": "ide_integrated",
+                      "agent_name": "tools-test-agent",
+                      "timestamp": "2025-10-03T05:09:32.172245",
+                      "tools_executed": []
+                    },
+                    "output": "output_value",
+                    "status": "status_value",
+                    "timestamp": 0
+                  }
+                },
+                "errors": [],
+                "response_time": 0.0014681816101074219
+              },
+              {
+                "passed": true,
+                "verb": "health.check@v1",
+                "params": {},
+                "response": {
+                  "jsonrpc": "2.0",
+                  "id": 1,
+                  "result": {
+                    "input_params": {},
+                    "tool_results": {},
+                    "metadata": {
+                      "mode": "ide_integrated",
+                      "agent_name": "tools-test-agent",
+                      "timestamp": "2025-10-03T05:09:32.173524",
+                      "tools_executed": []
+                    },
+                    "healthy": true,
+                    "uptime": 0,
+                    "version": "version_value"
+                  }
+                },
+                "errors": [],
+                "response_time": 0.0012059211730957031
+              }
+            ],
+            "overall_passed": true,
+            "total_duration": 0.7612080574035645,
+            "server_shutdown": {
+              "stopped": true,
+              "errors": []
+            }
+          },
+          "overall_passed": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "fixture": "python_minimal.pw",
+      "stages": {
+        "parse": {
+          "fixture": "python_minimal.pw",
+          "parsed": true,
+          "agent": "AgentDefinition(name='minimal-test-agent', lang='python', port=23470, exposes=[ExposeBlock(verb='health.check@v1', params=[], returns=[{'name': 'status', 'type': 'string'}, {'name': 'uptime', 'type': 'int'}], handler_code=None, prompt_template=None), ExposeBlock(verb='echo.message@v1', params=[{'name': 'message', 'type': 'string'}], returns=[{'name': 'echo', 'type': 'string'}, {'name': 'timestamp', 'type': 'string'}], handler_code=None, prompt_template=None)], calls=[], files=[], llm=None, tools=[], memory=None, prompt_template=None, observability=None, temporal=False, workflows=[])",
+          "errors": []
+        },
+        "generate": {
+          "fixture": "python_minimal.pw",
+          "generated": true,
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-test-agent_server.py",
+          "errors": []
+        },
+        "test": {
+          "fixture": "python_minimal.pw",
+          "agent_name": "minimal-test-agent",
+          "port": 23470,
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-test-agent_server.py",
+          "tests": {
+            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-test-agent_server.py",
+            "port": 23470,
+            "syntax_validation": {
+              "valid": true,
+              "errors": [],
+              "warnings": [],
+              "imports_found": [
+                "fastapi",
+                "fastapi.responses",
+                "uvicorn",
+                "typing",
+                "datetime",
+                "time",
+                "sys",
+                "os",
+                "pathlib",
+                "tools.registry",
+                "language.tool_executor",
+                "logging",
+                "traceback",
+                "functools",
+                "asyncio",
+                "datetime",
+                "typing",
+                "fastapi.middleware.cors",
+                "fastapi.middleware.trustedhost",
+                "slowapi",
+                "slowapi.util",
+                "slowapi.errors",
+                "os"
+              ],
+              "classes_found": [
+                "HealthCheck"
+              ],
+              "functions_found": [
+                "handle_errors",
+                "validate_params",
+                "handle_health_check_v1",
+                "handle_echo_message_v1",
+                "__init__"
+              ]
+            },
+            "server_startup": {
+              "started": true,
+              "pid": 16814,
+              "errors": [],
+              "startup_time": 0.5111989974975586
+            },
+            "health_check": {
+              "passed": true,
+              "status_code": 200,
+              "response": {
+                "status": "alive",
+                "uptime_seconds": 0.319622,
+                "timestamp": "2025-10-03T09:09:32.931840+00:00"
+              },
+              "errors": [],
+              "response_time": 0.001734018325805664
+            },
+            "verb_tests": [
+              {
+                "passed": true,
+                "verb": "health.check@v1",
+                "params": {},
+                "response": {
+                  "jsonrpc": "2.0",
+                  "id": 1,
+                  "result": {
+                    "input_params": {},
+                    "tool_results": {},
+                    "metadata": {
+                      "mode": "ide_integrated",
+                      "agent_name": "minimal-test-agent",
+                      "timestamp": "2025-10-03T05:09:32.933556",
+                      "tools_executed": []
+                    },
+                    "status": "status_value",
+                    "uptime": 0
+                  }
+                },
+                "errors": [],
+                "response_time": 0.0015981197357177734
+              },
+              {
+                "passed": true,
+                "verb": "echo.message@v1",
+                "params": {
+                  "message": "test_message"
+                },
+                "response": {
+                  "jsonrpc": "2.0",
+                  "id": 1,
+                  "result": {
+                    "input_params": {
+                      "message": "test_message"
+                    },
+                    "tool_results": {},
+                    "metadata": {
+                      "mode": "ide_integrated",
+                      "agent_name": "minimal-test-agent",
+                      "timestamp": "2025-10-03T05:09:32.935143",
+                      "tools_executed": []
+                    },
+                    "echo": "echo_value",
+                    "timestamp": "timestamp_value"
+                  }
+                },
+                "errors": [],
+                "response_time": 0.001554250717163086
+              }
+            ],
+            "overall_passed": true,
+            "total_duration": 0.6485929489135742,
+            "server_shutdown": {
+              "stopped": true,
+              "errors": []
+            }
+          },
+          "overall_passed": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "fixture": "go_with_tools.pw",
+      "stages": {
+        "parse": {
+          "fixture": "go_with_tools.pw",
+          "parsed": true,
+          "agent": "AgentDefinition(name='go-http-agent', lang='go', port=8081, exposes=[ExposeBlock(verb='fetch.data@v1', params=[{'name': 'url', 'type': 'string'}, {'name': 'method', 'type': 'string'}], returns=[{'name': 'status', 'type': 'int'}, {'name': 'body', 'type': 'string'}, {'name': 'headers', 'type': 'object'}], handler_code=None, prompt_template=None)], calls=[], files=[], llm=None, tools=['http'], memory=None, prompt_template=None, observability=None, temporal=False, workflows=[])",
+          "errors": []
+        },
+        "generate": {
+          "fixture": "go_with_tools.pw",
+          "generated": true,
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/go-http-agent_server.py",
+          "errors": []
+        },
+        "test": {
+          "fixture": "go_with_tools.pw",
+          "agent_name": "go-http-agent",
+          "port": 8081,
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/go-http-agent_server.py",
+          "tests": {
+            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/go-http-agent_server.py",
+            "port": 8081,
+            "syntax_validation": {
+              "valid": true,
+              "errors": [],
+              "warnings": [],
+              "imports_found": [
+                "fastapi",
+                "fastapi.responses",
+                "uvicorn",
+                "typing",
+                "datetime",
+                "time",
+                "sys",
+                "os",
+                "pathlib",
+                "tools.registry",
+                "language.tool_executor",
+                "logging",
+                "traceback",
+                "functools",
+                "asyncio",
+                "datetime",
+                "typing",
+                "fastapi.middleware.cors",
+                "fastapi.middleware.trustedhost",
+                "slowapi",
+                "slowapi.util",
+                "slowapi.errors",
+                "os"
+              ],
+              "classes_found": [
+                "HealthCheck"
+              ],
+              "functions_found": [
+                "handle_errors",
+                "validate_params",
+                "handle_fetch_data_v1",
+                "__init__"
+              ]
+            },
+            "server_startup": {
+              "started": true,
+              "pid": 16895,
+              "errors": [],
+              "startup_time": 0.5153238773345947
+            },
+            "health_check": {
+              "passed": true,
+              "status_code": 200,
+              "response": {
+                "status": "alive",
+                "uptime_seconds": 0.32355,
+                "timestamp": "2025-10-03T09:09:33.583138+00:00"
+              },
+              "errors": [],
+              "response_time": 0.0037620067596435547
+            },
+            "verb_tests": [
+              {
+                "passed": true,
+                "verb": "fetch.data@v1",
+                "params": {
+                  "url": "test_url",
+                  "method": "test_method"
+                },
+                "response": {
+                  "jsonrpc": "2.0",
+                  "id": 1,
+                  "result": {
+                    "input_params": {
+                      "url": "test_url",
+                      "method": "test_method"
+                    },
+                    "tool_results": {
+                      "http": {
+                        "ok": false,
+                        "version": "v1",
+                        "error": {
+                          "code": "E_NETWORK",
+                          "message": "Invalid URL 'test_url': No scheme supplied. Perhaps you meant https://test_url?"
+                        }
+                      }
+                    },
+                    "metadata": {
+                      "mode": "ide_integrated",
+                      "agent_name": "go-http-agent",
+                      "timestamp": "2025-10-03T05:09:33.587781",
+                      "tools_executed": [
+                        "http"
+                      ]
+                    },
+                    "status": 0,
+                    "body": "body_value",
+                    "headers": {}
+                  }
+                },
+                "errors": [],
+                "response_time": 0.004040956497192383
+              }
+            ],
+            "overall_passed": true,
+            "total_duration": 0.6495938301086426,
+            "server_shutdown": {
+              "stopped": true,
+              "errors": []
+            }
+          },
+          "overall_passed": true
+        }
+      },
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "end_time": 1759482573.712022,
+  "total_duration": 4.823908090591431
+}
