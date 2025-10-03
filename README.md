@@ -1,6 +1,6 @@
 # 🤖 Promptware
 
-[![CI/CD](https://img.shields.io/github/actions/workflow/status/promptware/promptware/ci.yml?branch=main&style=flat-square&logo=github)](https://github.com/promptware/promptware/actions)
+[![CI/CD](https://img.shields.io/github/actions/workflow/status/Promptware-dev/promptware/ci.yml?branch=main&style=flat-square&logo=github)](https://github.com/Promptware-dev/promptware/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![Python Version](https://img.shields.io/badge/python-3.10+-blue.svg?style=flat-square&logo=python)](https://www.python.org/downloads/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
@@ -212,7 +212,7 @@ promptware list-tools --lang python
 ### 1. Install
 
 ```bash
-git clone https://github.com/promptware/promptware.git
+git clone https://github.com/Promptware-dev/promptware.git
 cd promptware
 pip install -e .
 ```
@@ -504,7 +504,7 @@ Automate deployment pipelines:
 
 ## 🏢 Used By
 
-**Using Promptware in production?** We'd love to hear from you! Share your story in [GitHub Discussions](https://github.com/promptware/promptware/discussions/categories/show-and-tell) and we'll feature you here.
+**Using Promptware in production?** We'd love to hear from you! Share your story in [GitHub Discussions](https://github.com/Promptware-dev/promptware/discussions/categories/show-and-tell) and we'll feature you here.
 
 **Organizations & Projects:**
 - *Your company/project here*
@@ -755,7 +755,7 @@ spec:
 Join the Promptware community:
 
 - **Discord** - [Join our server](https://discord.gg/promptware) for real-time chat, support, and discussions
-- **GitHub Discussions** - [Ask questions, share ideas](https://github.com/promptware/promptware/discussions) and show off your projects
+- **GitHub Discussions** - [Ask questions, share ideas](https://github.com/Promptware-dev/promptware/discussions) and show off your projects
 - **Twitter/X** - [@promptware](https://twitter.com/promptware) for updates and announcements
 - **Office Hours** - Weekly community calls (schedule TBD - watch Discord for announcements)
 
@@ -809,7 +809,7 @@ See [Development Guide](docs/development-guide.md) for details.
 
 Track Promptware's growth:
 
-[![Star History Chart](https://api.star-history.com/svg?repos=promptware/promptware&type=Date)](https://star-history.com/#promptware/promptware&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=Promptware-dev/promptware&type=Date)](https://star-history.com/#Promptware-dev/promptware&Date)
 
 ---
 
@@ -835,7 +835,7 @@ Built with:
 
 ```bash
 # Install Promptware
-git clone https://github.com/promptware/promptware.git
+git clone https://github.com/Promptware-dev/promptware.git
 cd promptware && pip install -e .
 
 # Create and generate your first agent
@@ -847,7 +847,7 @@ promptware generate my-agent.pw --lang python
 
 **Love Promptware?** Star us on GitHub to show your support and help others discover the project!
 
-**Questions or feedback?** Join our [Discord community](https://discord.gg/promptware) or start a [discussion](https://github.com/promptware/promptware/discussions).
+**Questions or feedback?** Join our [Discord community](https://discord.gg/promptware) or start a [discussion](https://github.com/Promptware-dev/promptware/discussions).
 
 **Want to contribute?** Check out our [Contributing Guide](docs/development-guide.md) and help make Promptware even better!
 
