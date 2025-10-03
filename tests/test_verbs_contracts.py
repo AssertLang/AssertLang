@@ -9,7 +9,7 @@ project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
 from daemon.mcpd import MCPDaemon, Task
-from schema_utils import assert_events_match_schema
+from tests.utils.schema_utils import assert_events_match_schema
 
 
 @pytest.fixture
