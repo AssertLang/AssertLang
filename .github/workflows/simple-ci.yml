@@ -8,8 +8,19 @@ on:
     branches: [ main ]
 
 jobs:
+  validate-cleanliness:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Validate repository cleanliness
+      run: |
+        chmod +x scripts/validate_clean_repo.sh
+        ./scripts/validate_clean_repo.sh
+
   test:
     runs-on: ubuntu-latest
+    needs: validate-cleanliness
 
     steps:
     - uses: actions/checkout@v4
