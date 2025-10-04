@@ -126,7 +126,7 @@ fn main() {
         shutil.copy(adapter_path, tmp_path / "src" / "adapter.rs")
         (tmp_path / "src" / "main.rs").write_text(runner_rs, encoding="utf-8")
         completed = subprocess.run(
-            [CARGO_BIN, "run", "--quiet", "--" , payload_json],
+            [CARGO_BIN, "run", "--quiet", "--", payload_json],
             cwd=tmp_path,
             capture_output=True,
             text=True,

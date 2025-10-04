@@ -8,9 +8,9 @@ try:
 except ImportError:
     requests = None  # type: ignore
 
-from ..errors import PromptwareError, E_RUNTIME, E_JSON, CompatibilityError
+from ..errors import E_JSON, E_RUNTIME, CompatibilityError, PromptwareError
 from ..types import MCPEnvelope
-from ..version import __version__, __daemon_min_version__
+from ..version import __daemon_min_version__, __version__
 
 
 class Transport:

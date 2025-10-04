@@ -24,10 +24,11 @@ Commands:
 """
 
 import argparse
-import sys
 import os
 import shutil
+import sys
 from pathlib import Path
+
 # Add project root to path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
@@ -340,9 +341,9 @@ def cmd_generate(args) -> int:
     """Execute generate command."""
     from language.agent_parser import parse_agent_pw
     from language.mcp_server_generator import generate_python_mcp_server
-    from language.mcp_server_generator_nodejs import generate_nodejs_mcp_server
-    from language.mcp_server_generator_go import generate_go_mcp_server
     from language.mcp_server_generator_dotnet import generate_dotnet_mcp_server
+    from language.mcp_server_generator_go import generate_go_mcp_server
+    from language.mcp_server_generator_nodejs import generate_nodejs_mcp_server
     from language.mcp_server_generator_rust import generate_rust_mcp_server
     from promptware.config import get_config
 
@@ -904,8 +905,9 @@ expose chat.message@v1 (
 
 def cmd_config(args) -> int:
     """Execute config command."""
-    from promptware.config import get_config
     import subprocess
+
+    from promptware.config import get_config
 
     config = get_config()
 

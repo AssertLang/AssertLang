@@ -5,9 +5,8 @@ from copy import deepcopy
 from dataclasses import dataclass
 from typing import Any, Dict, Iterable, List, Optional, Union
 
-from tools import run_tool
-
 from language.parser import _transform_condition  # type: ignore[attr-defined]
+from tools import run_tool
 
 
 class PWExecutionError(RuntimeError):

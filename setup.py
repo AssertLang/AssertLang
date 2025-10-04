@@ -2,7 +2,7 @@
 Promptware setup configuration.
 """
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
@@ -58,6 +58,8 @@ setup(
     install_requires=[
         # Core dependencies
         "requests>=2.31.0",
+        "pyyaml>=6.0.0",
+        "jsonschema>=4.0.0",
 
         # CLI dependencies
         # (argparse is built-in)

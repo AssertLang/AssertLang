@@ -1,16 +1,16 @@
 import os
-import socket
 import selectors
+import signal
+import socket
 import threading
+import time
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse
-import requests
-import signal
-import time
 
+import requests
 
 GATEWAY_PORT = 23456
-GATEWAY_PIDFILE = os.path.join('.mcpd', 'gateway.pid')
+GATEWAY_PIDFILE = os.path.join(".mcpd", "gateway.pid")
 
 
 class UDSToHTTPProxyHandler(BaseHTTPRequestHandler):
@@ -30,8 +30,8 @@ class UDSToHTTPProxyHandler(BaseHTTPRequestHandler):
 
     def _proxy(self):
         parsed = urlparse(self.path)
-        parts = [p for p in parsed.path.split('/') if p]
-        if len(parts) < 2 or parts[0] != 'apps':
+        parts = [p for p in parsed.path.split("/") if p]
+        if len(parts) < 2 or parts[0] != "apps":
             self.send_error(404, "Not Found")
             return
         task_id = parts[1]
@@ -41,25 +41,25 @@ class UDSToHTTPProxyHandler(BaseHTTPRequestHandler):
             return
 
         # Reconstruct path to backend (strip /apps/<task_id>)
-        backend_path = '/' + '/'.join(parts[2:])
-        if backend_path == '/':
-            backend_path = '/'
+        backend_path = "/" + "/".join(parts[2:])
+        if backend_path == "/":
+            backend_path = "/"
         if parsed.query:
-            backend_path = backend_path + '?' + parsed.query
+            backend_path = backend_path + "?" + parsed.query
 
         # Prepare HTTP/1.1 request over UDS
         body = None
-        content_length = self.headers.get('Content-Length')
+        content_length = self.headers.get("Content-Length")
         if content_length:
             body = self.rfile.read(int(content_length))
 
         req_lines = [
             f"{self.command} {backend_path} HTTP/1.1",
-            f"Host: uds",
+            "Host: uds",
             "Connection: close",
         ]
         for k, v in self.headers.items():
-            if k.lower() in {'host', 'content-length'}:
+            if k.lower() in {"host", "content-length"}:
                 continue
             req_lines.append(f"{k}: {v}")
         if body is not None:
@@ -73,8 +73,15 @@ class UDSToHTTPProxyHandler(BaseHTTPRequestHandler):
                 host = route["tcp"].get("host", "127.0.0.1")
                 port = int(route["tcp"].get("port"))
                 url = f"http://{host}:{port}{backend_path}"
-                fwd_headers = {k: v for k, v in self.headers.items() if k.lower() != 'host'}
-                resp = requests.request(self.command, url, headers=fwd_headers, data=body, timeout=5, allow_redirects=False)
+                fwd_headers = {k: v for k, v in self.headers.items() if k.lower() != "host"}
+                resp = requests.request(
+                    self.command,
+                    url,
+                    headers=fwd_headers,
+                    data=body,
+                    timeout=5,
+                    allow_redirects=False,
+                )
                 self.send_response(resp.status_code)
                 for k, v in resp.headers.items():
                     if k.lower() in {"transfer-encoding", "connection"}:
@@ -100,9 +107,9 @@ class UDSToHTTPProxyHandler(BaseHTTPRequestHandler):
                         code = int(code_str)
                         self.send_response(code, reason)
                         for hdr in head_lines[1:]:
-                            if not hdr or ':' not in hdr:
+                            if not hdr or ":" not in hdr:
                                 continue
-                            k, v = hdr.split(':', 1)
+                            k, v = hdr.split(":", 1)
                             if k.lower() in {"transfer-encoding", "connection"}:
                                 continue
                             self.send_header(k.strip(), v.strip())
@@ -149,18 +156,18 @@ class UDSToHTTPProxyHandler(BaseHTTPRequestHandler):
             idx = buf.find(b"\r\n\r\n")
             if idx != -1:
                 head = bytes(buf[:idx])
-                rest = bytes(buf[idx+4:])
+                rest = bytes(buf[idx + 4 :])
                 break
         else:
             head = bytes(buf)
             rest = b""
-        head_lines = head.decode(errors='ignore').split("\r\n") if head else []
+        head_lines = head.decode(errors="ignore").split("\r\n") if head else []
         # Determine content-length if present
         content_length = 0
         for line in head_lines[1:]:
-            if line.lower().startswith('content-length:'):
+            if line.lower().startswith("content-length:"):
                 try:
-                    content_length = int(line.split(':',1)[1].strip())
+                    content_length = int(line.split(":", 1)[1].strip())
                 except Exception:
                     content_length = 0
                 break
@@ -181,12 +188,12 @@ class Gateway:
 
     def add_route(self, task_id: str, uds_path: str) -> None:
         existing = UDSToHTTPProxyHandler.routes.get(task_id, {})
-        existing['uds'] = {"path": uds_path}
+        existing["uds"] = {"path": uds_path}
         UDSToHTTPProxyHandler.routes[task_id] = existing
 
     def add_tcp_route(self, task_id: str, host: str, port: int) -> None:
         existing = UDSToHTTPProxyHandler.routes.get(task_id, {})
-        existing['tcp'] = {"host": host, "port": port}
+        existing["tcp"] = {"host": host, "port": port}
         UDSToHTTPProxyHandler.routes[task_id] = existing
 
     def remove_route(self, task_id: str) -> None:
@@ -195,6 +202,7 @@ class Gateway:
     def start(self) -> None:
         class ReusableHTTPServer(HTTPServer):
             allow_reuse_address = True
+
         # Ensure pid dir
         os.makedirs(os.path.dirname(GATEWAY_PIDFILE), exist_ok=True)
         # Try to bind; if busy, kill previous pid from pidfile and retry
@@ -209,8 +217,8 @@ class Gateway:
             except OSError:
                 if attempt == 0 and os.path.exists(GATEWAY_PIDFILE):
                     try:
-                        with open(GATEWAY_PIDFILE, 'r', encoding='utf-8') as f:
-                            pid = int(f.read().strip() or '0')
+                        with open(GATEWAY_PIDFILE, "r", encoding="utf-8") as f:
+                            pid = int(f.read().strip() or "0")
                         if pid > 0:
                             os.kill(pid, signal.SIGTERM)
                             time.sleep(0.5)
@@ -223,7 +231,7 @@ class Gateway:
             self._bound_port = None
             return
         self.httpd = server
-        with open(GATEWAY_PIDFILE, 'w', encoding='utf-8') as f:
+        with open(GATEWAY_PIDFILE, "w", encoding="utf-8") as f:
             f.write(str(os.getpid()))
         thread = threading.Thread(target=self.httpd.serve_forever, daemon=True)
         thread.start()

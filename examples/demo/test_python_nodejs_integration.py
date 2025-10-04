@@ -13,6 +13,7 @@ sys.path.insert(0, str(project_root))
 
 from promptware import call_verb
 
+
 def main():
     print("Cross-Language Integration Test")
     print("=" * 50)

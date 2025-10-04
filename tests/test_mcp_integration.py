@@ -7,10 +7,11 @@ Tests that all agents in .cursor/mcp.json:
 3. Can execute verbs without crashing
 4. Return proper response structures
 """
+
 import json
 import subprocess
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any, Dict
 
 
 def send_jsonrpc(agent_path: str, requests: list) -> list:
@@ -23,7 +24,7 @@ def send_jsonrpc(agent_path: str, requests: list) -> list:
         capture_output=True,
         text=True,
         cwd=Path(__file__).parent.parent,
-        timeout=10
+        timeout=10,
     )
 
     if result.returncode != 0:
@@ -38,11 +39,11 @@ def send_jsonrpc(agent_path: str, requests: list) -> list:
     return responses
 
 
-def test_agent_initialize_and_list_tools(agent_path: str) -> Dict[str, Any]:
-    """Test that agent can initialize and list tools."""
+def agent_initialize_and_list_tools(agent_path: str) -> Dict[str, Any]:
+    """Helper: Test that agent can initialize and list tools."""
     requests = [
         {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}},
-        {"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}}
+        {"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}},
     ]
 
     responses = send_jsonrpc(agent_path, requests)
@@ -65,15 +66,22 @@ def test_agent_initialize_and_list_tools(agent_path: str) -> Dict[str, Any]:
     return {
         "server_name": init_resp["result"]["serverInfo"]["name"],
         "tool_count": len(tools),
-        "tools": [tool["name"] for tool in tools]
+        "tools": [tool["name"] for tool in tools],
     }
 
 
-def test_agent_tool_execution(agent_path: str, tool_name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
-    """Test executing a tool on an agent."""
+def agent_tool_execution(
+    agent_path: str, tool_name: str, arguments: Dict[str, Any]
+) -> Dict[str, Any]:
+    """Helper: Test executing a tool on an agent."""
     requests = [
         {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}},
-        {"jsonrpc": "2.0", "id": 2, "method": "tools/call", "params": {"name": tool_name, "arguments": arguments}}
+        {
+            "jsonrpc": "2.0",
+            "id": 2,
+            "method": "tools/call",
+            "params": {"name": tool_name, "arguments": arguments},
+        },
     ]
 
     responses = send_jsonrpc(agent_path, requests)
@@ -85,10 +93,7 @@ def test_agent_tool_execution(agent_path: str, tool_name: str, arguments: Dict[s
     assert "result" in call_resp or "error" in call_resp, "Tool call response missing result/error"
 
     if "error" in call_resp:
-        return {
-            "success": False,
-            "error": call_resp["error"]
-        }
+        return {"success": False, "error": call_resp["error"]}
 
     # MCP protocol wraps result in content[0].text as JSON string
     result = call_resp["result"]
@@ -107,17 +112,25 @@ def test_agent_tool_execution(agent_path: str, tool_name: str, arguments: Dict[s
         "has_metadata": "metadata" in result,
         "has_tool_results": "tool_results" in result,
         "mode": result.get("metadata", {}).get("mode"),
-        "result": result
+        "result": result,
     }
 
 
 # Test configuration: (agent_path, tool_name, test_arguments)
 TEST_AGENTS = [
-    ("examples/test_tool_integration.pw", "fetch.url@v1", {"url": "https://api.github.com/zen", "method": "GET"}),
+    (
+        "examples/test_tool_integration.pw",
+        "fetch.url@v1",
+        {"url": "https://api.github.com/zen", "method": "GET"},
+    ),
     ("examples/ai_code_reviewer.pw", "review.analyze@v1", {"repo": "test/repo", "pr_number": 123}),
     ("examples/deployment_workflow.pw", "workflow.execute@v1", {"environment": "staging"}),
     ("examples/observable_agent.pw", "task.execute@v1", {"task_id": "test-123"}),
-    ("examples/devops_suite/code_reviewer_agent.pw", "review.approve@v1", {"review_id": "test", "approved": True, "comments": "LGTM"}),
+    (
+        "examples/devops_suite/code_reviewer_agent.pw",
+        "review.approve@v1",
+        {"review_id": "test", "approved": True, "comments": "LGTM"},
+    ),
     ("examples/orchestrator_agent.pw", "orchestrate.deploy@v1", {"service": "test-service"}),
     ("examples/cross_language/data_processor.pw", "process.data@v1", {"input": "test"}),
     ("examples/cross_language/cache_service.pw", "cache.get@v1", {"key": "test"}),
@@ -132,7 +145,7 @@ def test_all_agents_initialize():
 
     for agent_path, _, _ in TEST_AGENTS:
         try:
-            result = test_agent_initialize_and_list_tools(agent_path)
+            result = agent_initialize_and_list_tools(agent_path)
             results[agent_path] = {"status": "pass", "data": result}
             print(f"✅ {agent_path}: {result['tool_count']} tools")
         except Exception as e:
@@ -140,8 +153,9 @@ def test_all_agents_initialize():
             print(f"❌ {agent_path}: {e}")
 
     # At least test-tool-agent should work
-    assert results["examples/test_tool_integration.pw"]["status"] == "pass", \
-        "test-tool-agent failed to initialize"
+    assert (
+        results["examples/test_tool_integration.pw"]["status"] == "pass"
+    ), "test-tool-agent failed to initialize"
 
     return results
 
@@ -152,8 +166,11 @@ def test_all_agents_execute_tools():
 
     for agent_path, tool_name, arguments in TEST_AGENTS:
         try:
-            result = test_agent_tool_execution(agent_path, tool_name, arguments)
-            results[agent_path] = {"status": "pass" if result["success"] else "error", "data": result}
+            result = agent_tool_execution(agent_path, tool_name, arguments)
+            results[agent_path] = {
+                "status": "pass" if result["success"] else "error",
+                "data": result,
+            }
 
             if result["success"]:
                 mode = result.get("mode", "unknown")
@@ -167,8 +184,9 @@ def test_all_agents_execute_tools():
             print(f"❌ {agent_path}: {e}")
 
     # test-tool-agent should execute successfully
-    assert results["examples/test_tool_integration.pw"]["status"] == "pass", \
-        "test-tool-agent failed to execute"
+    assert (
+        results["examples/test_tool_integration.pw"]["status"] == "pass"
+    ), "test-tool-agent failed to execute"
 
     return results
 
@@ -183,10 +201,10 @@ def test_tool_integration_end_to_end():
     3. Actual data returned (not mock)
     4. Tool results present in response
     """
-    result = test_agent_tool_execution(
+    result = agent_tool_execution(
         "examples/test_tool_integration.pw",
         "fetch.url@v1",
-        {"url": "https://api.github.com/zen", "method": "GET"}
+        {"url": "https://api.github.com/zen", "method": "GET"},
     )
 
     assert result["success"], "Tool execution failed"
