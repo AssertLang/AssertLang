@@ -6,9 +6,10 @@ Enables agents to call MCP verbs on other agents.
 
 from __future__ import annotations
 
-import requests
-from typing import Any, Dict, Optional
 from dataclasses import dataclass
+from typing import Any, Dict, Optional
+
+import requests
 
 
 @dataclass
@@ -135,7 +136,7 @@ class MCPClient:
                             }
                         )
 
-            except requests.Timeout as e:
+            except requests.Timeout:
                 last_error = MCPError("E_TIMEOUT", f"Request timed out after {self.timeout}s")
             except requests.ConnectionError as e:
                 last_error = MCPError("E_CONNECTION", f"Connection failed: {str(e)}")

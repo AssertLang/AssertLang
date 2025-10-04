@@ -1,7 +1,5 @@
 from types import SimpleNamespace
 
-import pytest
-
 from tools.http.adapters import adapter_py
 
 

@@ -1,10 +1,9 @@
 from __future__ import annotations
 
 import secrets
-from pathlib import Path
 from typing import List, Optional
 
-from .models import ToolJob, JobStatus, ensure_dirs, ARTIFACT_ROOT
+from .models import ARTIFACT_ROOT, ToolJob, ensure_dirs
 
 
 def enqueue(tool: str, version: str, payload: dict) -> ToolJob:

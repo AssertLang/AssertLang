@@ -1,0 +1,317 @@
+{
+  "start_time": 1759493909.553259,
+  "fixtures_dir": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/fixtures",
+  "output_dir": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/rust",
+  "fixtures_tested": 2,
+  "fixtures_passed": 2,
+  "fixtures_failed": 0,
+  "test_results": [
+    {
+      "fixture": "rust_with_tools.pw",
+      "stages": {
+        "parse": {
+          "fixture": "rust_with_tools.pw",
+          "parsed": true,
+          "agent": "AgentDefinition(name='tool-rust-agent', lang='rust', port=9091, exposes=[ExposeBlock(verb='fetch.data@v1', params=[{'name': 'url', 'type': 'string'}], returns=[{'name': 'status', 'type': 'int'}, {'name': 'data', 'type': 'string'}, {'name': 'cached', 'type': 'bool'}], handler_code=None, prompt_template=None), ExposeBlock(verb='process.data@v1', params=[{'name': 'input', 'type': 'string'}, {'name': 'transform', 'type': 'string'}], returns=[{'name': 'output', 'type': 'string'}, {'name': 'success', 'type': 'bool'}], handler_code=None, prompt_template=None)], calls=[], files=[], llm=None, tools=['http'], memory=None, prompt_template=None, observability=None, temporal=False, workflows=[])",
+          "errors": []
+        },
+        "generate": {
+          "fixture": "rust_with_tools.pw",
+          "generated": true,
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/rust/tool_rust_agent",
+          "errors": []
+        },
+        "test": {
+          "fixture": "rust_with_tools.pw",
+          "agent_name": "tool-rust-agent",
+          "port": 9091,
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/rust/tool_rust_agent",
+          "tests": {
+            "code_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/rust/tool_rust_agent",
+            "port": 9091,
+            "syntax_validation": {
+              "valid": true,
+              "errors": [],
+              "warnings": [
+                "Code is not properly formatted (cargo fmt)",
+                "warning: struct `RateLimiter` is never constructed",
+                "warning: associated items `new` and `allow` are never used",
+                "warning: function `with_security_headers` is never used",
+                "warning: static `RATE_LIMITER_INSTANCE` is never used",
+                "warning: static `RATE_LIMITER_INIT` is never used",
+                "warning: function `get_rate_limiter` is never used",
+                "warning: field `jsonrpc` is never read",
+                "warning: creating a shared reference to mutable static",
+                "warning: creating a shared reference to mutable static",
+                "warning: `tool_rust_agent` (bin \"tool_rust_agent\") generated 9 warnings"
+              ],
+              "formatted": false
+            },
+            "compilation": {
+              "success": true,
+              "build_time_ms": 1360.49485206604,
+              "binary_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/rust/tool_rust_agent/target/release/tool_rust_agent",
+              "binary_size_bytes": 2995184,
+              "errors": [],
+              "warnings": [
+                "warning: struct `RateLimiter` is never constructed",
+                "warning: associated items `new` and `allow` are never used",
+                "warning: function `with_security_headers` is never used",
+                "warning: static `RATE_LIMITER_INSTANCE` is never used",
+                "warning: static `RATE_LIMITER_INIT` is never used",
+                "warning: function `get_rate_limiter` is never used",
+                "warning: field `jsonrpc` is never read",
+                "warning: creating a shared reference to mutable static",
+                "warning: creating a shared reference to mutable static",
+                "warning: `tool_rust_agent` (bin \"tool_rust_agent\") generated 9 warnings"
+              ],
+              "release_mode": true
+            },
+            "server_startup": {
+              "started": true,
+              "pid": 16331,
+              "errors": []
+            },
+            "health_check": {
+              "passed": true,
+              "response_time_ms": 8.133888244628906,
+              "error": null
+            },
+            "verb_tests": [
+              {
+                "passed": true,
+                "verb": "fetch.data@v1",
+                "params": {
+                  "url": "test_url"
+                },
+                "response": {
+                  "id": 1,
+                  "jsonrpc": "2.0",
+                  "result": {
+                    "cached": true,
+                    "data": "data_value",
+                    "input_params": {
+                      "url": "test_url"
+                    },
+                    "metadata": {
+                      "agent_name": "tool-rust-agent",
+                      "mode": "ide_integrated",
+                      "timestamp": 1759493913,
+                      "tools_executed": [
+                        "http"
+                      ]
+                    },
+                    "status": 0,
+                    "tool_results": {
+                      "http": {
+                        "message": "Tool stub: http (actual implementation requires tool module)",
+                        "ok": true,
+                        "params": {
+                          "url": "test_url"
+                        },
+                        "version": "v1"
+                      }
+                    }
+                  }
+                },
+                "errors": [],
+                "response_time": 0.0014810562133789062
+              },
+              {
+                "passed": true,
+                "verb": "process.data@v1",
+                "params": {
+                  "input": "test_input",
+                  "transform": "test_transform"
+                },
+                "response": {
+                  "id": 1,
+                  "jsonrpc": "2.0",
+                  "result": {
+                    "input_params": {
+                      "input": "test_input",
+                      "transform": "test_transform"
+                    },
+                    "metadata": {
+                      "agent_name": "tool-rust-agent",
+                      "mode": "ide_integrated",
+                      "timestamp": 1759493913,
+                      "tools_executed": [
+                        "http"
+                      ]
+                    },
+                    "output": "output_value",
+                    "success": true,
+                    "tool_results": {
+                      "http": {
+                        "message": "Tool stub: http (actual implementation requires tool module)",
+                        "ok": true,
+                        "params": {
+                          "input": "test_input",
+                          "transform": "test_transform"
+                        },
+                        "version": "v1"
+                      }
+                    }
+                  }
+                },
+                "errors": [],
+                "response_time": 0.0013637542724609375
+              }
+            ],
+            "overall_passed": true,
+            "total_duration": 3.636007785797119,
+            "server_shutdown": {
+              "success": true,
+              "message": "Server on port 9091 stopped"
+            }
+          },
+          "overall_passed": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "fixture": "rust_minimal.pw",
+      "stages": {
+        "parse": {
+          "fixture": "rust_minimal.pw",
+          "parsed": true,
+          "agent": "AgentDefinition(name='minimal-rust-agent', lang='rust', port=9090, exposes=[ExposeBlock(verb='health.check@v1', params=[], returns=[{'name': 'status', 'type': 'string'}, {'name': 'uptime', 'type': 'int'}], handler_code=None, prompt_template=None), ExposeBlock(verb='echo.message@v1', params=[{'name': 'message', 'type': 'string'}], returns=[{'name': 'echo', 'type': 'string'}, {'name': 'timestamp', 'type': 'string'}], handler_code=None, prompt_template=None)], calls=[], files=[], llm=None, tools=[], memory=None, prompt_template=None, observability=None, temporal=False, workflows=[])",
+          "errors": []
+        },
+        "generate": {
+          "fixture": "rust_minimal.pw",
+          "generated": true,
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/rust/minimal_rust_agent",
+          "errors": []
+        },
+        "test": {
+          "fixture": "rust_minimal.pw",
+          "agent_name": "minimal-rust-agent",
+          "port": 9090,
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/rust/minimal_rust_agent",
+          "tests": {
+            "code_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/rust/minimal_rust_agent",
+            "port": 9090,
+            "syntax_validation": {
+              "valid": true,
+              "errors": [],
+              "warnings": [
+                "Code is not properly formatted (cargo fmt)",
+                "warning: unused variable: `params`",
+                "warning: struct `RateLimiter` is never constructed",
+                "warning: associated items `new` and `allow` are never used",
+                "warning: function `with_security_headers` is never used",
+                "warning: static `RATE_LIMITER_INSTANCE` is never used",
+                "warning: static `RATE_LIMITER_INIT` is never used",
+                "warning: function `get_rate_limiter` is never used",
+                "warning: function `execute_tools` is never used",
+                "warning: field `jsonrpc` is never read",
+                "warning: creating a shared reference to mutable static",
+                "warning: creating a shared reference to mutable static",
+                "warning: `minimal_rust_agent` (bin \"minimal_rust_agent\") generated 11 warnings"
+              ],
+              "formatted": false
+            },
+            "compilation": {
+              "success": true,
+              "build_time_ms": 1411.409854888916,
+              "binary_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/rust/minimal_rust_agent/target/release/minimal_rust_agent",
+              "binary_size_bytes": 2994928,
+              "errors": [],
+              "warnings": [
+                "warning: unused variable: `params`",
+                "warning: struct `RateLimiter` is never constructed",
+                "warning: associated items `new` and `allow` are never used",
+                "warning: function `with_security_headers` is never used",
+                "warning: static `RATE_LIMITER_INSTANCE` is never used",
+                "warning: static `RATE_LIMITER_INIT` is never used",
+                "warning: function `get_rate_limiter` is never used",
+                "warning: function `execute_tools` is never used",
+                "warning: field `jsonrpc` is never read",
+                "warning: creating a shared reference to mutable static",
+                "warning: creating a shared reference to mutable static",
+                "warning: `minimal_rust_agent` (bin \"minimal_rust_agent\") generated 11 warnings"
+              ],
+              "release_mode": true
+            },
+            "server_startup": {
+              "started": true,
+              "pid": 16575,
+              "errors": []
+            },
+            "health_check": {
+              "passed": true,
+              "response_time_ms": 3.498077392578125,
+              "error": null
+            },
+            "verb_tests": [
+              {
+                "passed": true,
+                "verb": "health.check@v1",
+                "params": {},
+                "response": {
+                  "id": 1,
+                  "jsonrpc": "2.0",
+                  "result": {
+                    "input_params": {},
+                    "metadata": {
+                      "agent_name": "minimal-rust-agent",
+                      "mode": "ide_integrated",
+                      "timestamp": 1759493916,
+                      "tools_executed": []
+                    },
+                    "status": "status_value",
+                    "tool_results": {},
+                    "uptime": 0
+                  }
+                },
+                "errors": [],
+                "response_time": 0.0017039775848388672
+              },
+              {
+                "passed": true,
+                "verb": "echo.message@v1",
+                "params": {
+                  "message": "test_message"
+                },
+                "response": {
+                  "id": 1,
+                  "jsonrpc": "2.0",
+                  "result": {
+                    "echo": "echo_value",
+                    "input_params": {
+                      "message": "test_message"
+                    },
+                    "metadata": {
+                      "agent_name": "minimal-rust-agent",
+                      "mode": "ide_integrated",
+                      "timestamp": 1759493916,
+                      "tools_executed": []
+                    },
+                    "timestamp": "timestamp_value",
+                    "tool_results": {}
+                  }
+                },
+                "errors": [],
+                "response_time": 0.001580953598022461
+              }
+            ],
+            "overall_passed": true,
+            "total_duration": 3.6720192432403564,
+            "server_shutdown": {
+              "success": true,
+              "message": "Server on port 9090 stopped"
+            }
+          },
+          "overall_passed": true
+        }
+      },
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "end_time": 1759493916.8633358,
+  "total_duration": 7.310076951980591
+}
