@@ -1,9 +1,9 @@
 {
-  "start_time": 1759482568.888114,
+  "start_time": 1759538081.2936919,
   "fixtures_dir": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/fixtures",
   "output_dir": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated",
-  "fixtures_tested": 7,
-  "fixtures_passed": 7,
+  "fixtures_tested": 11,
+  "fixtures_passed": 11,
   "fixtures_failed": 0,
   "test_results": [
     {
@@ -43,8 +43,6 @@
                 "sys",
                 "os",
                 "pathlib",
-                "tools.registry",
-                "language.tool_executor",
                 "logging",
                 "traceback",
                 "functools",
@@ -53,9 +51,6 @@
                 "typing",
                 "fastapi.middleware.cors",
                 "fastapi.middleware.trustedhost",
-                "slowapi",
-                "slowapi.util",
-                "slowapi.errors",
                 "os"
               ],
               "classes_found": [
@@ -64,26 +59,29 @@
               "functions_found": [
                 "handle_errors",
                 "validate_params",
+                "execute_tool",
+                "execute_tools",
+                "has_tools",
                 "handle_echo_v1",
                 "__init__"
               ]
             },
             "server_startup": {
               "started": true,
-              "pid": 16680,
+              "pid": 90294,
               "errors": [],
-              "startup_time": 0.5170748233795166
+              "startup_time": 0.5134661197662354
             },
             "health_check": {
               "passed": true,
               "status_code": 200,
               "response": {
                 "status": "alive",
-                "uptime_seconds": 0.237227,
-                "timestamp": "2025-10-03T09:09:29.413263+00:00"
+                "uptime_seconds": 0.284717,
+                "timestamp": "2025-10-04T00:34:41.812279+00:00"
               },
               "errors": [],
-              "response_time": 0.0016326904296875
+              "response_time": 0.0022230148315429688
             },
             "verb_tests": [
               {
@@ -103,18 +101,18 @@
                     "metadata": {
                       "mode": "ide_integrated",
                       "agent_name": "minimal-test-agent",
-                      "timestamp": "2025-10-03T05:09:29.414943",
+                      "timestamp": "2025-10-03T20:34:41.814534",
                       "tools_executed": []
                     },
                     "echo": "echo_value"
                   }
                 },
                 "errors": [],
-                "response_time": 0.0016167163848876953
+                "response_time": 0.0020439624786376953
               }
             ],
             "overall_passed": true,
-            "total_duration": 0.6555159091949463,
+            "total_duration": 0.6483070850372314,
             "server_shutdown": {
               "stopped": true,
               "errors": []
@@ -162,8 +160,6 @@
                 "sys",
                 "os",
                 "pathlib",
-                "tools.registry",
-                "language.tool_executor",
                 "logging",
                 "traceback",
                 "functools",
@@ -172,9 +168,6 @@
                 "typing",
                 "fastapi.middleware.cors",
                 "fastapi.middleware.trustedhost",
-                "slowapi",
-                "slowapi.util",
-                "slowapi.errors",
                 "os"
               ],
               "classes_found": [
@@ -183,6 +176,9 @@
               "functions_found": [
                 "handle_errors",
                 "validate_params",
+                "execute_tool",
+                "execute_tools",
+                "has_tools",
                 "handle_task_create_v1",
                 "handle_task_get_v1",
                 "handle_task_update_v1",
@@ -192,20 +188,20 @@
             },
             "server_startup": {
               "started": true,
-              "pid": 16698,
+              "pid": 90310,
               "errors": [],
-              "startup_time": 0.5120470523834229
+              "startup_time": 0.5114049911499023
             },
             "health_check": {
               "passed": true,
               "status_code": 200,
               "response": {
                 "status": "alive",
-                "uptime_seconds": 0.325163,
-                "timestamp": "2025-10-03T09:09:30.060820+00:00"
+                "uptime_seconds": 0.349847,
+                "timestamp": "2025-10-04T00:34:42.460093+00:00"
               },
               "errors": [],
-              "response_time": 0.001550912857055664
+              "response_time": 0.0010569095611572266
             },
             "verb_tests": [
               {
@@ -227,33 +223,40 @@
                     },
                     "tool_results": {
                       "http": {
-                        "ok": false,
+                        "ok": true,
                         "version": "v1",
-                        "error": {
-                          "code": "E_ARGS",
-                          "message": "url is required"
+                        "message": "Tool stub: http (actual implementation requires tool adapter)",
+                        "params": {
+                          "title": "test_title",
+                          "description": "test_description",
+                          "priority": 42
                         }
                       },
                       "storage": {
-                        "ok": false,
+                        "ok": true,
                         "version": "v1",
-                        "error": {
-                          "code": "E_ARGS",
-                          "message": "path is required"
+                        "message": "Tool stub: storage (actual implementation requires tool adapter)",
+                        "params": {
+                          "title": "test_title",
+                          "description": "test_description",
+                          "priority": 42
                         }
                       },
                       "logger": {
                         "ok": true,
                         "version": "v1",
-                        "data": {
-                          "logged": true
+                        "message": "Tool stub: logger (actual implementation requires tool adapter)",
+                        "params": {
+                          "title": "test_title",
+                          "description": "test_description",
+                          "priority": 42
                         }
                       }
                     },
                     "metadata": {
                       "mode": "ide_integrated",
                       "agent_name": "complex-test-agent",
-                      "timestamp": "2025-10-03T05:09:30.062495",
+                      "timestamp": "2025-10-03T20:34:42.461298",
                       "tools_executed": [
                         "http",
                         "storage",
@@ -266,7 +269,7 @@
                   }
                 },
                 "errors": [],
-                "response_time": 0.00156402587890625
+                "response_time": 0.0011701583862304688
               },
               {
                 "passed": true,
@@ -283,33 +286,34 @@
                     },
                     "tool_results": {
                       "http": {
-                        "ok": false,
+                        "ok": true,
                         "version": "v1",
-                        "error": {
-                          "code": "E_ARGS",
-                          "message": "url is required"
+                        "message": "Tool stub: http (actual implementation requires tool adapter)",
+                        "params": {
+                          "task_id": "test_task_id"
                         }
                       },
                       "storage": {
-                        "ok": false,
+                        "ok": true,
                         "version": "v1",
-                        "error": {
-                          "code": "E_ARGS",
-                          "message": "path is required"
+                        "message": "Tool stub: storage (actual implementation requires tool adapter)",
+                        "params": {
+                          "task_id": "test_task_id"
                         }
                       },
                       "logger": {
                         "ok": true,
                         "version": "v1",
-                        "data": {
-                          "logged": true
+                        "message": "Tool stub: logger (actual implementation requires tool adapter)",
+                        "params": {
+                          "task_id": "test_task_id"
                         }
                       }
                     },
                     "metadata": {
                       "mode": "ide_integrated",
                       "agent_name": "complex-test-agent",
-                      "timestamp": "2025-10-03T05:09:30.063941",
+                      "timestamp": "2025-10-03T20:34:42.462422",
                       "tools_executed": [
                         "http",
                         "storage",
@@ -325,7 +329,7 @@
                   }
                 },
                 "errors": [],
-                "response_time": 0.001421213150024414
+                "response_time": 0.0010628700256347656
               },
               {
                 "passed": true,
@@ -344,33 +348,37 @@
                     },
                     "tool_results": {
                       "http": {
-                        "ok": false,
+                        "ok": true,
                         "version": "v1",
-                        "error": {
-                          "code": "E_ARGS",
-                          "message": "url is required"
+                        "message": "Tool stub: http (actual implementation requires tool adapter)",
+                        "params": {
+                          "task_id": "test_task_id",
+                          "status": "test_status"
                         }
                       },
                       "storage": {
-                        "ok": false,
+                        "ok": true,
                         "version": "v1",
-                        "error": {
-                          "code": "E_ARGS",
-                          "message": "path is required"
+                        "message": "Tool stub: storage (actual implementation requires tool adapter)",
+                        "params": {
+                          "task_id": "test_task_id",
+                          "status": "test_status"
                         }
                       },
                       "logger": {
                         "ok": true,
                         "version": "v1",
-                        "data": {
-                          "logged": true
+                        "message": "Tool stub: logger (actual implementation requires tool adapter)",
+                        "params": {
+                          "task_id": "test_task_id",
+                          "status": "test_status"
                         }
                       }
                     },
                     "metadata": {
                       "mode": "ide_integrated",
                       "agent_name": "complex-test-agent",
-                      "timestamp": "2025-10-03T05:09:30.065589",
+                      "timestamp": "2025-10-03T20:34:42.463512",
                       "tools_executed": [
                         "http",
                         "storage",
@@ -383,7 +391,7 @@
                   }
                 },
                 "errors": [],
-                "response_time": 0.0016257762908935547
+                "response_time": 0.0010960102081298828
               },
               {
                 "passed": true,
@@ -402,33 +410,37 @@
                     },
                     "tool_results": {
                       "http": {
-                        "ok": false,
+                        "ok": true,
                         "version": "v1",
-                        "error": {
-                          "code": "E_ARGS",
-                          "message": "url is required"
+                        "message": "Tool stub: http (actual implementation requires tool adapter)",
+                        "params": {
+                          "limit": 42,
+                          "offset": 42
                         }
                       },
                       "storage": {
-                        "ok": false,
+                        "ok": true,
                         "version": "v1",
-                        "error": {
-                          "code": "E_ARGS",
-                          "message": "path is required"
+                        "message": "Tool stub: storage (actual implementation requires tool adapter)",
+                        "params": {
+                          "limit": 42,
+                          "offset": 42
                         }
                       },
                       "logger": {
                         "ok": true,
                         "version": "v1",
-                        "data": {
-                          "logged": true
+                        "message": "Tool stub: logger (actual implementation requires tool adapter)",
+                        "params": {
+                          "limit": 42,
+                          "offset": 42
                         }
                       }
                     },
                     "metadata": {
                       "mode": "ide_integrated",
                       "agent_name": "complex-test-agent",
-                      "timestamp": "2025-10-03T05:09:30.067197",
+                      "timestamp": "2025-10-03T20:34:42.464801",
                       "tools_executed": [
                         "http",
                         "storage",
@@ -440,11 +452,11 @@
                   }
                 },
                 "errors": [],
-                "response_time": 0.0015540122985839844
+                "response_time": 0.0012543201446533203
               }
             ],
             "overall_passed": true,
-            "total_duration": 0.6529841423034668,
+            "total_duration": 0.7067327499389648,
             "server_shutdown": {
               "stopped": true,
               "errors": []
@@ -492,8 +504,6 @@
                 "sys",
                 "os",
                 "pathlib",
-                "tools.registry",
-                "language.tool_executor",
                 "logging",
                 "traceback",
                 "functools",
@@ -502,9 +512,6 @@
                 "typing",
                 "fastapi.middleware.cors",
                 "fastapi.middleware.trustedhost",
-                "slowapi",
-                "slowapi.util",
-                "slowapi.errors",
                 "os"
               ],
               "classes_found": [
@@ -513,6 +520,9 @@
               "functions_found": [
                 "handle_errors",
                 "validate_params",
+                "execute_tool",
+                "execute_tools",
+                "has_tools",
                 "handle_fetch_data_v1",
                 "handle_store_item_v1",
                 "handle_retrieve_item_v1",
@@ -521,20 +531,20 @@
             },
             "server_startup": {
               "started": true,
-              "pid": 16714,
+              "pid": 90361,
               "errors": [],
-              "startup_time": 0.5078887939453125
+              "startup_time": 0.510472297668457
             },
             "health_check": {
               "passed": true,
               "status_code": 200,
               "response": {
                 "status": "alive",
-                "uptime_seconds": 0.314913,
-                "timestamp": "2025-10-03T09:09:30.709954+00:00"
+                "uptime_seconds": 0.367654,
+                "timestamp": "2025-10-04T00:34:43.165124+00:00"
               },
               "errors": [],
-              "response_time": 0.0014758110046386719
+              "response_time": 0.0011219978332519531
             },
             "verb_tests": [
               {
@@ -552,26 +562,26 @@
                     },
                     "tool_results": {
                       "http": {
-                        "ok": false,
+                        "ok": true,
                         "version": "v1",
-                        "error": {
-                          "code": "E_NETWORK",
-                          "message": "Invalid URL 'test_url': No scheme supplied. Perhaps you meant https://test_url?"
+                        "message": "Tool stub: http (actual implementation requires tool adapter)",
+                        "params": {
+                          "url": "test_url"
                         }
                       },
                       "storage": {
-                        "ok": false,
+                        "ok": true,
                         "version": "v1",
-                        "error": {
-                          "code": "E_ARGS",
-                          "message": "path is required"
+                        "message": "Tool stub: storage (actual implementation requires tool adapter)",
+                        "params": {
+                          "url": "test_url"
                         }
                       }
                     },
                     "metadata": {
                       "mode": "ide_integrated",
                       "agent_name": "tool-test-agent",
-                      "timestamp": "2025-10-03T05:09:30.711958",
+                      "timestamp": "2025-10-03T20:34:43.166431",
                       "tools_executed": [
                         "http",
                         "storage"
@@ -583,7 +593,7 @@
                   }
                 },
                 "errors": [],
-                "response_time": 0.0019388198852539062
+                "response_time": 0.0012688636779785156
               },
               {
                 "passed": true,
@@ -602,26 +612,28 @@
                     },
                     "tool_results": {
                       "http": {
-                        "ok": false,
+                        "ok": true,
                         "version": "v1",
-                        "error": {
-                          "code": "E_ARGS",
-                          "message": "url is required"
+                        "message": "Tool stub: http (actual implementation requires tool adapter)",
+                        "params": {
+                          "key": "test_key",
+                          "value": "test_value"
                         }
                       },
                       "storage": {
-                        "ok": false,
+                        "ok": true,
                         "version": "v1",
-                        "error": {
-                          "code": "E_ARGS",
-                          "message": "path is required"
+                        "message": "Tool stub: storage (actual implementation requires tool adapter)",
+                        "params": {
+                          "key": "test_key",
+                          "value": "test_value"
                         }
                       }
                     },
                     "metadata": {
                       "mode": "ide_integrated",
                       "agent_name": "tool-test-agent",
-                      "timestamp": "2025-10-03T05:09:30.713428",
+                      "timestamp": "2025-10-03T20:34:43.167674",
                       "tools_executed": [
                         "http",
                         "storage"
@@ -633,7 +645,7 @@
                   }
                 },
                 "errors": [],
-                "response_time": 0.0013730525970458984
+                "response_time": 0.0013592243194580078
               },
               {
                 "passed": true,
@@ -650,26 +662,26 @@
                     },
                     "tool_results": {
                       "http": {
-                        "ok": false,
+                        "ok": true,
                         "version": "v1",
-                        "error": {
-                          "code": "E_ARGS",
-                          "message": "url is required"
+                        "message": "Tool stub: http (actual implementation requires tool adapter)",
+                        "params": {
+                          "key": "test_key"
                         }
                       },
                       "storage": {
-                        "ok": false,
+                        "ok": true,
                         "version": "v1",
-                        "error": {
-                          "code": "E_ARGS",
-                          "message": "path is required"
+                        "message": "Tool stub: storage (actual implementation requires tool adapter)",
+                        "params": {
+                          "key": "test_key"
                         }
                       }
                     },
                     "metadata": {
                       "mode": "ide_integrated",
                       "agent_name": "tool-test-agent",
-                      "timestamp": "2025-10-03T05:09:30.714762",
+                      "timestamp": "2025-10-03T20:34:43.169083",
                       "tools_executed": [
                         "http",
                         "storage"
@@ -681,11 +693,11 @@
                   }
                 },
                 "errors": [],
-                "response_time": 0.001306772232055664
+                "response_time": 0.001249074935913086
               }
             ],
             "overall_passed": true,
-            "total_duration": 0.69563889503479,
+            "total_duration": 0.6980407238006592,
             "server_shutdown": {
               "stopped": true,
               "errors": []
@@ -733,8 +745,6 @@
                 "sys",
                 "os",
                 "pathlib",
-                "tools.registry",
-                "language.tool_executor",
                 "logging",
                 "traceback",
                 "functools",
@@ -743,9 +753,6 @@
                 "typing",
                 "fastapi.middleware.cors",
                 "fastapi.middleware.trustedhost",
-                "slowapi",
-                "slowapi.util",
-                "slowapi.errors",
                 "os"
               ],
               "classes_found": [
@@ -754,26 +761,29 @@
               "functions_found": [
                 "handle_errors",
                 "validate_params",
+                "execute_tool",
+                "execute_tools",
+                "has_tools",
                 "handle_greet_v1",
                 "__init__"
               ]
             },
             "server_startup": {
               "started": true,
-              "pid": 16780,
+              "pid": 90380,
               "errors": [],
-              "startup_time": 0.5138711929321289
+              "startup_time": 0.516211986541748
             },
             "health_check": {
               "passed": true,
               "status_code": 200,
               "response": {
                 "status": "alive",
-                "uptime_seconds": 0.324538,
-                "timestamp": "2025-10-03T09:09:31.412275+00:00"
+                "uptime_seconds": 0.375995,
+                "timestamp": "2025-10-04T00:34:43.871184+00:00"
               },
               "errors": [],
-              "response_time": 0.001898050308227539
+              "response_time": 0.00267791748046875
             },
             "verb_tests": [
               {
@@ -793,7 +803,7 @@
                     "metadata": {
                       "mode": "ide_integrated",
                       "agent_name": "minimal-go-agent",
-                      "timestamp": "2025-10-03T05:09:31.413823",
+                      "timestamp": "2025-10-03T20:34:43.873843",
                       "tools_executed": []
                     },
                     "message": "message_value",
@@ -801,11 +811,11 @@
                   }
                 },
                 "errors": [],
-                "response_time": 0.0013947486877441406
+                "response_time": 0.0023009777069091797
               }
             ],
             "overall_passed": true,
-            "total_duration": 0.754608154296875,
+            "total_duration": 0.7005460262298584,
             "server_shutdown": {
               "stopped": true,
               "errors": []
@@ -853,8 +863,6 @@
                 "sys",
                 "os",
                 "pathlib",
-                "tools.registry",
-                "language.tool_executor",
                 "logging",
                 "traceback",
                 "functools",
@@ -863,9 +871,6 @@
                 "typing",
                 "fastapi.middleware.cors",
                 "fastapi.middleware.trustedhost",
-                "slowapi",
-                "slowapi.util",
-                "slowapi.errors",
                 "os"
               ],
               "classes_found": [
@@ -874,6 +879,9 @@
               "functions_found": [
                 "handle_errors",
                 "validate_params",
+                "execute_tool",
+                "execute_tools",
+                "has_tools",
                 "handle_process_data_v1",
                 "handle_health_check_v1",
                 "__init__"
@@ -881,20 +889,20 @@
             },
             "server_startup": {
               "started": true,
-              "pid": 16798,
+              "pid": 90398,
               "errors": [],
-              "startup_time": 0.513336181640625
+              "startup_time": 0.5200300216674805
             },
             "health_check": {
               "passed": true,
               "status_code": 200,
               "response": {
                 "status": "alive",
-                "uptime_seconds": 0.328749,
-                "timestamp": "2025-10-03T09:09:32.170611+00:00"
+                "uptime_seconds": 0.362628,
+                "timestamp": "2025-10-04T00:34:44.580668+00:00"
               },
               "errors": [],
-              "response_time": 0.0018010139465332031
+              "response_time": 0.0033028125762939453
             },
             "verb_tests": [
               {
@@ -916,7 +924,7 @@
                     "metadata": {
                       "mode": "ide_integrated",
                       "agent_name": "tools-test-agent",
-                      "timestamp": "2025-10-03T05:09:32.172245",
+                      "timestamp": "2025-10-03T20:34:44.583713",
                       "tools_executed": []
                     },
                     "output": "output_value",
@@ -925,7 +933,7 @@
                   }
                 },
                 "errors": [],
-                "response_time": 0.0014681816101074219
+                "response_time": 0.002749919891357422
               },
               {
                 "passed": true,
@@ -940,7 +948,7 @@
                     "metadata": {
                       "mode": "ide_integrated",
                       "agent_name": "tools-test-agent",
-                      "timestamp": "2025-10-03T05:09:32.173524",
+                      "timestamp": "2025-10-03T20:34:44.586228",
                       "tools_executed": []
                     },
                     "healthy": true,
@@ -949,11 +957,141 @@
                   }
                 },
                 "errors": [],
-                "response_time": 0.0012059211730957031
+                "response_time": 0.002375364303588867
               }
             ],
             "overall_passed": true,
-            "total_duration": 0.7612080574035645,
+            "total_duration": 0.7129249572753906,
+            "server_shutdown": {
+              "stopped": true,
+              "errors": []
+            }
+          },
+          "overall_passed": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "fixture": "dotnet_with_tools.pw",
+      "stages": {
+        "parse": {
+          "fixture": "dotnet_with_tools.pw",
+          "parsed": true,
+          "agent": "AgentDefinition(name='dotnet-http-agent', lang='dotnet', port=5001, exposes=[ExposeBlock(verb='fetch.data@v1', params=[{'name': 'url', 'type': 'string'}], returns=[{'name': 'status', 'type': 'int'}, {'name': 'body', 'type': 'string'}, {'name': 'success', 'type': 'bool'}], handler_code=None, prompt_template=None)], calls=[], files=[], llm=None, tools=['http'], memory=None, prompt_template=None, observability=None, temporal=False, workflows=[])",
+          "errors": []
+        },
+        "generate": {
+          "fixture": "dotnet_with_tools.pw",
+          "generated": true,
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/dotnet-http-agent_server.py",
+          "errors": []
+        },
+        "test": {
+          "fixture": "dotnet_with_tools.pw",
+          "agent_name": "dotnet-http-agent",
+          "port": 5001,
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/dotnet-http-agent_server.py",
+          "tests": {
+            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/dotnet-http-agent_server.py",
+            "port": 5001,
+            "syntax_validation": {
+              "valid": true,
+              "errors": [],
+              "warnings": [],
+              "imports_found": [
+                "fastapi",
+                "fastapi.responses",
+                "uvicorn",
+                "typing",
+                "datetime",
+                "time",
+                "sys",
+                "os",
+                "pathlib",
+                "logging",
+                "traceback",
+                "functools",
+                "asyncio",
+                "datetime",
+                "typing",
+                "fastapi.middleware.cors",
+                "fastapi.middleware.trustedhost",
+                "os"
+              ],
+              "classes_found": [
+                "HealthCheck"
+              ],
+              "functions_found": [
+                "handle_errors",
+                "validate_params",
+                "execute_tool",
+                "execute_tools",
+                "has_tools",
+                "handle_fetch_data_v1",
+                "__init__"
+              ]
+            },
+            "server_startup": {
+              "started": true,
+              "pid": 90440,
+              "errors": [],
+              "startup_time": 0.5149590969085693
+            },
+            "health_check": {
+              "passed": true,
+              "status_code": 200,
+              "response": {
+                "status": "alive",
+                "uptime_seconds": 0.3588,
+                "timestamp": "2025-10-04T00:34:45.287535+00:00"
+              },
+              "errors": [],
+              "response_time": 0.002010822296142578
+            },
+            "verb_tests": [
+              {
+                "passed": true,
+                "verb": "fetch.data@v1",
+                "params": {
+                  "url": "test_url"
+                },
+                "response": {
+                  "jsonrpc": "2.0",
+                  "id": 1,
+                  "result": {
+                    "input_params": {
+                      "url": "test_url"
+                    },
+                    "tool_results": {
+                      "http": {
+                        "ok": true,
+                        "version": "v1",
+                        "message": "Tool stub: http (actual implementation requires tool adapter)",
+                        "params": {
+                          "url": "test_url"
+                        }
+                      }
+                    },
+                    "metadata": {
+                      "mode": "ide_integrated",
+                      "agent_name": "dotnet-http-agent",
+                      "timestamp": "2025-10-03T20:34:45.289786",
+                      "tools_executed": [
+                        "http"
+                      ]
+                    },
+                    "status": 0,
+                    "body": "body_value",
+                    "success": true
+                  }
+                },
+                "errors": [],
+                "response_time": 0.0021278858184814453
+              }
+            ],
+            "overall_passed": true,
+            "total_duration": 0.7011079788208008,
             "server_shutdown": {
               "stopped": true,
               "errors": []
@@ -1001,8 +1139,6 @@
                 "sys",
                 "os",
                 "pathlib",
-                "tools.registry",
-                "language.tool_executor",
                 "logging",
                 "traceback",
                 "functools",
@@ -1011,9 +1147,6 @@
                 "typing",
                 "fastapi.middleware.cors",
                 "fastapi.middleware.trustedhost",
-                "slowapi",
-                "slowapi.util",
-                "slowapi.errors",
                 "os"
               ],
               "classes_found": [
@@ -1022,6 +1155,9 @@
               "functions_found": [
                 "handle_errors",
                 "validate_params",
+                "execute_tool",
+                "execute_tools",
+                "has_tools",
                 "handle_health_check_v1",
                 "handle_echo_message_v1",
                 "__init__"
@@ -1029,20 +1165,20 @@
             },
             "server_startup": {
               "started": true,
-              "pid": 16814,
+              "pid": 90456,
               "errors": [],
-              "startup_time": 0.5111989974975586
+              "startup_time": 0.5195839405059814
             },
             "health_check": {
               "passed": true,
               "status_code": 200,
               "response": {
                 "status": "alive",
-                "uptime_seconds": 0.319622,
-                "timestamp": "2025-10-03T09:09:32.931840+00:00"
+                "uptime_seconds": 0.362309,
+                "timestamp": "2025-10-04T00:34:45.995466+00:00"
               },
               "errors": [],
-              "response_time": 0.001734018325805664
+              "response_time": 0.0027687549591064453
             },
             "verb_tests": [
               {
@@ -1058,7 +1194,7 @@
                     "metadata": {
                       "mode": "ide_integrated",
                       "agent_name": "minimal-test-agent",
-                      "timestamp": "2025-10-03T05:09:32.933556",
+                      "timestamp": "2025-10-03T20:34:45.998159",
                       "tools_executed": []
                     },
                     "status": "status_value",
@@ -1066,7 +1202,7 @@
                   }
                 },
                 "errors": [],
-                "response_time": 0.0015981197357177734
+                "response_time": 0.0025620460510253906
               },
               {
                 "passed": true,
@@ -1085,7 +1221,7 @@
                     "metadata": {
                       "mode": "ide_integrated",
                       "agent_name": "minimal-test-agent",
-                      "timestamp": "2025-10-03T05:09:32.935143",
+                      "timestamp": "2025-10-03T20:34:46.000701",
                       "tools_executed": []
                     },
                     "echo": "echo_value",
@@ -1093,11 +1229,443 @@
                   }
                 },
                 "errors": [],
-                "response_time": 0.001554250717163086
+                "response_time": 0.002385854721069336
               }
             ],
             "overall_passed": true,
-            "total_duration": 0.6485929489135742,
+            "total_duration": 0.7124049663543701,
+            "server_shutdown": {
+              "stopped": true,
+              "errors": []
+            }
+          },
+          "overall_passed": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "fixture": "dotnet_minimal.pw",
+      "stages": {
+        "parse": {
+          "fixture": "dotnet_minimal.pw",
+          "parsed": true,
+          "agent": "AgentDefinition(name='minimal-dotnet-agent', lang='dotnet', port=5002, exposes=[ExposeBlock(verb='echo@v1', params=[{'name': 'message', 'type': 'string'}], returns=[{'name': 'echo', 'type': 'string'}, {'name': 'timestamp', 'type': 'string'}], handler_code=None, prompt_template=None)], calls=[], files=[], llm=None, tools=[], memory=None, prompt_template=None, observability=None, temporal=False, workflows=[])",
+          "errors": []
+        },
+        "generate": {
+          "fixture": "dotnet_minimal.pw",
+          "generated": true,
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-dotnet-agent_server.py",
+          "errors": []
+        },
+        "test": {
+          "fixture": "dotnet_minimal.pw",
+          "agent_name": "minimal-dotnet-agent",
+          "port": 5002,
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-dotnet-agent_server.py",
+          "tests": {
+            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-dotnet-agent_server.py",
+            "port": 5002,
+            "syntax_validation": {
+              "valid": true,
+              "errors": [],
+              "warnings": [],
+              "imports_found": [
+                "fastapi",
+                "fastapi.responses",
+                "uvicorn",
+                "typing",
+                "datetime",
+                "time",
+                "sys",
+                "os",
+                "pathlib",
+                "logging",
+                "traceback",
+                "functools",
+                "asyncio",
+                "datetime",
+                "typing",
+                "fastapi.middleware.cors",
+                "fastapi.middleware.trustedhost",
+                "os"
+              ],
+              "classes_found": [
+                "HealthCheck"
+              ],
+              "functions_found": [
+                "handle_errors",
+                "validate_params",
+                "execute_tool",
+                "execute_tools",
+                "has_tools",
+                "handle_echo_v1",
+                "__init__"
+              ]
+            },
+            "server_startup": {
+              "started": true,
+              "pid": 90459,
+              "errors": [],
+              "startup_time": 0.5172529220581055
+            },
+            "health_check": {
+              "passed": true,
+              "status_code": 200,
+              "response": {
+                "status": "alive",
+                "uptime_seconds": 0.371629,
+                "timestamp": "2025-10-04T00:34:46.704038+00:00"
+              },
+              "errors": [],
+              "response_time": 0.0028667449951171875
+            },
+            "verb_tests": [
+              {
+                "passed": true,
+                "verb": "echo@v1",
+                "params": {
+                  "message": "test_message"
+                },
+                "response": {
+                  "jsonrpc": "2.0",
+                  "id": 1,
+                  "result": {
+                    "input_params": {
+                      "message": "test_message"
+                    },
+                    "tool_results": {},
+                    "metadata": {
+                      "mode": "ide_integrated",
+                      "agent_name": "minimal-dotnet-agent",
+                      "timestamp": "2025-10-03T20:34:46.706997",
+                      "tools_executed": []
+                    },
+                    "echo": "echo_value",
+                    "timestamp": "timestamp_value"
+                  }
+                },
+                "errors": [],
+                "response_time": 0.0026721954345703125
+              }
+            ],
+            "overall_passed": true,
+            "total_duration": 0.7027690410614014,
+            "server_shutdown": {
+              "stopped": true,
+              "errors": []
+            }
+          },
+          "overall_passed": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "fixture": "rust_with_tools.pw",
+      "stages": {
+        "parse": {
+          "fixture": "rust_with_tools.pw",
+          "parsed": true,
+          "agent": "AgentDefinition(name='tool-rust-agent', lang='rust', port=9091, exposes=[ExposeBlock(verb='fetch.data@v1', params=[{'name': 'url', 'type': 'string'}], returns=[{'name': 'status', 'type': 'int'}, {'name': 'data', 'type': 'string'}, {'name': 'cached', 'type': 'bool'}], handler_code=None, prompt_template=None), ExposeBlock(verb='process.data@v1', params=[{'name': 'input', 'type': 'string'}, {'name': 'transform', 'type': 'string'}], returns=[{'name': 'output', 'type': 'string'}, {'name': 'success', 'type': 'bool'}], handler_code=None, prompt_template=None)], calls=[], files=[], llm=None, tools=['http'], memory=None, prompt_template=None, observability=None, temporal=False, workflows=[])",
+          "errors": []
+        },
+        "generate": {
+          "fixture": "rust_with_tools.pw",
+          "generated": true,
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/tool-rust-agent_server.py",
+          "errors": []
+        },
+        "test": {
+          "fixture": "rust_with_tools.pw",
+          "agent_name": "tool-rust-agent",
+          "port": 9091,
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/tool-rust-agent_server.py",
+          "tests": {
+            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/tool-rust-agent_server.py",
+            "port": 9091,
+            "syntax_validation": {
+              "valid": true,
+              "errors": [],
+              "warnings": [],
+              "imports_found": [
+                "fastapi",
+                "fastapi.responses",
+                "uvicorn",
+                "typing",
+                "datetime",
+                "time",
+                "sys",
+                "os",
+                "pathlib",
+                "logging",
+                "traceback",
+                "functools",
+                "asyncio",
+                "datetime",
+                "typing",
+                "fastapi.middleware.cors",
+                "fastapi.middleware.trustedhost",
+                "os"
+              ],
+              "classes_found": [
+                "HealthCheck"
+              ],
+              "functions_found": [
+                "handle_errors",
+                "validate_params",
+                "execute_tool",
+                "execute_tools",
+                "has_tools",
+                "handle_fetch_data_v1",
+                "handle_process_data_v1",
+                "__init__"
+              ]
+            },
+            "server_startup": {
+              "started": true,
+              "pid": 90501,
+              "errors": [],
+              "startup_time": 0.5164589881896973
+            },
+            "health_check": {
+              "passed": true,
+              "status_code": 200,
+              "response": {
+                "status": "alive",
+                "uptime_seconds": 0.355893,
+                "timestamp": "2025-10-04T00:34:47.409389+00:00"
+              },
+              "errors": [],
+              "response_time": 0.002115964889526367
+            },
+            "verb_tests": [
+              {
+                "passed": true,
+                "verb": "fetch.data@v1",
+                "params": {
+                  "url": "test_url"
+                },
+                "response": {
+                  "jsonrpc": "2.0",
+                  "id": 1,
+                  "result": {
+                    "input_params": {
+                      "url": "test_url"
+                    },
+                    "tool_results": {
+                      "http": {
+                        "ok": true,
+                        "version": "v1",
+                        "message": "Tool stub: http (actual implementation requires tool adapter)",
+                        "params": {
+                          "url": "test_url"
+                        }
+                      }
+                    },
+                    "metadata": {
+                      "mode": "ide_integrated",
+                      "agent_name": "tool-rust-agent",
+                      "timestamp": "2025-10-03T20:34:47.411673",
+                      "tools_executed": [
+                        "http"
+                      ]
+                    },
+                    "status": 0,
+                    "data": "data_value",
+                    "cached": true
+                  }
+                },
+                "errors": [],
+                "response_time": 0.002213001251220703
+              },
+              {
+                "passed": true,
+                "verb": "process.data@v1",
+                "params": {
+                  "input": "test_input",
+                  "transform": "test_transform"
+                },
+                "response": {
+                  "jsonrpc": "2.0",
+                  "id": 1,
+                  "result": {
+                    "input_params": {
+                      "input": "test_input",
+                      "transform": "test_transform"
+                    },
+                    "tool_results": {
+                      "http": {
+                        "ok": true,
+                        "version": "v1",
+                        "message": "Tool stub: http (actual implementation requires tool adapter)",
+                        "params": {
+                          "input": "test_input",
+                          "transform": "test_transform"
+                        }
+                      }
+                    },
+                    "metadata": {
+                      "mode": "ide_integrated",
+                      "agent_name": "tool-rust-agent",
+                      "timestamp": "2025-10-03T20:34:47.413645",
+                      "tools_executed": [
+                        "http"
+                      ]
+                    },
+                    "output": "output_value",
+                    "success": true
+                  }
+                },
+                "errors": [],
+                "response_time": 0.0018410682678222656
+              }
+            ],
+            "overall_passed": true,
+            "total_duration": 0.7123110294342041,
+            "server_shutdown": {
+              "stopped": true,
+              "errors": []
+            }
+          },
+          "overall_passed": true
+        }
+      },
+      "passed": true
+    },
+    {
+      "fixture": "rust_minimal.pw",
+      "stages": {
+        "parse": {
+          "fixture": "rust_minimal.pw",
+          "parsed": true,
+          "agent": "AgentDefinition(name='minimal-rust-agent', lang='rust', port=9090, exposes=[ExposeBlock(verb='health.check@v1', params=[], returns=[{'name': 'status', 'type': 'string'}, {'name': 'uptime', 'type': 'int'}], handler_code=None, prompt_template=None), ExposeBlock(verb='echo.message@v1', params=[{'name': 'message', 'type': 'string'}], returns=[{'name': 'echo', 'type': 'string'}, {'name': 'timestamp', 'type': 'string'}], handler_code=None, prompt_template=None)], calls=[], files=[], llm=None, tools=[], memory=None, prompt_template=None, observability=None, temporal=False, workflows=[])",
+          "errors": []
+        },
+        "generate": {
+          "fixture": "rust_minimal.pw",
+          "generated": true,
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-rust-agent_server.py",
+          "errors": []
+        },
+        "test": {
+          "fixture": "rust_minimal.pw",
+          "agent_name": "minimal-rust-agent",
+          "port": 9090,
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-rust-agent_server.py",
+          "tests": {
+            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-rust-agent_server.py",
+            "port": 9090,
+            "syntax_validation": {
+              "valid": true,
+              "errors": [],
+              "warnings": [],
+              "imports_found": [
+                "fastapi",
+                "fastapi.responses",
+                "uvicorn",
+                "typing",
+                "datetime",
+                "time",
+                "sys",
+                "os",
+                "pathlib",
+                "logging",
+                "traceback",
+                "functools",
+                "asyncio",
+                "datetime",
+                "typing",
+                "fastapi.middleware.cors",
+                "fastapi.middleware.trustedhost",
+                "os"
+              ],
+              "classes_found": [
+                "HealthCheck"
+              ],
+              "functions_found": [
+                "handle_errors",
+                "validate_params",
+                "execute_tool",
+                "execute_tools",
+                "has_tools",
+                "handle_health_check_v1",
+                "handle_echo_message_v1",
+                "__init__"
+              ]
+            },
+            "server_startup": {
+              "started": true,
+              "pid": 90517,
+              "errors": [],
+              "startup_time": 0.5157632827758789
+            },
+            "health_check": {
+              "passed": true,
+              "status_code": 200,
+              "response": {
+                "status": "alive",
+                "uptime_seconds": 0.352828,
+                "timestamp": "2025-10-04T00:34:48.123134+00:00"
+              },
+              "errors": [],
+              "response_time": 0.002192974090576172
+            },
+            "verb_tests": [
+              {
+                "passed": true,
+                "verb": "health.check@v1",
+                "params": {},
+                "response": {
+                  "jsonrpc": "2.0",
+                  "id": 1,
+                  "result": {
+                    "input_params": {},
+                    "tool_results": {},
+                    "metadata": {
+                      "mode": "ide_integrated",
+                      "agent_name": "minimal-rust-agent",
+                      "timestamp": "2025-10-03T20:34:48.125440",
+                      "tools_executed": []
+                    },
+                    "status": "status_value",
+                    "uptime": 0
+                  }
+                },
+                "errors": [],
+                "response_time": 0.0021669864654541016
+              },
+              {
+                "passed": true,
+                "verb": "echo.message@v1",
+                "params": {
+                  "message": "test_message"
+                },
+                "response": {
+                  "jsonrpc": "2.0",
+                  "id": 1,
+                  "result": {
+                    "input_params": {
+                      "message": "test_message"
+                    },
+                    "tool_results": {},
+                    "metadata": {
+                      "mode": "ide_integrated",
+                      "agent_name": "minimal-rust-agent",
+                      "timestamp": "2025-10-03T20:34:48.127610",
+                      "tools_executed": []
+                    },
+                    "echo": "echo_value",
+                    "timestamp": "timestamp_value"
+                  }
+                },
+                "errors": [],
+                "response_time": 0.002089977264404297
+              }
+            ],
+            "overall_passed": true,
+            "total_duration": 0.7083923816680908,
             "server_shutdown": {
               "stopped": true,
               "errors": []
@@ -1145,8 +1713,6 @@
                 "sys",
                 "os",
                 "pathlib",
-                "tools.registry",
-                "language.tool_executor",
                 "logging",
                 "traceback",
                 "functools",
@@ -1155,9 +1721,6 @@
                 "typing",
                 "fastapi.middleware.cors",
                 "fastapi.middleware.trustedhost",
-                "slowapi",
-                "slowapi.util",
-                "slowapi.errors",
                 "os"
               ],
               "classes_found": [
@@ -1166,26 +1729,29 @@
               "functions_found": [
                 "handle_errors",
                 "validate_params",
+                "execute_tool",
+                "execute_tools",
+                "has_tools",
                 "handle_fetch_data_v1",
                 "__init__"
               ]
             },
             "server_startup": {
               "started": true,
-              "pid": 16895,
+              "pid": 90561,
               "errors": [],
-              "startup_time": 0.5153238773345947
+              "startup_time": 0.5162653923034668
             },
             "health_check": {
               "passed": true,
               "status_code": 200,
               "response": {
                 "status": "alive",
-                "uptime_seconds": 0.32355,
-                "timestamp": "2025-10-03T09:09:33.583138+00:00"
+                "uptime_seconds": 0.363437,
+                "timestamp": "2025-10-04T00:34:48.832549+00:00"
               },
               "errors": [],
-              "response_time": 0.0037620067596435547
+              "response_time": 0.002752065658569336
             },
             "verb_tests": [
               {
@@ -1205,18 +1771,19 @@
                     },
                     "tool_results": {
                       "http": {
-                        "ok": false,
+                        "ok": true,
                         "version": "v1",
-                        "error": {
-                          "code": "E_NETWORK",
-                          "message": "Invalid URL 'test_url': No scheme supplied. Perhaps you meant https://test_url?"
+                        "message": "Tool stub: http (actual implementation requires tool adapter)",
+                        "params": {
+                          "url": "test_url",
+                          "method": "test_method"
                         }
                       }
                     },
                     "metadata": {
                       "mode": "ide_integrated",
                       "agent_name": "go-http-agent",
-                      "timestamp": "2025-10-03T05:09:33.587781",
+                      "timestamp": "2025-10-03T20:34:48.835500",
                       "tools_executed": [
                         "http"
                       ]
@@ -1227,11 +1794,11 @@
                   }
                 },
                 "errors": [],
-                "response_time": 0.004040956497192383
+                "response_time": 0.0026979446411132812
               }
             ],
             "overall_passed": true,
-            "total_duration": 0.6495938301086426,
+            "total_duration": 0.7056381702423096,
             "server_shutdown": {
               "stopped": true,
               "errors": []
@@ -1244,6 +1811,6 @@
     }
   ],
   "errors": [],
-  "end_time": 1759482573.712022,
-  "total_duration": 4.823908090591431
+  "end_time": 1759538089.015414,
+  "total_duration": 7.72172212600708
 }
