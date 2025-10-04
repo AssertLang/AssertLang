@@ -335,15 +335,31 @@ lazy_static::lazy_static! {
 }
 
 // CORS filter
-fn with_cors() -> warp::cors::Builder {
-    let allowed_origins = env::var("ALLOWED_ORIGINS")
-        .unwrap_or_else(|_| "*".to_string());
-
-    warp::cors()
-        .allow_origin(allowed_origins.as_str())
-        .allow_methods(vec!["GET", "POST", "OPTIONS"])
-        .allow_headers(vec!["Content-Type", "Authorization"])
-        .max_age(3600)
+fn with_cors() -> warp::cors::Cors {
+    // Check if specific origins are set, otherwise allow any
+    match env::var("ALLOWED_ORIGINS") {
+        Ok(origins) if !origins.is_empty() && origins != "*" => {
+            // Parse comma-separated origins
+            let origin_list: Vec<&str> = origins.split(',').map(|s| s.trim()).collect();
+            let mut cors = warp::cors();
+            for origin in origin_list {
+                cors = cors.allow_origin(origin);
+            }
+            cors.allow_methods(vec!["GET", "POST", "OPTIONS"])
+                .allow_headers(vec!["Content-Type", "Authorization"])
+                .max_age(3600)
+                .build()
+        }
+        _ => {
+            // Allow any origin (for development)
+            warp::cors()
+                .allow_any_origin()
+                .allow_methods(vec!["GET", "POST", "OPTIONS"])
+                .allow_headers(vec!["Content-Type", "Authorization"])
+                .max_age(3600)
+                .build()
+        }
+    }
 }
 
 // Security headers filter
