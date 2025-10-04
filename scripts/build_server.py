@@ -143,7 +143,7 @@ class ServerBuilder:
         )
 
         if result.returncode == 0:
-            print(f"  ✓ Build successful")
+            print("  ✓ Build successful")
             return True
         else:
             print(f"  ✗ Build failed:\n{result.stderr}")

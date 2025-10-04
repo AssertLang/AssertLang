@@ -21,7 +21,9 @@ import yaml
 try:
     import jsonschema
 except ImportError as exc:  # pragma: no cover - fail fast when dependency missing
-    raise RuntimeError("jsonschema is required for tool generation; install via `pip install jsonschema`") from exc
+    raise RuntimeError(
+        "jsonschema is required for tool generation; install via `pip install jsonschema`"
+    ) from exc
 
 
 @dataclass(slots=True)
@@ -64,9 +66,9 @@ SHARED_FIELD_SCHEMAS: Dict[str, Dict[str, Any]] = {
         "properties": {
             "cpu_pct": {"type": "integer", "minimum": 1, "maximum": 100},
             "mem_mb": {"type": "integer", "minimum": 16},
-            "wall_sec": {"type": "integer", "minimum": 1}
+            "wall_sec": {"type": "integer", "minimum": 1},
         },
-        "additionalProperties": False
+        "additionalProperties": False,
     },
     "deps": {"type": "object"},
     "egress": {
@@ -75,27 +77,21 @@ SHARED_FIELD_SCHEMAS: Dict[str, Dict[str, Any]] = {
             {
                 "type": "object",
                 "properties": {
-                    "allow": {
-                        "type": "array",
-                        "items": {"type": "string"},
-                        "uniqueItems": True
-                    }
+                    "allow": {"type": "array", "items": {"type": "string"}, "uniqueItems": True}
                 },
-                "additionalProperties": False
-            }
+                "additionalProperties": False,
+            },
         ]
     },
-    "env": {
-        "type": "object",
-        "additionalProperties": {"type": "string"}
-    },
-    "cwd": {"type": "string"}
+    "env": {"type": "object", "additionalProperties": {"type": "string"}},
+    "cwd": {"type": "string"},
 }
 
+
 def _package_name(tool_id: str) -> str:
-    pkg = tool_id.replace('-', '_')
-    if pkg in {'async', 'await', 'class', 'def'}:
-        pkg += '_tool'
+    pkg = tool_id.replace("-", "_")
+    if pkg in {"async", "await", "class", "def"}:
+        pkg += "_tool"
     return pkg
 
 
@@ -312,7 +308,9 @@ def handle(request: Dict[str, Any]) -> Dict[str, Any]:
     if key in {("node", "auth_header"), ("nextjs", "auth_header")}:
         is_node = language == "node"
         header = "const VERSION = 'v1';\n\n" if is_node else "export const VERSION = 'v1';\n\n"
-        fn_def = "function handle(request) {" if is_node else "export default function handle(request) {"
+        fn_def = (
+            "function handle(request) {" if is_node else "export default function handle(request) {"
+        )
         footer = "}\n\nmodule.exports = { VERSION, handle };\n" if is_node else "}\n"
         body = (
             "  if (typeof request !== 'object' || request === null) {\n"
@@ -743,7 +741,11 @@ def handle(request: Dict[str, Any]) -> Dict[str, Any]:
     if key in {("node", "rest_client"), ("nextjs", "rest_client")}:
         is_node = language == "node"
         header = "const VERSION = 'v1';\n\n" if is_node else "export const VERSION = 'v1';\n\n"
-        fn_def = "async function handle(request) {" if is_node else "export default async function handle(request) {"
+        fn_def = (
+            "async function handle(request) {"
+            if is_node
+            else "export default async function handle(request) {"
+        )
         footer = "}\n\nmodule.exports = { VERSION, handle };\n" if is_node else "}\n"
         helpers = (
             "function ok(data) {\n"
@@ -1300,7 +1302,9 @@ def handle(request: Dict[str, Any]) -> Dict[str, Any]:
     if key in {("node", "conditional_eval"), ("nextjs", "conditional_eval")}:
         is_node = language == "node"
         header = "const VERSION = 'v1';\n\n" if is_node else "export const VERSION = 'v1';\n\n"
-        fn_def = "function handle(request) {" if is_node else "export default function handle(request) {"
+        fn_def = (
+            "function handle(request) {" if is_node else "export default function handle(request) {"
+        )
         footer = "}\n\nmodule.exports = { VERSION, handle };\n" if is_node else "}\n"
         helpers = (
             "function ok(data) {\n"
@@ -1340,7 +1344,9 @@ def handle(request: Dict[str, Any]) -> Dict[str, Any]:
     if key in {("node", "branch_select"), ("nextjs", "branch_select")}:
         is_node = language == "node"
         header = "const VERSION = 'v1';\n\n" if is_node else "export const VERSION = 'v1';\n\n"
-        fn_def = "function handle(request) {" if is_node else "export default function handle(request) {"
+        fn_def = (
+            "function handle(request) {" if is_node else "export default function handle(request) {"
+        )
         footer = "}\n\nmodule.exports = { VERSION, handle };\n" if is_node else "}\n"
         helpers = (
             "function ok(data) {\n"
@@ -1366,7 +1372,11 @@ def handle(request: Dict[str, Any]) -> Dict[str, Any]:
     if key in {("node", "async_simulator"), ("nextjs", "async_simulator")}:
         is_node = language == "node"
         header = "const VERSION = 'v1';\n\n" if is_node else "export const VERSION = 'v1';\n\n"
-        fn_def = "async function handle(request) {" if is_node else "export default async function handle(request) {"
+        fn_def = (
+            "async function handle(request) {"
+            if is_node
+            else "export default async function handle(request) {"
+        )
         footer = "}\n\nmodule.exports = { VERSION, handle };\n" if is_node else "}\n"
         helpers = (
             "function ok(data) {\n"
@@ -2476,9 +2486,13 @@ module.exports = { VERSION, handle };
     if key in {("node", "transform_convert"), ("nextjs", "transform_convert")}:
         is_node = language == "node"
         header = "const VERSION = 'v1';\n\n" if is_node else "export const VERSION = 'v1';\n\n"
-        fn_def = "function handle(request) {" if is_node else "export default function handle(request) {"
+        fn_def = (
+            "function handle(request) {" if is_node else "export default function handle(request) {"
+        )
         footer = "}\n\nmodule.exports = { VERSION, handle };\n" if is_node else "}\n"
-        imports = "const yaml = require('js-yaml');\n\n" if is_node else "import yaml from 'js-yaml';\n\n"
+        imports = (
+            "const yaml = require('js-yaml');\n\n" if is_node else "import yaml from 'js-yaml';\n\n"
+        )
         helpers = (
             "function ok(data) {\n"
             "  return { ok: true, version: VERSION, data };\n"
@@ -2522,9 +2536,15 @@ module.exports = { VERSION, handle };
     if key in {("node", "error_log_collector"), ("nextjs", "error_log_collector")}:
         is_node = language == "node"
         header = "const VERSION = 'v1';\n\n" if is_node else "export const VERSION = 'v1';\n\n"
-        fn_def = "function handle(request) {" if is_node else "export default function handle(request) {"
+        fn_def = (
+            "function handle(request) {" if is_node else "export default function handle(request) {"
+        )
         footer = "}\n\nmodule.exports = { VERSION, handle };\n" if is_node else "}\n"
-        imports = "const fs = require('fs');\nconst path = require('path');\n\n" if is_node else "import fs from 'node:fs';\nimport path from 'node:path';\n\n"
+        imports = (
+            "const fs = require('fs');\nconst path = require('path');\n\n"
+            if is_node
+            else "import fs from 'node:fs';\nimport path from 'node:path';\n\n"
+        )
         helpers = (
             "function ok(data) {\n"
             "  return { ok: true, version: VERSION, data };\n"
@@ -2768,7 +2788,9 @@ def handle(request: Dict[str, Any]) -> Dict[str, Any]:
     if key in {("node", "loop_counter"), ("nextjs", "loop_counter")}:
         is_node = language == "node"
         header = "const VERSION = 'v1';\n\n" if is_node else "export const VERSION = 'v1';\n\n"
-        fn_def = "function handle(request) {" if is_node else "export default function handle(request) {"
+        fn_def = (
+            "function handle(request) {" if is_node else "export default function handle(request) {"
+        )
         footer = "}\n\nmodule.exports = { VERSION, handle };\n" if is_node else "}\n"
         helpers = (
             "function ok(data) {\n"
@@ -2792,9 +2814,15 @@ def handle(request: Dict[str, Any]) -> Dict[str, Any]:
     if key in {("node", "output_writer"), ("nextjs", "output_writer")}:
         is_node = language == "node"
         header = "const VERSION = 'v1';\n\n" if is_node else "export const VERSION = 'v1';\n\n"
-        fn_def = "function handle(request) {" if is_node else "export default function handle(request) {"
+        fn_def = (
+            "function handle(request) {" if is_node else "export default function handle(request) {"
+        )
         footer = "}\n\nmodule.exports = { VERSION, handle };\n" if is_node else "}\n"
-        imports = "const fs = require('fs');\nconst path = require('path');\n\n" if is_node else "import fs from 'node:fs';\nimport path from 'node:path';\n\n"
+        imports = (
+            "const fs = require('fs');\nconst path = require('path');\n\n"
+            if is_node
+            else "import fs from 'node:fs';\nimport path from 'node:path';\n\n"
+        )
         helpers = (
             "function ok(data) {\n"
             "  return { ok: true, version: VERSION, data };\n"
@@ -2829,9 +2857,13 @@ def handle(request: Dict[str, Any]) -> Dict[str, Any]:
     if key in {("node", "transform_convert"), ("nextjs", "transform_convert")}:
         is_node = language == "node"
         header = "const VERSION = 'v1';\n\n" if is_node else "export const VERSION = 'v1';\n\n"
-        fn_def = "function handle(request) {" if is_node else "export default function handle(request) {"
+        fn_def = (
+            "function handle(request) {" if is_node else "export default function handle(request) {"
+        )
         footer = "}\n\nmodule.exports = { VERSION, handle };\n" if is_node else "}\n"
-        imports = "const yaml = require('js-yaml');\n\n" if is_node else "import yaml from 'js-yaml';\n\n"
+        imports = (
+            "const yaml = require('js-yaml');\n\n" if is_node else "import yaml from 'js-yaml';\n\n"
+        )
         helpers = (
             "function ok(data) {\n"
             "  return { ok: true, version: VERSION, data };\n"
@@ -3018,7 +3050,11 @@ def handle(request: Dict[str, Any]) -> Dict[str, Any]:
     if key in {("node", "http_client"), ("nextjs", "http_client")}:
         is_node = language == "node"
         header = "const VERSION = 'v1';\n\n" if is_node else "export const VERSION = 'v1';\n\n"
-        fn_def = "async function handle(request) {" if is_node else "export default async function handle(request) {"
+        fn_def = (
+            "async function handle(request) {"
+            if is_node
+            else "export default async function handle(request) {"
+        )
         footer = "}\n\nmodule.exports = { VERSION, handle };\n" if is_node else "}\n"
         body = (
             "  if (typeof request !== 'object' || request === null) {\n"
@@ -3721,7 +3757,8 @@ public static class Adapter {
             )
             return header + body + footer
         if language == "go":
-            return """package main
+            return (
+                """package main
 
 const Version = "v1"
 
@@ -3743,7 +3780,9 @@ func Handle(req map[string]interface{}) map[string]interface{} {
         "data":    map[string]interface{}{},
     }
 }
-""" % tool_id
+"""
+                % tool_id
+            )
         if language == "rust":
             return f"""use serde_json::{{json, Value}};
 
@@ -3758,7 +3797,8 @@ pub fn handle(request: &Value) -> Value {{
 }}
 """
         if language == "java":
-            return """import java.util.HashMap;
+            return (
+                """import java.util.HashMap;
 import java.util.Map;
 
 public class Adapter {
@@ -3791,9 +3831,12 @@ public class Adapter {
     return res;
   }
 }
-""" % tool_id
+"""
+                % tool_id
+            )
         if language == "dotnet":
-            return """using System;
+            return (
+                """using System;
 using System.Collections.Generic;
 
 public static class Adapter {
@@ -3819,8 +3862,11 @@ public static class Adapter {
     { "error", new Dictionary<string, object> { { "code", code }, { "message", message } } },
   };
 }
-""" % tool_id
+"""
+                % tool_id
+            )
     raise ValueError(f"no adapter template for {language}:{template_name}")
+
 
 def _render_adapter(tool_id: str, adapter_cfg: Dict[str, Any], repo_root: Path) -> Path:
     language = adapter_cfg["language"]
@@ -3860,7 +3906,7 @@ def _expect_lines(expect: Dict[str, Any]) -> List[str]:
     lines: List[str] = []
     for path, value in expect.items():
         access = "res"
-        for segment in path.split('.'):
+        for segment in path.split("."):
             access += f"[{json.dumps(segment)}]"
         if isinstance(value, bool):
             lines.append(f"    assert {access} is {value}")
@@ -3995,7 +4041,9 @@ def _update_registry(spec: ToolSpec, repo_root: Path) -> Path:
 
 @click.command()
 @click.argument("spec", type=click.Path(path_type=Path))
-@click.option("--output", "output_root", type=click.Path(path_type=Path), default=Path(".mcpd/toolgen"))
+@click.option(
+    "--output", "output_root", type=click.Path(path_type=Path), default=Path(".mcpd/toolgen")
+)
 @click.option("--dry-run", is_flag=True, help="Report artifacts without writing them")
 def toolgen(spec: Path, output_root: Path, dry_run: bool) -> None:
     # Scaffold Promptware tools from a tool generator spec.

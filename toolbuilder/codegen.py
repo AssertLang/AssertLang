@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Any, Dict, List
 
 
 def load_schema(tool: str, spec_dir: str = "schemas/tools") -> Dict[str, Any]:

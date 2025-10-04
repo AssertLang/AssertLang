@@ -1,17 +1,20 @@
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 
+# Add project root to path
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
+
 from language.executor import execute_pw_file
-from schema_utils import assert_events_match_schema
+from tests.utils.schema_utils import assert_events_match_schema
+
 
 def test_interpreter_events_via_executor(tmp_path):
     pw_path = Path(tmp_path) / "logger.pw"
     pw_path.write_text(
-        "tool logger as log\n"
-        "parallel:\n"
-        "  branch one:\n"
-        "    call log message=\"hi\"\n",
+        "tool logger as log\n" "parallel:\n" "  branch one:\n" '    call log message="hi"\n',
         encoding="utf-8",
     )
 
@@ -28,7 +31,7 @@ def test_interpreter_fanout_events_include_cases(tmp_path):
     pw_path = Path(tmp_path) / "fanout.pw"
     pw_path.write_text(
         "tool logger as log\n"
-        "call log message=\"hi\"\n"
+        'call log message="hi"\n'
         "fanout log:\n"
         "case ${log.data.logged}:\n"
         "  let info.hit = true\n",
@@ -52,7 +55,7 @@ def test_interpreter_events_match_schema(tmp_path):
     pw_path = Path(tmp_path) / "schema_check.pw"
     pw_path.write_text(
         "tool logger as log\n"
-        "call log message=\"hi\"\n"
+        'call log message="hi"\n'
         "fanout log:\n"
         "case ${log.data.logged}:\n"
         "  let info.hit = true\n",

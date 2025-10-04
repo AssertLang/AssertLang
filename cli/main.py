@@ -23,23 +23,20 @@ Usage:
     promptware version                          Show version
 """
 
-import sys
 import argparse
 import subprocess
+import sys
 from pathlib import Path
-from typing import Optional
 
 from language.agent_parser import parse_agent_pw
-from language.mcp_server_generator import generate_python_mcp_server
-from language.nodejs_server_generator import generate_nodejs_mcp_server
 from language.go_server_generator import generate_go_mcp_server
 from language.mcp_config_generator import (
     generate_configs_for_project,
     generate_quick_setup_instructions,
     scan_agents_in_directory,
-    generate_agent_mcp_config,
-    generate_cursor_config
 )
+from language.mcp_server_generator import generate_python_mcp_server
+from language.nodejs_server_generator import generate_nodejs_mcp_server
 
 
 def get_generator(lang: str):
@@ -56,7 +53,7 @@ def get_generator(lang: str):
     generator = generators.get(lang.lower())
     if not generator:
         print(f"❌ Error: Unsupported language '{lang}'")
-        print(f"   Supported: python, nodejs, go")
+        print("   Supported: python, nodejs, go")
         sys.exit(1)
 
     return generator
@@ -86,13 +83,13 @@ def command_generate(args):
     print(f"📝 Reading {pw_file}...")
 
     try:
-        with open(pw_file, 'r') as f:
+        with open(pw_file, "r") as f:
             pw_code = f.read()
     except Exception as e:
         print(f"❌ Error reading file: {e}")
         sys.exit(1)
 
-    print(f"🔍 Parsing agent definition...")
+    print("🔍 Parsing agent definition...")
 
     try:
         agent = parse_agent_pw(pw_code)
@@ -122,13 +119,13 @@ def command_generate(args):
     print(f"💾 Writing to {output_file}...")
 
     try:
-        with open(output_file, 'w') as f:
+        with open(output_file, "w") as f:
             f.write(server_code)
     except Exception as e:
         print(f"❌ Write error: {e}")
         sys.exit(1)
 
-    print(f"✅ Success!")
+    print("✅ Success!")
     print(f"   Agent: {agent.name}")
     print(f"   Port: {agent.port}")
     print(f"   Verbs: {len(agent.exposes)}")
@@ -154,7 +151,7 @@ def command_run(args):
     pw_file = Path(args.agent_file)
 
     try:
-        with open(pw_file, 'r') as f:
+        with open(pw_file, "r") as f:
             pw_code = f.read()
         agent = parse_agent_pw(pw_code)
     except Exception as e:
@@ -173,7 +170,7 @@ def command_run(args):
     print("STEP 2: Run Server")
     print("=" * 60)
     print(f"🚀 Starting {agent.name} on port {agent.port}...")
-    print(f"   Press Ctrl+C to stop\n")
+    print("   Press Ctrl+C to stop\n")
 
     try:
         if lang.lower() in ["python"]:
@@ -200,12 +197,12 @@ def command_test(args):
     print(f"🧪 Testing {pw_file}...")
 
     try:
-        with open(pw_file, 'r') as f:
+        with open(pw_file, "r") as f:
             pw_code = f.read()
 
         agent = parse_agent_pw(pw_code)
 
-        print(f"✅ Parse: OK")
+        print("✅ Parse: OK")
         print(f"   Agent: {agent.name}")
         print(f"   Lang: {agent.lang}")
         print(f"   Port: {agent.port}")
@@ -214,12 +211,14 @@ def command_test(args):
         if agent.llm:
             print(f"   AI: {agent.llm}")
         if agent.observability:
-            print(f"   Observability: traces={agent.observability.traces}, metrics={agent.observability.metrics}")
+            print(
+                f"   Observability: traces={agent.observability.traces}, metrics={agent.observability.metrics}"
+            )
         if agent.temporal:
             print(f"   Temporal: {len(agent.workflows)} workflows")
 
         # Test generation
-        print(f"\n🔨 Testing code generation...")
+        print("\n🔨 Testing code generation...")
 
         lang = agent.lang
         generator = get_generator(lang)
@@ -227,11 +226,12 @@ def command_test(args):
 
         print(f"✅ Generation: OK ({len(server_code.splitlines())} lines)")
 
-        print(f"\n✅ All tests passed!")
+        print("\n✅ All tests passed!")
 
     except Exception as e:
         print(f"❌ Test failed: {e}")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)
 
@@ -273,9 +273,7 @@ def command_mcp_config(args):
 
     try:
         config_json = generate_configs_for_project(
-            project_dir,
-            editor=editor,
-            output_dir=args.output if args.output else None
+            project_dir, editor=editor, output_dir=args.output if args.output else None
         )
 
         # Determine config path
@@ -291,7 +289,7 @@ def command_mcp_config(args):
             config_path = project_dir / "mcp.json"
 
         print(f"✅ Configuration saved to: {config_path}")
-        print(f"\nConfiguration content:")
+        print("\nConfiguration content:")
         print("=" * 60)
         print(config_json)
         print("=" * 60)
@@ -303,6 +301,7 @@ def command_mcp_config(args):
     except Exception as e:
         print(f"❌ Error generating config: {e}")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)
 
@@ -333,7 +332,7 @@ Examples:
   promptware version
 
 For more info: https://github.com/3CH0xyz/promptware
-        """
+        """,
     )
 
     subparsers = parser.add_subparsers(dest="command", help="Command to run")
@@ -359,15 +358,20 @@ For more info: https://github.com/3CH0xyz/promptware
 
     # MCP Config command
     mcp_parser = subparsers.add_parser("mcp-config", help="Generate MCP config for editors")
-    mcp_parser.add_argument("--editor", "-e", default="cursor",
-                           choices=["cursor", "windsurf", "cline"],
-                           help="Target editor (default: cursor)")
-    mcp_parser.add_argument("--directory", "-d",
-                           help="Directory to scan for .pw files (default: current)")
-    mcp_parser.add_argument("--agent-file", "-a",
-                           help="Single .pw file (alternative to --directory)")
-    mcp_parser.add_argument("--output", "-o",
-                           help="Output directory for config file")
+    mcp_parser.add_argument(
+        "--editor",
+        "-e",
+        default="cursor",
+        choices=["cursor", "windsurf", "cline"],
+        help="Target editor (default: cursor)",
+    )
+    mcp_parser.add_argument(
+        "--directory", "-d", help="Directory to scan for .pw files (default: current)"
+    )
+    mcp_parser.add_argument(
+        "--agent-file", "-a", help="Single .pw file (alternative to --directory)"
+    )
+    mcp_parser.add_argument("--output", "-o", help="Output directory for config file")
     mcp_parser.set_defaults(func=command_mcp_config)
 
     # Version command

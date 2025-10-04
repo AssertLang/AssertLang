@@ -1,10 +1,9 @@
 from __future__ import annotations
 
-import json
-from typing import Dict, Any
 from pathlib import Path
+from typing import Any, Dict
 
-from tools.envelope import ok, error, validate_request
+from tools.envelope import error, ok, validate_request
 from tools.validator import validate_with_schema
 
 VERSION = 'v1'

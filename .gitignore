@@ -71,9 +71,22 @@ generated/
 *.pyo
 node_modules/
 bin/
-**/bin/Debug/
-**/bin/Release/
+**/bin/
 **/obj/
+*.egg-info/
+
+# Build artifacts
+**/target/
+**/*.dll
+**/*.dylib
+**/*.so
+**/*.exe
+**/*.o
+**/*.a
+**/*.lib
+*.rlib
+*/server
+*/Server
 
 # OS
 .DS_Store
@@ -85,20 +98,44 @@ Thumbs.db
 *.swp
 .cache/
 
-# Personal and internal docs
-FOR-DAVE.md
-MONETIZATION-STRATEGY.md
-READY-TO-USE.md
-START-HERE.md
-WAVE_*.md
-docs/SESSION_SUMMARY.md
+# Personal and internal docs (root directory)
+AI-AGENT-GUIDE.md
 ALIGNMENT_*.md
 COMPLETE_LANGUAGE_SUPPORT.md
 CORRECTED_VISION.md
+Current_Work.md
+DOCUMENTATION_AUDIT_ACTION_PLAN.md
 EXPLAIN_LIKE_IM_5.md
+FOR-DAVE.md
 HONEST_EXPLANATION.md
 INTEGRATION_PLAN.md
 LANGCHAIN_INTEGRATION_COMPLETE.md
+MONETIZATION-STRATEGY.md
 PIVOT_SUMMARY.md
+READY-TO-USE.md
+START-HERE.md
 VISION_ALIGNMENT_AUDIT.md
+WAVE_*.md
+
+# Personal and internal docs (subdirectories)
+docs/SESSION_SUMMARY.md
 docs/test-batches.md
+open-source-release/
+
+# Internal docs that were cleaned up
+STATUS.md
+TODO.md
+RELEASE_CHECKLIST.md
+PITCH.md
+DEMO.md
+QUICKSTART.md
+GOOD_FIRST_ISSUES.md
+
+# Package manager files (root level only - examples need their own)
+/Makefile
+/package.json
+/package-lock.json
+
+# IDE/Editor directories
+.cursor/
+.claude/

@@ -162,10 +162,12 @@ def parse_agent_pw(text: str) -> AgentDefinition:
         elif head == "agent":
             if not args:
                 raise ValueError("agent directive requires a name")
+            # Agent name can be multi-word, join all args
+            agent_name = " ".join(args)
             if agent_def is None:
-                agent_def = AgentDefinition(name=args[0], lang="python")
+                agent_def = AgentDefinition(name=agent_name, lang="python")
             else:
-                agent_def.name = args[0]
+                agent_def.name = agent_name
 
         elif head == "port":
             if not args:

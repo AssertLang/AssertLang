@@ -4,7 +4,7 @@ Examples of using the Promptware MCP client library.
 Demonstrates both simple function calls and reusable client instances.
 """
 from promptware import MCPClient, call_verb
-from promptware.exceptions import InvalidVerbError, TimeoutError, ConnectionError
+from promptware.exceptions import ConnectionError, InvalidVerbError, TimeoutError
 
 
 def example_simple_call():
@@ -64,7 +64,7 @@ def example_error_handling():
     print("\n=== Example 4: Error Handling ===")
 
     try:
-        result = call_verb(
+        call_verb(
             service="user-service",
             verb="unknown.verb@v1",
             params={"param": "value"},

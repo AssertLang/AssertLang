@@ -1,22 +1,20 @@
+import os
+import time
+from datetime import datetime
+from typing import Any, Dict
+
+import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
-import uvicorn
-from typing import Any, Dict, Optional
-from datetime import datetime
-import time
-import os
 from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import HumanMessage, SystemMessage
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
-from opentelemetry import trace, metrics
+from opentelemetry import metrics, trace
+from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+from opentelemetry.sdk.metrics import MeterProvider
+from opentelemetry.sdk.metrics.export import ConsoleMetricExporter, PeriodicExportingMetricReader
+from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExporter
-from opentelemetry.sdk.metrics import MeterProvider
-from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader, ConsoleMetricExporter
-from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
-from opentelemetry.sdk.resources import Resource
-
 
 # OpenTelemetry setup
 resource = Resource.create({"service.name": "code-reviewer"})
@@ -178,7 +176,7 @@ def handle_review_approve_v1(params: Dict[str, Any]) -> Dict[str, Any]:
         span.set_attribute("agent", "code-reviewer")
         # Generic AI handler
         try:
-            user_prompt = f"Process the following request for review.approve@v1:\n"
+            user_prompt = "Process the following request for review.approve@v1:\n"
             user_prompt += f"Parameters: {params.get('review_id')}, {params.get('approved')}, {params.get('comments')}"
 
             messages = [HumanMessage(content=user_prompt)]
@@ -313,11 +311,11 @@ async def list_verbs():
     }
 
 if __name__ == "__main__":
-    print(f"Starting MCP server for agent: code-reviewer")
-    print(f"Port: 23450")
-    print(f"Exposed verbs: ['review.analyze@v1', 'review.approve@v1']")
-    print(f"Health check: http://127.0.0.1:23450/health")
-    print(f"MCP endpoint: http://127.0.0.1:23450/mcp")
+    print("Starting MCP server for agent: code-reviewer")
+    print("Port: 23450")
+    print("Exposed verbs: ['review.analyze@v1', 'review.approve@v1']")
+    print("Health check: http://127.0.0.1:23450/health")
+    print("MCP endpoint: http://127.0.0.1:23450/mcp")
 
     uvicorn.run(
         app,

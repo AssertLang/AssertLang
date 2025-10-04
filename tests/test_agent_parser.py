@@ -1,7 +1,6 @@
 """Tests for agent-specific DSL parser."""
 
-import pytest
-from language.agent_parser import parse_agent_pw, AgentDefinition, ExposeBlock
+from language.agent_parser import parse_agent_pw
 
 
 def test_ai_agent_with_llm():

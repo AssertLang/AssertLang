@@ -4,11 +4,11 @@ Native stdio MCP server for Promptware agents.
 
 Implements the MCP protocol directly over stdin/stdout.
 """
-import sys
 import json
 import os
+import sys
 from pathlib import Path
-from typing import Dict, Any, List, Optional
+from typing import Any, Dict
 
 
 def generate_tool_description(verb_name: str, expose) -> str:

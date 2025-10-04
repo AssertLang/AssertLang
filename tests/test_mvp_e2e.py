@@ -1,9 +1,9 @@
 import time
+
 import requests
-from pathlib import Path
+from click.testing import CliRunner
 
 from cli.mcp import main as mcp_main
-from click.testing import CliRunner
 
 
 def test_run_hello_world():
@@ -49,5 +49,3 @@ file app.py:
         except Exception:
             time.sleep(0.2)
     raise AssertionError("Service did not respond correctly")
-
-

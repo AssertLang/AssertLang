@@ -1,0 +1,138 @@
+{
+  "test_suite": "nodejs_bidirectional",
+  "started_at": "2025-10-03T09:50:23.672223",
+  "node_version": "v23.11.0",
+  "npm_version": "11.3.0",
+  "tests": [
+    {
+      "fixture": "nodejs_minimal.pw",
+      "stages": {
+        "read": {
+          "passed": true,
+          "message": "Read 121 bytes"
+        },
+        "generation": {
+          "passed": true,
+          "message": "Generated 2408 bytes of JavaScript",
+          "code_size": 2408
+        },
+        "syntax": {
+          "valid": true,
+          "message": "Syntax validation passed"
+        },
+        "async_handling": {
+          "valid": true,
+          "has_async": false,
+          "has_await": false,
+          "has_promises": false,
+          "issues": []
+        },
+        "install": {
+          "success": true,
+          "message": "Dependencies installed successfully",
+          "stdout": "\nadded 69 packages, and audited 70 packages in 951ms\n\n14 packages are looking for funding\n  run `npm fund` for details\n\nfound 0 vulnerabilities\n"
+        },
+        "startup": {
+          "success": true,
+          "message": "Server started on port 20100",
+          "pid": 87544,
+          "port": 20100
+        },
+        "endpoints": {
+          "health": {
+            "success": true,
+            "status": "healthy",
+            "data": {
+              "status": "healthy",
+              "agent": "minimal-test-agent",
+              "uptime": 0
+            }
+          },
+          "verbs": {
+            "success": true,
+            "verbs": [
+              "\"echo@v1\""
+            ],
+            "agent": "minimal-test-agent"
+          },
+          "verb_execution": {
+            "success": false,
+            "status_code": 404,
+            "error": "{\"ok\":false,\"version\":\"v1\",\"error\":{\"code\":\"E_METHOD\",\"message\":\"Unknown method: \\\"echo@v1\\\"\"}}"
+          }
+        }
+      },
+      "passed": true,
+      "errors": []
+    },
+    {
+      "fixture": "nodejs_with_tools.pw",
+      "stages": {
+        "read": {
+          "passed": true,
+          "message": "Read 278 bytes"
+        },
+        "generation": {
+          "passed": true,
+          "message": "Generated 3067 bytes of JavaScript",
+          "code_size": 3067
+        },
+        "syntax": {
+          "valid": true,
+          "message": "Syntax validation passed"
+        },
+        "async_handling": {
+          "valid": true,
+          "has_async": false,
+          "has_await": false,
+          "has_promises": false,
+          "issues": []
+        },
+        "install": {
+          "success": true,
+          "message": "Dependencies installed successfully",
+          "stdout": "\nadded 69 packages, and audited 70 packages in 348ms\n\n14 packages are looking for funding\n  run `npm fund` for details\n\nfound 0 vulnerabilities\n"
+        },
+        "startup": {
+          "success": true,
+          "message": "Server started on port 20101",
+          "pid": 87603,
+          "port": 20101
+        },
+        "endpoints": {
+          "health": {
+            "success": true,
+            "status": "healthy",
+            "data": {
+              "status": "healthy",
+              "agent": "tools-test-agent",
+              "uptime": 0
+            }
+          },
+          "verbs": {
+            "success": true,
+            "verbs": [
+              "\"process.data@v1\"",
+              "\"health.check@v1\""
+            ],
+            "agent": "tools-test-agent"
+          },
+          "verb_execution": {
+            "success": false,
+            "status_code": 404,
+            "error": "{\"ok\":false,\"version\":\"v1\",\"error\":{\"code\":\"E_METHOD\",\"message\":\"Unknown method: \\\"process.data@v1\\\"\"}}"
+          }
+        }
+      },
+      "passed": true,
+      "errors": []
+    }
+  ],
+  "summary": {
+    "total_tests": 2,
+    "passed": 2,
+    "failed": 0,
+    "pass_rate": "100.0%"
+  },
+  "completed_at": "2025-10-03T09:50:26.256790"
+}

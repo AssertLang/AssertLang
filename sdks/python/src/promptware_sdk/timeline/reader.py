@@ -8,7 +8,7 @@ try:
 except ImportError:
     requests = None  # type: ignore
 
-from ..errors import PromptwareError, E_RUNTIME, E_TIMEOUT
+from ..errors import E_RUNTIME, E_TIMEOUT, PromptwareError
 from ..types import TimelineEvent
 
 

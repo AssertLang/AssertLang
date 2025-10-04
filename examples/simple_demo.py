@@ -44,7 +44,7 @@ response = client.call(
 
 if response.is_success():
     data = response.get_data()
-    print(f"   ✓ Agent responded!")
+    print("   ✓ Agent responded!")
     print(f"   ✓ Review ID: {data['review_id']}")
     print(f"   ✓ Status: {data['status']}")
 else:

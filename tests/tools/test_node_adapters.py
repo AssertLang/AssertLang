@@ -155,4 +155,3 @@ def _assert_mapping_subset(actual: dict, expected: dict, path: Iterable[str] | N
                 raise AssertionError(
                     f"Value mismatch at {'/'.join(current_path)}: expected {value!r}, got {actual_value!r}"
                 )
-

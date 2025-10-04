@@ -3,12 +3,14 @@ Unit tests for tool executor.
 
 Tests tool loading, parameter mapping, and execution orchestration.
 """
+
 import pytest
 from language.tool_executor import ToolExecutor
 
 
 def test_tool_executor_no_tools():
     """Test executor with agent that has no tools."""
+
     class MockAgent:
         tools = None
 
@@ -49,10 +51,7 @@ def test_tool_executor_executes_http_tool():
     """Test executing http tool via executor."""
     executor = ToolExecutor(["http"])
 
-    results = executor.execute_tools({
-        "url": "https://api.github.com/zen",
-        "method": "GET"
-    })
+    results = executor.execute_tools({"url": "https://api.github.com/zen", "method": "GET"})
 
     # Should have http result
     assert "http" in results
@@ -79,10 +78,7 @@ def test_tool_executor_handles_tool_failure():
     executor = ToolExecutor(["http"])
 
     # Invalid URL should cause failure
-    results = executor.execute_tools({
-        "url": "not-a-valid-url",
-        "method": "GET"
-    })
+    results = executor.execute_tools({"url": "not-a-valid-url", "method": "GET"})
 
     assert "http" in results
     http_result = results["http"]
@@ -98,12 +94,14 @@ def test_tool_executor_passes_all_params_to_tools():
     executor = ToolExecutor(["http"])
 
     # Pass extra parameters - tool should ignore what it doesn't need
-    results = executor.execute_tools({
-        "url": "https://api.github.com/zen",
-        "method": "GET",
-        "extra_param": "ignored",
-        "another_param": 123
-    })
+    results = executor.execute_tools(
+        {
+            "url": "https://api.github.com/zen",
+            "method": "GET",
+            "extra_param": "ignored",
+            "another_param": 123,
+        }
+    )
 
     # Should still work
     assert "http" in results
@@ -120,10 +118,7 @@ def test_tool_executor_multiple_tools():
     assert "http" in executor.loaded_tools
 
     # Execute with params for http
-    results = executor.execute_tools({
-        "url": "https://api.github.com/zen",
-        "method": "GET"
-    })
+    results = executor.execute_tools({"url": "https://api.github.com/zen", "method": "GET"})
 
     # http should execute
     assert "http" in results
@@ -161,6 +156,7 @@ def test_tool_executor_empty_params():
 
 def test_tool_executor_integration_with_agent():
     """Test tool executor with a mock agent definition."""
+
     class MockAgent:
         def __init__(self):
             self.tools = ["http"]
@@ -173,10 +169,7 @@ def test_tool_executor_integration_with_agent():
     assert executor.has_tools()
 
     # Execute
-    results = executor.execute_tools({
-        "url": "https://api.github.com/zen",
-        "method": "GET"
-    })
+    results = executor.execute_tools({"url": "https://api.github.com/zen", "method": "GET"})
 
     # Should work
     assert "http" in results

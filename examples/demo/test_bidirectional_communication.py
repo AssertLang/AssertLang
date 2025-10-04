@@ -10,8 +10,8 @@ Requires:
 - Node.js server running on port 23450
 - Python server running on port 23451
 """
-import sys
 import subprocess
+import sys
 from pathlib import Path
 
 # Add project root to path
@@ -19,6 +19,7 @@ project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
 from promptware import call_verb
+
 
 def test_python_to_nodejs():
     """Test Python client calling Node.js server."""
@@ -34,7 +35,7 @@ def test_python_to_nodejs():
         timeout=5
     )
 
-    print(f"✓ Python → Node.js succeeded")
+    print("✓ Python → Node.js succeeded")
     print(f"  Mode: {result['metadata']['mode']}")
     print(f"  Agent: {result['metadata']['agent_name']}")
     print(f"  User: {result['name']} ({result['email']})")
@@ -71,7 +72,7 @@ console.log('  User:', result.name, '(' + result.email + ')');
     )
 
     if result.returncode != 0:
-        print(f"✗ Node.js → Python failed:")
+        print("✗ Node.js → Python failed:")
         print(result.stderr)
         return False
 

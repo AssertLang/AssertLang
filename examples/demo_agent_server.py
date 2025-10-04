@@ -1,8 +1,9 @@
+from datetime import datetime
+from typing import Any, Dict
+
+import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
-import uvicorn
-from typing import Any, Dict, Optional
-from datetime import datetime
 
 # MCP Server for agent: code-reviewer
 app = FastAPI(
@@ -180,11 +181,11 @@ async def list_verbs():
     }
 
 if __name__ == "__main__":
-    print(f"Starting MCP server for agent: code-reviewer")
-    print(f"Port: 23456")
-    print(f"Exposed verbs: ['review.submit@v1', 'review.status@v1']")
-    print(f"Health check: http://127.0.0.1:23456/health")
-    print(f"MCP endpoint: http://127.0.0.1:23456/mcp")
+    print("Starting MCP server for agent: code-reviewer")
+    print("Port: 23456")
+    print("Exposed verbs: ['review.submit@v1', 'review.status@v1']")
+    print("Health check: http://127.0.0.1:23456/health")
+    print("MCP endpoint: http://127.0.0.1:23456/mcp")
 
     uvicorn.run(
         app,

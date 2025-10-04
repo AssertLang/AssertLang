@@ -1,4 +1,5 @@
 """Shared utilities for dependency allowlists and cache management."""
+
 from __future__ import annotations
 
 import json
@@ -137,7 +138,11 @@ def _plan_violations(allowlist: Dict[str, Any], plan_deps: Dict[str, Any]) -> Di
             requested = [str(v) for v in raw.get("allow", [])]
         else:
             continue
-        missing = [item for item in requested if item not in allowed and item.split("@", 1)[0] not in allowed]
+        missing = [
+            item
+            for item in requested
+            if item not in allowed and item.split("@", 1)[0] not in allowed
+        ]
         if missing:
             violations[lang] = missing
     return violations
@@ -145,7 +150,9 @@ def _plan_violations(allowlist: Dict[str, Any], plan_deps: Dict[str, Any]) -> Di
 
 def summarise_allowlist(plan_path: Optional[Path] = None) -> Dict[str, Any]:
     allowlist = _load_allowlist()
-    summary = {lang: _normalise(entry) for lang, entry in allowlist.items() if isinstance(entry, dict)}
+    summary = {
+        lang: _normalise(entry) for lang, entry in allowlist.items() if isinstance(entry, dict)
+    }
 
     output: Dict[str, Any] = {"allowlist": summary}
 
