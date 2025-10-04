@@ -47,43 +47,138 @@ def generate_dotnet_mcp_server(agent: AgentDefinition) -> str:
 
 def _generate_usings(agent: AgentDefinition) -> str:
     """Generate using statements and namespace."""
+    # All using statements consolidated here - no imports elsewhere!
     usings = """using System.Text.Json;
 using System.Text.Json.Nodes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Hosting;"""
+using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.RateLimiting;
+using System.Threading.RateLimiting;
+using Microsoft.Extensions.Logging;
 
-    # Add tool namespaces if agent uses tools
-    if agent.tools:
-        tool_usings = []
-        for tool in agent.tools:
-            tool_namespace = tool.replace("-", "_").title()
-            tool_usings.append(f"using {tool_namespace}Adapter;")
-        usings += "\n" + "\n".join(tool_usings)
+namespace UserServiceMcp;"""
 
-    usings += "\n\nnamespace UserServiceMcp;"
+    # Note: Tool imports commented out for now
+    # In production, these would import actual tool adapters:
+    # - Tool adapters need to be created first
+    # - Build system would copy adapters into ./tools/
+    # - Then these imports would work
+    #
+    # if agent.tools:
+    #     tool_usings = []
+    #     for tool in agent.tools:
+    #         tool_namespace = tool.replace("-", "_").title()
+    #         tool_usings.append(f"using {tool_namespace}Adapter;")
+    #     usings += "\n" + "\n".join(tool_usings)
 
     return usings
 
 
 def _generate_tool_registry(agent: AgentDefinition) -> str:
-    """Generate tool registry with compile-time tool imports."""
-    if not agent.tools:
-        return "// No tools configured"
+    """Generate tool registry with inline stub implementations."""
 
-    tool_handlers = []
+    # Helper functions first
+    helpers = []
+
+    # Strip imports from helper functions
+    def strip_imports(code: str) -> str:
+        """Remove import/using statements from code."""
+        lines = code.split('\n')
+        result = []
+        in_using_block = False
+
+        for line in lines:
+            stripped = line.strip()
+            if stripped.startswith('using ') and ';' in stripped:
+                continue
+            elif stripped.startswith('using ') and not ';' in stripped:
+                in_using_block = True
+                continue
+            elif in_using_block and ';' in line:
+                in_using_block = False
+                continue
+            elif in_using_block:
+                continue
+            else:
+                result.append(line)
+
+        return '\n'.join(result).strip()
+
+    helpers.append("// Error handling helpers")
+    helpers.append(strip_imports(get_csharp_error_middleware()))
+    helpers.append("")
+    helpers.append("// Health check helpers")
+
+    # Health check code needs special handling - wrap static var in class
+    health_check_code = strip_imports(get_csharp_health_check())
+    # Replace the static variable with a static class
+    health_check_code = health_check_code.replace(
+        "static HealthCheck healthChecker = new HealthCheck();",
+        """public static class HealthCheckManager
+{
+    public static readonly HealthCheck Instance = new HealthCheck();
+}"""
+    )
+    helpers.append(health_check_code)
+
+    helpers_code = "\n".join(helpers)
+
+    if not agent.tools:
+        # No tools configured - provide stub function
+        return f"""{helpers_code}
+
+// No tools configured
+public static class ToolRegistry
+{{
+    public static Dictionary<string, Dictionary<string, object>> ExecuteTools(Dictionary<string, object> parameters)
+    {{
+        return new Dictionary<string, Dictionary<string, object>>();
+    }}
+}}"""
+
+    # Generate stub tool handlers (actual tool imports commented out above)
+    tool_stubs = []
     for tool in agent.tools:
-        tool_class = tool.replace("-", "_").title()
-        tool_handlers.append(f'    {{ "{tool}", {tool_class}Adapter.Adapter.Handle }}')
+        tool_var = tool.replace("-", "_")
+        tool_class = "".join(word.capitalize() for word in tool_var.split("_"))
+
+        # Create stub handler that returns placeholder
+        tool_stubs.append(f"""// Stub handler for {tool} tool
+public static class {tool_class}Handler
+{{
+    public static Dictionary<string, object> Handle(Dictionary<string, object> parameters)
+    {{
+        return new Dictionary<string, object>
+        {{
+            ["ok"] = true,
+            ["version"] = "v1",
+            ["message"] = "Tool stub: {tool} (actual implementation requires tool adapter)",
+            ["params"] = parameters
+        }};
+    }}
+}}""")
+
+    tool_map_entries = []
+    for tool in agent.tools:
+        tool_var = tool.replace("-", "_")
+        tool_class = "".join(word.capitalize() for word in tool_var.split("_"))
+        tool_map_entries.append(f'        {{ "{tool}", {tool_class}Handler.Handle }}')
 
     tools_list = ', '.join([f'"{t}"' for t in agent.tools])
 
-    registry_code = f"""// Tool registry with compile-time imports
+    # Tool registry code (helpers are now in separate section)
+    registry_code = f"""{helpers_code}
+
+// Tool stubs (replace with actual imports in production)
+{chr(10).join(tool_stubs)}
+
+// Tool registry
 public static class ToolRegistry
 {{
     private static readonly Dictionary<string, Func<Dictionary<string, object>, Dictionary<string, object>>> Handlers = new()
     {{
-{chr(10).join(tool_handlers)}
+{chr(10).join(tool_map_entries)}
     }};
 
     public static Dictionary<string, object> ExecuteTool(string toolName, Dictionary<string, object> parameters)
@@ -116,13 +211,7 @@ public static class ToolRegistry
 
         return results;
     }}
-}}
-
-{get_csharp_error_middleware()}
-
-{get_csharp_health_check()}
-
-{get_validation_helpers("csharp")}"""
+}}"""
 
     return registry_code
 
@@ -384,23 +473,122 @@ def _generate_program_main(agent: AgentDefinition) -> str:
 
     health_endpoints = get_health_endpoints_pattern("csharp", agent.name)
 
-    return f"""// Program.cs
+    # Replace healthChecker with HealthCheckManager.Instance
+    health_endpoints["health"] = health_endpoints["health"].replace("healthChecker", "HealthCheckManager.Instance")
+    health_endpoints["ready"] = health_endpoints["ready"].replace("healthChecker", "HealthCheckManager.Instance")
+
+    # Strip imports from security middleware
+    def strip_imports(code: str) -> str:
+        """Remove import/using statements from code."""
+        lines = code.split('\n')
+        result = []
+        in_using_block = False
+
+        for line in lines:
+            stripped = line.strip()
+            if stripped.startswith('using ') and ';' in stripped:
+                continue
+            elif stripped.startswith('using ') and not ';' in stripped:
+                in_using_block = True
+                continue
+            elif in_using_block and ';' in line:
+                in_using_block = False
+                continue
+            elif in_using_block:
+                continue
+            else:
+                result.append(line)
+
+        return '\n'.join(result).strip()
+
+    security_middleware = strip_imports(get_csharp_security_middleware())
+
+    # Indent security middleware properly (it defines builder and app)
+    # We need to extract just the initialization parts
+    verbs_array = ', '.join([f'"{e.verb}"' for e in agent.exposes])
+
+    return f"""// Program.cs main entry point
 public class Program
 {{
     public static void Main(string[] args)
     {{
-        {get_csharp_security_middleware()}
+        var builder = WebApplication.CreateBuilder(args);
 
+        // Rate limiting
+        builder.Services.AddRateLimiter(options =>
+        {{
+            options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
+                RateLimitPartition.GetFixedWindowLimiter(
+                    partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+                    factory: _ => new FixedWindowRateLimiterOptions
+                    {{
+                        PermitLimit = 100,
+                        Window = TimeSpan.FromMinutes(1),
+                        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                        QueueLimit = 0
+                    }}));
+
+            options.OnRejected = async (context, cancellationToken) =>
+            {{
+                context.HttpContext.Response.StatusCode = 429;
+                await context.HttpContext.Response.WriteAsJsonAsync(new
+                {{
+                    jsonrpc = "2.0",
+                    error = new
+                    {{
+                        code = -32006,
+                        message = "Too many requests"
+                    }}
+                }}, cancellationToken);
+            }};
+        }});
+
+        // CORS
+        var allowedOrigins = Environment.GetEnvironmentVariable("ALLOWED_ORIGINS")?.Split(',')
+            ?? new[] {{ "*" }};
+
+        builder.Services.AddCors(options =>
+        {{
+            options.AddDefaultPolicy(policy =>
+            {{
+                policy.WithOrigins(allowedOrigins)
+                      .AllowAnyMethod()
+                      .AllowAnyHeader()
+                      .SetPreflightMaxAge(TimeSpan.FromHours(1));
+            }});
+        }});
+
+        var app = builder.Build();
+
+        // Use CORS
+        app.UseCors();
+
+        // Use rate limiting
+        app.UseRateLimiter();
+
+        // Security headers middleware
+        app.Use(async (context, next) =>
+        {{
+            context.Response.Headers["X-Content-Type-Options"] = "nosniff";
+            context.Response.Headers["X-Frame-Options"] = "DENY";
+            context.Response.Headers["X-XSS-Protection"] = "1; mode=block";
+            context.Response.Headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains";
+            await next();
+        }});
+
+        // MCP endpoint
         app.MapPost("/mcp", McpHandler.HandleRequest);
 
+        // Health endpoints
         {health_endpoints["health"]}
 
         {health_endpoints["ready"]}
 
+        // Verbs endpoint
         app.MapGet("/verbs", () => new
         {{
             agent = "{agent.name}",
-            verbs = new[] {{ "{agent.exposes[0].verb if agent.exposes else ''}"{"".join([f', "{e.verb}"' for e in agent.exposes[1:]])} }}
+            verbs = new[] {{ {verbs_array} }}
         }});
 
         var port = "{agent.port}";
