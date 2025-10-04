@@ -11,8 +11,8 @@ tools_dir = Path(__file__).parent.parent / "tools"
 if str(tools_dir) not in sys.path:
     sys.path.insert(0, str(tools_dir))
 
+from tools.envelope import error
 from tools.registry import get_registry
-from tools.envelope import error, ok
 
 
 class ToolExecutor:

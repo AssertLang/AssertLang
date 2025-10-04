@@ -2,7 +2,6 @@ import json
 import os
 import shutil
 import subprocess
-from pathlib import Path
 
 import pytest
 
@@ -82,7 +81,9 @@ def _run_dotnet_health(host: str, port: int) -> dict:
 
 
 GO_AVAILABLE = shutil.which("go") is not None
-DOTNET_AVAILABLE = shutil.which("dotnet") is not None and bool(os.environ.get("ENABLE_DOTNET_TESTS"))
+DOTNET_AVAILABLE = shutil.which("dotnet") is not None and bool(
+    os.environ.get("ENABLE_DOTNET_TESTS")
+)
 
 
 def test_python_runner_apply_emits_single_json(tmp_path):

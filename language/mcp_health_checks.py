@@ -4,7 +4,8 @@ Production-grade health check patterns for MCP servers.
 Implements readiness/liveness probes and dependency checking.
 """
 
-from typing import Dict, Any
+from typing import Dict
+
 
 def get_python_health_check() -> str:
     """Generate Python health check with readiness/liveness."""
@@ -286,20 +287,20 @@ app.get('/ready', async (req, res) => {
 
     elif language == "go":
         return {
-            "health": f'''
-func healthHandler(w http.ResponseWriter, r *http.Request) {{
+            "health": '''
+func healthHandler(w http.ResponseWriter, r *http.Request) {
 \thealth := healthChecker.CheckLiveness()
 \tjson.NewEncoder(w).Encode(health)
-}}
+}
 ''',
-            "ready": f'''
-func readyHandler(w http.ResponseWriter, r *http.Request) {{
+            "ready": '''
+func readyHandler(w http.ResponseWriter, r *http.Request) {
 \treadiness := healthChecker.CheckReadiness()
-\tif readiness["status"] != "ok" {{
+\tif readiness["status"] != "ok" {
 \t\tw.WriteHeader(http.StatusServiceUnavailable)
-\t}}
+\t}
 \tjson.NewEncoder(w).Encode(readiness)
-}}
+}
 '''
         }
 

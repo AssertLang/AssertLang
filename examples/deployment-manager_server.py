@@ -1,14 +1,13 @@
+import asyncio
+from datetime import datetime, timedelta
+from typing import Any, Dict, Optional
+
+import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
-import uvicorn
-from typing import Any, Dict, Optional
-from datetime import datetime
-import time
-import asyncio
-from datetime import timedelta
-from temporalio import workflow, activity
+from temporalio import activity, workflow
 from temporalio.client import Client
-from temporalio.worker import Worker
+
 
 @activity.defn(name="build_image", start_to_close_timeout=timedelta(minutes=10))
 async def build_image(**kwargs) -> Dict[str, Any]:
@@ -17,7 +16,7 @@ async def build_image(**kwargs) -> Dict[str, Any]:
     Workflow: deploy_service@v1
     """
     # TODO: Implement actual activity logic
-    print(f"Executing activity: build_image")
+    print("Executing activity: build_image")
     return {"status": "completed"}
 
 @activity.defn(name="run_tests", start_to_close_timeout=timedelta(minutes=5))
@@ -27,7 +26,7 @@ async def run_tests(**kwargs) -> Dict[str, Any]:
     Workflow: deploy_service@v1
     """
     # TODO: Implement actual activity logic
-    print(f"Executing activity: run_tests")
+    print("Executing activity: run_tests")
     return {"status": "completed"}
 
 @activity.defn(name="deploy_to_staging", start_to_close_timeout=timedelta(minutes=3))
@@ -37,7 +36,7 @@ async def deploy_to_staging(**kwargs) -> Dict[str, Any]:
     Workflow: deploy_service@v1
     """
     # TODO: Implement actual activity logic
-    print(f"Executing activity: deploy_to_staging")
+    print("Executing activity: deploy_to_staging")
     return {"status": "completed"}
 
 @activity.defn(name="health_check", start_to_close_timeout=timedelta(minutes=2))
@@ -47,7 +46,7 @@ async def health_check(**kwargs) -> Dict[str, Any]:
     Workflow: deploy_service@v1
     """
     # TODO: Implement actual activity logic
-    print(f"Executing activity: health_check")
+    print("Executing activity: health_check")
     return {"status": "completed"}
 
 @activity.defn(name="deploy_to_production", start_to_close_timeout=timedelta(minutes=5))
@@ -57,7 +56,7 @@ async def deploy_to_production(**kwargs) -> Dict[str, Any]:
     Workflow: deploy_service@v1
     """
     # TODO: Implement actual activity logic
-    print(f"Executing activity: deploy_to_production")
+    print("Executing activity: deploy_to_production")
     return {"status": "completed"}
 
 @workflow.defn(name="deploy_service@v1")
@@ -76,13 +75,13 @@ class Deploy_Service_V1Workflow:
     async def run(self, service: str, version: str) -> Dict[str, Any]:
         """Execute workflow steps."""
         # Step 1: build_image
-        result_0 = await workflow.execute_activity(
+        await workflow.execute_activity(
             build_image,
             schedule_to_close_timeout=timedelta(minutes=10), retry_policy=workflow.RetryPolicy(maximum_attempts=3)
         )
 
         # Step 2: run_tests
-        result_1 = await workflow.execute_activity(
+        await workflow.execute_activity(
             run_tests,
             schedule_to_close_timeout=timedelta(minutes=10), retry_policy=workflow.RetryPolicy(maximum_attempts=2)
         )
@@ -101,7 +100,7 @@ class Deploy_Service_V1Workflow:
             raise workflow.ApplicationError("Step deploy_to_staging failed")
 
         # Step 4: health_check
-        result_3 = await workflow.execute_activity(
+        await workflow.execute_activity(
             health_check,
             schedule_to_close_timeout=timedelta(minutes=10)
         )
@@ -303,11 +302,11 @@ async def list_verbs():
     }
 
 if __name__ == "__main__":
-    print(f"Starting MCP server for agent: deployment-manager")
-    print(f"Port: 23456")
-    print(f"Exposed verbs: ['workflow.execute@v1']")
-    print(f"Health check: http://127.0.0.1:23456/health")
-    print(f"MCP endpoint: http://127.0.0.1:23456/mcp")
+    print("Starting MCP server for agent: deployment-manager")
+    print("Port: 23456")
+    print("Exposed verbs: ['workflow.execute@v1']")
+    print("Health check: http://127.0.0.1:23456/health")
+    print("MCP endpoint: http://127.0.0.1:23456/mcp")
 
     uvicorn.run(
         app,

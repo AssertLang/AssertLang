@@ -7,9 +7,8 @@ Go uses compile-time tool imports (no dynamic loading like Python/Node.js).
 
 from __future__ import annotations
 
-from typing import Any, Dict, List
 from language.agent_parser import AgentDefinition, ExposeBlock
-from language.mcp_error_handling import get_go_error_middleware, get_validation_helpers
+from language.mcp_error_handling import get_go_error_middleware
 from language.mcp_health_checks import get_go_health_check, get_health_endpoints_pattern
 from language.mcp_security import get_go_security_middleware
 
@@ -28,8 +27,11 @@ def generate_go_mcp_server(agent: AgentDefinition) -> str:
 
     code_parts = []
 
-    # Package and imports
+    # Package and imports (ALL imports must be here)
     code_parts.append(_generate_imports(agent))
+
+    # Helper functions (error handling, health checks, security middleware)
+    code_parts.append(_generate_helper_functions(agent))
 
     # Tool registry with compile-time imports
     code_parts.append(_generate_tool_registry(agent))
@@ -51,7 +53,8 @@ def generate_go_mcp_server(agent: AgentDefinition) -> str:
 
 
 def _generate_imports(agent: AgentDefinition) -> str:
-    """Generate package and import statements."""
+    """Generate package and ALL import statements (must be first after package)."""
+    # All imports consolidated here - no imports elsewhere!
     imports = """package main
 
 import (
@@ -65,35 +68,100 @@ import (
 \t"time"
 )"""
 
-    # Add tool imports if agent uses tools
-    # Use local module paths (build system will copy adapters into ./tools/)
-    if agent.tools:
-        tool_imports = []
-        for tool in agent.tools:
-            # Convert tool name to package path
-            tool_path = tool.replace("-", "_")
-            # Use local module path that will exist after build
-            tool_imports.append(f'\t{tool_path} "user-service-mcp/tools/{tool_path}/adapters"')
-
-        imports += "\n\nimport (\n" + "\n".join(tool_imports) + "\n)"
+    # Note: Tool imports commented out for now
+    # In production, these would import actual tool adapters:
+    # - Tool adapters need to be created first
+    # - Build system would copy adapters into ./tools/
+    # - Then these imports would work
+    #
+    # if agent.tools:
+    #     tool_imports = []
+    #     for tool in agent.tools:
+    #         tool_path = tool.replace("-", "_")
+    #         tool_imports.append(f'\t{tool_path} "user-service-mcp/tools/{tool_path}/adapters"')
+    #     imports += "\n\nimport (\n" + "\n".join(tool_imports) + "\n)"
 
     return imports
+
+
+def _generate_helper_functions(agent: AgentDefinition) -> str:
+    """Generate helper functions (error handling, health check, security middleware)."""
+    helpers = []
+
+    # Get helper code and strip out embedded import statements
+    error_middleware = get_go_error_middleware()
+    health_check = get_go_health_check()
+    security_middleware = get_go_security_middleware()
+
+    # Remove import blocks from helper functions (imports are already at top)
+    def strip_imports(code: str) -> str:
+        """Remove import blocks from code."""
+        lines = code.split('\n')
+        result = []
+        in_import_block = False
+
+        for line in lines:
+            if line.strip().startswith('import ('):
+                in_import_block = True
+                continue
+            elif in_import_block and line.strip() == ')':
+                in_import_block = False
+                continue
+            elif in_import_block:
+                continue
+            else:
+                result.append(line)
+
+        return '\n'.join(result).strip()
+
+    helpers.append("// Error handling helpers")
+    helpers.append(strip_imports(error_middleware))
+    helpers.append("")
+    helpers.append("// Health check helpers")
+    helpers.append(strip_imports(health_check))
+    helpers.append("")
+    helpers.append("// Security middleware helpers")
+    helpers.append(strip_imports(security_middleware))
+
+    return "\n".join(helpers)
 
 
 def _generate_tool_registry(agent: AgentDefinition) -> str:
     """Generate tool registry with compile-time tool imports."""
     if not agent.tools:
-        return "// No tools configured\nvar toolExecutor = struct{}{}"
+        # No tools configured - provide stub function
+        return """// No tools configured
+func executeTools(params map[string]interface{}) map[string]interface{} {
+\treturn map[string]interface{}{}
+}"""
+
+    # Generate stub tool handlers (actual tool imports commented out above)
+    tool_stubs = []
+    for tool in agent.tools:
+        tool_var = tool.replace("-", "_")
+        # Create stub handler that returns placeholder
+        tool_stubs.append(f"""// Stub handler for {tool} tool
+func {tool_var}_Handle(params map[string]interface{{}}) map[string]interface{{}} {{
+\treturn map[string]interface{{}}{{
+\t\t"ok":      true,
+\t\t"version": "v1",
+\t\t"message": "Tool stub: {tool} (actual implementation requires tool adapter)",
+\t\t"params":  params,
+\t}}
+}}""")
 
     tool_map_entries = []
     for tool in agent.tools:
         tool_var = tool.replace("-", "_")
-        tool_map_entries.append(f'\t\t"{tool}": {tool_var}.Handle,')
+        tool_map_entries.append(f'\t\t"{tool}": {tool_var}_Handle,')
 
     tools_list = ', '.join([f'"{t}"' for t in agent.tools])
 
-    # Use triple quotes without f-string to avoid {} conflicts
-    registry_code = """// Tool registry with compile-time imports
+    # Tool registry code (helpers are now in separate section)
+    registry_code = """// Tool stubs (replace with actual imports in production)
+%s
+
+// Tool registry
 var toolHandlers = map[string]func(map[string]interface{}) map[string]interface{}{
 %s
 }
@@ -123,16 +191,7 @@ func executeTools(params map[string]interface{}) map[string]interface{} {
 \t}
 
 \treturn results
-}
-
-%s
-
-%s
-
-%s""" % (chr(10).join(tool_map_entries), tools_list,
-         get_go_error_middleware(),
-         get_go_health_check(),
-         get_go_security_middleware())
+}""" % ("\n\n".join(tool_stubs), chr(10).join(tool_map_entries), tools_list)
 
     return registry_code
 

@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "data-processor": {
+      "command": "promptware",
+      "args": [
+        "run",
+        "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/examples/cross_language/data_processor.pw"
+      ]
+    },
+    "cache-service": {
+      "command": "promptware",
+      "args": [
+        "run",
+        "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/examples/cross_language/cache_service.pw"
+      ]
+    }
+  }
+}

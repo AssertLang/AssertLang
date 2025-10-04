@@ -4,13 +4,15 @@ HTTP transport layer for MCP client.
 Handles low-level HTTP communication with retry logic and timeouts.
 """
 import time
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
+
 import requests
+
 from .exceptions import (
     ConnectionError,
-    TimeoutError,
-    ServiceUnavailableError,
     ProtocolError,
+    ServiceUnavailableError,
+    TimeoutError,
 )
 
 
@@ -119,7 +121,7 @@ class HTTPTransport:
                     message = error.get("message", "Unknown error")
 
                     # These are not retriable (client errors)
-                    from .exceptions import InvalidVerbError, InvalidParamsError, MCPError
+                    from .exceptions import InvalidParamsError, InvalidVerbError, MCPError
 
                     if code == -32601:
                         raise InvalidVerbError(params.get("name", "unknown"), message)
@@ -134,7 +136,7 @@ class HTTPTransport:
 
                 return data["result"]
 
-            except requests.exceptions.Timeout as e:
+            except requests.exceptions.Timeout:
                 last_exception = TimeoutError(f"Request timed out after {self.timeout}s")
                 if attempt < self.retries - 1:
                     time.sleep(delay)

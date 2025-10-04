@@ -2,7 +2,6 @@ import json
 from pathlib import Path
 
 import pytest
-
 from language.parser import PWParseError, _parse_dsl, parse_pw  # type: ignore[attr-defined]
 
 
@@ -285,7 +284,6 @@ def test_parse_pw_golden_fixtures(fixture: Path) -> None:
     prog = parse_pw(source.read_text())
     assert prog.plan is not None
     assert prog.plan == expected
-
 
 
 def test_parse_pw_bad_indentation_sets_error_code():

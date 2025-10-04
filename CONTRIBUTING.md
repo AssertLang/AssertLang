@@ -17,7 +17,7 @@ Thank you for your interest in contributing to Promptware! This document provide
 
 ```bash
 # Clone the repository
-git clone https://github.com/promptware-dev/promptware.git
+git clone https://github.com/Promptware-dev/promptware.git
 cd promptware
 
 # Install in development mode
@@ -105,8 +105,8 @@ To add a new language generator:
 
 ## Questions?
 
-- 💬 **Discussions:** https://github.com/promptware-dev/promptware/discussions
-- 🐛 **Issues:** https://github.com/promptware-dev/promptware/issues
+- 💬 **Discussions:** https://github.com/Promptware-dev/promptware/discussions
+- 🐛 **Issues:** https://github.com/Promptware-dev/promptware/issues
 - 📧 **Email:** hello@promptware.dev
 
 ## Code of Conduct

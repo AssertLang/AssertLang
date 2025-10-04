@@ -10,7 +10,8 @@ Demonstrates:
 
 import sys
 import time
-from language.mcp_client import MCPClient, MCPError, register_agent, call_agent
+
+from language.mcp_client import MCPClient, MCPError, call_agent, register_agent
 
 
 def demo_two_agent_coordination():
@@ -70,7 +71,7 @@ def demo_two_agent_coordination():
 
         if response.is_success():
             data = response.get_data()
-            print(f"   ✓ Success!")
+            print("   ✓ Success!")
             print(f"   ✓ Review ID: {data.get('review_id')}")
             print(f"   ✓ Status: {data.get('status')}")
             review_id = data.get('review_id')

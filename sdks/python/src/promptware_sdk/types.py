@@ -1,6 +1,6 @@
 """Promptware SDK type definitions."""
 
-from typing import Any, TypedDict, Literal
+from typing import Any, Literal, TypedDict
 
 
 class ToolRequest(TypedDict, total=False):

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import pytest
-
 from language.interpreter import ActionExecutor, PWExecutionError
 from language.parser import parse_pw
 
@@ -114,6 +113,7 @@ call xf config={user: ${log.data.message}, retries: 3, note: "ok"}
 """
     prog = parse_pw(text).plan
     assert prog is not None
+
     # provide per-tool behaviour
     def runner(tool_id: str, payload: dict) -> dict:
         if tool_id == "logger":
@@ -184,6 +184,7 @@ merge into summary log as logger fetch as http
     assert merged["logger"]["data"]["message"] == "hi"
     assert merged["http"]["data"]["payload"]["url"] == "https://example.com"
 
+
 def test_executor_fanout_runs_matching_cases_only():
     text = """
 tool echo as send
@@ -231,6 +232,7 @@ merge into summary send.case_0 send.case_1
     merge_events = [evt for evt in executor.events if evt.get("action") == "merge"]
     assert merge_events and merge_events[0]["target"] == "summary"
 
+
 def test_executor_merge_list_items():
     text = """
 tool logger as primary
@@ -255,8 +257,6 @@ merge append totals into combined primary.data.items secondary.data.items
     assert merge_event.get("append_key") == "totals"
 
 
-
-
 def test_executor_merge_list_items_alias():
     text = """
 tool logger as primary
@@ -275,7 +275,6 @@ merge append into combined primary.data.items as all secondary.data.items as all
     executor = ActionExecutor(plan["tools"], runner=runner)
     responses = executor.execute(plan["actions"])
     assert responses["combined"]["all"] == [1, 2, 3, 4]
-
 
 
 def test_executor_merge_dict_mode():
@@ -301,7 +300,6 @@ merge dict into combined primary.data secondary.data
     assert merge_event.get("mode") == "dict"
 
 
-
 def test_executor_merge_dict_mode_with_alias():
     text = """
 tool logger as primary
@@ -325,7 +323,6 @@ merge dict into combined primary.data as first secondary.data as second
     assert merge_event.get("mode") == "dict"
     assert merge_event["sources"][0]["alias"] == "first"
     assert merge_event["sources"][1]["alias"] == "second"
-
 
 
 def test_executor_retry_events():
@@ -377,7 +374,6 @@ merge collect totals into combined primary.data.score secondary.data.score
     assert merge_event.get("append_key") == "totals"
 
 
-
 def test_executor_unknown_reference_raises_plan_ref():
     text = """
 let missing = ${unknown.value}
@@ -393,7 +389,6 @@ let missing = ${unknown.value}
         pytest.fail("expected PWExecutionError")
 
 
-
 def test_executor_missing_tool_binding_raises_plan_ref():
     text = """
 tool echo as send
@@ -402,7 +397,7 @@ call send message="hi"
     plan = parse_pw(text).plan
     assert plan is not None
     tools = dict(plan["tools"])
-    tools.pop('send', None)
+    tools.pop("send", None)
     executor = ActionExecutor(tools, runner=fake_runner)
     try:
         executor.execute(plan["actions"])
