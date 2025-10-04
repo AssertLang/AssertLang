@@ -2,9 +2,7 @@
 Tests for Node.js MCP server generator.
 """
 
-import pytest
-from language.agent_parser import parse_agent_pw
-from language.nodejs_server_generator import generate_nodejs_mcp_server, generate_nodejs_server_from_pw
+from language.nodejs_server_generator import generate_nodejs_server_from_pw
 
 
 def test_basic_nodejs_generation():
@@ -50,8 +48,8 @@ expose data.process@v1:
     assert "function handle_data_process_v1(params)" in code
 
     # Check parameter validation
-    assert 'if (!params.input)' in code
-    assert 'if (!params.format)' in code
+    assert "if (!params.input)" in code
+    assert "if (!params.format)" in code
     assert '"E_ARGS"' in code
 
     # Check return structure

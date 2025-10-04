@@ -2,19 +2,19 @@ import hashlib
 import html
 import json
 import os
+import random
 import secrets
 import shutil
 import signal
+import socket
 import subprocess
 import sys
 import tempfile
-import random
-import socket
 import time
 from dataclasses import dataclass, field
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, Dict, Optional, List, Union
+from typing import Any, Dict, List, Optional, Union
 
 import yaml
 
@@ -25,7 +25,6 @@ except ImportError:
     parse_pw = None  # Fallback if not available
 
 from .deps_utils import trim_cache
-
 
 ALLOWLIST_KEYS = {
     "python": "requirements",
@@ -49,7 +48,11 @@ class DependencyPolicyError(DependencyError):
 
 ARTIFACT_ROOT = Path(".mcpd")
 CACHE_ROOT = ARTIFACT_ROOT / "cache"
-DEFAULT_SOCKET_DIR = Path("/run/mcpd/sock") if sys.platform != "win32" else Path(tempfile.gettempdir(), "mcpd", "sock")
+DEFAULT_SOCKET_DIR = (
+    Path("/run/mcpd/sock")
+    if sys.platform != "win32"
+    else Path(tempfile.gettempdir(), "mcpd", "sock")
+)
 
 
 @lru_cache(maxsize=1)
@@ -145,7 +148,9 @@ class MCPDaemon:
                 continue
             missing.append(value)
         if missing:
-            raise DependencyPolicyError(f"dependencies not allowed for {lang}: {', '.join(missing)}")
+            raise DependencyPolicyError(
+                f"dependencies not allowed for {lang}: {', '.join(missing)}"
+            )
 
     def _allowlist_env(self, lang: str) -> dict[str, str]:
         allow = self._dependency_allowlist.get(lang)
@@ -162,7 +167,9 @@ class MCPDaemon:
         digest = hashlib.sha256("|".join(payload).encode("utf-8")).hexdigest()
         return digest[:16]
 
-    def _shared_cache_dir(self, lang: str, values: list[str], extras: Optional[list[str]] = None) -> Path:
+    def _shared_cache_dir(
+        self, lang: str, values: list[str], extras: Optional[list[str]] = None
+    ) -> Path:
         key = self._cache_key(lang, values, extras)
         path = CACHE_ROOT / lang / key
         path.mkdir(parents=True, exist_ok=True)
@@ -184,7 +191,7 @@ class MCPDaemon:
             return {
                 "ok": False,
                 "version": "v1",
-                "error": {"code": "E_RUNTIME", "message": "DSL parser not available"}
+                "error": {"code": "E_RUNTIME", "message": "DSL parser not available"},
             }
 
         # Parse DSL input
@@ -194,7 +201,7 @@ class MCPDaemon:
             return {
                 "ok": False,
                 "version": "v1",
-                "error": {"code": "E_PARSE", "message": f"Failed to parse .pw input: {str(e)}"}
+                "error": {"code": "E_PARSE", "message": f"Failed to parse .pw input: {str(e)}"},
             }
 
         # Check if valid DSL was found
@@ -202,8 +209,8 @@ class MCPDaemon:
             # Valid DSL found, return the plan
             plan = parsed.plan
             # Ensure lang is set from plan or parameter
-            if 'lang' not in plan:
-                plan['lang'] = lang
+            if "lang" not in plan:
+                plan["lang"] = lang
             return {"ok": True, "version": "v1", "data": plan}
         else:
             # No valid DSL, return error
@@ -213,8 +220,8 @@ class MCPDaemon:
                 "version": "v1",
                 "error": {
                     "code": "E_SYNTAX",
-                    "message": f"Invalid .pw syntax. Expected DSL format, got: {error_preview}"
-                }
+                    "message": f"Invalid .pw syntax. Expected DSL format, got: {error_preview}",
+                },
             }
 
     # Verb: fs.apply@v1
@@ -536,6 +543,7 @@ class MCPDaemon:
 
         readiness_started = time.perf_counter()
         readiness_attempts = 0
+
         def _runner_health_ready() -> Optional[bool]:
             health_req = {"method": "health", "host": "127.0.0.1", "port": port}
             try:
@@ -607,14 +615,20 @@ class MCPDaemon:
             uds_path = str(socket_path)
             backend_url = f"http://127.0.0.1:{port}"
             route_started = time.perf_counter()
-            shim_proc = subprocess.Popen(
-                [sys.executable, str(Path("daemon/uds_shim.py")), "--uds", uds_path, "--backend", backend_url],
+            subprocess.Popen(
+                [
+                    sys.executable,
+                    str(Path("daemon/uds_shim.py")),
+                    "--uds",
+                    uds_path,
+                    "--backend",
+                    backend_url,
+                ],
                 cwd=str(Path.cwd()),
                 stdout=log_file,
                 stderr=subprocess.STDOUT,
                 env=env,
             )
-            uds_ready = False
             uds_deadline = time.time() + 10
             while time.time() < uds_deadline:
                 if os.path.exists(uds_path):
@@ -622,7 +636,6 @@ class MCPDaemon:
                         with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as s:
                             s.settimeout(0.5)
                             s.connect(uds_path)
-                            uds_ready = True
                             break
                     except Exception:
                         pass
@@ -682,7 +695,9 @@ class MCPDaemon:
 
     # Verb: httpcheck.assert@v1
     def httpcheck_assert_v1(self, task_id: str, path: str = "/", expect_status: int = 200) -> dict:
-        import requests, time
+        import time
+
+        import requests
 
         task = self.tasks.get(task_id)
         host = "127.0.0.1"
@@ -718,7 +733,11 @@ class MCPDaemon:
                             "duration_ms": duration_ms,
                         }
                     )
-                data = {"pass": passed, "details": [details], "events": list(task.events) if task else []}
+                data = {
+                    "pass": passed,
+                    "details": [details],
+                    "events": list(task.events) if task else [],
+                }
                 return {"ok": True, "version": "v1", "data": data}
             except Exception as exc:  # noqa: BLE001
                 last_exc = exc
@@ -961,7 +980,9 @@ class MCPDaemon:
                         check=True,
                     )
                 updates["VIRTUAL_ENV"] = str(venv_dir)
-                updates["PATH"] = f"{bin_dir}{os.pathsep}{existing_path}" if existing_path else str(bin_dir)
+                updates["PATH"] = (
+                    f"{bin_dir}{os.pathsep}{existing_path}" if existing_path else str(bin_dir)
+                )
                 return updates
 
             if plan_lang in {"node", "nextjs"}:
@@ -1018,9 +1039,11 @@ class MCPDaemon:
                     stdout=log_file,
                     stderr=subprocess.STDOUT,
                     check=True,
-                    )
+                )
                 bin_dir = source_dir / "node_modules" / ".bin"
-                path_prefix = f"{bin_dir}{os.pathsep}{existing_path}" if existing_path else str(bin_dir)
+                path_prefix = (
+                    f"{bin_dir}{os.pathsep}{existing_path}" if existing_path else str(bin_dir)
+                )
                 updates["PATH"] = path_prefix
                 return updates
 
@@ -1103,7 +1126,9 @@ class MCPDaemon:
                     ttl_str = str(cache_ttl)
                     updates["PROMPTWARE_DOTNET_CACHE_TTL_DAYS"] = ttl_str
                 if packages:
-                    if not (shutil.which("dotnet") or Path(dotnet_root).joinpath("dotnet").exists()):
+                    if not (
+                        shutil.which("dotnet") or Path(dotnet_root).joinpath("dotnet").exists()
+                    ):
                         raise DependencyError("dotnet SDK not available")
                     deps_dir = env_root / "deps"
                     deps_dir.mkdir(parents=True, exist_ok=True)
@@ -1116,19 +1141,19 @@ class MCPDaemon:
                     pkg_lines = []
                     for raw in packages:
                         name, _, version = raw.partition("@")
-                        attrib = f"Include=\"{name}\""
+                        attrib = f'Include="{name}"'
                         if version:
-                            pkg_lines.append(f"    <PackageReference {attrib} Version=\"{version}\" />")
+                            pkg_lines.append(
+                                f'    <PackageReference {attrib} Version="{version}" />'
+                            )
                         else:
                             pkg_lines.append(f"    <PackageReference {attrib} />")
                     proj_content = (
-                        "<Project Sdk=\"Microsoft.NET.Sdk\">\n"
+                        '<Project Sdk="Microsoft.NET.Sdk">\n'
                         "  <PropertyGroup>\n"
                         f"    <TargetFramework>{target_framework}</TargetFramework>\n"
                         "  </PropertyGroup>\n"
-                        "  <ItemGroup>\n"
-                        + "\n".join(pkg_lines)
-                        + "\n  </ItemGroup>\n"
+                        "  <ItemGroup>\n" + "\n".join(pkg_lines) + "\n  </ItemGroup>\n"
                         "</Project>\n"
                     )
                     proj_path.write_text(proj_content, encoding="utf-8")
@@ -1161,7 +1186,7 @@ class MCPDaemon:
                             if str(url) == "https://api.nuget.org/v3/index.json":
                                 seen_default = True
                             lines.append(
-                                f"    <add key=\"{name}\" value=\"{url}\" protocolVersion=\"3\" />"
+                                f'    <add key="{name}" value="{url}" protocolVersion="3" />'
                             )
                             token_env = feed.get("token_env")
                             username_env = feed.get("username_env")
@@ -1171,7 +1196,9 @@ class MCPDaemon:
                             token_val = os.environ.get(str(token_env)) if token_env else None
                             if token_val:
                                 cred_values["ClearTextPassword"] = token_val
-                            password_val = os.environ.get(str(password_env)) if password_env else None
+                            password_val = (
+                                os.environ.get(str(password_env)) if password_env else None
+                            )
                             if password_val and not token_val:
                                 cred_values["ClearTextPassword"] = password_val
                             user_val = None
@@ -1188,7 +1215,7 @@ class MCPDaemon:
                         if not seen_default:
                             lines.insert(
                                 3,
-                                "    <add key=\"nuget.org\" value=\"https://api.nuget.org/v3/index.json\" protocolVersion=\"3\" />",
+                                '    <add key="nuget.org" value="https://api.nuget.org/v3/index.json" protocolVersion="3" />',
                             )
                         lines.append("  </packageSources>")
                         if credential_entries:
@@ -1197,7 +1224,7 @@ class MCPDaemon:
                                 lines.append(f"    <{src}>")
                                 for key, value in creds.items():
                                     escaped = html.escape(str(value), quote=True)
-                                    lines.append(f"      <add key=\"{key}\" value=\"{escaped}\" />")
+                                    lines.append(f'      <add key="{key}" value="{escaped}" />')
                                 lines.append(f"    </{src}>")
                             lines.append("  </packageSourceCredentials>")
                         lines.append("</configuration>")
@@ -1240,17 +1267,15 @@ class MCPDaemon:
                     for raw in crates:
                         name, _, version = raw.partition("@")
                         if version:
-                            deps_lines.append(f"{name} = \"{version}\"")
+                            deps_lines.append(f'{name} = "{version}"')
                         else:
-                            deps_lines.append(f"{name} = \"*\"")
+                            deps_lines.append(f'{name} = "*"')
                     cargo_toml.write_text(
                         "[package]\n"
-                        "name = \"promptware_bootstrap\"\n"
-                        "version = \"0.1.0\"\n"
-                        "edition = \"2021\"\n\n"
-                        "[dependencies]\n"
-                        + "\n".join(deps_lines)
-                        + "\n",
+                        'name = "promptware_bootstrap"\n'
+                        'version = "0.1.0"\n'
+                        'edition = "2021"\n\n'
+                        "[dependencies]\n" + "\n".join(deps_lines) + "\n",
                         encoding="utf-8",
                     )
                     fetch_env = os.environ.copy()
@@ -1272,7 +1297,7 @@ class MCPDaemon:
                             if not name or not index:
                                 continue
                             config_lines.append(f"[registries.{name}]")
-                            config_lines.append(f"index = \"{index}\"")
+                            config_lines.append(f'index = "{index}"')
                             config_lines.append("")
                             token_env = registry.get("token_env")
                             if token_env:
@@ -1282,7 +1307,9 @@ class MCPDaemon:
                                     fetch_env[env_key] = token_val
                         if config_lines:
                             config_path = cargo_config_dir / "config.toml"
-                            config_path.write_text("\n".join(config_lines).strip() + "\n", encoding="utf-8")
+                            config_path.write_text(
+                                "\n".join(config_lines).strip() + "\n", encoding="utf-8"
+                            )
                     subprocess.run(
                         ["bash", "-lc", "cargo fetch"],
                         cwd=str(bootstrap_dir),

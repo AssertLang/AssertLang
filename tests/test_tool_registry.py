@@ -3,9 +3,9 @@ Unit tests for tool registry.
 
 Tests tool discovery, loading, and execution.
 """
+
 import pytest
-from pathlib import Path
-from tools.registry import ToolRegistry, get_registry
+from tools.registry import get_registry
 
 
 def test_registry_singleton():
@@ -62,10 +62,7 @@ def test_http_tool_execution_success():
     registry = get_registry()
 
     # Execute GET request to GitHub API
-    result = registry.execute_tool("http", {
-        "url": "https://api.github.com/zen",
-        "method": "GET"
-    })
+    result = registry.execute_tool("http", {"url": "https://api.github.com/zen", "method": "GET"})
 
     # Check envelope structure
     assert isinstance(result, dict), "Result should be a dict"
@@ -93,10 +90,7 @@ def test_http_tool_execution_invalid_url():
     """Test http tool handles invalid URL gracefully."""
     registry = get_registry()
 
-    result = registry.execute_tool("http", {
-        "url": "not-a-valid-url",
-        "method": "GET"
-    })
+    result = registry.execute_tool("http", {"url": "not-a-valid-url", "method": "GET"})
 
     # Should return error envelope
     assert isinstance(result, dict)
@@ -119,11 +113,9 @@ def test_http_tool_post_request():
 
     # Note: httpbin.org may be down, so this might return 503
     # But we're testing that POST method is accepted
-    result = registry.execute_tool("http", {
-        "url": "https://httpbin.org/post",
-        "method": "POST",
-        "body": '{"test": "data"}'
-    })
+    result = registry.execute_tool(
+        "http", {"url": "https://httpbin.org/post", "method": "POST", "body": '{"test": "data"}'}
+    )
 
     # Check envelope (may succeed or fail due to httpbin availability)
     assert isinstance(result, dict)
@@ -163,9 +155,7 @@ def test_tool_execution_with_missing_params():
     registry = get_registry()
 
     # url is required, omit it
-    result = registry.execute_tool("http", {
-        "method": "GET"
-    })
+    result = registry.execute_tool("http", {"method": "GET"})
 
     # Should fail gracefully
     assert isinstance(result, dict)
@@ -187,7 +177,7 @@ def test_registry_discovers_multiple_tools():
     for expected in expected_tools:
         # Check if tool exists (may not all be implemented)
         if expected in tools:
-            tool = registry.get_tool(expected)
+            registry.get_tool(expected)
             # If listed, should be loadable (though may fail if adapter missing)
 
 
@@ -197,10 +187,7 @@ def test_http_tool_handles_timeout():
 
     # Use a URL that will timeout (non-routable IP)
     # Note: This may take a while or fail differently depending on system
-    result = registry.execute_tool("http", {
-        "url": "http://10.255.255.1",
-        "method": "GET"
-    })
+    result = registry.execute_tool("http", {"url": "http://10.255.255.1", "method": "GET"})
 
     # Should return error envelope, not crash
     assert isinstance(result, dict)

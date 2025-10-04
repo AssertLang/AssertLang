@@ -6,13 +6,13 @@ Provides MCP client for calling Promptware services over HTTP.
 
 from .client import MCPClient, call_verb
 from .exceptions import (
-    MCPError,
     ConnectionError,
-    TimeoutError,
-    ServiceUnavailableError,
-    InvalidVerbError,
     InvalidParamsError,
+    InvalidVerbError,
+    MCPError,
     ProtocolError,
+    ServiceUnavailableError,
+    TimeoutError,
 )
 
 __version__ = "0.1.0"

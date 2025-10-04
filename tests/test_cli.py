@@ -10,9 +10,7 @@ from pathlib import Path
 def test_cli_version():
     """Test version command."""
     result = subprocess.run(
-        [sys.executable, "cli/main.py", "version"],
-        capture_output=True,
-        text=True
+        [sys.executable, "cli/main.py", "version"], capture_output=True, text=True
     )
 
     assert result.returncode == 0
@@ -27,7 +25,7 @@ def test_cli_test_command():
     result = subprocess.run(
         [sys.executable, "cli/main.py", "test", "examples/cross_language/data_processor.pw"],
         capture_output=True,
-        text=True
+        text=True,
     )
 
     assert result.returncode == 0
@@ -45,12 +43,15 @@ def test_cli_generate_command():
     try:
         result = subprocess.run(
             [
-                sys.executable, "cli/main.py", "generate",
+                sys.executable,
+                "cli/main.py",
+                "generate",
                 "examples/cross_language/data_processor.pw",
-                "-o", str(output_file)
+                "-o",
+                str(output_file),
             ],
             capture_output=True,
-            text=True
+            text=True,
         )
 
         assert result.returncode == 0
@@ -76,13 +77,17 @@ def test_cli_generate_python():
     try:
         result = subprocess.run(
             [
-                sys.executable, "cli/main.py", "generate",
+                sys.executable,
+                "cli/main.py",
+                "generate",
                 "examples/cross_language/data_processor.pw",
-                "--lang", "python",
-                "-o", str(output_file)
+                "--lang",
+                "python",
+                "-o",
+                str(output_file),
             ],
             capture_output=True,
-            text=True
+            text=True,
         )
 
         assert result.returncode == 0
@@ -104,12 +109,15 @@ def test_cli_generate_go():
     try:
         result = subprocess.run(
             [
-                sys.executable, "cli/main.py", "generate",
+                sys.executable,
+                "cli/main.py",
+                "generate",
                 "examples/cross_language/cache_service.pw",
-                "-o", str(output_file)
+                "-o",
+                str(output_file),
             ],
             capture_output=True,
-            text=True
+            text=True,
         )
 
         assert result.returncode == 0
@@ -127,9 +135,7 @@ def test_cli_generate_go():
 def test_cli_invalid_file():
     """Test error handling for non-existent file."""
     result = subprocess.run(
-        [sys.executable, "cli/main.py", "test", "nonexistent.pw"],
-        capture_output=True,
-        text=True
+        [sys.executable, "cli/main.py", "test", "nonexistent.pw"], capture_output=True, text=True
     )
 
     assert result.returncode != 0
@@ -139,9 +145,7 @@ def test_cli_invalid_file():
 def test_cli_help():
     """Test help output."""
     result = subprocess.run(
-        [sys.executable, "cli/main.py", "--help"],
-        capture_output=True,
-        text=True
+        [sys.executable, "cli/main.py", "--help"], capture_output=True, text=True
     )
 
     assert result.returncode == 0

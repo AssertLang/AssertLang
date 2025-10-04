@@ -1,0 +1,60 @@
+{
+  "test_framework": "dotnet_expert_agent",
+  "timestamp": "2025-10-03T08:20:56.783103",
+  "dotnet_version": "9.0.305",
+  "total_tests": 2,
+  "passed": 2,
+  "failed": 0,
+  "reports": [
+    {
+      "agent_name": "dotnet_with_tools",
+      "fixture_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/fixtures/dotnet_with_tools.pw",
+      "generated_code_path": "/var/folders/hc/x09q151943x6fxtpjbtr0hrm0000gn/T/tmpnmbymodk/generated",
+      "syntax_valid": true,
+      "compilation": {
+        "success": true,
+        "build_time_ms": 749.701976776123,
+        "binary_size_bytes": 28160,
+        "dotnet_version": "9.0.305",
+        "errors": [],
+        "warnings": [
+          "    0 Warning(s)"
+        ]
+      },
+      "server": {
+        "started": true,
+        "health_check_passed": true,
+        "health_response_time_ms": 51.54681205749512,
+        "errors": []
+      },
+      "code_quality_score": 100.0,
+      "errors": [],
+      "timestamp": "2025-10-03T08:20:48.503798"
+    },
+    {
+      "agent_name": "dotnet_minimal",
+      "fixture_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/fixtures/dotnet_minimal.pw",
+      "generated_code_path": "/var/folders/hc/x09q151943x6fxtpjbtr0hrm0000gn/T/tmphagzctf0/generated",
+      "syntax_valid": true,
+      "compilation": {
+        "success": true,
+        "build_time_ms": 652.3246765136719,
+        "binary_size_bytes": 27648,
+        "dotnet_version": "9.0.305",
+        "errors": [],
+        "warnings": [
+          "    0 Warning(s)"
+        ]
+      },
+      "server": {
+        "started": true,
+        "health_check_passed": true,
+        "health_response_time_ms": 40.667057037353516,
+        "errors": []
+      },
+      "code_quality_score": 100.0,
+      "errors": [],
+      "timestamp": "2025-10-03T08:20:52.691268"
+    }
+  ]
+}

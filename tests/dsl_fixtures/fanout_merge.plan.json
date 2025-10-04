@@ -49,8 +49,14 @@
     },
     {
       "sources": [
-        "send.case_0",
-        "send.case_1"
+        {
+          "alias": null,
+          "path": "send.case_0"
+        },
+        {
+          "alias": null,
+          "path": "send.case_1"
+        }
       ],
       "target": "summary",
       "type": "merge"

@@ -1,19 +1,17 @@
+import sys
+from datetime import datetime
+from pathlib import Path
+from typing import Any, Dict
+
+import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
-import uvicorn
-from typing import Any, Dict, Optional
-from datetime import datetime
-import time
-import sys
-from pathlib import Path
 
 # Add project root to path for tool registry imports
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from tools.registry import get_registry
 from language.tool_executor import ToolExecutor
-
 
 # MCP Server for agent: user-service
 app = FastAPI(
@@ -319,11 +317,11 @@ async def list_verbs():
     }
 
 if __name__ == "__main__":
-    print(f"Starting MCP server for agent: user-service")
-    print(f"Port: 23450")
-    print(f"Exposed verbs: ['user.create@v1', 'user.get@v1', 'user.list@v1']")
-    print(f"Health check: http://127.0.0.1:23450/health")
-    print(f"MCP endpoint: http://127.0.0.1:23450/mcp")
+    print("Starting MCP server for agent: user-service")
+    print("Port: 23450")
+    print("Exposed verbs: ['user.create@v1', 'user.get@v1', 'user.list@v1']")
+    print("Health check: http://127.0.0.1:23450/health")
+    print("MCP endpoint: http://127.0.0.1:23450/mcp")
 
     uvicorn.run(
         app,

@@ -3,7 +3,6 @@ import shutil
 import subprocess
 
 import pytest
-
 from cli import toolgen
 
 
@@ -30,7 +29,7 @@ def test_auth_header_rust_template_uses_serde_json():
 def test_auth_header_dotnet_template_wraps_responses():
     code = toolgen._adapter_content("api-auth", "dotnet", "auth_header")
     assert "public static class Adapter" in code
-    assert "Error(\"E_UNSUPPORTED\"" in code
+    assert 'Error("E_UNSUPPORTED"' in code
     assert "headers" in code
 
 
@@ -57,6 +56,7 @@ def test_rest_dotnet_template_sends_requests():
     code = toolgen._adapter_content("rest", "dotnet", "rest_client")
     assert "HttpClient" in code
     assert "UriBuilder" in code
+
 
 def test_json_validator_node_template_uses_ajv():
     code = toolgen._adapter_content("validate-data", "node", "json_validator")
@@ -213,12 +213,14 @@ def test_output_dotnet_template_handles_file_target():
 def test_error_toggle_dotnet_template_returns_bool():
     code = toolgen._adapter_content("error", "dotnet", "error_toggle")
     assert "thrown" in code
-    assert "Error(\"E_SCHEMA\"" in code
-    assert "Error(\"E_ARGS\"" not in code  # only schema guard
+    assert 'Error("E_SCHEMA"' in code
+    assert 'Error("E_ARGS"' not in code  # only schema guard
 
 
 @pytest.mark.skipif(shutil.which("dotnet") is None, reason="dotnet CLI not available")
-@pytest.mark.skipif(os.environ.get("PROMPTWARE_RUN_DOTNET_SMOKE") != "1", reason="dotnet smoke test disabled")
+@pytest.mark.skipif(
+    os.environ.get("PROMPTWARE_RUN_DOTNET_SMOKE") != "1", reason="dotnet smoke test disabled"
+)
 def test_error_toggle_dotnet_template_compiles(tmp_path):
     project_dir = tmp_path / "dotnet_adapter"
     project_dir.mkdir()

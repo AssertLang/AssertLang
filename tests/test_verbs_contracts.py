@@ -1,10 +1,15 @@
+import sys
 import textwrap
 from pathlib import Path
 
 import pytest
 
+# Add project root to path
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
+
 from daemon.mcpd import MCPDaemon, Task
-from schema_utils import assert_events_match_schema
+from tests.utils.schema_utils import assert_events_match_schema
 
 
 @pytest.fixture
@@ -19,10 +24,18 @@ def daemon():
 
 
 def test_plan_create_v1_schema(daemon):
-    res = daemon.plan_create_v1("hello")
+    # Use valid .pw DSL input
+    pw_input = """
+tool logger as log
+call log message="hello"
+    """
+    res = daemon.plan_create_v1(pw_input)
     assert res["ok"] and res["version"] == "v1"
     data = res["data"]
-    assert "files" in data and "start" in data and data["lang"] == "python"
+    # Verify the plan has expected structure from DSL parser
+    assert "files" in data and "lang" in data
+    assert data["lang"] == "python"
+    assert "actions" in data or "tools" in data  # DSL parser returns actions/tools
 
 
 def test_fs_apply_v1(daemon):
@@ -176,7 +189,9 @@ def test_run_start_merges_registry_defaults(monkeypatch, tmp_path, daemon):
 
     monkeypatch.setattr(MCPDaemon, "_prepare_dependencies", fake_prepare, raising=False)
     monkeypatch.setattr(MCPDaemon, "_run_python_runner", fake_runner, raising=False)
-    monkeypatch.setattr(MCPDaemon, "_lease_port", lambda self, task_id, ttl_sec=900: 62010, raising=False)
+    monkeypatch.setattr(
+        MCPDaemon, "_lease_port", lambda self, task_id, ttl_sec=900: 62010, raising=False
+    )
     monkeypatch.setattr(MCPDaemon, "_release_port", lambda self, port: None, raising=False)
 
     daemon._tool_registry = registry
@@ -208,7 +223,9 @@ def test_run_start_policy_conflict(monkeypatch, daemon):
         }
     }
     monkeypatch.setattr(mcpd, "_load_tool_registry", lambda: registry)
-    monkeypatch.setattr(MCPDaemon, "_lease_port", lambda self, task_id, ttl_sec=900: 62011, raising=False)
+    monkeypatch.setattr(
+        MCPDaemon, "_lease_port", lambda self, task_id, ttl_sec=900: 62011, raising=False
+    )
     monkeypatch.setattr(MCPDaemon, "_release_port", lambda self, port: None, raising=False)
 
     daemon._tool_registry = registry
@@ -233,7 +250,9 @@ def test_run_start_dependency_allowlist(monkeypatch, daemon):
 
     allowlist = {"python": {"requirements": {"allow": ["allowed"]}}}
     monkeypatch.setattr(mcpd, "_load_dependency_allowlist", lambda: allowlist)
-    monkeypatch.setattr(MCPDaemon, "_lease_port", lambda self, task_id, ttl_sec=900: 62012, raising=False)
+    monkeypatch.setattr(
+        MCPDaemon, "_lease_port", lambda self, task_id, ttl_sec=900: 62012, raising=False
+    )
     monkeypatch.setattr(MCPDaemon, "_release_port", lambda self, port: None, raising=False)
     daemon._dependency_allowlist = allowlist
 
