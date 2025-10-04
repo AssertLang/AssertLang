@@ -101,6 +101,7 @@ Thumbs.db
 # Personal and internal docs (root directory)
 AI-AGENT-GUIDE.md
 ALIGNMENT_*.md
+CLAUDE.md
 COMPLETE_LANGUAGE_SUPPORT.md
 CORRECTED_VISION.md
 Current_Work.md
