@@ -280,6 +280,43 @@ func all(slice []interface{}, pred func(interface{}) bool) bool {
 
 
 # Map function names to their generators
+def get_choice_helper() -> str:
+    """
+    Generate Go Choice helper for random.choice().
+
+    Python:
+        item = random.choice(items)
+
+    Go equivalent:
+        item := Choice(items)
+    """
+    return """
+// Choice returns a random element from a slice
+func Choice(slice []interface{}) interface{} {
+    if len(slice) == 0 {
+        return nil
+    }
+    return slice[rand.Intn(len(slice))]
+}
+
+// ChoiceString returns a random string from a slice
+func ChoiceString(slice []string) string {
+    if len(slice) == 0 {
+        return ""
+    }
+    return slice[rand.Intn(len(slice))]
+}
+
+// ChoiceInt returns a random int from a slice
+func ChoiceInt(slice []int) int {
+    if len(slice) == 0 {
+        return 0
+    }
+    return slice[rand.Intn(len(slice))]
+}
+""".strip()
+
+
 HELPER_GENERATORS = {
     "contains": get_contains_helper,
     "set": get_set_helper,
@@ -291,6 +328,7 @@ HELPER_GENERATORS = {
     "sum": get_sum_helper,
     "any": get_any_helper,
     "all": get_all_helper,
+    "choice": get_choice_helper,
 }
 
 
@@ -362,5 +400,7 @@ def detect_needed_helpers(code: str) -> Set[str]:
         needed.add("any")
     if "all(" in code:
         needed.add("all")
+    if "Choice(" in code or "ChoiceString(" in code or "ChoiceInt(" in code:
+        needed.add("choice")
 
     return needed
