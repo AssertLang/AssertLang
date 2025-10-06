@@ -955,8 +955,17 @@ class GoGeneratorV2:
     def _generate_literal(self, lit: IRLiteral) -> str:
         """Generate literal value."""
         if lit.literal_type == LiteralType.STRING:
-            # Escape string
-            value = str(lit.value).replace("\\", "\\\\").replace('"', '\\"')
+            # Escape string - use Python's built-in repr and clean it up
+            # This handles all escape sequences correctly
+            value = repr(lit.value)
+            # repr() adds quotes and escapes properly, but we need to:
+            # 1. Remove the outer quotes (repr adds them)
+            # 2. Change single quotes to double quotes if needed
+            if value.startswith("'") and value.endswith("'"):
+                value = value[1:-1]  # Remove quotes
+                value = value.replace('"', '\\"')  # Escape any internal double quotes
+            elif value.startswith('"') and value.endswith('"'):
+                value = value[1:-1]  # Just remove quotes, already escaped
             return f'"{value}"'
         elif lit.literal_type == LiteralType.INTEGER:
             return str(lit.value)
@@ -1219,8 +1228,14 @@ class GoGeneratorV2:
 
         for part in expr.parts:
             if isinstance(part, str):
-                # Static string - escape and add to format
-                escaped = part.replace("\\", "\\\\").replace('"', '\\"')
+                # Static string - use repr to escape properly
+                escaped = repr(part)
+                # repr adds quotes, remove them
+                if escaped.startswith("'") and escaped.endswith("'"):
+                    escaped = escaped[1:-1]
+                    escaped = escaped.replace('"', '\\"')  # Escape double quotes
+                elif escaped.startswith('"') and escaped.endswith('"'):
+                    escaped = escaped[1:-1]
                 format_parts.append(escaped)
             else:
                 # Expression - add %v placeholder and collect arg
@@ -1231,10 +1246,12 @@ class GoGeneratorV2:
         format_str = "".join(format_parts)
         if args:
             args_str = ", ".join(args)
-            return f'fmt.Sprintf("{format_str}", {args_str})'
+            # Use string concatenation to avoid f-string re-interpretation
+            return 'fmt.Sprintf("' + format_str + '", ' + args_str + ')'
         else:
             # No interpolations - just return the string
-            return f'"{format_str}"'
+            # Use string concatenation to avoid f-string re-interpretation
+            return '"' + format_str + '"'
 
     def _generate_comprehension_as_statements(self, stmt: IRAssignment) -> List[str]:
         """
