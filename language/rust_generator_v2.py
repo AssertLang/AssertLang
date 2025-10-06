@@ -145,9 +145,22 @@ class RustGeneratorV2:
                 lines.append(self._generate_trait(cls))
                 lines.append("")
 
-        # Generate impl blocks (from classes not marked as traits)
+        # Generate struct definitions + impl blocks (from classes not marked as traits)
         for cls in module.classes:
             if not cls.metadata.get('rust_trait'):
+                # Generate struct definition first
+                struct_lines = [f"pub struct {cls.name} {{"]
+                if cls.properties:
+                    for prop in cls.properties:
+                        visibility = "pub " if not prop.is_private else ""
+                        prop_name = self._to_snake_case(prop.name)
+                        prop_type = self._generate_type(prop.prop_type)
+                        struct_lines.append(f"    {visibility}{prop_name}: {prop_type},")
+                struct_lines.append("}")
+                lines.append("\n".join(struct_lines))
+                lines.append("")
+
+                # Generate impl block
                 lines.append(self._generate_impl(cls))
                 lines.append("")
 
@@ -554,7 +567,9 @@ class RustGeneratorV2:
 
         # Default heuristics
         if rust_type == 'String':
-            return '&str'
+            # Use String (owned) to avoid lifetime issues for now
+            # TODO: Use &str for read-only params when we have lifetime analysis
+            return 'String'
         elif rust_type.startswith('Vec<') or rust_type.startswith('HashMap<'):
             return f"&{rust_type}"
         elif rust_type in ['i32', 'i64', 'f32', 'f64', 'bool', 'u32', 'u64', 'usize']:
