@@ -789,6 +789,13 @@ IMPORT_MAPPINGS = {
         "rust": None,  # No equivalent
         "csharp": None,  # No equivalent
     },
+    "dataclasses": {
+        "python": "from dataclasses import ...",
+        "javascript": None,  # Use plain objects/classes
+        "go": None,  # Use structs directly
+        "rust": None,  # Use structs with derive macros
+        "csharp": None,  # Use classes/records
+    },
 }
 
 # ============================================================================
