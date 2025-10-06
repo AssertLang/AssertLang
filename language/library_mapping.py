@@ -782,6 +782,13 @@ IMPORT_MAPPINGS = {
         "rust": None,  # Rust has built-in types
         "csharp": None,  # C# has built-in types
     },
+    "__future__": {
+        "python": "from __future__ import ...",
+        "javascript": None,  # Python-specific language evolution feature
+        "go": None,  # No equivalent
+        "rust": None,  # No equivalent
+        "csharp": None,  # No equivalent
+    },
 }
 
 # ============================================================================
