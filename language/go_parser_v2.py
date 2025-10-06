@@ -79,7 +79,10 @@ class GoParserV2:
         imports = self._extract_imports(source)
         module_vars = self._extract_module_vars(source)
         type_defs = self._extract_type_definitions(source)
-        functions = self._extract_functions(source)
+        functions, methods_by_receiver = self._extract_functions(source)
+
+        # CRITICAL: Merge structs with their receiver methods into classes
+        classes = self._merge_structs_with_methods(type_defs, methods_by_receiver)
 
         # Build module
         module = IRModule(
@@ -87,8 +90,9 @@ class GoParserV2:
             version="1.0.0",
             imports=imports,
             module_vars=module_vars,
-            types=type_defs,
-            functions=functions,
+            types=[],  # Types are now part of classes
+            functions=functions,  # Only standalone functions
+            classes=classes,  # Structs + methods = classes
         )
 
         # Add source location
@@ -277,18 +281,27 @@ class GoParserV2:
         # Custom type (User, Payment, etc.)
         return IRType(name=go_type)
 
-    def _extract_functions(self, source: str) -> List[IRFunction]:
-        """Extract function definitions from Go source."""
-        functions = []
+    def _extract_functions(self, source: str) -> tuple[List[IRFunction], Dict[str, List[IRFunction]]]:
+        """
+        Extract function definitions from Go source.
 
-        # Pattern: func name(params) returnType { body }
-        # Also handles: func (receiver) name(params) returnType { body }
-        func_pattern = r'func\s+(?:\([^)]+\)\s+)?(\w+)\s*\(([^)]*)\)(?:\s+([^{]+))?\s*\{'
+        Returns:
+            (standalone_functions, methods_by_receiver)
+            - standalone_functions: Functions without receivers
+            - methods_by_receiver: Dict mapping receiver type -> list of methods
+        """
+        standalone_functions = []
+        methods_by_receiver = {}  # type -> [methods]
+
+        # Pattern: func (receiver) name(params) returnType { body }
+        # Group 1: receiver (optional), Group 2: func name, Group 3: params, Group 4: return type
+        func_pattern = r'func\s+(?:\(([^)]+)\)\s+)?(\w+)\s*\(([^)]*)\)(?:\s+([^{]+))?\s*\{'
 
         for match in re.finditer(func_pattern, source):
-            func_name = match.group(1)
-            params_str = match.group(2)
-            return_type_str = match.group(3)
+            receiver_str = match.group(1)  # NEW: Capture receiver
+            func_name = match.group(2)
+            params_str = match.group(3)
+            return_type_str = match.group(4)
 
             # Skip internal functions (but not Test* - those might be user functions)
             if func_name.startswith('_'):
@@ -329,9 +342,76 @@ class GoParserV2:
                 column=1
             )
 
-            functions.append(ir_func)
+            # Separate standalone functions from methods
+            if receiver_str:
+                # It's a method - extract receiver type
+                # Receiver format: "v *Type" or "v Type"
+                receiver_type = self._extract_receiver_type(receiver_str)
+                if receiver_type not in methods_by_receiver:
+                    methods_by_receiver[receiver_type] = []
+                methods_by_receiver[receiver_type].append(ir_func)
+            else:
+                # It's a standalone function
+                standalone_functions.append(ir_func)
 
-        return functions
+        return standalone_functions, methods_by_receiver
+
+    def _extract_receiver_type(self, receiver_str: str) -> str:
+        """
+        Extract receiver type from receiver string.
+
+        Examples:
+            "c *Calculator" -> "Calculator"
+            "g Greeter" -> "Greeter"
+        """
+        # Pattern: "varname *Type" or "varname Type"
+        match = re.match(r'\w+\s+\*?(\w+)', receiver_str.strip())
+        if match:
+            return match.group(1)
+        return "Unknown"
+
+    def _merge_structs_with_methods(
+        self,
+        type_defs: List,
+        methods_by_receiver: Dict[str, List[IRFunction]]
+    ) -> List[IRClass]:
+        """
+        Merge struct definitions with their receiver methods into IRClass.
+
+        This is the CRITICAL reverse operation - the generator creates
+        struct + methods from IRClass, so the parser must recreate IRClass
+        from struct + methods.
+        """
+        classes = []
+
+        for type_def in type_defs:
+            struct_name = type_def.name
+
+            # Get methods for this struct (if any)
+            methods = methods_by_receiver.get(struct_name, [])
+
+            # Convert IRTypeDefinition fields to IRProperty
+            properties = []
+            for field in type_def.fields:
+                prop = IRProperty(
+                    name=field.name,
+                    prop_type=field.prop_type,
+                    is_private=False,  # Go uses capitalization for visibility
+                    is_readonly=False,
+                )
+                properties.append(prop)
+
+            # Create IRClass
+            ir_class = IRClass(
+                name=struct_name,
+                properties=properties,
+                methods=methods,
+                constructor=None,  # Go doesn't have constructors, uses New() pattern
+            )
+
+            classes.append(ir_class)
+
+        return classes
 
     def _parse_function_params(self, params_str: str) -> List[IRParameter]:
         """Parse function parameters."""
