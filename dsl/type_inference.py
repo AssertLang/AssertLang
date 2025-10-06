@@ -44,6 +44,8 @@ class TypeInferenceEngine:
         self.type_env: Dict[str, IRType] = {}
         # Track function return types: function_name -> IRType
         self.function_types: Dict[str, IRType] = {}
+        # Track array element types from append operations: array_name -> Set[IRType]
+        self.array_element_types: Dict[str, Set[str]] = {}
 
     def infer_module_types(self, module: IRModule):
         """
@@ -67,24 +69,136 @@ class TypeInferenceEngine:
             if param.param_type:
                 self.type_env[param.name] = param.param_type
 
-        # Analyze function body
+        # Pass 1: Do initial type inference (for variables, literals, etc.)
         for stmt in func.body:
             self._infer_statement_types(stmt)
+
+        # Pass 2: Collect array element types from append operations
+        # (now that variables have types)
+        for stmt in func.body:
+            self._collect_array_element_types(stmt)
+
+        # Pass 3: Re-infer array types with element type information
+        for stmt in func.body:
+            self._update_array_types(stmt)
+
+    def _update_array_types(self, stmt: IRStatement):
+        """Update array types based on collected element types."""
+        if isinstance(stmt, IRAssignment):
+            # Check if this is an empty array assignment
+            if isinstance(stmt.value, IRArray) and not stmt.value.elements:
+                target_name = None
+                if isinstance(stmt.target, str):
+                    target_name = stmt.target
+                elif isinstance(stmt.target, IRIdentifier):
+                    target_name = stmt.target.name
+
+                if target_name and target_name in self.array_element_types:
+                    element_types = self.array_element_types[target_name]
+                    if len(element_types) == 1:
+                        # All appends use same type - update it
+                        elem_type_name = list(element_types)[0]
+                        new_type = IRType(
+                            name="array",
+                            generic_args=[IRType(name=elem_type_name)]
+                        )
+                        self.type_env[target_name] = new_type
+
+        elif isinstance(stmt, IRIf):
+            for s in stmt.then_body:
+                self._update_array_types(s)
+            if stmt.else_body:
+                for s in stmt.else_body:
+                    self._update_array_types(s)
+        elif isinstance(stmt, IRFor):
+            for s in stmt.body:
+                self._update_array_types(s)
+        elif isinstance(stmt, IRWhile):
+            for s in stmt.body:
+                self._update_array_types(s)
+
+    def _collect_array_element_types(self, stmt: IRStatement):
+        """
+        Collect array element types from append operations.
+
+        Looks for patterns like:
+        - array.append(value) - standalone call
+        - array = append(array, value) - Go-style assignment
+        """
+        from dsl.ir import IRPropertyAccess
+
+        # Check for standalone append call (Python style: output.append(x))
+        if isinstance(stmt, IRCall):
+            self._analyze_append_call(stmt)
+        # Check for append in assignment (Go style: output = append(output, x))
+        elif isinstance(stmt, IRAssignment):
+            if isinstance(stmt.value, IRCall):
+                self._analyze_append_call(stmt.value, target_array=stmt.target)
+        elif isinstance(stmt, IRIf):
+            # Recurse into if branches
+            for s in stmt.then_body:
+                self._collect_array_element_types(s)
+            if stmt.else_body:
+                for s in stmt.else_body:
+                    self._collect_array_element_types(s)
+        elif isinstance(stmt, IRFor):
+            # Recurse into for body
+            for s in stmt.body:
+                self._collect_array_element_types(s)
+        elif isinstance(stmt, IRWhile):
+            # Recurse into while body
+            for s in stmt.body:
+                self._collect_array_element_types(s)
+
+    def _analyze_append_call(self, call: IRCall, target_array=None):
+        """Analyze an append call to infer element type."""
+        from dsl.ir import IRPropertyAccess
+
+        # Pattern 1: array.append(value) - Python style
+        if isinstance(call.function, IRPropertyAccess):
+            if call.function.property == "append" and call.args:
+                array_name = None
+                if isinstance(call.function.object, IRIdentifier):
+                    array_name = call.function.object.name
+
+                if array_name:
+                    # Infer type of appended value
+                    value_type = self._infer_expression_type(call.args[0])
+                    if value_type:
+                        if array_name not in self.array_element_types:
+                            self.array_element_types[array_name] = set()
+                        self.array_element_types[array_name].add(value_type.name)
+
+        # Pattern 2: array = append(array, value) - Go style
+        elif isinstance(call.function, IRIdentifier):
+            if call.function.name == "append" and len(call.args) >= 2:
+                # First arg is the array
+                if isinstance(call.args[0], IRIdentifier):
+                    array_name = call.args[0].name
+                    # Second arg is the value
+                    value_type = self._infer_expression_type(call.args[1])
+                    if value_type:
+                        if array_name not in self.array_element_types:
+                            self.array_element_types[array_name] = set()
+                        self.array_element_types[array_name].add(value_type.name)
 
     def _infer_statement_types(self, stmt: IRStatement):
         """Infer types from a statement."""
         if isinstance(stmt, IRAssignment):
+            # Get the target variable name
+            target_name = None
+            if isinstance(stmt.target, str):
+                target_name = stmt.target
+            elif isinstance(stmt.target, IRIdentifier):
+                target_name = stmt.target.name
+
             # Infer type from value expression
             value_type = self._infer_expression_type(stmt.value)
+
             if value_type:
                 # Store inferred type
-                # Handle both string targets and IRIdentifier targets
-                if isinstance(stmt.target, str):
-                    self.type_env[stmt.target] = value_type
-                elif isinstance(stmt.target, IRIdentifier):
-                    self.type_env[stmt.target.name] = value_type
-                    # Optionally: Add type annotation to assignment
-                    # stmt.type_annotation = value_type
+                if target_name:
+                    self.type_env[target_name] = value_type
 
         elif isinstance(stmt, IRReturn):
             # Infer return type
