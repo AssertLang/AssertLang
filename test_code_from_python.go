@@ -76,7 +76,7 @@ func Animate(frames interface{}) error {
 	for true {
 		clear()
 		fmt.Println(galaxy(120, 40, t))
-		fmt.Println(fmt.Sprintf("\n✨ Cosmic Drift t=%v ✨   (Ctrl+C to exit)", t.ToFixed(2)))
+		fmt.Println(fmt.Sprintf("\n✨ Cosmic Drift t=%v ✨   (Ctrl+C to exit)", fmt.Sprintf("%.2f", t)))
 		t = (t + 0.1)
 		time.Sleep(0.08)
 	}
