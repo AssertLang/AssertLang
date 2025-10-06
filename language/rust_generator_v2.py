@@ -825,7 +825,11 @@ class RustGeneratorV2:
         elif lit.literal_type == LiteralType.BOOLEAN:
             return "true" if lit.value else "false"
         elif lit.literal_type == LiteralType.NULL:
-            return "None"  # or () depending on context
+            # In Rust, null is context-dependent:
+            # - For Option<T>: None
+            # - For Box<dyn Any>: Box::new(())
+            # For safety in mixed-type contexts, use Box::new(())
+            return "Box::new(())"
         else:
             return str(lit.value)
 
