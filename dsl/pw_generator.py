@@ -22,11 +22,13 @@ from dsl.ir import (
     IRCall,
     IRCatch,
     IRClass,
+    IRComprehension,
     IRContinue,
     IREnum,
     IREnumVariant,
     IRExpression,
     IRFor,
+    IRFString,
     IRFunction,
     IRIdentifier,
     IRIf,
@@ -104,6 +106,12 @@ class PWGenerator:
             lines.append(self.generate_enum(enum))
             lines.append("")
 
+        # Module-level variables/constants
+        for var in module.module_vars:
+            lines.append(self.generate_module_var(var))
+        if module.module_vars:
+            lines.append("")
+
         # Functions
         for func in module.functions:
             lines.append(self.generate_function(func))
@@ -159,6 +167,13 @@ class PWGenerator:
 
         self.decrease_indent()
         return "\n".join(lines)
+
+    def generate_module_var(self, var: 'IRAssignment') -> str:
+        """Generate module-level variable/constant declaration."""
+        # Module vars are just assignments at the top level
+        target = self.generate_expression(var.target)
+        value = self.generate_expression(var.value)
+        return f"let {target} = {value}"
 
     def generate_function(self, func: IRFunction) -> str:
         """Generate function definition."""
@@ -475,6 +490,10 @@ class PWGenerator:
             return self.generate_ternary(expr)
         elif isinstance(expr, IRLambda):
             return self.generate_lambda(expr)
+        elif isinstance(expr, IRComprehension):
+            return self.generate_comprehension(expr)
+        elif isinstance(expr, IRFString):
+            return self.generate_fstring(expr)
         else:
             return f"<unknown: {type(expr).__name__}>"
 
@@ -555,6 +574,67 @@ class PWGenerator:
         else:
             body = self.generate_expression(expr.body)
             return f"lambda {params}: {body}"
+
+    def generate_comprehension(self, expr: IRComprehension) -> str:
+        """
+        Generate list/dict/set comprehension.
+
+        Examples:
+            [x * 2 for x in items]
+            {k: v for k, v in items}
+            {x for x in items if x > 0}
+        """
+        target = self.generate_expression(expr.target)
+        iterator = expr.iterator
+        iterable = self.generate_expression(expr.iterable)
+
+        # Build comprehension string
+        if expr.comprehension_type == "dict":
+            # Dict comprehension has special target format
+            if isinstance(expr.target, IRMap) and "__key__" in expr.target.entries:
+                key = self.generate_expression(expr.target.entries["__key__"])
+                value = self.generate_expression(expr.target.entries["__value__"])
+                comp = f"{{{key}: {value} for {iterator} in {iterable}"
+            else:
+                comp = f"{{{target} for {iterator} in {iterable}"
+        elif expr.comprehension_type == "set":
+            comp = f"{{{target} for {iterator} in {iterable}"
+        elif expr.comprehension_type == "generator":
+            comp = f"({target} for {iterator} in {iterable}"
+        else:  # list
+            comp = f"[{target} for {iterator} in {iterable}"
+
+        # Add condition if present
+        if expr.condition:
+            condition = self.generate_expression(expr.condition)
+            comp += f" if {condition}"
+
+        # Close bracket
+        if expr.comprehension_type == "dict" or expr.comprehension_type == "set":
+            comp += "}"
+        elif expr.comprehension_type == "generator":
+            comp += ")"
+        else:
+            comp += "]"
+
+        return comp
+
+    def generate_fstring(self, expr: IRFString) -> str:
+        """
+        Generate f-string / template literal.
+
+        Example: f"Hello {name}, you are {age} years old"
+        """
+        result = 'f"'
+        for part in expr.parts:
+            if isinstance(part, str):
+                # Static string part - escape quotes
+                result += part.replace('"', '\\"')
+            else:
+                # Expression part
+                result += "{" + self.generate_expression(part) + "}"
+        result += '"'
+        return result
 
 
 # ============================================================================
