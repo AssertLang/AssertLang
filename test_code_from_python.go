@@ -45,7 +45,7 @@ func Clear() {
 }
 
 func Galaxy(width float64, height float64, t int, arms int) (string, error) {
-	var output []interface{} = []interface{}{}
+	var output []int = []int{}
 	var cx float64 = (width / 2)
 	var cy float64 = (height / 2)
 	for y := 0; y < height; y++ {
@@ -57,10 +57,10 @@ func Galaxy(width float64, height float64, t int, arms int) (string, error) {
 			var a float64 = math.Atan2(dy, dx)
 			var swirl float64 = (((a * arms) + (r * 12)) - (t * 2))
 			var noise float64 = ((pnoise2((dx * 2), ((dy * 2) + t)) * 0.5) + 0.5)
-			var bright interface{} = math.Pow((math.Cos(swirl) * noise), 2)
+			var bright float64 = math.Pow((math.Cos(swirl) * noise), 2)
 			if (bright > (0.5 - (r * 0.5))) {
-				var color interface{} = COLORS[(int(((bright + (rand.Float64() * 0.1)) * (len(COLORS) - 1))) % len(COLORS))]
-				var char interface{} = ChoiceString([]string{"*", "·", "✦", ".", "•"})
+				var color string = COLORS[(int(((bright + (rand.Float64() * 0.1)) * (len(COLORS) - 1))) % len(COLORS))]
+				var char string = ChoiceString([]string{"*", "·", "✦", ".", "•"})
 				row = (row + fmt.Sprintf("%v%v%v", color, char, RESET))
 			} else {
 				row = (row + " ")
