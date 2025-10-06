@@ -13,26 +13,10 @@ import (
 // Helper Functions (auto-generated)
 // ============================================================================
 
-// Choice returns a random element from a slice
-func Choice(slice []interface{}) interface{} {
-    if len(slice) == 0 {
-        return nil
-    }
-    return slice[rand.Intn(len(slice))]
-}
-
 // ChoiceString returns a random string from a slice
 func ChoiceString(slice []string) string {
     if len(slice) == 0 {
         return ""
-    }
-    return slice[rand.Intn(len(slice))]
-}
-
-// ChoiceInt returns a random int from a slice
-func ChoiceInt(slice []int) int {
-    if len(slice) == 0 {
-        return 0
     }
     return slice[rand.Intn(len(slice))]
 }
