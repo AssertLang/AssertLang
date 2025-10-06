@@ -108,7 +108,7 @@ class RustParserV2:
         module.imports = self._parse_imports(source)
 
         # Parse type definitions (structs)
-        module.types = self._parse_structs(source)
+        struct_defs = self._parse_structs(source)
 
         # Parse enums
         module.enums = self._parse_enums(source)
@@ -117,7 +117,12 @@ class RustParserV2:
         module.functions = self._parse_functions(source)
 
         # Parse traits and impls (convert to classes)
-        module.classes = self._parse_traits_and_impls(source)
+        impl_classes = self._parse_traits_and_impls(source)
+
+        # CRITICAL: Merge struct definitions with impl blocks
+        # This is the reverse operation - generator creates struct + impl from IRClass
+        module.classes = self._merge_structs_with_impls(struct_defs, impl_classes)
+        module.types = []  # Structs are now part of classes
 
         return module
 
@@ -490,6 +495,91 @@ class RustParserV2:
                 classes.append(impl_class)
 
         return classes
+
+    def _merge_structs_with_impls(
+        self,
+        struct_defs: List,
+        impl_classes: List[IRClass]
+    ) -> List[IRClass]:
+        """
+        Merge struct definitions with their impl blocks into complete IRClass.
+
+        This is the REVERSE operation of the generator:
+        - Generator: IRClass → struct + impl
+        - Parser: struct + impl → IRClass
+
+        Args:
+            struct_defs: List of IRTypeDefinition from structs
+            impl_classes: List of IRClass from impl blocks
+
+        Returns:
+            Merged list of IRClass with both properties (from struct) and methods (from impl)
+        """
+        merged_classes = []
+
+        # Create a dict of impl classes by name for fast lookup
+        impl_dict = {cls.name: cls for cls in impl_classes}
+
+        # Process each struct
+        for struct_def in struct_defs:
+            struct_name = struct_def.name
+
+            # Get corresponding impl (if any)
+            impl_class = impl_dict.get(struct_name)
+
+            if impl_class:
+                # Merge: struct fields + impl methods
+                # Convert struct fields to properties
+                properties = []
+                for field in struct_def.fields:
+                    prop = IRProperty(
+                        name=field.name,
+                        prop_type=field.prop_type,
+                        is_private=False,  # Rust uses pub keyword
+                        is_readonly=False,
+                    )
+                    properties.append(prop)
+
+                # Create merged class
+                merged_class = IRClass(
+                    name=struct_name,
+                    properties=properties,
+                    methods=impl_class.methods,
+                    constructor=None,  # Rust uses new() pattern
+                    doc=struct_def.doc,
+                )
+
+                merged_classes.append(merged_class)
+
+                # Remove from impl_dict so we don't process it again
+                del impl_dict[struct_name]
+            else:
+                # Struct without impl - still create class with just properties
+                properties = []
+                for field in struct_def.fields:
+                    prop = IRProperty(
+                        name=field.name,
+                        prop_type=field.prop_type,
+                        is_private=False,
+                        is_readonly=False,
+                    )
+                    properties.append(prop)
+
+                merged_class = IRClass(
+                    name=struct_name,
+                    properties=properties,
+                    methods=[],
+                    doc=struct_def.doc,
+                )
+
+                merged_classes.append(merged_class)
+
+        # Add any remaining impl blocks that didn't have a struct
+        # (e.g., trait implementations for external types)
+        for impl_class in impl_dict.values():
+            merged_classes.append(impl_class)
+
+        return merged_classes
 
     def _parse_trait_methods(self, trait_body: str) -> List[IRFunction]:
         """Parse method signatures in trait definition."""
