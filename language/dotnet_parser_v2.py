@@ -902,6 +902,15 @@ class DotNetParserV2:
 
             return IRMap(entries=entries)
 
+        # Implicitly typed array: new[] { 1, 2, 3 }
+        implicit_array_match = re.match(r'new\[\]\s*\{([^}]+)\}', expr_str)
+        if implicit_array_match:
+            content = implicit_array_match.group(1)
+            elements = []
+            for item in self._smart_split(content, ','):
+                elements.append(self._parse_expression(item.strip()))
+            return IRArray(elements=elements)
+
         # Collection initializer vs Object initializer
         # Check if it contains '=' for object initializer or not for collection
         new_match = re.match(r'new\s+(\w+(?:<[^>]+>)?)\s*\{([^}]+)\}', expr_str)
