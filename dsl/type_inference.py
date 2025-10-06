@@ -53,6 +53,19 @@ class TypeInferenceEngine:
 
         Modifies IR nodes in-place to add type annotations.
         """
+        # Phase 0: Infer module-level variable types
+        for var_assignment in module.module_vars:
+            target_name = None
+            if isinstance(var_assignment.target, str):
+                target_name = var_assignment.target
+            elif isinstance(var_assignment.target, IRIdentifier):
+                target_name = var_assignment.target.name
+
+            if target_name:
+                var_type = self._infer_expression_type(var_assignment.value)
+                if var_type:
+                    self.type_env[target_name] = var_type
+
         # Phase 1: Collect function signatures
         for func in module.functions:
             if func.return_type:
@@ -228,6 +241,9 @@ class TypeInferenceEngine:
 
     def _infer_expression_type(self, expr: IRExpression) -> Optional[IRType]:
         """Infer type from an expression."""
+        # Import here to avoid circular dependency
+        from dsl.ir import IRIndex
+
         if isinstance(expr, IRLiteral):
             # Literal types are known
             return self._literal_to_type(expr)
@@ -261,6 +277,18 @@ class TypeInferenceEngine:
                     )
             return IRType(name="map", generic_args=[IRType(name="string"), IRType(name="any")])
 
+        elif isinstance(expr, IRIndex):
+            # Array/map indexing - infer from container type
+            container_type = self._infer_expression_type(expr.object)
+            if container_type:
+                # If container is array, return element type
+                if container_type.name == "array" and container_type.generic_args:
+                    return container_type.generic_args[0]
+                # If container is map, return value type
+                elif container_type.name == "map" and len(container_type.generic_args) >= 2:
+                    return container_type.generic_args[1]
+            return None
+
         elif isinstance(expr, IRBinaryOp):
             # Infer from operands and operator
             left_type = self._infer_expression_type(expr.left)
@@ -268,7 +296,11 @@ class TypeInferenceEngine:
 
             # Arithmetic operators -> numeric type
             if expr.op in [BinaryOperator.ADD, BinaryOperator.SUBTRACT,
-                          BinaryOperator.MULTIPLY, BinaryOperator.DIVIDE]:
+                          BinaryOperator.MULTIPLY, BinaryOperator.DIVIDE,
+                          BinaryOperator.POWER]:
+                # Power operator always returns float
+                if expr.op == BinaryOperator.POWER:
+                    return IRType(name="float")
                 # If either is float, result is float
                 if (left_type and left_type.name == "float") or \
                    (right_type and right_type.name == "float"):
