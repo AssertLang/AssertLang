@@ -78,7 +78,10 @@ class TypeInferenceEngine:
             value_type = self._infer_expression_type(stmt.value)
             if value_type:
                 # Store inferred type
-                if isinstance(stmt.target, IRIdentifier):
+                # Handle both string targets and IRIdentifier targets
+                if isinstance(stmt.target, str):
+                    self.type_env[stmt.target] = value_type
+                elif isinstance(stmt.target, IRIdentifier):
                     self.type_env[stmt.target.name] = value_type
                     # Optionally: Add type annotation to assignment
                     # stmt.type_annotation = value_type
@@ -169,6 +172,9 @@ class TypeInferenceEngine:
                 return IRType(name="bool")
 
         elif isinstance(expr, IRCall):
+            # Import here to avoid circular dependency
+            from dsl.ir import IRPropertyAccess
+
             # Look up function return type
             if isinstance(expr.function, IRIdentifier):
                 func_name = expr.function.name
@@ -185,6 +191,58 @@ class TypeInferenceEngine:
                 }
                 if func_name in builtin_types:
                     return builtin_types[func_name]
+
+            # Handle module.function calls (e.g., math.sqrt, random.random)
+            elif isinstance(expr.function, IRPropertyAccess):
+                if isinstance(expr.function.object, IRIdentifier):
+                    module_name = expr.function.object.name
+                    func_name = expr.function.property
+                    full_name = f"{module_name}.{func_name}"
+
+                    # Standard library function return types
+                    stdlib_types = {
+                        # Math functions
+                        "math.sqrt": IRType(name="float"),
+                        "math.pow": IRType(name="float"),
+                        "math.abs": IRType(name="float"),
+                        "math.floor": IRType(name="int"),
+                        "math.ceil": IRType(name="int"),
+                        "math.round": IRType(name="int"),
+                        "math.sin": IRType(name="float"),
+                        "math.cos": IRType(name="float"),
+                        "math.tan": IRType(name="float"),
+                        "math.asin": IRType(name="float"),
+                        "math.acos": IRType(name="float"),
+                        "math.atan": IRType(name="float"),
+                        "math.atan2": IRType(name="float"),
+                        "math.log": IRType(name="float"),
+                        "math.log10": IRType(name="float"),
+                        "math.exp": IRType(name="float"),
+
+                        # Random functions
+                        "random.random": IRType(name="float"),
+                        "random.randint": IRType(name="int"),
+                        "random.choice": IRType(name="any"),  # Depends on input
+                        "random.shuffle": IRType(name="none"),
+
+                        # String methods
+                        "str.upper": IRType(name="string"),
+                        "str.lower": IRType(name="string"),
+                        "str.strip": IRType(name="string"),
+                        "str.split": IRType(name="array", generic_args=[IRType(name="string")]),
+                        "str.join": IRType(name="string"),
+                        "str.replace": IRType(name="string"),
+
+                        # List methods (most return None in Python)
+                        "list.append": IRType(name="none"),
+                        "list.extend": IRType(name="none"),
+                        "list.pop": IRType(name="any"),
+                        "list.reverse": IRType(name="none"),
+                        "list.sort": IRType(name="none"),
+                    }
+
+                    if full_name in stdlib_types:
+                        return stdlib_types[full_name]
 
         # Default: unknown type
         return None
