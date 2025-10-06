@@ -79,8 +79,16 @@ class TypeInferenceEngine:
         """Infer types within a function."""
         # Add parameters to type environment
         for param in func.params:
-            if param.param_type:
+            if param.param_type and param.param_type.name != "any":
+                # Use explicit type if available and not 'any'
                 self.type_env[param.name] = param.param_type
+            elif param.default_value:
+                # Infer from default value if type is 'any' or missing
+                inferred_type = self._infer_expression_type(param.default_value)
+                if inferred_type:
+                    self.type_env[param.name] = inferred_type
+                    # Update the param type in the IR
+                    param.param_type = inferred_type
 
         # Pass 1: Do initial type inference (for variables, literals, etc.)
         for stmt in func.body:
