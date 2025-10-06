@@ -282,7 +282,7 @@ func all(slice []interface{}, pred func(interface{}) bool) bool {
 # Map function names to their generators
 def get_choice_helper() -> str:
     """
-    Generate Go Choice helper for random.choice().
+    Generate Go Choice helper for random.choice() (generic version).
 
     Python:
         item = random.choice(items)
@@ -298,7 +298,11 @@ func Choice(slice []interface{}) interface{} {
     }
     return slice[rand.Intn(len(slice))]
 }
+""".strip()
 
+def get_choice_string_helper() -> str:
+    """Generate ChoiceString helper for typed string arrays."""
+    return """
 // ChoiceString returns a random string from a slice
 func ChoiceString(slice []string) string {
     if len(slice) == 0 {
@@ -306,7 +310,11 @@ func ChoiceString(slice []string) string {
     }
     return slice[rand.Intn(len(slice))]
 }
+""".strip()
 
+def get_choice_int_helper() -> str:
+    """Generate ChoiceInt helper for typed int arrays."""
+    return """
 // ChoiceInt returns a random int from a slice
 func ChoiceInt(slice []int) int {
     if len(slice) == 0 {
@@ -329,6 +337,8 @@ HELPER_GENERATORS = {
     "any": get_any_helper,
     "all": get_all_helper,
     "choice": get_choice_helper,
+    "choice_string": get_choice_string_helper,
+    "choice_int": get_choice_int_helper,
 }
 
 
@@ -400,7 +410,12 @@ def detect_needed_helpers(code: str) -> Set[str]:
         needed.add("any")
     if "all(" in code:
         needed.add("all")
-    if "Choice(" in code or "ChoiceString(" in code or "ChoiceInt(" in code:
+    # Detect choice helpers individually (only generate what's used)
+    if "Choice(" in code:
         needed.add("choice")
+    if "ChoiceString(" in code:
+        needed.add("choice_string")
+    if "ChoiceInt(" in code:
+        needed.add("choice_int")
 
     return needed
