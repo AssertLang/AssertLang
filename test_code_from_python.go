@@ -41,7 +41,7 @@ var COLORS []string = []string{"\x1b[38;5;27m", "\x1b[38;5;33m", "\x1b[38;5;51m"
 const RESET string = "\x1b[0m"
 
 func Clear() {
-	exec.Command(...).Run(func() interface{} { if (os.Name == "nt") { return "cls" } else { return "clear" } }())
+	exec.Command(...).Run(func() string { if (os.Name == "nt") { return "cls" } else { return "clear" } }())
 }
 
 func Galaxy(width float64, height float64, t int, arms int) (string, error) {
