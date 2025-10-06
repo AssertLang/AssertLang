@@ -659,6 +659,10 @@ class GoGeneratorV2:
         if isinstance(stmt.value, IRComprehension):
             return self._generate_comprehension_as_statements(stmt)
 
+        # Special case: ternary in assignment - expand to if/else
+        if isinstance(stmt.value, IRTernary):
+            return self._generate_ternary_as_statements(stmt)
+
         value_expr = self._generate_expression(stmt.value)
 
         # Handle different target types
@@ -1197,14 +1201,28 @@ class GoGeneratorV2:
         Generate ternary expression.
 
         Go doesn't have ternary, so we convert to immediately-invoked function:
-        func() interface{} { if cond { return a } else { return b } }()
+        func() T { if cond { return a } else { return b } }()
+
+        We try to infer the return type T from the values.
         """
         cond = self._generate_expression(expr.condition)
         true_val = self._generate_expression(expr.true_value)
         false_val = self._generate_expression(expr.false_value)
 
+        # Infer return type from values
+        return_type = "interface{}"
+        if isinstance(expr.true_value, IRLiteral):
+            if expr.true_value.literal_type == LiteralType.STRING:
+                return_type = "string"
+            elif expr.true_value.literal_type == LiteralType.INTEGER:
+                return_type = "int"
+            elif expr.true_value.literal_type == LiteralType.FLOAT:
+                return_type = "float64"
+            elif expr.true_value.literal_type == LiteralType.BOOLEAN:
+                return_type = "bool"
+
         # Use immediately-invoked function expression (valid Go)
-        return f"func() interface{{}} {{ if {cond} {{ return {true_val} }} else {{ return {false_val} }} }}()"
+        return f"func() {return_type} {{ if {cond} {{ return {true_val} }} else {{ return {false_val} }} }}()"
 
     def _generate_lambda(self, expr: IRLambda) -> str:
         """Generate lambda as anonymous function."""
@@ -1328,6 +1346,77 @@ class GoGeneratorV2:
         else:
             lines.append(f"{self.indent()}{target_var} = append({target_var}, {target})")
 
+        self.decrease_indent()
+        lines.append(f"{self.indent()}}}")
+
+        return lines
+
+    def _generate_ternary_as_statements(self, stmt: IRAssignment) -> List[str]:
+        """
+        Generate ternary as clean if/else statements (not IIFE).
+
+        Python:
+            cmd = "cls" if os.name == "nt" else "clear"
+
+        Go (clean):
+            var cmd string
+            if os.Name == "nt" {
+                cmd = "cls"
+            } else {
+                cmd = "clear"
+            }
+
+        This is much cleaner and more idiomatic than IIFE.
+        """
+        ternary = stmt.value
+        assert isinstance(ternary, IRTernary)
+
+        # Get target variable name
+        if isinstance(stmt.target, IRIdentifier):
+            target_var = stmt.target.name
+        elif isinstance(stmt.target, str):
+            target_var = stmt.target
+        else:
+            target_var = str(stmt.target)
+
+        lines = []
+
+        # 1. Declare variable (infer type if possible)
+        var_type = "interface{}"
+
+        # Try to infer type from true/false values
+        if isinstance(ternary.true_value, IRLiteral):
+            if ternary.true_value.literal_type == LiteralType.STRING:
+                var_type = "string"
+            elif ternary.true_value.literal_type == LiteralType.INTEGER:
+                var_type = "int"
+            elif ternary.true_value.literal_type == LiteralType.FLOAT:
+                var_type = "float64"
+            elif ternary.true_value.literal_type == LiteralType.BOOLEAN:
+                var_type = "bool"
+
+        # Check if we already have an inferred type
+        if target_var in self.inferred_types:
+            inferred_type = self.inferred_types[target_var]
+            if inferred_type.name not in ["any", "interface{}"]:
+                var_type = self._generate_type(inferred_type)
+
+        # Declare variable
+        if stmt.is_declaration:
+            lines.append(f"{self.indent()}var {target_var} {var_type}")
+
+        # 2. Generate if/else
+        condition = self._generate_expression(ternary.condition)
+        true_val = self._generate_expression(ternary.true_value)
+        false_val = self._generate_expression(ternary.false_value)
+
+        lines.append(f"{self.indent()}if {condition} {{")
+        self.increase_indent()
+        lines.append(f"{self.indent()}{target_var} = {true_val}")
+        self.decrease_indent()
+        lines.append(f"{self.indent()}}} else {{")
+        self.increase_indent()
+        lines.append(f"{self.indent()}{target_var} = {false_val}")
         self.decrease_indent()
         lines.append(f"{self.indent()}}}")
 
