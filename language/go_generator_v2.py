@@ -679,13 +679,27 @@ class GoGeneratorV2:
 
         if stmt.is_declaration:
             # var x Type = value OR x := value
-            if stmt.var_type:
-                var_type = self._generate_type(stmt.var_type)
-                return [f"{self.indent()}var {target} {var_type} = {value_expr}"]
-            elif target_name and target_name in self.inferred_types:
-                # Use inferred type if available
+            # Check if we have a better inferred type than the IR's var_type
+            use_inferred = False
+            if target_name and target_name in self.inferred_types:
+                inferred_type = self.inferred_types[target_name]
+                # Prefer inferred type if:
+                # 1. No explicit type in IR, OR
+                # 2. IR type is generic (any/interface{})
+                if not stmt.var_type or stmt.var_type.name in ["any", "interface{}"]:
+                    use_inferred = True
+                # Also prefer if inferred is more specific
+                elif inferred_type.name not in ["any", "interface{}"]:
+                    use_inferred = True
+
+            if use_inferred:
+                # Use inferred type
                 inferred_type = self.inferred_types[target_name]
                 var_type = self._generate_type(inferred_type)
+                return [f"{self.indent()}var {target} {var_type} = {value_expr}"]
+            elif stmt.var_type:
+                # Use explicit type from IR
+                var_type = self._generate_type(stmt.var_type)
                 return [f"{self.indent()}var {target} {var_type} = {value_expr}"]
             else:
                 # Short declaration
@@ -1019,10 +1033,29 @@ class GoGeneratorV2:
                     arg = self._generate_expression(expr.args[0])
                     return f"strings.Join({arg}, {obj_expr})"
 
-            # Handle module.function pattern (e.g., math.sqrt)
+            # Handle module.function pattern (e.g., math.sqrt, random.choice)
             obj_name = expr.function.object.name if isinstance(expr.function.object, IRIdentifier) else None
             if obj_name:
                 py_call = f"{obj_name}.{expr.function.property}"
+
+                # Special case: random.choice with typed array
+                if py_call == "random.choice" and len(expr.args) == 1:
+                    arg = expr.args[0]
+                    # Check if arg is an array with consistent type
+                    if isinstance(arg, IRArray) and arg.elements:
+                        first_elem = arg.elements[0]
+                        if isinstance(first_elem, IRLiteral):
+                            if first_elem.literal_type == LiteralType.STRING:
+                                # Use ChoiceString for string arrays
+                                self.imports_needed.add("math/rand")
+                                arg_str = self._generate_expression(arg)
+                                return f"ChoiceString({arg_str})"
+                            elif first_elem.literal_type == LiteralType.INTEGER:
+                                # Use ChoiceInt for int arrays
+                                self.imports_needed.add("math/rand")
+                                arg_str = self._generate_expression(arg)
+                                return f"ChoiceInt({arg_str})"
+
                 if py_call in FUNCTION_MAPPINGS:
                     mapped = FUNCTION_MAPPINGS[py_call].get("go")
                     if mapped:
