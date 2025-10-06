@@ -37,8 +37,8 @@ func ChoiceInt(slice []int) int {
     return slice[rand.Intn(len(slice))]
 }
 
-var COLORS []string = []string{"[38;5;27m", "[38;5;33m", "[38;5;51m", "[38;5;93m", "[38;5;201m", "[38;5;220m", "[38;5;15m"}
-const RESET string = "[0m"
+var COLORS []string = []string{"\x1b[38;5;27m", "\x1b[38;5;33m", "\x1b[38;5;51m", "\x1b[38;5;93m", "\x1b[38;5;201m", "\x1b[38;5;220m", "\x1b[38;5;15m"}
+const RESET string = "\x1b[0m"
 
 func Clear() {
 	exec.Command(...).Run(func() interface{} { if (os.Name == "nt") { return "cls" } else { return "clear" } }())
@@ -68,8 +68,7 @@ func Galaxy(width float64, height float64, t int, arms int) (string, error) {
 		}
 		output = append(output, row)
 	}
-	return strings.Join(output, "
-"), nil
+	return strings.Join(output, "\n"), nil
 }
 
 func Animate(frames interface{}) error {
@@ -77,13 +76,11 @@ func Animate(frames interface{}) error {
 	for true {
 		clear()
 		fmt.Println(galaxy(120, 40, t))
-		fmt.Println(fmt.Sprintf("
-✨ Cosmic Drift t=%v ✨   (Ctrl+C to exit)", t.ToFixed(2)))
+		fmt.Println(fmt.Sprintf("\n✨ Cosmic Drift t=%v ✨   (Ctrl+C to exit)", t.ToFixed(2)))
 		t = (t + 0.1)
 		time.Sleep(0.08)
 	}
 	// catch KeyboardInterrupt
 	clear()
-	fmt.Println("🌀 Galaxy collapsed. Goodbye.
-")
+	fmt.Println("🌀 Galaxy collapsed. Goodbye.\n")
 }
