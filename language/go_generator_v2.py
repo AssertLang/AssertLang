@@ -282,6 +282,13 @@ class GoGeneratorV2:
 
     def _generate_type(self, ir_type: IRType) -> str:
         """Generate Go type from IR type."""
+        # Handle Self type - replace with current class name
+        if ir_type.name == "Self" and self.current_class:
+            # For Go constructors, return pointer to struct
+            if self.in_constructor:
+                return f"*{self.current_class}"
+            return self.current_class
+
         return self.type_system.map_to_language(ir_type, "go")
 
     def _generate_type_definition(self, type_def: IRTypeDefinition) -> str:

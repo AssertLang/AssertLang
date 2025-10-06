@@ -85,6 +85,8 @@ class NodeJSGeneratorV2:
         self.library_mapper = LibraryMapper()
         self.in_class_method = False  # Track if we're inside a class method/constructor
         self.source_language: Optional[str] = None  # Track source language for mapping
+        self.current_class: Optional[str] = None  # Track current class being generated
+        self.in_constructor = False  # Track if we're in a constructor
 
     def indent(self) -> str:
         """Get current indentation string."""
@@ -226,7 +228,7 @@ class NodeJSGeneratorV2:
             lines.append(" * @typedef {Object} " + type_def.name)
             for field in type_def.fields:
                 optional = "?" if field.prop_type.is_optional else ""
-                ts_type = self.type_system.map_to_language(field.prop_type, "nodejs")
+                ts_type = self._generate_type(field.prop_type)
                 lines.append(f" * @property {{{ts_type}}} {optional}{field.name}")
             lines.append(" */")
             return "\n".join(lines)
@@ -245,7 +247,7 @@ class NodeJSGeneratorV2:
                 is_optional=False,  # Don't wrap in | null for interfaces
                 union_types=field.prop_type.union_types
             )
-            ts_type = self.type_system.map_to_language(base_type, "nodejs")
+            ts_type = self._generate_type(base_type)
             line = f"{self.indent()}{field.name}{optional}: {ts_type};"
             lines.append(line)
 
@@ -346,7 +348,7 @@ class NodeJSGeneratorV2:
         # Return type
         return_type = ""
         if self.typescript and func.return_type:
-            ts_return_type = self.type_system.map_to_language(func.return_type, "nodejs")
+            ts_return_type = self._generate_type(func.return_type)
             if func.is_async:
                 # Wrap in Promise for async functions
                 return_type = f": Promise<{ts_return_type}>"
@@ -394,12 +396,12 @@ class NodeJSGeneratorV2:
 
         # Parameters
         for param in func.params:
-            ts_type = self.type_system.map_to_language(param.param_type, "nodejs")
+            ts_type = self._generate_type(param.param_type)
             lines.append(f" * @param {{{ts_type}}} {param.name}")
 
         # Return type
         if func.return_type:
-            ts_return_type = self.type_system.map_to_language(func.return_type, "nodejs")
+            ts_return_type = self._generate_type(func.return_type)
             if func.is_async:
                 lines.append(f" * @returns {{Promise<{ts_return_type}>}}")
             else:
@@ -417,7 +419,7 @@ class NodeJSGeneratorV2:
 
             # Type annotation (TypeScript)
             if self.typescript:
-                ts_type = self.type_system.map_to_language(param.param_type, "nodejs")
+                ts_type = self._generate_type(param.param_type)
                 param_str += f": {ts_type}"
 
             # Default value
@@ -432,6 +434,29 @@ class NodeJSGeneratorV2:
     # ========================================================================
     # Class generation
     # ========================================================================
+
+    def _generate_type(self, ir_type: IRType) -> str:
+        """
+        Generate TypeScript/JavaScript type from IR type.
+
+        Handles:
+        - Self type → current class name
+        - Array<T> generic syntax (not Array[T])
+        """
+        # Handle Self type - replace with current class name
+        if ir_type.name == "Self" and self.current_class:
+            return self.current_class
+
+        # Use type system for standard mapping
+        ts_type = self.type_system.map_to_language(ir_type, "nodejs")
+
+        # Fix Array[T] → Array<T> syntax for TypeScript
+        if self.typescript and "[" in ts_type and "]" in ts_type:
+            # Replace Array[string] with Array<string>
+            # Replace List[int] with Array<number>
+            ts_type = ts_type.replace("[", "<").replace("]", ">")
+
+        return ts_type
 
     def generate_class(self, cls: IRClass, is_export: bool = False) -> str:
         """
@@ -453,6 +478,10 @@ class NodeJSGeneratorV2:
             }
         """
         lines = []
+
+        # Set current class context
+        old_class = self.current_class
+        self.current_class = cls.name
 
         # Class declaration
         export_prefix = "export " if is_export else ""
@@ -487,6 +516,9 @@ class NodeJSGeneratorV2:
         self.decrease_indent()
         lines.append("}")
 
+        # Restore previous class context
+        self.current_class = old_class
+
         return "\n".join(lines)
 
     def generate_property(self, prop: IRProperty) -> str:
@@ -499,7 +531,7 @@ class NodeJSGeneratorV2:
         """
         visibility = "private " if prop.is_private else ""
         readonly = "readonly " if prop.is_readonly else ""
-        ts_type = self.type_system.map_to_language(prop.prop_type, "nodejs")
+        ts_type = self._generate_type(prop.prop_type)
 
         line = f"{self.indent()}{visibility}{readonly}{prop.name}: {ts_type};"
         return line
@@ -599,7 +631,7 @@ class NodeJSGeneratorV2:
             # Type annotation (TypeScript)
             type_annotation = ""
             if self.typescript and stmt.var_type:
-                ts_type = self.type_system.map_to_language(stmt.var_type, "nodejs")
+                ts_type = self._generate_type(stmt.var_type)
                 type_annotation = f": {ts_type}"
 
             return f"{self.indent()}{keyword} {stmt.target}{type_annotation} = {value_expr};"
@@ -1055,7 +1087,7 @@ class NodeJSGeneratorV2:
             for param in expr.params:
                 param_str = param.name
                 if self.typescript:
-                    ts_type = self.type_system.map_to_language(param.param_type, "nodejs")
+                    ts_type = self._generate_type(param.param_type)
                     param_str += f": {ts_type}"
                 param_strs.append(param_str)
             params = f"({', '.join(param_strs)})"
