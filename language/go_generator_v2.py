@@ -470,6 +470,10 @@ class GoGeneratorV2:
         class_name = self._capitalize(class_name)
         method_name = self._capitalize(method.name)
 
+        # Set current class context (needed for Self type resolution)
+        old_class = self.current_class
+        self.current_class = class_name
+
         # Receiver
         receiver_var = class_name[0].lower()
         receiver = f"{receiver_var} *{class_name}"
@@ -503,11 +507,9 @@ class GoGeneratorV2:
         # Body
         self.increase_indent()
 
-        # Set context for method body generation
+        # Set receiver context for method body generation
         old_receiver = self.current_receiver
-        old_class = self.current_class
         self.current_receiver = receiver_var
-        self.current_class = class_name
 
         for stmt in method.body:
             stmt_lines = self._generate_statement(stmt)
@@ -515,7 +517,7 @@ class GoGeneratorV2:
 
         # Restore context
         self.current_receiver = old_receiver
-        self.current_class = old_class
+        self.current_class = old_class  # Restore class context set at method start
         self.decrease_indent()
 
         lines.append("}")
