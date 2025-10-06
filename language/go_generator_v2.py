@@ -665,6 +665,22 @@ class GoGeneratorV2:
 
         value_expr = self._generate_expression(stmt.value)
 
+        # Special case: Empty array with inferred element type
+        # Fix the initializer to match the inferred type
+        if isinstance(stmt.value, IRArray) and not stmt.value.elements:
+            target_name = None
+            if isinstance(stmt.target, str):
+                target_name = stmt.target
+            elif isinstance(stmt.target, IRIdentifier):
+                target_name = stmt.target.name
+
+            if target_name and target_name in self.inferred_types:
+                inferred_type = self.inferred_types[target_name]
+                # Check if it's an array type with specific element type
+                if inferred_type.name == "array" and inferred_type.generic_args:
+                    elem_type = self._generate_type(inferred_type.generic_args[0])
+                    value_expr = f"[]{elem_type}{{}}"
+
         # Handle different target types
         if isinstance(stmt.target, str):
             # Check if target is a property access (e.g., self.property or array[index])
