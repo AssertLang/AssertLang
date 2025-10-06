@@ -597,41 +597,44 @@ class GoParserV2:
                 continue
 
             # Parse statement
-            stmt = self._parse_statement(line, lines, i)
+            stmt, lines_consumed = self._parse_statement(line, lines, i)
             if stmt:
                 statements.append(stmt)
-
-            i += 1
+                i += lines_consumed
+            else:
+                i += 1
 
         return statements
 
-    def _parse_statement(self, line: str, lines: List[str], index: int) -> Optional[IRStatement]:
-        """Parse a single statement."""
+    def _parse_statement(self, line: str, lines: List[str], index: int) -> tuple[Optional[IRStatement], int]:
+        """Parse a single statement. Returns (statement, lines_consumed)."""
 
         # Return statement
         if line.startswith('return '):
-            return self._parse_return_statement(line)
+            return self._parse_return_statement(line), 1
 
         # If statement
         if line.startswith('if '):
-            return self._parse_if_statement(line, lines, index)
+            stmt, lines_consumed = self._parse_if_statement(line, lines, index)
+            return stmt, lines_consumed
 
         # For loop
         if line.startswith('for '):
-            return self._parse_for_statement(line, lines, index)
+            stmt, lines_consumed = self._parse_for_statement(line, lines, index)
+            return stmt, lines_consumed
 
         # Variable assignment/declaration
         # Patterns: var x = ..., x := ..., x = ...
         if ':=' in line or '=' in line or line.startswith('var '):
-            return self._parse_assignment(line)
+            return self._parse_assignment(line), 1
 
         # Function call (expression statement)
         if '(' in line and ')' in line:
             expr = self._parse_expression(line)
             if isinstance(expr, IRCall):
-                return expr
+                return expr, 1
 
-        return None
+        return None, 1
 
     def _parse_return_statement(self, line: str) -> IRReturn:
         """Parse return statement."""
@@ -667,50 +670,99 @@ class GoParserV2:
         expr = self._parse_expression(return_val)
         return IRReturn(value=expr)
 
-    def _parse_if_statement(self, line: str, lines: List[str], index: int) -> IRIf:
-        """Parse if statement."""
+    def _extract_block_body(self, lines: List[str], start_index: int) -> tuple[str, int]:
+        """
+        Extract the body of a block starting from line with opening '{'.
+
+        Args:
+            lines: List of source lines
+            start_index: Index of line containing opening '{'
+
+        Returns:
+            (body_text, lines_consumed) - body without braces, number of lines consumed
+        """
+        # Reconstruct source from lines
+        source = '\n'.join(lines[start_index:])
+
+        # Find opening brace
+        brace_idx = source.find('{')
+        if brace_idx == -1:
+            return "", 0
+
+        # Track brace depth
+        depth = 0
+        i = brace_idx
+
+        while i < len(source):
+            if source[i] == '{':
+                depth += 1
+            elif source[i] == '}':
+                depth -= 1
+                if depth == 0:
+                    # Extract body (between braces)
+                    body = source[brace_idx + 1:i]
+
+                    # Count lines consumed
+                    consumed_text = source[:i + 1]
+                    lines_consumed = consumed_text.count('\n') + 1
+
+                    return body.strip(), lines_consumed
+            i += 1
+
+        # Unclosed block - return what we have
+        return source[brace_idx + 1:].strip(), len(lines) - start_index
+
+    def _parse_if_statement(self, line: str, lines: List[str], index: int) -> tuple[IRIf, int]:
+        """Parse if statement. Returns (statement, lines_consumed)."""
         # Extract condition: if condition {
         condition_match = re.match(r'if\s+(.+?)\s*\{', line)
         if not condition_match:
             # Simple condition without body on same line
             condition_str = line[3:].strip()
             condition_expr = self._parse_expression(condition_str)
-            return IRIf(condition=condition_expr, then_body=[], else_body=[])
+            return IRIf(condition=condition_expr, then_body=[], else_body=[]), 1
 
         condition_str = condition_match.group(1)
         condition_expr = self._parse_expression(condition_str)
 
-        # TODO: Extract body (multi-line parsing)
-        # For now, return simple if
-        return IRIf(condition=condition_expr, then_body=[], else_body=[])
+        # Extract then body
+        then_body_str, lines_consumed = self._extract_block_body(lines, index)
+        then_body = self._parse_function_body(then_body_str) if then_body_str else []
 
-    def _parse_for_statement(self, line: str, lines: List[str], index: int) -> IRFor:
-        """Parse for loop."""
+        # TODO: Handle else/else if
+        return IRIf(condition=condition_expr, then_body=then_body, else_body=[]), lines_consumed
+
+    def _parse_for_statement(self, line: str, lines: List[str], index: int) -> tuple[IRFor, int]:
+        """Parse for loop. Returns (statement, lines_consumed)."""
+        iterator = 'i'
+        iterable_expr = IRIdentifier(name='range')
+
         # Handle: for _, item := range items {
         range_discard_match = re.match(r'for\s+_\s*,\s*(\w+)\s*:=\s*range\s+(.+?)\s*\{', line)
         if range_discard_match:
             iterator = range_discard_match.group(1)
             iterable_str = range_discard_match.group(2)
             iterable_expr = self._parse_expression(iterable_str)
-            return IRFor(iterator=iterator, iterable=iterable_expr, body=[])
+        else:
+            # Handle: for item := range items {
+            range_match = re.match(r'for\s+(\w+)\s*:=\s*range\s+(.+?)\s*\{', line)
+            if range_match:
+                iterator = range_match.group(1)
+                iterable_str = range_match.group(2)
+                iterable_expr = self._parse_expression(iterable_str)
+            else:
+                # Handle: for range items {
+                range_simple_match = re.match(r'for\s+range\s+(.+?)\s*\{', line)
+                if range_simple_match:
+                    iterator = 'item'
+                    iterable_str = range_simple_match.group(1)
+                    iterable_expr = self._parse_expression(iterable_str)
 
-        # Handle: for item := range items {
-        range_match = re.match(r'for\s+(\w+)\s*:=\s*range\s+(.+?)\s*\{', line)
-        if range_match:
-            iterator = range_match.group(1)
-            iterable_str = range_match.group(2)
-            iterable_expr = self._parse_expression(iterable_str)
-            return IRFor(iterator=iterator, iterable=iterable_expr, body=[])
+        # Extract loop body
+        body_str, lines_consumed = self._extract_block_body(lines, index)
+        body = self._parse_function_body(body_str) if body_str else []
 
-        # Handle: for range items {
-        range_simple_match = re.match(r'for\s+range\s+(.+?)\s*\{', line)
-        if range_simple_match:
-            iterable_str = range_simple_match.group(1)
-            iterable_expr = self._parse_expression(iterable_str)
-            return IRFor(iterator='item', iterable=iterable_expr, body=[])
-
-        # TODO: Handle C-style for loops
-        return IRFor(iterator='i', iterable=IRIdentifier(name='range'), body=[])
+        return IRFor(iterator=iterator, iterable=iterable_expr, body=body), lines_consumed
 
     def _try_parse_comprehension_pattern(self, lines: List[str], start_index: int) -> Tuple[Optional[IRAssignment], int]:
         """
