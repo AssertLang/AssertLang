@@ -64,6 +64,14 @@ class NodeType(Enum):
     BREAK = "break"
     CONTINUE = "continue"
     PASS = "pass"
+    WITH = "with"
+    DEFER = "defer"
+    DESTRUCTURE = "destructure"
+
+    # Go-specific statements
+    SELECT = "select"
+    GOROUTINE = "goroutine"
+    CHANNEL = "channel"
 
     # Expressions
     CALL = "call"
@@ -77,6 +85,12 @@ class NodeType(Enum):
     ARRAY = "array"
     MAP = "map"
     TERNARY = "ternary"
+    COMPREHENSION = "comprehension"
+    FSTRING = "fstring"
+    SLICE = "slice"
+    SPREAD = "spread"
+    AWAIT = "await"
+    DECORATOR = "decorator"
 
 
 class BinaryOperator(Enum):
@@ -857,6 +871,249 @@ class IRTernary(IRNode):
         super().__init__(type=NodeType.TERNARY)
 
 
+@dataclass
+class IRComprehension(IRNode):
+    """
+    List/Dict/Set comprehension.
+
+    Example:
+        [x * 2 for x in items]
+        {k: v for k, v in pairs}
+        {item.id for item in items}
+    """
+
+    target: IRExpression  # The expression to build
+    iterator: str  # Variable name
+    iterable: IRExpression
+    condition: Optional[IRExpression] = None  # if clause
+    comprehension_type: str = "list"  # list, dict, set, generator
+
+    def __post_init__(self) -> None:
+        self.type = NodeType.COMPREHENSION
+        super().__init__(type=NodeType.COMPREHENSION)
+
+
+@dataclass
+class IRFString(IRNode):
+    """
+    F-string / template literal.
+
+    Example:
+        f"Hello {name}, you are {age} years old"
+        `Hello ${name}, you are ${age} years old`
+    """
+
+    parts: List[Union[str, IRExpression]] = field(default_factory=list)
+
+    def __post_init__(self) -> None:
+        self.type = NodeType.FSTRING
+        super().__init__(type=NodeType.FSTRING)
+
+
+@dataclass
+class IRWith(IRNode):
+    """
+    Context manager / using statement.
+
+    Example (Python):
+        with open("file.txt") as f:
+            data = f.read()
+
+    Example (C#):
+        using (var file = File.Open("file.txt"))
+        {
+            var data = file.ReadAll();
+        }
+    """
+
+    context_expr: IRExpression  # The resource to manage
+    variable: Optional[str] = None  # Variable to bind (as clause)
+    body: List[IRStatement] = field(default_factory=list)
+
+    def __post_init__(self) -> None:
+        self.type = NodeType.WITH
+        super().__init__(type=NodeType.WITH)
+
+
+@dataclass
+class IRDecorator(IRNode):
+    """
+    Decorator / attribute.
+
+    Example (Python):
+        @staticmethod
+        @property
+        @cache
+
+    Example (C#):
+        [Obsolete]
+        [Serializable]
+    """
+
+    name: str
+    args: List[IRExpression] = field(default_factory=list)
+    kwargs: Dict[str, IRExpression] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        self.type = NodeType.DECORATOR
+        super().__init__(type=NodeType.DECORATOR)
+
+
+@dataclass
+class IRSlice(IRNode):
+    """
+    Slice notation.
+
+    Example:
+        items[1:5]
+        items[:3]
+        items[-2:]
+        items[::2]
+    """
+
+    object: IRExpression
+    start: Optional[IRExpression] = None
+    stop: Optional[IRExpression] = None
+    step: Optional[IRExpression] = None
+
+    def __post_init__(self) -> None:
+        self.type = NodeType.SLICE
+        super().__init__(type=NodeType.SLICE)
+
+
+@dataclass
+class IRDestructure(IRNode):
+    """
+    Destructuring assignment.
+
+    Example (JS):
+        const {name, email} = user;
+        const [first, second] = items;
+
+    Example (Python):
+        name, email = user.name, user.email
+    """
+
+    pattern: Union[List[str], Dict[str, str]]  # Variables to extract
+    value: IRExpression
+    destructure_type: str = "object"  # object or array
+
+    def __post_init__(self) -> None:
+        self.type = NodeType.DESTRUCTURE
+        super().__init__(type=NodeType.DESTRUCTURE)
+
+
+@dataclass
+class IRSpread(IRNode):
+    """
+    Spread operator.
+
+    Example:
+        [...arr1, ...arr2]
+        {...obj1, ...obj2}
+    """
+
+    value: IRExpression
+    spread_type: str = "array"  # array or object
+
+    def __post_init__(self) -> None:
+        self.type = NodeType.SPREAD
+        super().__init__(type=NodeType.SPREAD)
+
+
+@dataclass
+class IRDefer(IRNode):
+    """
+    Defer statement (Go).
+
+    Example:
+        defer file.Close()
+    """
+
+    call: IRExpression  # Usually IRCall
+
+    def __post_init__(self) -> None:
+        self.type = NodeType.DEFER
+        super().__init__(type=NodeType.DEFER)
+
+
+@dataclass
+class IRChannel(IRNode):
+    """
+    Channel operation (Go).
+
+    Example:
+        ch <- value  // send
+        value := <-ch  // receive
+    """
+
+    channel: IRExpression
+    value: Optional[IRExpression] = None  # None for receive
+    operation: str = "send"  # send or receive
+
+    def __post_init__(self) -> None:
+        self.type = NodeType.CHANNEL
+        super().__init__(type=NodeType.CHANNEL)
+
+
+@dataclass
+class IRSelect(IRNode):
+    """
+    Select statement (Go).
+
+    Example:
+        select {
+        case v := <-ch1:
+            process(v)
+        case ch2 <- value:
+            log("sent")
+        default:
+            log("nothing")
+        }
+    """
+
+    cases: List[Dict[str, Any]] = field(default_factory=list)
+    # Each case: {"channel_op": IRChannel, "body": List[IRStatement]}
+    default_body: List[IRStatement] = field(default_factory=list)
+
+    def __post_init__(self) -> None:
+        self.type = NodeType.SELECT
+        super().__init__(type=NodeType.SELECT)
+
+
+@dataclass
+class IRGoroutine(IRNode):
+    """
+    Goroutine (Go async execution).
+
+    Example:
+        go processData(item)
+    """
+
+    call: IRExpression  # Usually IRCall or IRLambda
+
+    def __post_init__(self) -> None:
+        self.type = NodeType.GOROUTINE
+        super().__init__(type=NodeType.GOROUTINE)
+
+
+@dataclass
+class IRAwait(IRNode):
+    """
+    Await expression.
+
+    Example:
+        await fetchData()
+        await promise
+    """
+
+    expression: IRExpression
+
+    def __post_init__(self) -> None:
+        self.type = NodeType.AWAIT
+        super().__init__(type=NodeType.AWAIT)
+
+
 # ============================================================================
 # Type Aliases
 # ============================================================================
@@ -874,6 +1131,11 @@ IRExpression = Union[
     IRArray,
     IRMap,
     IRTernary,
+    IRComprehension,
+    IRFString,
+    IRSlice,
+    IRSpread,
+    IRAwait,
 ]
 
 # Union type for all statement nodes
@@ -888,5 +1150,11 @@ IRStatement = Union[
     IRBreak,
     IRContinue,
     IRPass,
+    IRWith,
+    IRDefer,
+    IRDestructure,
+    IRSelect,
+    IRGoroutine,
+    IRChannel,
     IRCall,  # Expression statements
 ]
