@@ -773,13 +773,8 @@ class GoGeneratorV2:
     def _generate_return(self, stmt: IRReturn) -> List[str]:
         """Generate return statement."""
         if stmt.value:
-            # Check if this is a multiple return value (IRArray)
-            if isinstance(stmt.value, IRArray):
-                # Multiple return values - generate comma-separated list
-                values = [self._generate_expression(elem) for elem in stmt.value.elements]
-                return [f"{self.indent()}return {', '.join(values)}"]
-
-            # Single return value
+            # IRArray should be generated as a slice literal, not unpacked
+            # (Go functions with error return need: return value, nil)
             value_expr = self._generate_expression(stmt.value)
 
             # Check if the value expression already contains an error return
