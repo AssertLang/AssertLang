@@ -1042,6 +1042,19 @@ class GoGeneratorV2:
                     arg = self._generate_expression(expr.args[0])
                     return f"strings.Join({arg}, {obj_expr})"
 
+            # JavaScript Number.toFixed(n) → Go fmt.Sprintf("%.{n}f", value)
+            if method_name == "toFixed" or method_name == "ToFixed":
+                if len(expr.args) == 1:
+                    self.imports_needed.add("fmt")
+                    precision = self._generate_expression(expr.args[0])
+                    # Try to extract integer value for format string
+                    if isinstance(expr.args[0], IRLiteral):
+                        prec_val = expr.args[0].value
+                        return f'fmt.Sprintf("%.{prec_val}f", {obj_expr})'
+                    else:
+                        # Dynamic precision - harder, use generic formatting
+                        return f'fmt.Sprintf("%.*f", {precision}, {obj_expr})'
+
             # Handle module.function pattern (e.g., math.sqrt, random.choice)
             obj_name = expr.function.object.name if isinstance(expr.function.object, IRIdentifier) else None
             if obj_name:
