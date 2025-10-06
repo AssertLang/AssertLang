@@ -27,6 +27,7 @@ from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
 from dsl.ir import (
     BinaryOperator,
+    IRArray,
     IRAssignment,
     IRBinaryOp,
     IRCall,
@@ -34,9 +35,11 @@ from dsl.ir import (
     IRFunction,
     IRIdentifier,
     IRLiteral,
+    IRMap,
     IRModule,
     IRNode,
     IRPropertyAccess,
+    IRReturn,
     IRType,
     LiteralType,
 )
@@ -469,6 +472,32 @@ class TypeSystem:
             # For now, return any
             return TypeInfo(pw_type="any", confidence=0.3, source="inferred")
 
+        # Array
+        if isinstance(expr, IRArray):
+            # Infer element type from first element (if exists)
+            if expr.elements:
+                elem_type = self.infer_from_expression(expr.elements[0], context)
+                # Check if all elements have same type
+                all_same = all(
+                    self.infer_from_expression(elem, context).pw_type == elem_type.pw_type
+                    for elem in expr.elements
+                )
+                if all_same and elem_type.pw_type != "any":
+                    # Homogeneous array - return array<element_type>
+                    return TypeInfo(
+                        pw_type=f"array<{elem_type.pw_type}>",
+                        confidence=0.9,
+                        source="inferred"
+                    )
+            # Empty array or mixed types
+            return TypeInfo(pw_type="array<any>", confidence=0.5, source="inferred")
+
+        # Map/Dictionary
+        if isinstance(expr, IRMap):
+            # For now, return map<string, any>
+            # Could be enhanced to infer value types
+            return TypeInfo(pw_type="map<string, any>", confidence=0.5, source="inferred")
+
         # Default
         return TypeInfo(pw_type="any", confidence=0.0, source="unknown")
 
@@ -557,6 +586,247 @@ class TypeSystem:
                     type_map[key] = type_info
 
         return type_map
+
+    # ========================================================================
+    # Cross-Function Type Inference (Context-Aware)
+    # ========================================================================
+
+    def analyze_cross_function_types(self, module: IRModule) -> Dict[str, TypeInfo]:
+        """
+        Analyze types across function boundaries using context analysis.
+
+        This method uses call graph and data flow analysis to infer types
+        based on how values flow between functions.
+
+        Args:
+            module: IR module to analyze
+
+        Returns:
+            Mapping of fully-qualified variable names to inferred types
+
+        Strategy:
+        1. Build call graph
+        2. Track data flow between functions
+        3. Infer return types from usage in callers
+        4. Infer parameter types from passed arguments
+        5. Improve confidence scores with cross-function evidence
+        """
+        # Import here to avoid circular dependency
+        from dsl.context_analyzer import ContextAnalyzer
+
+        # Build context
+        analyzer = ContextAnalyzer()
+        analyzer.analyze_module(module)
+
+        type_map: Dict[str, TypeInfo] = {}
+
+        # Analyze each function
+        for func in module.functions:
+            # Infer return type from how it's used
+            return_type = self._infer_return_type_from_usage(func, analyzer, module)
+            if return_type and not func.return_type:
+                type_map[f"{func.name}.__return__"] = return_type
+
+            # Infer parameter types from call sites
+            for param in func.params:
+                if not param.param_type:
+                    param_type = self._infer_param_type_from_calls(
+                        func.name, param.name, analyzer, module
+                    )
+                    if param_type:
+                        type_map[f"{func.name}.{param.name}"] = param_type
+
+        return type_map
+
+    def _infer_return_type_from_usage(
+        self,
+        func: IRFunction,
+        analyzer: Any,  # ContextAnalyzer (Any to avoid circular import)
+        module: IRModule
+    ) -> Optional[TypeInfo]:
+        """
+        Infer return type by analyzing how return value is used in callers.
+
+        Example:
+            def get_user(id):
+                return db.find(id)
+
+            def process():
+                user = get_user(42)
+                print(user.name)  # <-- Infer get_user returns object with 'name'
+        """
+        context = analyzer.get_function_context(func.name)
+        if not context:
+            return None
+
+        # Collect evidence from return statements
+        return_types = []
+        for return_expr in context.return_expressions:
+            # Build type context from function locals
+            type_context = self._build_type_context(func)
+            type_info = self.infer_from_expression(return_expr, type_context)
+            return_types.append(type_info)
+
+        # Check how callers use the return value
+        property_accesses = set()
+        for caller_name in context.called_by:
+            caller_context = analyzer.get_function_context(caller_name)
+            if not caller_context:
+                continue
+
+            # Find variables that receive the return value
+            # (simplified - would need more sophisticated tracking)
+            # This would track: result = get_user(id); print(result.name)
+
+        # Combine evidence
+        if return_types:
+            # Take most specific type with highest confidence
+            best = max(return_types, key=lambda t: (t.confidence, -len(t.pw_type)))
+            return best
+
+        return None
+
+    def _infer_param_type_from_calls(
+        self,
+        func_name: str,
+        param_name: str,
+        analyzer: Any,
+        module: IRModule
+    ) -> Optional[TypeInfo]:
+        """
+        Infer parameter type from what callers pass.
+
+        Example:
+            def process_user(user):
+                print(user.name)
+
+            def main():
+                u = User("Alice")
+                process_user(u)  # <-- Infer param type from User
+
+        Args:
+            func_name: Name of function
+            param_name: Name of parameter
+            analyzer: Context analyzer
+            module: IR module
+
+        Returns:
+            TypeInfo with inferred type or None
+        """
+        context = analyzer.get_function_context(func_name)
+        if not context:
+            return None
+
+        # Get parameter index
+        param_index = None
+        for i, p in enumerate(context.parameters):
+            if p == param_name:
+                param_index = i
+                break
+
+        if param_index is None:
+            return None
+
+        # Collect types from all call sites
+        passed_types = []
+        for call_site in context.calls_made:
+            if param_index < len(call_site.arguments):
+                arg = call_site.arguments[param_index]
+
+                # Get caller function to build context
+                caller_func = self._find_function(call_site.caller_function, module)
+                if caller_func:
+                    type_context = self._build_type_context(caller_func)
+                    type_info = self.infer_from_expression(arg, type_context)
+                    passed_types.append(type_info)
+
+        # Also check parameter usage in function body
+        usage_type = None
+        if param_name in context.variable_usage:
+            usage = context.variable_usage[param_name]
+
+            # If used with property access, likely an object
+            if usage.property_accesses:
+                usage_type = TypeInfo(
+                    pw_type="object",
+                    confidence=0.6,
+                    source="inferred_from_property_access"
+                )
+
+            # If used with arithmetic operators, likely numeric
+            if any(op in usage.operators_used for op in ['+', '-', '*', '/']):
+                usage_type = TypeInfo(
+                    pw_type="int",  # Could be float
+                    confidence=0.5,
+                    source="inferred_from_operators"
+                )
+
+        # Combine evidence
+        all_types = passed_types + ([usage_type] if usage_type else [])
+        if all_types:
+            # Find most common type with highest confidence
+            best = max(all_types, key=lambda t: t.confidence)
+            return best
+
+        return None
+
+    def _build_type_context(self, func: IRFunction) -> Dict[str, TypeInfo]:
+        """
+        Build type context for a function's local scope.
+
+        Args:
+            func: Function to analyze
+
+        Returns:
+            Mapping of variable names to their types
+        """
+        context = {}
+
+        # Add parameter types
+        for param in func.params:
+            if param.param_type:
+                context[param.name] = TypeInfo(
+                    pw_type=param.param_type.name,
+                    confidence=1.0,
+                    source="explicit"
+                )
+
+        # Infer types from assignments
+        for stmt in func.body:
+            if isinstance(stmt, IRAssignment):
+                type_info = self.infer_from_expression(stmt.value, context)
+                context[stmt.target] = type_info
+
+        return context
+
+    def _find_function(self, func_name: str, module: IRModule) -> Optional[IRFunction]:
+        """
+        Find a function by name in the module.
+
+        Handles both simple names and class.method names.
+
+        Args:
+            func_name: Name of function (may include class prefix)
+            module: IR module
+
+        Returns:
+            IRFunction or None
+        """
+        # Simple function
+        for func in module.functions:
+            if func.name == func_name:
+                return func
+
+        # Class method
+        if "." in func_name:
+            class_name, method_name = func_name.split(".", 1)
+            for cls in module.classes:
+                if cls.name == class_name:
+                    for method in cls.methods:
+                        if method.name == method_name:
+                            return method
+
+        return None
 
     # ========================================================================
     # Type Compatibility and Validation
