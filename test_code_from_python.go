@@ -71,7 +71,7 @@ func Galaxy(width float64, height float64, t int, arms int) (string, error) {
 	return strings.Join(output, "\n"), nil
 }
 
-func Animate(frames interface{}) error {
+func Animate(frames int) error {
 	var t int = 0
 	for true {
 		clear()
