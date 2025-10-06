@@ -561,7 +561,7 @@ FUNCTION_MAPPINGS = {
     "random.choice": {
         "python": "random.choice",
         "javascript": "(arr) => arr[Math.floor(Math.random() * arr.length)]",
-        "go": "(arr) => arr[rand.Intn(len(arr))]",
+        "go": "Choice",  # Will use helper function
         "rust": "(arr) => arr[rand::thread_rng().gen_range(0..arr.len())]",
         "csharp": "(arr) => arr[Random.Next(arr.Length)]",
     },
