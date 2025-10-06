@@ -380,56 +380,148 @@ class RustParserV2:
         return params
 
     def _parse_function_body(self, body: str) -> List:
-        """
-        Parse function body into IR statements.
+        """Parse function body into IR statements."""
+        statements = []
 
-        This is a simplified parser - handles common patterns.
-        """
-        stmts = []
+        # Remove leading/trailing whitespace
+        body = body.strip()
+        if not body:
+            return statements
 
-        # Look for return statements
-        return_pattern = r'return\s+([^;]+);'
-        for match in re.finditer(return_pattern, body):
-            expr_str = match.group(1).strip()
+        # Split into lines for statement parsing
+        lines = body.split('\n')
 
-            # Parse the return expression (simplified)
-            expr = self._parse_expression(expr_str)
-            stmts.append(IRReturn(value=expr))
+        i = 0
+        while i < len(lines):
+            line = lines[i].strip()
 
-        # Look for let bindings
-        let_pattern = r'let\s+(?:mut\s+)?(\w+)\s*=\s*([^;]+);'
-        for match in re.finditer(let_pattern, body):
-            var_name = match.group(1)
-            value_str = match.group(2).strip()
+            # Skip empty lines and comments
+            if not line or line.startswith('//'):
+                i += 1
+                continue
 
+            # Parse statement
+            stmt, lines_consumed = self._parse_rust_statement(line, lines, i)
+            if stmt:
+                statements.append(stmt)
+                i += lines_consumed
+            else:
+                i += 1
+
+        return statements
+
+    def _parse_rust_statement(self, line: str, lines: List[str], index: int) -> tuple[Optional, int]:
+        """Parse a single Rust statement. Returns (statement, lines_consumed)."""
+
+        # Return statement
+        if line.startswith('return '):
+            return_match = re.match(r'return\s+([^;]+);', line)
+            if return_match:
+                expr_str = return_match.group(1).strip()
+                expr = self._parse_expression(expr_str)
+                return IRReturn(value=expr), 1
+
+        # If statement
+        if line.startswith('if '):
+            stmt, lines_consumed = self._parse_rust_if_statement(line, lines, index)
+            return stmt, lines_consumed
+
+        # For loop
+        if line.startswith('for '):
+            stmt, lines_consumed = self._parse_rust_for_statement(line, lines, index)
+            return stmt, lines_consumed
+
+        # Let binding
+        let_match = re.match(r'let\s+(?:mut\s+)?(\w+)\s*=\s*([^;]+);', line)
+        if let_match:
+            var_name = let_match.group(1)
+            value_str = let_match.group(2).strip()
             value_expr = self._parse_expression(value_str)
-            stmts.append(IRAssignment(
-                target=var_name,
-                value=value_expr,
-                is_declaration=True
-            ))
+            return IRAssignment(target=var_name, value=value_expr, is_declaration=True), 1
 
-        # Look for HashMap insertions (map.insert(key, value);)
-        insert_pattern = r'(\w+)\.insert\(([^,]+),\s*([^)]+)\);'
-        for match in re.finditer(insert_pattern, body):
-            map_name = match.group(1)
-            key_str = match.group(2).strip()
-            val_str = match.group(3).strip()
+        # Method call (map.insert, vec.push, etc.)
+        if '.' in line and '(' in line:
+            call_match = re.match(r'(.+);', line)
+            if call_match:
+                expr_str = call_match.group(1).strip()
+                expr = self._parse_expression(expr_str)
+                if isinstance(expr, IRCall):
+                    return expr, 1
 
-            # Create a call expression for the insert
-            key_expr = self._parse_expression(key_str)
-            val_expr = self._parse_expression(val_str)
+        return None, 1
 
-            insert_call = IRCall(
-                function=IRPropertyAccess(
-                    object=IRIdentifier(name=map_name),
-                    property='insert'
-                ),
-                args=[key_expr, val_expr]
-            )
-            stmts.append(insert_call)
+    def _extract_rust_block_body(self, lines: List[str], start_index: int) -> tuple[str, int]:
+        """
+        Extract the body of a block starting from line with opening '{'.
+        Returns (body_text, lines_consumed).
+        """
+        # Reconstruct source from lines
+        source = '\n'.join(lines[start_index:])
 
-        return stmts
+        # Find opening brace
+        brace_idx = source.find('{')
+        if brace_idx == -1:
+            return "", 0
+
+        # Track brace depth
+        depth = 0
+        i = brace_idx
+
+        while i < len(source):
+            if source[i] == '{':
+                depth += 1
+            elif source[i] == '}':
+                depth -= 1
+                if depth == 0:
+                    # Extract body (between braces)
+                    body = source[brace_idx + 1:i]
+
+                    # Count lines consumed
+                    consumed_text = source[:i + 1]
+                    lines_consumed = consumed_text.count('\n') + 1
+
+                    return body.strip(), lines_consumed
+            i += 1
+
+        # Unclosed block - return what we have
+        return source[brace_idx + 1:].strip(), len(lines) - start_index
+
+    def _parse_rust_if_statement(self, line: str, lines: List[str], index: int) -> tuple[IRIf, int]:
+        """Parse Rust if statement. Returns (statement, lines_consumed)."""
+        # Extract condition: if condition {
+        condition_match = re.match(r'if\s+(.+?)\s*\{', line)
+        if not condition_match:
+            condition_str = line[3:].strip()
+            condition_expr = self._parse_expression(condition_str)
+            return IRIf(condition=condition_expr, then_body=[], else_body=[]), 1
+
+        condition_str = condition_match.group(1)
+        condition_expr = self._parse_expression(condition_str)
+
+        # Extract then body
+        then_body_str, lines_consumed = self._extract_rust_block_body(lines, index)
+        then_body = self._parse_function_body(then_body_str) if then_body_str else []
+
+        # TODO: Handle else/else if
+        return IRIf(condition=condition_expr, then_body=then_body, else_body=[]), lines_consumed
+
+    def _parse_rust_for_statement(self, line: str, lines: List[str], index: int) -> tuple[IRFor, int]:
+        """Parse Rust for loop. Returns (statement, lines_consumed)."""
+        # Handle: for item in items {
+        for_match = re.match(r'for\s+(\w+)\s+in\s+(.+?)\s*\{', line)
+        if for_match:
+            iterator = for_match.group(1)
+            iterable_str = for_match.group(2)
+            iterable_expr = self._parse_expression(iterable_str)
+
+            # Extract loop body
+            body_str, lines_consumed = self._extract_rust_block_body(lines, index)
+            body = self._parse_function_body(body_str) if body_str else []
+
+            return IRFor(iterator=iterator, iterable=iterable_expr, body=body), lines_consumed
+
+        # Fallback
+        return IRFor(iterator='item', iterable=IRIdentifier(name='iter'), body=[]), 1
 
     # ========================================================================
     # Trait and Impl Parsing
