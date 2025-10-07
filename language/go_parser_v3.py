@@ -23,15 +23,23 @@ from typing import Any, Dict, List, Optional
 
 from dsl.ir import (
     BinaryOperator,
+    IRAssignment,
+    IRBinaryOp,
+    IRCall,
     IRClass,
+    IRFor,
     IRFunction,
     IRIdentifier,
+    IRIf,
     IRImport,
+    IRLiteral,
     IRModule,
     IRParameter,
     IRProperty,
+    IRReturn,
     IRType,
     IRTypeDefinition,
+    LiteralType,
 )
 from dsl.type_system import TypeSystem
 
@@ -184,11 +192,18 @@ class GoParserV3:
             # Multiple returns - will need special handling
             return_type = IRType(name="tuple")
 
+        # Convert body statements
+        body = []
+        for stmt_data in func_data.get("body", []):
+            ir_stmt = self._convert_statement(stmt_data)
+            if ir_stmt:
+                body.append(ir_stmt)
+
         return IRFunction(
             name=func_data["name"],
             params=params,
             return_type=return_type,
-            body=[],  # Body parsing would require full source analysis
+            body=body,
             doc=""
         )
 
@@ -231,6 +246,165 @@ class GoParserV3:
     def _extract_receiver_type(self, receiver_str: str) -> str:
         """Extract clean type name from receiver (e.g., '*Calculator' -> 'Calculator')."""
         return receiver_str.lstrip("*")
+
+    def _convert_statement(self, stmt_data: Dict[str, Any]) -> Optional[Any]:
+        """Convert Go statement JSON to IR statement."""
+        stmt_type = stmt_data.get("type")
+
+        if stmt_type == "assignment":
+            # Assignment: x := 5, x = y
+            target = stmt_data.get("target", "unknown")
+            value_expr = self._convert_expression(stmt_data.get("value", {}))
+
+            return IRAssignment(
+                target=target,
+                value=value_expr
+            )
+
+        elif stmt_type == "if":
+            # If statement
+            condition = self._convert_expression(stmt_data.get("cond", {}))
+
+            then_body = []
+            for body_stmt in stmt_data.get("body", []):
+                ir_stmt = self._convert_statement(body_stmt)
+                if ir_stmt:
+                    then_body.append(ir_stmt)
+
+            else_body = []
+            for else_stmt in stmt_data.get("else", []):
+                ir_stmt = self._convert_statement(else_stmt)
+                if ir_stmt:
+                    else_body.append(ir_stmt)
+
+            return IRIf(
+                condition=condition,
+                then_body=then_body,
+                else_body=else_body if else_body else None
+            )
+
+        elif stmt_type == "for":
+            # For loop
+            # In Go: for i := 0; i < n; i++ { body }
+            # In IR: for i in range(n) { body } (we'll simplify for now)
+
+            # Get iterator from init statement if present
+            iterator = "i"
+            init_stmt = stmt_data.get("init")
+            if init_stmt and init_stmt.get("target"):
+                iterator = init_stmt["target"]
+
+            # Build iterable from condition
+            # For now, create a simple range-like expression
+            cond_expr = stmt_data.get("cond", {})
+            iterable = self._convert_expression(cond_expr.get("right", {})) if cond_expr else IRLiteral(value=0, literal_type=LiteralType.INTEGER)
+
+            body = []
+            for body_stmt in stmt_data.get("body", []):
+                ir_stmt = self._convert_statement(body_stmt)
+                if ir_stmt:
+                    body.append(ir_stmt)
+
+            return IRFor(
+                iterator=iterator,
+                iterable=iterable,
+                body=body
+            )
+
+        elif stmt_type == "return":
+            # Return statement
+            value_data = stmt_data.get("value")
+            value = self._convert_expression(value_data) if value_data else None
+
+            return IRReturn(value=value)
+
+        elif stmt_type == "expr":
+            # Expression statement (e.g., function call)
+            expr_data = stmt_data.get("expr")
+            if expr_data:
+                return self._convert_expression(expr_data)
+
+        # Unknown or unsupported statement type
+        return None
+
+    def _convert_expression(self, expr_data: Dict[str, Any]) -> Any:
+        """Convert Go expression JSON to IR expression."""
+        if not expr_data:
+            return IRLiteral(value=None, literal_type=LiteralType.NULL)
+
+        expr_type = expr_data.get("type")
+
+        if expr_type == "binary":
+            # Binary operation: x + y, x > y
+            operator_str = expr_data.get("operator", "+")
+
+            # Map Go operators to IR operators
+            op_mapping = {
+                "+": BinaryOperator.ADD,
+                "-": BinaryOperator.SUBTRACT,
+                "*": BinaryOperator.MULTIPLY,
+                "/": BinaryOperator.DIVIDE,
+                "%": BinaryOperator.MODULO,
+                "==": BinaryOperator.EQUAL,
+                "!=": BinaryOperator.NOT_EQUAL,
+                "<": BinaryOperator.LESS_THAN,
+                ">": BinaryOperator.GREATER_THAN,
+                "<=": BinaryOperator.LESS_EQUAL,
+                ">=": BinaryOperator.GREATER_EQUAL,
+                "&&": BinaryOperator.AND,
+                "||": BinaryOperator.OR,
+            }
+
+            operator = op_mapping.get(operator_str, BinaryOperator.ADD)
+            left = self._convert_expression(expr_data.get("left", {}))
+            right = self._convert_expression(expr_data.get("right", {}))
+
+            return IRBinaryOp(
+                op=operator,
+                left=left,
+                right=right
+            )
+
+        elif expr_type == "ident":
+            # Identifier: variable name
+            name = expr_data.get("name", "unknown")
+            return IRIdentifier(name=name)
+
+        elif expr_type == "literal":
+            # Literal: 123, "hello", true
+            value_raw = expr_data.get("value")
+
+            # Infer literal type from value
+            if value_raw == "true" or value_raw == "false":
+                return IRLiteral(value=value_raw == "true", literal_type=LiteralType.BOOLEAN)
+            elif value_raw and value_raw[0] == '"':
+                # String literal
+                return IRLiteral(value=value_raw.strip('"'), literal_type=LiteralType.STRING)
+            else:
+                # Try integer
+                try:
+                    int_val = int(value_raw)
+                    return IRLiteral(value=int_val, literal_type=LiteralType.INTEGER)
+                except (ValueError, TypeError):
+                    # Fall back to string
+                    return IRLiteral(value=str(value_raw), literal_type=LiteralType.STRING)
+
+        elif expr_type == "call":
+            # Function call: foo(a, b)
+            function_name = expr_data.get("function", "unknown")
+
+            args = []
+            for arg_data in expr_data.get("args", []):
+                args.append(self._convert_expression(arg_data))
+
+            return IRCall(
+                function=IRIdentifier(name=function_name),
+                args=args,
+                kwargs={}
+            )
+
+        # Unknown expression type - return identifier
+        return IRIdentifier(name="unknown")
 
 
 # Convenience functions
