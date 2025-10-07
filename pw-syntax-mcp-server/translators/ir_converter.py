@@ -391,6 +391,16 @@ def mcp_to_ir(mcp_tree: Dict[str, Any]) -> Any:
             is_variadic=params.get("is_variadic", False),
         )
 
+    # Class
+    elif tool == "pw_class":
+        return IRClass(
+            name=params["name"],
+            base_classes=params.get("base_classes", []),
+            properties=[mcp_to_ir(prop) for prop in params.get("properties", [])],
+            methods=[mcp_to_ir(method) for method in params.get("methods", [])],
+            constructor=mcp_to_ir(params["constructor"]) if params.get("constructor") else None,
+        )
+
     # Statements
     elif tool == "pw_assignment":
         return IRAssignment(

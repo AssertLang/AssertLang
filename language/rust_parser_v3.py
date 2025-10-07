@@ -24,8 +24,11 @@ from dsl.ir import (
     BinaryOperator,
     IRAssignment,
     IRBinaryOp,
+    IRBreak,
     IRCall,
+    IRCase,
     IRClass,
+    IRContinue,
     IRFor,
     IRFunction,
     IRIdentifier,
@@ -35,6 +38,7 @@ from dsl.ir import (
     IRParameter,
     IRProperty,
     IRReturn,
+    IRSwitch,
     IRType,
     IRWhile,
     LiteralType,
@@ -260,6 +264,34 @@ class RustParserV3:
             value = self._convert_expression(value_data) if value_data else None
 
             return IRReturn(value=value)
+
+        elif stmt_type == "break":
+            # break;
+            return IRBreak()
+
+        elif stmt_type == "continue":
+            # continue;
+            return IRContinue()
+
+        elif stmt_type == "switch":
+            # match expression (Rust match → switch in IR)
+            value = self._convert_expression(stmt_data.get("value", {}))
+            cases = []
+            for case_data in stmt_data.get("cases", []):
+                is_default = case_data.get("is_default", False)
+                case_body = []
+                for body_stmt in case_data.get("body", []):
+                    ir_stmt = self._convert_statement(body_stmt)
+                    if ir_stmt:
+                        case_body.append(ir_stmt)
+
+                if is_default:
+                    cases.append(IRCase(values=[], body=case_body, is_default=True))
+                else:
+                    case_values = [self._convert_expression(v) for v in case_data.get("values", [])]
+                    cases.append(IRCase(values=case_values, body=case_body, is_default=False))
+
+            return IRSwitch(value=value, cases=cases)
 
         elif stmt_type == "expr":
             # Expression as statement
