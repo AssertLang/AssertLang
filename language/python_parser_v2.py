@@ -32,6 +32,7 @@ from dsl.ir import (
     IRBinaryOp,
     IRBreak,
     IRCall,
+    IRCase,
     IRCatch,
     IRClass,
     IRComprehension,
@@ -56,6 +57,7 @@ from dsl.ir import (
     IRPropertyAccess,
     IRReturn,
     IRStatement,
+    IRSwitch,
     IRTernary,
     IRThrow,
     IRTry,
@@ -822,6 +824,8 @@ class PythonParserV2:
             return self._convert_while(node)
         elif isinstance(node, ast.Try):
             return self._convert_try(node)
+        elif hasattr(ast, 'Match') and isinstance(node, ast.Match):
+            return self._convert_match(node)
         elif isinstance(node, ast.Assign):
             return self._convert_assignment(node)
         elif isinstance(node, ast.AnnAssign):
@@ -941,6 +945,57 @@ class PythonParserV2:
             catch_blocks=catch_blocks,
             finally_body=finally_body
         )
+
+    def _convert_match(self, node) -> IRSwitch:
+        """
+        Convert Python 3.10+ match/case to IR switch statement.
+
+        Example:
+            match value:
+                case 1:
+                    return "one"
+                case 2:
+                    return "two"
+                case _:
+                    return "other"
+        """
+        # Subject expression (what we're matching on)
+        subject = self._convert_expression(node.subject)
+
+        cases = []
+        for case in node.cases:
+            # Check if this is a default case (wildcard pattern)
+            is_default = False
+            case_values = []
+
+            # Pattern can be various types
+            pattern = case.pattern
+            if hasattr(ast, 'MatchAs') and isinstance(pattern, ast.MatchAs) and pattern.pattern is None:
+                # This is the wildcard case (_)
+                is_default = True
+            elif hasattr(ast, 'MatchValue') and isinstance(pattern, ast.MatchValue):
+                # Match a specific value
+                case_values.append(self._convert_expression(pattern.value))
+            elif hasattr(ast, 'MatchSingleton') and isinstance(pattern, ast.MatchSingleton):
+                # Match None, True, False
+                case_values.append(IRLiteral(value=pattern.value, literal_type=LiteralType.NULL if pattern.value is None else LiteralType.BOOLEAN))
+            else:
+                # For other patterns, treat as default
+                is_default = True
+
+            # Convert case body
+            case_body = []
+            for stmt in case.body:
+                ir_stmt = self._convert_statement(stmt)
+                self._add_statement(case_body, ir_stmt)
+
+            cases.append(IRCase(
+                values=case_values,
+                body=case_body,
+                is_default=is_default
+            ))
+
+        return IRSwitch(value=subject, cases=cases)
 
     def _convert_with(self, node: ast.With) -> IRWith:
         """

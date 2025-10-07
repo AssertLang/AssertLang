@@ -62,6 +62,13 @@ type Statement struct {
 	Post   *Statement   `json:"post,omitempty"`
 	Body   []Statement  `json:"body,omitempty"`
 	Else   []Statement  `json:"else,omitempty"`
+	Cases  []CaseClause `json:"cases,omitempty"` // For switch statements
+}
+
+type CaseClause struct {
+	IsDefault bool         `json:"is_default"`
+	Values    []Expression `json:"values,omitempty"`
+	Body      []Statement  `json:"body,omitempty"`
 }
 
 type Expression struct {
@@ -323,6 +330,54 @@ func convertStatement(stmt ast.Stmt) Statement {
 			Type:  "literal",
 			Value: s.Tok.String(), // "++" or "--"
 		}
+		return result
+
+	case *ast.BranchStmt:
+		// Handle break and continue
+		if s.Tok.String() == "break" {
+			return Statement{Type: "break"}
+		} else if s.Tok.String() == "continue" {
+			return Statement{Type: "continue"}
+		}
+		return Statement{Type: "unknown"}
+
+	case *ast.SwitchStmt:
+		// Handle switch statement
+		result := Statement{Type: "switch"}
+
+		// Switch value (expression being switched on)
+		if s.Tag != nil {
+			result.Value = convertExpression(s.Tag)
+		}
+
+		// Convert switch cases
+		if s.Body != nil {
+			for _, stmt := range s.Body.List {
+				if caseClause, ok := stmt.(*ast.CaseClause); ok {
+					// Check if this is default case
+					isDefault := len(caseClause.List) == 0
+
+					// Get case values
+					var caseValues []Expression
+					for _, expr := range caseClause.List {
+						caseValues = append(caseValues, *convertExpression(expr))
+					}
+
+					// Get case body
+					var caseBody []Statement
+					for _, bodyStmt := range caseClause.Body {
+						caseBody = append(caseBody, convertStatement(bodyStmt))
+					}
+
+					result.Cases = append(result.Cases, CaseClause{
+						IsDefault: isDefault,
+						Values:    caseValues,
+						Body:      caseBody,
+					})
+				}
+			}
+		}
+
 		return result
 
 	default:

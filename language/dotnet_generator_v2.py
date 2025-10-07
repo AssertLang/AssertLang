@@ -162,6 +162,8 @@ class DotNetGeneratorV2:
 
         # Generate classes
         for cls in module.classes:
+            if cls is None:
+                continue
             lines.extend(self._generate_class(cls))
             lines.append("")
 
@@ -191,6 +193,8 @@ class DotNetGeneratorV2:
 
         # Check for collections
         for cls in module.classes:
+            if cls is None:
+                continue
             for prop in cls.properties:
                 self._check_type_imports(prop.prop_type)
             for method in cls.methods:
@@ -201,6 +205,8 @@ class DotNetGeneratorV2:
 
         # Check for async
         for cls in module.classes:
+            if cls is None:
+                continue
             for method in cls.methods:
                 if method.is_async:
                     self.required_imports.add("using System.Threading.Tasks;")
