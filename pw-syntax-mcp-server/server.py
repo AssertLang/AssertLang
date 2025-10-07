@@ -23,6 +23,9 @@ from mcp.server.models import InitializationOptions
 # Translation bridges
 from translators.python_bridge import python_to_pw, pw_to_python
 from translators.go_bridge import go_to_pw, pw_to_go
+from translators.rust_bridge import rust_to_pw, pw_to_rust
+from translators.typescript_bridge import typescript_to_pw, pw_to_typescript
+from translators.csharp_bridge import csharp_to_pw, pw_to_csharp
 from translators.ir_converter import ir_to_mcp, mcp_to_ir
 
 # Initialize MCP server
@@ -98,6 +101,72 @@ async def handle_list_tools() -> list[types.Tool]:
                 "required": ["tree"],
             },
         ),
+        types.Tool(
+            name="rust_to_pw",
+            description="Parse Rust code into PW MCP tree",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "code": {"type": "string", "description": "Rust source code"},
+                },
+                "required": ["code"],
+            },
+        ),
+        types.Tool(
+            name="pw_to_rust",
+            description="Generate Rust code from PW MCP tree",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "tree": {"type": "object", "description": "PW MCP tree"},
+                },
+                "required": ["tree"],
+            },
+        ),
+        types.Tool(
+            name="typescript_to_pw",
+            description="Parse TypeScript code into PW MCP tree",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "code": {"type": "string", "description": "TypeScript source code"},
+                },
+                "required": ["code"],
+            },
+        ),
+        types.Tool(
+            name="pw_to_typescript",
+            description="Generate TypeScript code from PW MCP tree",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "tree": {"type": "object", "description": "PW MCP tree"},
+                },
+                "required": ["tree"],
+            },
+        ),
+        types.Tool(
+            name="csharp_to_pw",
+            description="Parse C# code into PW MCP tree",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "code": {"type": "string", "description": "C# source code"},
+                },
+                "required": ["code"],
+            },
+        ),
+        types.Tool(
+            name="pw_to_csharp",
+            description="Generate C# code from PW MCP tree",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "tree": {"type": "object", "description": "PW MCP tree"},
+                },
+                "required": ["tree"],
+            },
+        ),
 
         # ====================================================================
         # Atomic Syntax Tools (76 tools)
@@ -115,7 +184,7 @@ async def handle_list_tools() -> list[types.Tool]:
                     "imports": {"type": "array", "items": {"type": "object"}},
                     "functions": {"type": "array", "items": {"type": "object"}},
                     "classes": {"type": "array", "items": {"type": "object"}},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["name", "target_lang"],
             },
@@ -129,7 +198,7 @@ async def handle_list_tools() -> list[types.Tool]:
                     "module": {"type": "string"},
                     "alias": {"type": "string"},
                     "items": {"type": "array", "items": {"type": "string"}},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["module", "target_lang"],
             },
@@ -147,7 +216,7 @@ async def handle_list_tools() -> list[types.Tool]:
                     "returns": {"type": "object"},
                     "body": {"type": "array", "items": {"type": "object"}},
                     "is_async": {"type": "boolean"},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["name", "target_lang"],
             },
@@ -161,7 +230,7 @@ async def handle_list_tools() -> list[types.Tool]:
                     "name": {"type": "string"},
                     "param_type": {"type": "object"},
                     "default": {"type": "object"},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["name", "target_lang"],
             },
@@ -175,7 +244,7 @@ async def handle_list_tools() -> list[types.Tool]:
                     "name": {"type": "string"},
                     "properties": {"type": "array", "items": {"type": "object"}},
                     "methods": {"type": "array", "items": {"type": "object"}},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["name", "target_lang"],
             },
@@ -189,7 +258,7 @@ async def handle_list_tools() -> list[types.Tool]:
                     "name": {"type": "string"},
                     "prop_type": {"type": "object"},
                     "default": {"type": "object"},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["name", "target_lang"],
             },
@@ -205,7 +274,7 @@ async def handle_list_tools() -> list[types.Tool]:
                     "condition": {"type": "object"},
                     "then_body": {"type": "array", "items": {"type": "object"}},
                     "else_body": {"type": "array", "items": {"type": "object"}},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["condition", "then_body", "target_lang"],
             },
@@ -219,7 +288,7 @@ async def handle_list_tools() -> list[types.Tool]:
                     "iterator": {"type": "string"},
                     "iterable": {"type": "object"},
                     "body": {"type": "array", "items": {"type": "object"}},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["iterator", "iterable", "body", "target_lang"],
             },
@@ -232,7 +301,7 @@ async def handle_list_tools() -> list[types.Tool]:
                 "properties": {
                     "condition": {"type": "object"},
                     "body": {"type": "array", "items": {"type": "object"}},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["condition", "body", "target_lang"],
             },
@@ -246,7 +315,7 @@ async def handle_list_tools() -> list[types.Tool]:
                     "target": {"type": "string"},
                     "value": {"type": "object"},
                     "var_type": {"type": "object"},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["target", "value", "target_lang"],
             },
@@ -258,7 +327,7 @@ async def handle_list_tools() -> list[types.Tool]:
                 "type": "object",
                 "properties": {
                     "value": {"type": "object"},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["target_lang"],
             },
@@ -269,7 +338,7 @@ async def handle_list_tools() -> list[types.Tool]:
             inputSchema={
                 "type": "object",
                 "properties": {
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["target_lang"],
             },
@@ -280,7 +349,7 @@ async def handle_list_tools() -> list[types.Tool]:
             inputSchema={
                 "type": "object",
                 "properties": {
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["target_lang"],
             },
@@ -294,7 +363,7 @@ async def handle_list_tools() -> list[types.Tool]:
                     "body": {"type": "array", "items": {"type": "object"}},
                     "handlers": {"type": "array", "items": {"type": "object"}},
                     "finally_body": {"type": "array", "items": {"type": "object"}},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["body", "target_lang"],
             },
@@ -308,7 +377,7 @@ async def handle_list_tools() -> list[types.Tool]:
                     "exception_type": {"type": "string"},
                     "var_name": {"type": "string"},
                     "body": {"type": "array", "items": {"type": "object"}},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["body", "target_lang"],
             },
@@ -320,9 +389,36 @@ async def handle_list_tools() -> list[types.Tool]:
                 "type": "object",
                 "properties": {
                     "exception": {"type": "object"},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["exception", "target_lang"],
+            },
+        ),
+        types.Tool(
+            name="pw_switch",
+            description="Switch/match statement",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "value": {"type": "object", "description": "Expression to match against"},
+                    "cases": {"type": "array", "items": {"type": "object"}, "description": "Array of case clauses"},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
+                },
+                "required": ["value", "cases", "target_lang"],
+            },
+        ),
+        types.Tool(
+            name="pw_case",
+            description="Case clause for switch/match",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "values": {"type": "array", "items": {"type": "object"}, "description": "Values to match (empty for default)"},
+                    "body": {"type": "array", "items": {"type": "object"}, "description": "Statements to execute"},
+                    "is_default": {"type": "boolean", "description": "Whether this is the default case"},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
+                },
+                "required": ["body", "target_lang"],
             },
         ),
 
@@ -336,7 +432,7 @@ async def handle_list_tools() -> list[types.Tool]:
                     "function": {"type": "string"},
                     "args": {"type": "array", "items": {"type": "object"}},
                     "kwargs": {"type": "object"},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["function", "target_lang"],
             },
@@ -350,7 +446,7 @@ async def handle_list_tools() -> list[types.Tool]:
                     "op": {"type": "string"},
                     "left": {"type": "object"},
                     "right": {"type": "object"},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["op", "left", "right", "target_lang"],
             },
@@ -363,7 +459,7 @@ async def handle_list_tools() -> list[types.Tool]:
                 "properties": {
                     "op": {"type": "string"},
                     "operand": {"type": "object"},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["op", "operand", "target_lang"],
             },
@@ -376,7 +472,7 @@ async def handle_list_tools() -> list[types.Tool]:
                 "properties": {
                     "value": {},
                     "literal_type": {"type": "string", "enum": ["STRING", "INTEGER", "FLOAT", "BOOLEAN", "NULL"]},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["value", "literal_type", "target_lang"],
             },
@@ -388,7 +484,7 @@ async def handle_list_tools() -> list[types.Tool]:
                 "type": "object",
                 "properties": {
                     "name": {"type": "string"},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["name", "target_lang"],
             },
@@ -401,7 +497,7 @@ async def handle_list_tools() -> list[types.Tool]:
                 "properties": {
                     "object": {"type": "object"},
                     "property": {"type": "string"},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["object", "property", "target_lang"],
             },
@@ -414,7 +510,7 @@ async def handle_list_tools() -> list[types.Tool]:
                 "properties": {
                     "array": {"type": "object"},
                     "index": {"type": "object"},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["array", "index", "target_lang"],
             },
@@ -426,7 +522,7 @@ async def handle_list_tools() -> list[types.Tool]:
                 "type": "object",
                 "properties": {
                     "elements": {"type": "array", "items": {"type": "object"}},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["elements", "target_lang"],
             },
@@ -438,7 +534,7 @@ async def handle_list_tools() -> list[types.Tool]:
                 "type": "object",
                 "properties": {
                     "pairs": {"type": "array", "items": {"type": "object"}},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["pairs", "target_lang"],
             },
@@ -451,7 +547,7 @@ async def handle_list_tools() -> list[types.Tool]:
                 "properties": {
                     "params": {"type": "array", "items": {"type": "string"}},
                     "body": {"type": "object"},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["params", "body", "target_lang"],
             },
@@ -465,7 +561,7 @@ async def handle_list_tools() -> list[types.Tool]:
                     "condition": {"type": "object"},
                     "true_value": {"type": "object"},
                     "false_value": {"type": "object"},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["condition", "true_value", "false_value", "target_lang"],
             },
@@ -481,7 +577,7 @@ async def handle_list_tools() -> list[types.Tool]:
                     "iterable": {"type": "object"},
                     "condition": {"type": "object"},
                     "is_dict": {"type": "boolean"},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["element", "iterator", "iterable", "target_lang"],
             },
@@ -493,7 +589,7 @@ async def handle_list_tools() -> list[types.Tool]:
                 "type": "object",
                 "properties": {
                     "parts": {"type": "array"},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["parts", "target_lang"],
             },
@@ -508,7 +604,7 @@ async def handle_list_tools() -> list[types.Tool]:
                     "start": {"type": "object"},
                     "end": {"type": "object"},
                     "step": {"type": "object"},
-                    "target_lang": {"type": "string", "enum": ["python", "go"]},
+                    "target_lang": {"type": "string", "enum": ["python", "go", "rust", "typescript", "csharp"]},
                 },
                 "required": ["array", "target_lang"],
             },
@@ -543,10 +639,16 @@ async def handle_call_tool(
                 pw_tree = python_to_pw(code)
             elif from_lang == "go":
                 pw_tree = go_to_pw(code)
+            elif from_lang == "rust":
+                pw_tree = rust_to_pw(code)
+            elif from_lang == "typescript":
+                pw_tree = typescript_to_pw(code)
+            elif from_lang == "csharp" or from_lang == "c#":
+                pw_tree = csharp_to_pw(code)
             else:
                 return [types.TextContent(
                     type="text",
-                    text=f"❌ Unsupported source language: {from_lang}. Supported: python, go"
+                    text=f"❌ Unsupported source language: {from_lang}. Supported: python, go, rust, typescript, csharp"
                 )]
 
             # Step 2: PW → Target
@@ -554,10 +656,16 @@ async def handle_call_tool(
                 result_code = pw_to_python(pw_tree)
             elif to_lang == "go":
                 result_code = pw_to_go(pw_tree)
+            elif to_lang == "rust":
+                result_code = pw_to_rust(pw_tree)
+            elif to_lang == "typescript":
+                result_code = pw_to_typescript(pw_tree)
+            elif to_lang == "csharp" or to_lang == "c#":
+                result_code = pw_to_csharp(pw_tree)
             else:
                 return [types.TextContent(
                     type="text",
-                    text=f"❌ Unsupported target language: {to_lang}. Supported: python, go"
+                    text=f"❌ Unsupported target language: {to_lang}. Supported: python, go, rust, typescript, csharp"
                 )]
 
             return [types.TextContent(
@@ -605,6 +713,51 @@ async def handle_call_tool(
                 text=f"❌ Parse error: {str(e)}"
             )]
 
+    elif name == "rust_to_pw":
+        code = arguments.get("code", "")
+        try:
+            pw_tree = rust_to_pw(code)
+            import json
+            return [types.TextContent(
+                type="text",
+                text=f"✅ Rust → PW tree:\n\n```json\n{json.dumps(pw_tree, indent=2)}\n```"
+            )]
+        except Exception as e:
+            return [types.TextContent(
+                type="text",
+                text=f"❌ Parse error: {str(e)}"
+            )]
+
+    elif name == "typescript_to_pw":
+        code = arguments.get("code", "")
+        try:
+            pw_tree = typescript_to_pw(code)
+            import json
+            return [types.TextContent(
+                type="text",
+                text=f"✅ TypeScript → PW tree:\n\n```json\n{json.dumps(pw_tree, indent=2)}\n```"
+            )]
+        except Exception as e:
+            return [types.TextContent(
+                type="text",
+                text=f"❌ Parse error: {str(e)}"
+            )]
+
+    elif name == "csharp_to_pw":
+        code = arguments.get("code", "")
+        try:
+            pw_tree = csharp_to_pw(code)
+            import json
+            return [types.TextContent(
+                type="text",
+                text=f"✅ C# → PW tree:\n\n```json\n{json.dumps(pw_tree, indent=2)}\n```"
+            )]
+        except Exception as e:
+            return [types.TextContent(
+                type="text",
+                text=f"❌ Parse error: {str(e)}"
+            )]
+
     # ========================================================================
     # PW → Language Generators
     # ========================================================================
@@ -630,6 +783,48 @@ async def handle_call_tool(
             return [types.TextContent(
                 type="text",
                 text=f"✅ PW → Go:\n\n```go\n{go_code}\n```"
+            )]
+        except Exception as e:
+            return [types.TextContent(
+                type="text",
+                text=f"❌ Generation error: {str(e)}"
+            )]
+
+    elif name == "pw_to_rust":
+        tree = arguments.get("tree", {})
+        try:
+            rust_code = pw_to_rust(tree)
+            return [types.TextContent(
+                type="text",
+                text=f"✅ PW → Rust:\n\n```rust\n{rust_code}\n```"
+            )]
+        except Exception as e:
+            return [types.TextContent(
+                type="text",
+                text=f"❌ Generation error: {str(e)}"
+            )]
+
+    elif name == "pw_to_typescript":
+        tree = arguments.get("tree", {})
+        try:
+            typescript_code = pw_to_typescript(tree)
+            return [types.TextContent(
+                type="text",
+                text=f"✅ PW → TypeScript:\n\n```typescript\n{typescript_code}\n```"
+            )]
+        except Exception as e:
+            return [types.TextContent(
+                type="text",
+                text=f"❌ Generation error: {str(e)}"
+            )]
+
+    elif name == "pw_to_csharp":
+        tree = arguments.get("tree", {})
+        try:
+            csharp_code = pw_to_csharp(tree)
+            return [types.TextContent(
+                type="text",
+                text=f"✅ PW → C#:\n\n```csharp\n{csharp_code}\n```"
             )]
         except Exception as e:
             return [types.TextContent(
@@ -668,10 +863,22 @@ async def handle_call_tool(
                 from language.go_generator_v2 import GoGeneratorV2
                 generator = GoGeneratorV2()
                 code = generator._generate_node(ir_node)
+            elif target_lang == "rust":
+                from language.rust_generator_v2 import RustGeneratorV2
+                generator = RustGeneratorV2()
+                code = generator._generate_node(ir_node)
+            elif target_lang == "typescript":
+                from language.nodejs_generator_v2 import NodeJSGeneratorV2
+                generator = NodeJSGeneratorV2()
+                code = generator._generate_node(ir_node)
+            elif target_lang == "csharp" or target_lang == "c#":
+                from language.dotnet_generator_v2 import DotNetGeneratorV2
+                generator = DotNetGeneratorV2()
+                code = generator._generate_node(ir_node)
             else:
                 return [types.TextContent(
                     type="text",
-                    text=f"❌ Unsupported target language: {target_lang}"
+                    text=f"❌ Unsupported target language: {target_lang}. Supported: python, go, rust, typescript, csharp"
                 )]
 
             return [types.TextContent(

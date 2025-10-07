@@ -89,8 +89,24 @@ enum Statement {
     },
     #[serde(rename = "return")]
     Return { value: Option<Expression> },
+    #[serde(rename = "break")]
+    Break,
+    #[serde(rename = "continue")]
+    Continue,
+    #[serde(rename = "switch")]
+    Switch {
+        value: Expression,
+        cases: Vec<CaseClause>,
+    },
     #[serde(rename = "expr")]
     Expr { expr: Expression },
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+struct CaseClause {
+    is_default: bool,
+    values: Vec<Expression>,
+    body: Vec<Statement>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -304,6 +320,9 @@ fn convert_statement(stmt: &Stmt) -> Option<Statement> {
                 Expr::Return(expr_return) => Some(Statement::Return {
                     value: expr_return.expr.as_ref().map(|e| convert_expr(e)),
                 }),
+                Expr::Break(_) => Some(Statement::Break),
+                Expr::Continue(_) => Some(Statement::Continue),
+                Expr::Match(expr_match) => Some(convert_match(expr_match)),
                 Expr::Assign(expr_assign) => {
                     let target = expr_to_string(&expr_assign.left);
                     let value = convert_expr(&expr_assign.right);
@@ -358,6 +377,39 @@ fn convert_while(expr_while: &syn::ExprWhile) -> Statement {
     let body = convert_block(&expr_while.body);
 
     Statement::While { condition, body }
+}
+
+fn convert_match(expr_match: &syn::ExprMatch) -> Statement {
+    let value = convert_expr(&expr_match.expr);
+    let mut cases = Vec::new();
+
+    for arm in &expr_match.arms {
+        // Check if this is a wildcard pattern (_)
+        let is_default = matches!(arm.pat, syn::Pat::Wild(_));
+
+        // Convert pattern to value expression (simplified)
+        let mut values = Vec::new();
+        if !is_default {
+            // For simple literal patterns, convert to expression
+            if let syn::Pat::Lit(pat_lit) = &arm.pat {
+                values.push(convert_expr(&pat_lit.lit));
+            }
+            // For identifiers and other patterns, we'll treat as default for now
+        }
+
+        // Convert arm body
+        let body_stmts = vec![Statement::Expr {
+            expr: convert_expr(&arm.body),
+        }];
+
+        cases.push(CaseClause {
+            is_default,
+            values,
+            body: body_stmts,
+        });
+    }
+
+    Statement::Switch { value, cases }
 }
 
 fn convert_expr(expr: &Expr) -> Expression {
