@@ -1141,7 +1141,7 @@ class Parser:
             self.advance()
 
         value = self.parse_expression()
-        self.expect(TokenType.NEWLINE)
+        self.consume_statement_terminator()
 
         return IRAssignment(
             target=target,

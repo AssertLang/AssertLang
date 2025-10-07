@@ -32,14 +32,23 @@ venv.bak/
 .venv/
 
 # IDE
-.vscode/
 .idea/
-.cursor/
-.claude/
 *.swp
 *.swo
 *~
 .DS_Store
+
+# VS Code settings (but keep our extension!)
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
+# Keep: .vscode/extensions/pw-language/ (our extension)
+
+# Personal config (but keep project docs!)
+.cursor/
+.claude/
+# Keep: CLAUDE.md (project instructions)
+# Keep: CURRENT_WORK.md (status tracking)
 
 # Testing
 .pytest_cache/
@@ -98,13 +107,11 @@ Thumbs.db
 *.swp
 .cache/
 
-# Personal and internal docs (root directory)
+# Personal and internal docs (root directory) - KEEP CLAUDE.md and Current_Work.md!
 AI-AGENT-GUIDE.md
 ALIGNMENT_*.md
-CLAUDE.md
 COMPLETE_LANGUAGE_SUPPORT.md
 CORRECTED_VISION.md
-Current_Work.md
 DOCUMENTATION_AUDIT_ACTION_PLAN.md
 EXPLAIN_LIKE_IM_5.md
 FOR-DAVE.md
