@@ -38,7 +38,7 @@ type Function struct {
 	Receiver   *Receiver   `json:"receiver,omitempty"`
 	Params     []Parameter `json:"params"`
 	Results    []Parameter `json:"results"`
-	Body       string      `json:"body"` // Raw source code
+	Body       []Statement `json:"body"` // Parsed statement AST
 }
 
 type Receiver struct {
@@ -49,6 +49,30 @@ type Receiver struct {
 type Parameter struct {
 	Name string `json:"name"`
 	Type string `json:"type"`
+}
+
+// Statement types
+type Statement struct {
+	Type   string       `json:"type"` // "assignment", "if", "for", "return", etc.
+	Target string       `json:"target,omitempty"`
+	Value  *Expression  `json:"value,omitempty"`
+	Expr   *Expression  `json:"expr,omitempty"`
+	Init   *Statement   `json:"init,omitempty"`
+	Cond   *Expression  `json:"cond,omitempty"`
+	Post   *Statement   `json:"post,omitempty"`
+	Body   []Statement  `json:"body,omitempty"`
+	Else   []Statement  `json:"else,omitempty"`
+}
+
+type Expression struct {
+	Type     string       `json:"type"` // "binary", "ident", "literal", "call"
+	Operator string       `json:"operator,omitempty"`
+	Left     *Expression  `json:"left,omitempty"`
+	Right    *Expression  `json:"right,omitempty"`
+	Name     string       `json:"name,omitempty"`
+	Value    interface{}  `json:"value,omitempty"`
+	Function string       `json:"function,omitempty"`
+	Args     []Expression `json:"args,omitempty"`
 }
 
 func main() {
@@ -188,14 +212,188 @@ func convertFunction(fn *ast.FuncDecl, fset *token.FileSet) Function {
 		}
 	}
 
-	// Body (as raw source)
+	// Body (parse statements)
 	if fn.Body != nil {
-		// Would need original source file to extract body text
-		// For now, just mark that body exists
-		function.Body = "<parsed_body>"
+		for _, stmt := range fn.Body.List {
+			function.Body = append(function.Body, convertStatement(stmt))
+		}
 	}
 
 	return function
+}
+
+func convertStatement(stmt ast.Stmt) Statement {
+	switch s := stmt.(type) {
+	case *ast.AssignStmt:
+		// Handle assignment: x := 5, x = y, etc.
+		result := Statement{Type: "assignment"}
+
+		// Get target (left side)
+		if len(s.Lhs) > 0 {
+			result.Target = exprToIdentifier(s.Lhs[0])
+		}
+
+		// Get value (right side)
+		if len(s.Rhs) > 0 {
+			result.Value = convertExpression(s.Rhs[0])
+		}
+
+		return result
+
+	case *ast.IfStmt:
+		// Handle if statement
+		result := Statement{Type: "if"}
+
+		// Condition
+		result.Cond = convertExpression(s.Cond)
+
+		// Body
+		if s.Body != nil {
+			for _, bodyStmt := range s.Body.List {
+				result.Body = append(result.Body, convertStatement(bodyStmt))
+			}
+		}
+
+		// Else clause
+		if s.Else != nil {
+			switch elseStmt := s.Else.(type) {
+			case *ast.BlockStmt:
+				for _, stmt := range elseStmt.List {
+					result.Else = append(result.Else, convertStatement(stmt))
+				}
+			case *ast.IfStmt:
+				// else if
+				result.Else = append(result.Else, convertStatement(elseStmt))
+			}
+		}
+
+		return result
+
+	case *ast.ForStmt:
+		// Handle for loop
+		result := Statement{Type: "for"}
+
+		// Init statement (e.g., i := 0)
+		if s.Init != nil {
+			initStmt := convertStatement(s.Init)
+			result.Init = &initStmt
+		}
+
+		// Condition (e.g., i < 10)
+		if s.Cond != nil {
+			result.Cond = convertExpression(s.Cond)
+		}
+
+		// Post statement (e.g., i++)
+		if s.Post != nil {
+			postStmt := convertStatement(s.Post)
+			result.Post = &postStmt
+		}
+
+		// Body
+		if s.Body != nil {
+			for _, bodyStmt := range s.Body.List {
+				result.Body = append(result.Body, convertStatement(bodyStmt))
+			}
+		}
+
+		return result
+
+	case *ast.ReturnStmt:
+		// Handle return statement
+		result := Statement{Type: "return"}
+
+		if len(s.Results) > 0 {
+			result.Value = convertExpression(s.Results[0])
+		}
+
+		return result
+
+	case *ast.ExprStmt:
+		// Expression as statement (e.g., function call)
+		result := Statement{Type: "expr"}
+		result.Expr = convertExpression(s.X)
+		return result
+
+	case *ast.IncDecStmt:
+		// Handle i++ or i--
+		result := Statement{Type: "incdec"}
+		result.Target = exprToIdentifier(s.X)
+		result.Value = &Expression{
+			Type:  "literal",
+			Value: s.Tok.String(), // "++" or "--"
+		}
+		return result
+
+	default:
+		// Unknown statement type
+		return Statement{Type: "unknown"}
+	}
+}
+
+func convertExpression(expr ast.Expr) *Expression {
+	switch e := expr.(type) {
+	case *ast.BinaryExpr:
+		// Binary operation: x + y, x > y, etc.
+		return &Expression{
+			Type:     "binary",
+			Operator: e.Op.String(),
+			Left:     convertExpression(e.X),
+			Right:    convertExpression(e.Y),
+		}
+
+	case *ast.Ident:
+		// Identifier: variable name
+		return &Expression{
+			Type: "ident",
+			Name: e.Name,
+		}
+
+	case *ast.BasicLit:
+		// Literal: 123, "hello", true
+		return &Expression{
+			Type:  "literal",
+			Value: e.Value,
+		}
+
+	case *ast.CallExpr:
+		// Function call: foo(a, b)
+		result := &Expression{
+			Type:     "call",
+			Function: exprToIdentifier(e.Fun),
+		}
+
+		for _, arg := range e.Args {
+			result.Args = append(result.Args, *convertExpression(arg))
+		}
+
+		return result
+
+	case *ast.UnaryExpr:
+		// Unary operation: -x, !flag
+		return &Expression{
+			Type:     "unary",
+			Operator: e.Op.String(),
+			Right:    convertExpression(e.X),
+		}
+
+	default:
+		// Unknown expression
+		return &Expression{
+			Type: "unknown",
+		}
+	}
+}
+
+func exprToIdentifier(expr ast.Expr) string {
+	switch e := expr.(type) {
+	case *ast.Ident:
+		return e.Name
+	case *ast.SelectorExpr:
+		return exprToIdentifier(e.X) + "." + e.Sel.Name
+	default:
+		return "unknown"
+	}
 }
 
 func exprToString(expr ast.Expr) string {
