@@ -63,6 +63,7 @@ from dsl.ir import (
     IRTypeDefinition,
     IRUnaryOp,
     IRWhile,
+    IRWith,
     LiteralType,
     UnaryOperator,
 )
@@ -426,10 +427,10 @@ class PythonGeneratorV2:
         """Generate class method."""
         lines = []
 
-        # Decorators from metadata
-        if method.metadata.get("decorators"):
-            for dec in method.metadata["decorators"]:
-                lines.append(f"{self.indent()}@{dec}")
+        # Decorators (use direct field, fall back to metadata)
+        decorators = method.decorators if hasattr(method, 'decorators') else method.metadata.get("decorators", [])
+        for dec in decorators:
+            lines.append(f"{self.indent()}@{dec}")
 
         # Static method
         if method.is_static:
@@ -479,10 +480,10 @@ class PythonGeneratorV2:
         """Generate standalone function."""
         lines = []
 
-        # Decorators from metadata
-        if func.metadata.get("decorators"):
-            for dec in func.metadata["decorators"]:
-                lines.append(f"@{dec}")
+        # Decorators (use direct field, fall back to metadata)
+        decorators = func.decorators if hasattr(func, 'decorators') else func.metadata.get("decorators", [])
+        for dec in decorators:
+            lines.append(f"@{dec}")
 
         # Signature
         params = []
@@ -554,6 +555,8 @@ class PythonGeneratorV2:
             return f"{self.indent()}continue"
         elif isinstance(stmt, IRPass):
             return f"{self.indent()}pass"
+        elif isinstance(stmt, IRWith):
+            return self.generate_with(stmt)
         elif isinstance(stmt, IRCall):
             # Expression statement
             return f"{self.indent()}{self.generate_expression(stmt)}"
@@ -674,6 +677,31 @@ class PythonGeneratorV2:
             for s in stmt.finally_body:
                 lines.append(self.generate_statement(s))
             self.decrease_indent()
+
+        return "\n".join(lines)
+
+    def generate_with(self, stmt: IRWith) -> str:
+        """Generate with statement (context manager)."""
+        lines = []
+
+        # Generate: with expr as var:
+        context = self.generate_expression(stmt.context_expr)
+        with_line = f"{self.indent()}with {context}"
+
+        if stmt.variable:
+            with_line += f" as {stmt.variable}"
+
+        with_line += ":"
+        lines.append(with_line)
+
+        # Body
+        self.increase_indent()
+        if stmt.body:
+            for s in stmt.body:
+                lines.append(self.generate_statement(s))
+        else:
+            lines.append(f"{self.indent()}pass")
+        self.decrease_indent()
 
         return "\n".join(lines)
 

@@ -420,6 +420,7 @@ class IRFunction(IRNode):
     is_async: bool = False
     is_static: bool = False
     is_private: bool = False
+    decorators: List[Union[str, 'IRDecorator']] = field(default_factory=list)
     doc: Optional[str] = None
 
     def __post_init__(self) -> None:
