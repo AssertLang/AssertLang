@@ -36,6 +36,7 @@ from dsl.ir import (
     IRClass,
     IRComprehension,
     IRContinue,
+    IRDecorator,
     IREnum,
     IREnumVariant,
     IRFor,
@@ -62,6 +63,7 @@ from dsl.ir import (
     IRTypeDefinition,
     IRUnaryOp,
     IRWhile,
+    IRWith,
     LiteralType,
     SourceLocation,
     UnaryOperator,
@@ -378,6 +380,23 @@ class PythonParserV2:
         """Convert Python function to IR function."""
         self.current_function = node.name
 
+        # Extract decorators
+        decorators = []
+        for dec in node.decorator_list:
+            if isinstance(dec, ast.Name):
+                # Simple decorator: @property, @staticmethod
+                decorators.append(dec.id)
+            elif isinstance(dec, ast.Call):
+                # Decorator with args: @lru_cache(maxsize=100)
+                if isinstance(dec.func, ast.Name):
+                    decorators.append(dec.func.id)
+                elif isinstance(dec.func, ast.Attribute):
+                    # Chained decorator: @pytest.mark.skip
+                    decorators.append(self._get_full_name(dec.func))
+            elif isinstance(dec, ast.Attribute):
+                # Attribute decorator: @abc.abstractmethod
+                decorators.append(self._get_full_name(dec))
+
         # Extract parameters
         params = []
         for arg in node.args.args:
@@ -442,8 +461,9 @@ class PythonParserV2:
             throws=throws,
             body=body,
             is_async=isinstance(node, ast.AsyncFunctionDef),
-            is_static=False,  # TODO: detect @staticmethod
+            is_static='staticmethod' in decorators,
             is_private=node.name.startswith('_'),
+            decorators=decorators,
             doc=ast.get_docstring(node)
         )
 
@@ -818,6 +838,8 @@ class PythonParserV2:
             return IRContinue()
         elif isinstance(node, ast.Pass):
             return IRPass()
+        elif isinstance(node, ast.With):
+            return self._convert_with(node)
         elif isinstance(node, ast.Expr):
             # Expression statement (like function call)
             expr = self._convert_expression(node.value)
@@ -918,6 +940,39 @@ class PythonParserV2:
             try_body=try_body,
             catch_blocks=catch_blocks,
             finally_body=finally_body
+        )
+
+    def _convert_with(self, node: ast.With) -> IRWith:
+        """
+        Convert with statement (context manager) to IR.
+
+        Example:
+            with open("file.txt") as f:
+                data = f.read()
+        """
+        # Python with can have multiple items, take the first one
+        if not node.items:
+            return IRWith(context_expr=IRIdentifier(name="unknown"), body=[])
+
+        item = node.items[0]
+        context_expr = self._convert_expression(item.context_expr)
+
+        # Extract variable name from "as" clause
+        variable = None
+        if item.optional_vars:
+            if isinstance(item.optional_vars, ast.Name):
+                variable = item.optional_vars.id
+
+        # Convert body
+        body = []
+        for stmt in node.body:
+            ir_stmt = self._convert_statement(stmt)
+            self._add_statement(body, ir_stmt)
+
+        return IRWith(
+            context_expr=context_expr,
+            variable=variable,
+            body=body
         )
 
     def _convert_assignment(self, node: ast.Assign) -> Union[IRAssignment, List[IRAssignment]]:
@@ -1576,6 +1631,26 @@ class PythonParserV2:
         elif isinstance(node, ast.Str):
             return node.s
         return None
+
+    def _get_full_name(self, node: ast.Attribute) -> str:
+        """
+        Get full dotted name from Attribute node.
+
+        Example:
+            abc.abstractmethod → "abc.abstractmethod"
+            pytest.mark.skip → "pytest.mark.skip"
+        """
+        parts = []
+        current = node
+
+        while isinstance(current, ast.Attribute):
+            parts.append(current.attr)
+            current = current.value
+
+        if isinstance(current, ast.Name):
+            parts.append(current.id)
+
+        return ".".join(reversed(parts))
 
 
 # ============================================================================
