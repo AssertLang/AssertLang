@@ -141,6 +141,7 @@ class TokenType(Enum):
     QUESTION = "?"
     PIPE = "|"
     ARROW = "->"
+    SEMICOLON = ";"
 
     # Special
     NEWLINE = "NEWLINE"
@@ -214,9 +215,32 @@ class Lexer:
             self.advance()
 
     def skip_comment(self) -> None:
-        """Skip comments."""
+        """
+        Skip comments.
+        Supports:
+        - Python-style: # comment
+        - C-style single-line: // comment
+        - C-style multi-line: /* comment */
+        """
+        # Python-style comment
         if self.peek() == "#":
             while self.peek() and self.peek() != "\n":
+                self.advance()
+        # C-style single-line comment
+        elif self.peek() == "/" and self.peek(1) == "/":
+            self.advance()  # /
+            self.advance()  # /
+            while self.peek() and self.peek() != "\n":
+                self.advance()
+        # C-style multi-line comment
+        elif self.peek() == "/" and self.peek(1) == "*":
+            self.advance()  # /
+            self.advance()  # *
+            while self.peek():
+                if self.peek() == "*" and self.peek(1) == "/":
+                    self.advance()  # *
+                    self.advance()  # /
+                    break
                 self.advance()
 
     def read_string(self) -> str:
@@ -356,8 +380,8 @@ class Lexer:
                     indent += 1
 
                 # Skip blank lines and comments
-                if self.peek() in "\n#":
-                    if self.peek() == "#":
+                if self.peek() in "\n#" or (self.peek() == "/" and self.peek(1) in "/*"):
+                    if self.peek() == "#" or (self.peek() == "/" and self.peek(1) in "/*"):
                         self.skip_comment()
                     if self.peek() == "\n":
                         self.advance()
@@ -379,8 +403,8 @@ class Lexer:
             # Skip inline whitespace
             self.skip_whitespace()
 
-            # Skip comments
-            if self.peek() == "#":
+            # Skip comments (#, //, /* */)
+            if self.peek() == "#" or (self.peek() == "/" and self.peek(1) in "/*"):
                 self.skip_comment()
                 continue
 
@@ -445,6 +469,7 @@ class Lexer:
                 "{": TokenType.LBRACE, "}": TokenType.RBRACE,
                 ":": TokenType.COLON, ",": TokenType.COMMA,
                 ".": TokenType.DOT, "?": TokenType.QUESTION,
+                ";": TokenType.SEMICOLON,
             }
             if char in char_map:
                 self.advance()
@@ -508,9 +533,19 @@ class Parser:
         return self.current().type in token_types
 
     def skip_newlines(self) -> None:
-        """Skip any newline tokens."""
-        while self.match(TokenType.NEWLINE):
+        """Skip any newline tokens and indentation."""
+        while self.match(TokenType.NEWLINE, TokenType.INDENT, TokenType.DEDENT):
             self.advance()
+
+    def consume_statement_terminator(self) -> None:
+        """
+        Consume optional statement terminator.
+        Accepts semicolon, newline, or nothing if followed by closing brace.
+        This enables both Python-style (newlines) and C-style (semicolons) syntax.
+        """
+        if self.match(TokenType.SEMICOLON, TokenType.NEWLINE):
+            self.advance()
+        # If next token is RBRACE, statement can end without terminator
 
     # ========================================================================
     # Top-level parsing
@@ -561,6 +596,9 @@ class Parser:
 
         # Parse declarations
         while not self.match(TokenType.EOF):
+            self.skip_newlines()  # Skip blank lines between declarations
+            if self.match(TokenType.EOF):
+                break
             if self.match(TokenType.KEYWORD):
                 keyword = self.current().value
                 if keyword == "import":
@@ -680,7 +718,11 @@ class Parser:
         return IREnum(name=name, variants=variants)
 
     def parse_function(self) -> IRFunction:
-        """Parse function definition."""
+        """
+        Parse C-style function definition.
+
+        Syntax: function name(param1: type1, param2: type2) -> return_type throws Error { body }
+        """
         is_async = False
         if self.match(TokenType.KEYWORD) and self.current().value == "async":
             is_async = True
@@ -688,78 +730,79 @@ class Parser:
 
         self.expect(TokenType.KEYWORD)  # "function"
         name = self.expect(TokenType.IDENTIFIER).value
-        self.expect(TokenType.COLON)
-        self.expect(TokenType.NEWLINE)
-        self.expect(TokenType.INDENT)
 
+        # Parse parameters: (x: int, y: int)
+        self.expect(TokenType.LPAREN)
         params = []
-        return_type = None
-        throws = []
-        body = []
 
-        # Parse function blocks
-        while not self.match(TokenType.DEDENT):
+        if not self.match(TokenType.RPAREN):
+            while True:
+                param_name = self.expect(TokenType.IDENTIFIER).value
+
+                # Type annotation
+                param_type = None
+                if self.match(TokenType.COLON):
+                    self.advance()  # consume ':'
+                    param_type = self.parse_type()
+
+                # Default value
+                default_value = None
+                if self.match(TokenType.ASSIGN):
+                    self.advance()  # consume '='
+                    default_value = self.parse_expression()
+
+                params.append(IRParameter(
+                    name=param_name,
+                    param_type=param_type,
+                    default_value=default_value,
+                    is_variadic=False,
+                ))
+
+                if self.match(TokenType.COMMA):
+                    self.advance()  # consume ','
+                else:
+                    break
+
+        self.expect(TokenType.RPAREN)
+
+        # Parse return type: -> int
+        return_type = None
+        if self.match(TokenType.ARROW):
+            self.advance()  # consume '->'
+            return_type = self.parse_type()
+
+        # Parse throws: throws Error1, Error2
+        throws = []
+        if self.match(TokenType.KEYWORD) and self.current().value == "throws":
+            self.advance()  # consume 'throws'
+            while True:
+                throws.append(self.expect(TokenType.IDENTIFIER).value)
+                if self.match(TokenType.COMMA):
+                    self.advance()
+                else:
+                    break
+
+        # Parse body: { statements }
+        self.expect(TokenType.LBRACE)
+        self.skip_newlines()
+
+        body = []
+        while not self.match(TokenType.RBRACE):
             self.skip_newlines()
-            if self.match(TokenType.DEDENT):
+            if self.match(TokenType.RBRACE):
                 break
 
-            if not self.match(TokenType.KEYWORD):
-                raise self.error("Expected function block (params/returns/throws/body)")
+            stmt = self.parse_statement()
+            if stmt:
+                body.append(stmt)
 
-            keyword = self.current().value
-
-            if keyword == "params":
+            # Optional semicolon
+            if self.match(TokenType.SEMICOLON):
                 self.advance()
-                self.expect(TokenType.COLON)
-                self.expect(TokenType.NEWLINE)
-                self.expect(TokenType.INDENT)
-                params = self.parse_parameters()
-                self.expect(TokenType.DEDENT)
 
-            elif keyword == "returns":
-                self.advance()
-                self.expect(TokenType.COLON)
-                self.expect(TokenType.NEWLINE)
-                self.expect(TokenType.INDENT)
-                # Parse return fields
-                return_fields = []
-                while not self.match(TokenType.DEDENT):
-                    self.skip_newlines()
-                    if self.match(TokenType.DEDENT):
-                        break
-                    field_name = self.expect(TokenType.IDENTIFIER).value
-                    field_type = self.parse_type()
-                    return_fields.append((field_name, field_type))
-                    self.expect(TokenType.NEWLINE)
-                self.expect(TokenType.DEDENT)
+            self.skip_newlines()
 
-                # For now, store first return type (simplified)
-                if return_fields:
-                    return_type = return_fields[0][1]
-
-            elif keyword == "throws":
-                self.advance()
-                self.expect(TokenType.COLON)
-                self.expect(TokenType.NEWLINE)
-                self.expect(TokenType.INDENT)
-                while not self.match(TokenType.DEDENT):
-                    self.skip_newlines()
-                    if self.match(TokenType.DEDENT):
-                        break
-                    self.expect(TokenType.MINUS)
-                    throws.append(self.expect(TokenType.IDENTIFIER).value)
-                    self.expect(TokenType.NEWLINE)
-                self.expect(TokenType.DEDENT)
-
-            elif keyword == "body":
-                self.advance()
-                self.expect(TokenType.COLON)
-                self.expect(TokenType.NEWLINE)
-                self.expect(TokenType.INDENT)
-                body = self.parse_statement_list()
-                self.expect(TokenType.DEDENT)
-
-        self.expect(TokenType.DEDENT)
+        self.expect(TokenType.RBRACE)
 
         return IRFunction(
             name=name,
@@ -1108,23 +1151,84 @@ class Parser:
         )
 
     def parse_if(self) -> IRIf:
-        """Parse if statement."""
+        """
+        Parse if statement.
+        Supports both styles:
+        - C-style: if (condition) { body }
+        - Python-style: if condition: INDENT body DEDENT
+        """
         self.expect(TokenType.KEYWORD)  # "if"
-        condition = self.parse_expression()
-        self.expect(TokenType.COLON)
-        self.expect(TokenType.NEWLINE)
-        self.expect(TokenType.INDENT)
-        then_body = self.parse_statement_list()
-        self.expect(TokenType.DEDENT)
 
-        else_body = []
-        if self.match(TokenType.KEYWORD) and self.current().value == "else":
+        # Parse condition (with or without parentheses)
+        has_parens = False
+        if self.match(TokenType.LPAREN):
             self.advance()
+            has_parens = True
+
+        condition = self.parse_expression()
+
+        if has_parens:
+            self.expect(TokenType.RPAREN)
+
+        # Parse body: either { ... } or : INDENT ... DEDENT
+        if self.match(TokenType.LBRACE):
+            # C-style: if (cond) { body }
+            self.advance()
+            self.skip_newlines()
+            then_body = []
+            while not self.match(TokenType.RBRACE):
+                self.skip_newlines()
+                if self.match(TokenType.RBRACE):
+                    break
+                stmt = self.parse_statement()
+                if stmt:
+                    then_body.append(stmt)
+                if self.match(TokenType.SEMICOLON):
+                    self.advance()
+                self.skip_newlines()
+            self.expect(TokenType.RBRACE)
+        else:
+            # Python-style: if cond: INDENT body DEDENT
             self.expect(TokenType.COLON)
             self.expect(TokenType.NEWLINE)
             self.expect(TokenType.INDENT)
-            else_body = self.parse_statement_list()
+            then_body = self.parse_statement_list()
             self.expect(TokenType.DEDENT)
+
+        # Parse else/elif
+        self.skip_newlines()
+        else_body = []
+        if self.match(TokenType.KEYWORD) and self.current().value == "else":
+            self.advance()
+
+            # Check for "else if"
+            if self.match(TokenType.KEYWORD) and self.current().value == "if":
+                # else if -> treat as nested if
+                else_body = [self.parse_if()]
+            else:
+                # Regular else block
+                if self.match(TokenType.LBRACE):
+                    # C-style: else { body }
+                    self.advance()
+                    self.skip_newlines()
+                    while not self.match(TokenType.RBRACE):
+                        self.skip_newlines()
+                        if self.match(TokenType.RBRACE):
+                            break
+                        stmt = self.parse_statement()
+                        if stmt:
+                            else_body.append(stmt)
+                        if self.match(TokenType.SEMICOLON):
+                            self.advance()
+                        self.skip_newlines()
+                    self.expect(TokenType.RBRACE)
+                else:
+                    # Python-style: else: INDENT body DEDENT
+                    self.expect(TokenType.COLON)
+                    self.expect(TokenType.NEWLINE)
+                    self.expect(TokenType.INDENT)
+                    else_body = self.parse_statement_list()
+                    self.expect(TokenType.DEDENT)
 
         return IRIf(condition=condition, then_body=then_body, else_body=else_body)
 
@@ -1204,16 +1308,16 @@ class Parser:
         """Parse return statement."""
         self.expect(TokenType.KEYWORD)  # "return"
         value = None
-        if not self.match(TokenType.NEWLINE):
+        if not self.match(TokenType.NEWLINE, TokenType.SEMICOLON, TokenType.RBRACE):
             value = self.parse_expression()
-        self.expect(TokenType.NEWLINE)
+        self.consume_statement_terminator()
         return IRReturn(value=value)
 
     def parse_throw(self) -> IRThrow:
         """Parse throw statement."""
         self.expect(TokenType.KEYWORD)  # "throw"
         exception = self.parse_expression()
-        self.expect(TokenType.NEWLINE)
+        self.consume_statement_terminator()
         return IRThrow(exception=exception)
 
     # ========================================================================
