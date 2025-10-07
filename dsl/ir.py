@@ -56,6 +56,8 @@ class NodeType(Enum):
     IF = "if"
     FOR = "for"
     WHILE = "while"
+    SWITCH = "switch"
+    CASE = "case"
     TRY = "try"
     CATCH = "catch"
     ASSIGNMENT = "assignment"
@@ -541,6 +543,62 @@ class IRWhile(IRNode):
     def __post_init__(self) -> None:
         self.type = NodeType.WHILE
         super().__init__(type=NodeType.WHILE)
+
+
+@dataclass
+class IRCase(IRNode):
+    """
+    Case clause in switch statement.
+
+    Example:
+        case 1:
+          print("one")
+        case 2, 3:
+          print("two or three")
+        default:
+          print("other")
+    """
+
+    values: List[IRExpression] = field(default_factory=list)  # Empty for default case
+    body: List[IRStatement] = field(default_factory=list)
+    is_default: bool = False
+
+    def __post_init__(self) -> None:
+        self.type = NodeType.CASE
+        super().__init__(type=NodeType.CASE)
+
+
+@dataclass
+class IRSwitch(IRNode):
+    """
+    Switch/match statement.
+
+    Example (C#/TypeScript):
+        switch (value) {
+          case 1:
+            return "one";
+          case 2:
+            return "two";
+          default:
+            return "other";
+        }
+
+    Example (Python match):
+        match value:
+          case 1:
+            return "one"
+          case 2:
+            return "two"
+          case _:
+            return "other"
+    """
+
+    value: IRExpression  # Value to switch on
+    cases: List[IRCase] = field(default_factory=list)
+
+    def __post_init__(self) -> None:
+        self.type = NodeType.SWITCH
+        super().__init__(type=NodeType.SWITCH)
 
 
 @dataclass
@@ -1144,6 +1202,7 @@ IRStatement = Union[
     IRIf,
     IRFor,
     IRWhile,
+    IRSwitch,
     IRTry,
     IRAssignment,
     IRReturn,

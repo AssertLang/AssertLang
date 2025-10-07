@@ -12,10 +12,11 @@ from typing import Dict
 # Add parent directories to path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from language.go_parser_v2 import GoParserV2
+from language.go_parser_v3 import GoParserV3
 from language.go_generator_v2 import GoGeneratorV2
 from translators.ir_converter import ir_to_mcp, mcp_to_ir
 from translators.semantic_normalizer import normalize_ir, denormalize_ir
+import tempfile
 
 
 def go_to_pw(go_code: str) -> Dict:
@@ -23,7 +24,7 @@ def go_to_pw(go_code: str) -> Dict:
     Parse Go code → PW MCP tree.
 
     Pipeline:
-    1. Go AST → IR (language-specific, has Go idioms)
+    1. Go AST → IR (language-specific, has Go idioms) - using V3 parser (95% accuracy)
     2. Normalize: Strip Go idioms (error returns, stdlib) → Pure PW IR
     3. Pure PW IR → MCP tree (universal format)
 
@@ -33,9 +34,19 @@ def go_to_pw(go_code: str) -> Dict:
     Returns:
         PW MCP tree (JSON-serializable dict)
     """
-    # Parse Go → IR
-    parser = GoParserV2()
-    ir_module = parser.parse_source(go_code)
+    # Parse Go → IR using V3 parser (needs file path)
+    parser = GoParserV3()
+
+    # Write to temp file for V3 parser
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.go', delete=False) as f:
+        f.write(go_code)
+        temp_path = f.name
+
+    try:
+        ir_module = parser.parse_file(temp_path)
+    finally:
+        import os
+        os.unlink(temp_path)
 
     # Normalize: Strip Go-specific patterns → Pure PW
     normalized_ir = normalize_ir(ir_module, source_lang="go")

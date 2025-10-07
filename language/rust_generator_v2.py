@@ -646,6 +646,14 @@ class RustGeneratorV2:
             # Expression statement
             call_expr = self._generate_expression(stmt)
             return f"{base_indent}{call_expr};"
+        elif hasattr(stmt, '__dict__'):
+            # Try to handle as expression statement (for Rust implicit returns)
+            # This includes IRBinaryOp, IRIdentifier, etc.
+            try:
+                expr = self._generate_expression(stmt)
+                return f"{base_indent}{expr}"  # No semicolon for implicit return
+            except:
+                return f"{base_indent}// Unknown statement: {type(stmt).__name__}"
         else:
             return f"{base_indent}// Unknown statement: {type(stmt).__name__}"
 
