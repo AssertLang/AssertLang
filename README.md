@@ -103,7 +103,7 @@ promptware build calculator.pw --lang go -o calculator.go
 promptware build calculator.pw --lang rust -o calculator.rs
 
 # Node.js
-promptware build calculator.pw --lang nodejs -o calculator.js
+promptware build calculator.pw --lang typescript -o calculator.ts
 
 # C#
 promptware build calculator.pw --lang csharp -o Calculator.cs
@@ -358,7 +358,7 @@ Write once, deploy anywhere - **or parse existing code and translate:**
 | Language | Forward (PW→Code) | Reverse (Code→PW) | Parser/Generator | Features |
 |----------|-------------------|-------------------|------------------|----------|
 | **Python** | ✅ Full | ✅ Full | `python_parser_v2.py` (66K)<br/>`python_generator_v2.py` (34K) | FastAPI, AI (LangChain), AST analysis, type inference |
-| **Node.js** | ✅ Full | ✅ Full | `nodejs_parser_v2.py` (38K)<br/>`nodejs_generator_v2.py` (41K) | Express, async/await, pattern matching |
+| **Node.js/TypeScript** | ✅ Full | ✅ Full | `nodejs_parser_v2.py` (38K)<br/>`nodejs_generator_v2.py` (41K) | Express, async/await, pattern matching |
 | **Go** | ✅ Full | ✅ Full | `go_parser_v2.py` (40K)<br/>`go_generator_v2.py` (58K) | net/http, goroutines, AST parser binary |
 | **C#** | ✅ Full | ✅ Full | `dotnet_parser_v2.py` (45K)<br/>`dotnet_generator_v2.py` (34K) | ASP.NET Core, Roslyn patterns, .NET 8+ |
 | **Rust** | ✅ Full | ✅ Full | `rust_parser_v2.py` (41K)<br/>`rust_generator_v2.py` (35K) | Actix-web, tokio, syn parser integration |
@@ -498,7 +498,7 @@ promptware generate my-agent.pw --dry-run
 
 # Generate server (uses configured default or specify explicitly)
 promptware generate my-agent.pw
-promptware generate my-agent.pw --lang nodejs
+promptware generate my-agent.pw --lang typescript
 
 # CI/CD mode (skip confirmations, quiet output)
 promptware generate my-agent.pw --yes --quiet
@@ -759,7 +759,7 @@ promptware generate user-service.pw --dry-run
 promptware generate user-service.pw
 
 # Or specify language explicitly
-promptware generate user-service.pw --lang nodejs
+promptware generate user-service.pw --lang typescript
 promptware generate user-service.pw --lang go
 promptware generate user-service.pw --lang csharp
 promptware generate user-service.pw --lang rust
