@@ -103,7 +103,7 @@ promptware build calculator.pw --lang go -o calculator.go
 promptware build calculator.pw --lang rust -o calculator.rs
 
 # Node.js
-promptware build calculator.pw --lang nodejs -o calculator.js
+promptware build calculator.pw --lang typescript -o calculator.ts
 
 # C#
 promptware build calculator.pw --lang csharp -o Calculator.cs
