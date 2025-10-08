@@ -30,6 +30,16 @@ pytest tests/
 flake8 promptware/
 ```
 
+**📚 For detailed development workflow, see [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)**
+
+This includes:
+- Complete development workflow
+- Testing strategies
+- Adding new language features
+- Adding new target languages
+- Debugging tips
+- Release process
+
 ## Commit Message Convention
 
 We follow conventional commits:

@@ -1,0 +1,156 @@
+{
+  "name": "PW",
+  "scopeName": "source.pw",
+  "fileTypes": ["pw"],
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#keywords" },
+    { "include": "#strings" },
+    { "include": "#numbers" },
+    { "include": "#types" },
+    { "include": "#functions" },
+    { "include": "#operators" },
+    { "include": "#variables" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.pw",
+          "match": "//.*$"
+        },
+        {
+          "name": "comment.block.pw",
+          "begin": "/\\*",
+          "end": "\\*/"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.pw",
+          "match": "\\b(if|else|for|while|return|break|continue|switch|case|default|try|catch|finally|throw)\\b"
+        },
+        {
+          "name": "keyword.other.pw",
+          "match": "\\b(function|class|type|enum|let|const|import|from|export|async|await)\\b"
+        },
+        {
+          "name": "storage.modifier.pw",
+          "match": "\\b(public|private|static)\\b"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.pw",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.pw",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.pw",
+          "begin": "'",
+          "end": "'",
+          "patterns": [
+            {
+              "name": "constant.character.escape.pw",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.float.pw",
+          "match": "\\b\\d+\\.\\d+\\b"
+        },
+        {
+          "name": "constant.numeric.integer.pw",
+          "match": "\\b\\d+\\b"
+        },
+        {
+          "name": "constant.language.boolean.pw",
+          "match": "\\b(true|false)\\b"
+        },
+        {
+          "name": "constant.language.null.pw",
+          "match": "\\bnull\\b"
+        }
+      ]
+    },
+    "types": {
+      "patterns": [
+        {
+          "name": "support.type.primitive.pw",
+          "match": "\\b(int|float|string|bool|void|any)\\b"
+        },
+        {
+          "name": "support.type.collection.pw",
+          "match": "\\b(array|map|set)\\b"
+        }
+      ]
+    },
+    "functions": {
+      "patterns": [
+        {
+          "name": "entity.name.function.pw",
+          "match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*(?=\\()"
+        },
+        {
+          "name": "meta.function.pw",
+          "begin": "\\b(function)\\s+([a-zA-Z_][a-zA-Z0-9_]*)",
+          "beginCaptures": {
+            "1": { "name": "keyword.other.pw" },
+            "2": { "name": "entity.name.function.pw" }
+          },
+          "end": "(?<=\\})",
+          "patterns": [
+            { "include": "$self" }
+          ]
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.arithmetic.pw",
+          "match": "\\+|\\-|\\*|\\/|\\%"
+        },
+        {
+          "name": "keyword.operator.comparison.pw",
+          "match": "==|!=|<|>|<=|>="
+        },
+        {
+          "name": "keyword.operator.logical.pw",
+          "match": "\\b(and|or|not)\\b|&&|\\|\\||!"
+        },
+        {
+          "name": "keyword.operator.assignment.pw",
+          "match": "=|\\+=|\\-=|\\*=|\\/="
+        },
+        {
+          "name": "keyword.operator.arrow.pw",
+          "match": "->"
+        }
+      ]
+    },
+    "variables": {
+      "patterns": [
+        {
+          "name": "variable.other.pw",
+          "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b"
+        }
+      ]
+    }
+  }
+}
