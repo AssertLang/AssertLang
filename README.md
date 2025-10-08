@@ -445,6 +445,10 @@ See `examples/` for complete working programs:
 ### 1. Install
 
 ```bash
+# From PyPI (recommended)
+pip install promptware-dev
+
+# Or from source
 git clone https://github.com/Promptware-dev/promptware.git
 cd promptware
 pip install -e .
