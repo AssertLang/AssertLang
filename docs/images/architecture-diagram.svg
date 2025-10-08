@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600">
+  <!-- Background -->
+  <rect width="1200" height="600" fill="#0d1117"/>
+
+  <!-- Title -->
+  <text x="600" y="40" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#58a6ff" text-anchor="middle">
+    Promptware Architecture
+  </text>
+
+  <!-- Input Languages -->
+  <g id="input-languages">
+    <text x="150" y="100" font-family="monospace" font-size="14" fill="#8b949e" text-anchor="middle">Input (Any Language)</text>
+
+    <!-- Python -->
+    <rect x="50" y="120" width="80" height="60" rx="8" fill="#3572A5" opacity="0.2" stroke="#3572A5" stroke-width="2"/>
+    <text x="90" y="155" font-family="Arial" font-size="16" font-weight="bold" fill="#3572A5" text-anchor="middle">Python</text>
+
+    <!-- Node.js -->
+    <rect x="50" y="200" width="80" height="60" rx="8" fill="#68a063" opacity="0.2" stroke="#68a063" stroke-width="2"/>
+    <text x="90" y="235" font-family="Arial" font-size="16" font-weight="bold" fill="#68a063" text-anchor="middle">Node.js</text>
+
+    <!-- Go -->
+    <rect x="50" y="280" width="80" height="60" rx="8" fill="#00ADD8" opacity="0.2" stroke="#00ADD8" stroke-width="2"/>
+    <text x="90" y="315" font-family="Arial" font-size="16" font-weight="bold" fill="#00ADD8" text-anchor="middle">Go</text>
+
+    <!-- Rust -->
+    <rect x="50" y="360" width="80" height="60" rx="8" fill="#dea584" opacity="0.2" stroke="#dea584" stroke-width="2"/>
+    <text x="90" y="395" font-family="Arial" font-size="16" font-weight="bold" fill="#dea584" text-anchor="middle">Rust</text>
+
+    <!-- C# -->
+    <rect x="50" y="440" width="80" height="60" rx="8" fill="#178600" opacity="0.2" stroke="#178600" stroke-width="2"/>
+    <text x="90" y="475" font-family="Arial" font-size="16" font-weight="bold" fill="#178600" text-anchor="middle">C#</text>
+  </g>
+
+  <!-- Arrows to Parser -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#58a6ff" />
+    </marker>
+  </defs>
+
+  <line x1="130" y1="150" x2="280" y2="250" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrowhead)" opacity="0.6"/>
+  <line x1="130" y1="230" x2="280" y2="270" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrowhead)" opacity="0.6"/>
+  <line x1="130" y1="310" x2="280" y2="290" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrowhead)" opacity="0.6"/>
+  <line x1="130" y1="390" x2="280" y2="310" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrowhead)" opacity="0.6"/>
+  <line x1="130" y1="470" x2="280" y2="330" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrowhead)" opacity="0.6"/>
+
+  <!-- Parser Box -->
+  <rect x="280" y="220" width="160" height="140" rx="8" fill="#1f6feb" opacity="0.3" stroke="#58a6ff" stroke-width="3"/>
+  <text x="360" y="250" font-family="Arial" font-size="18" font-weight="bold" fill="#58a6ff" text-anchor="middle">Native AST</text>
+  <text x="360" y="275" font-family="Arial" font-size="18" font-weight="bold" fill="#58a6ff" text-anchor="middle">Parsers</text>
+  <text x="360" y="310" font-family="monospace" font-size="12" fill="#8b949e" text-anchor="middle">66K-40K lines</text>
+  <text x="360" y="330" font-family="monospace" font-size="12" fill="#8b949e" text-anchor="middle">Type inference</text>
+  <text x="360" y="350" font-family="monospace" font-size="12" fill="#8b949e" text-anchor="middle">Semantic analysis</text>
+
+  <!-- Arrow to IR -->
+  <line x1="440" y1="290" x2="510" y2="290" stroke="#58a6ff" stroke-width="3" marker-end="url(#arrowhead)"/>
+
+  <!-- PW IR Core -->
+  <rect x="510" y="220" width="180" height="140" rx="8" fill="#a371f7" opacity="0.3" stroke="#a371f7" stroke-width="3"/>
+  <text x="600" y="250" font-family="Arial" font-size="20" font-weight="bold" fill="#a371f7" text-anchor="middle">PW</text>
+  <text x="600" y="275" font-family="Arial" font-size="18" font-weight="bold" fill="#a371f7" text-anchor="middle">Intermediate</text>
+  <text x="600" y="300" font-family="Arial" font-size="18" font-weight="bold" fill="#a371f7" text-anchor="middle">Representation</text>
+  <text x="600" y="330" font-family="monospace" font-size="12" fill="#bc8cff" text-anchor="middle">Universal IR</text>
+  <text x="600" y="350" font-family="monospace" font-size="12" fill="#bc8cff" text-anchor="middle">Type-safe</text>
+
+  <!-- Arrow to Generator -->
+  <line x1="690" y1="290" x2="760" y2="290" stroke="#58a6ff" stroke-width="3" marker-end="url(#arrowhead)"/>
+
+  <!-- Generator Box -->
+  <rect x="760" y="220" width="160" height="140" rx="8" fill="#1f6feb" opacity="0.3" stroke="#58a6ff" stroke-width="3"/>
+  <text x="840" y="250" font-family="Arial" font-size="18" font-weight="bold" fill="#58a6ff" text-anchor="middle">Code</text>
+  <text x="840" y="275" font-family="Arial" font-size="18" font-weight="bold" fill="#58a6ff" text-anchor="middle">Generators</text>
+  <text x="840" y="310" font-family="monospace" font-size="12" fill="#8b949e" text-anchor="middle">34K-58K lines</text>
+  <text x="840" y="330" font-family="monospace" font-size="12" fill="#8b949e" text-anchor="middle">Idiomatic output</text>
+  <text x="840" y="350" font-family="monospace" font-size="12" fill="#8b949e" text-anchor="middle">Production-ready</text>
+
+  <!-- Arrows to Output -->
+  <line x1="920" y1="250" x2="1070" y2="150" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrowhead)" opacity="0.6"/>
+  <line x1="920" y1="270" x2="1070" y2="230" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrowhead)" opacity="0.6"/>
+  <line x1="920" y1="290" x2="1070" y2="310" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrowhead)" opacity="0.6"/>
+  <line x1="920" y1="310" x2="1070" y2="390" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrowhead)" opacity="0.6"/>
+  <line x1="920" y1="330" x2="1070" y2="470" stroke="#58a6ff" stroke-width="2" marker-end="url(#arrowhead)" opacity="0.6"/>
+
+  <!-- Output Languages -->
+  <g id="output-languages">
+    <text x="1050" y="100" font-family="monospace" font-size="14" fill="#8b949e" text-anchor="middle">Output (Any Language)</text>
+
+    <!-- Python -->
+    <rect x="1070" y="120" width="80" height="60" rx="8" fill="#3572A5" opacity="0.2" stroke="#3572A5" stroke-width="2"/>
+    <text x="1110" y="155" font-family="Arial" font-size="16" font-weight="bold" fill="#3572A5" text-anchor="middle">Python</text>
+
+    <!-- Node.js -->
+    <rect x="1070" y="200" width="80" height="60" rx="8" fill="#68a063" opacity="0.2" stroke="#68a063" stroke-width="2"/>
+    <text x="1110" y="235" font-family="Arial" font-size="16" font-weight="bold" fill="#68a063" text-anchor="middle">Node.js</text>
+
+    <!-- Go -->
+    <rect x="1070" y="280" width="80" height="60" rx="8" fill="#00ADD8" opacity="0.2" stroke="#00ADD8" stroke-width="2"/>
+    <text x="1110" y="315" font-family="Arial" font-size="16" font-weight="bold" fill="#00ADD8" text-anchor="middle">Go</text>
+
+    <!-- Rust -->
+    <rect x="1070" y="360" width="80" height="60" rx="8" fill="#dea584" opacity="0.2" stroke="#dea584" stroke-width="2"/>
+    <text x="1110" y="395" font-family="Arial" font-size="16" font-weight="bold" fill="#dea584" text-anchor="middle">Rust</text>
+
+    <!-- C# -->
+    <rect x="1070" y="440" width="80" height="60" rx="8" fill="#178600" opacity="0.2" stroke="#178600" stroke-width="2"/>
+    <text x="1110" y="475" font-family="Arial" font-size="16" font-weight="bold" fill="#178600" text-anchor="middle">C#</text>
+  </g>
+
+  <!-- Bottom Stats -->
+  <text x="600" y="540" font-family="monospace" font-size="14" fill="#58a6ff" text-anchor="middle" font-weight="bold">
+    20 Language Combinations • 100% Validated • 99% Test Coverage • 350K+ LOC
+  </text>
+
+  <!-- Bidirectional Arrow -->
+  <defs>
+    <marker id="arrowhead-both" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#a371f7" />
+    </marker>
+  </defs>
+  <line x1="150" y1="560" x2="1050" y2="560" stroke="#a371f7" stroke-width="2" marker-end="url(#arrowhead-both)" marker-start="url(#arrowhead-both)" stroke-dasharray="5,5"/>
+  <text x="600" y="580" font-family="Arial" font-size="12" fill="#a371f7" text-anchor="middle" font-style="italic">
+    Bidirectional Translation (Parse ANY → Generate ANY)
+  </text>
+</svg>
