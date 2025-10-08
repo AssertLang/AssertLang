@@ -51,8 +51,18 @@ check_forbidden_files '\.(log|sock|cache)$' "runtime artifacts"
 check_forbidden_files '__pycache__/' "Python cache directories"
 check_forbidden_files '\.egg-info/' "Python egg-info directories"
 
-# Check for IDE/editor configs
-check_forbidden_files '\.(cursor|claude|vscode|idea)/' "IDE configuration directories"
+# Check for IDE/editor configs (except our VSCode extension)
+if git ls-files | grep -E '\.(cursor|claude|idea)/' > /dev/null; then
+    echo -e "${RED}✗ Found IDE configuration directories:${NC}"
+    git ls-files | grep -E '\.(cursor|claude|idea)/' | sed 's/^/  /'
+    ERRORS=$((ERRORS + 1))
+elif git ls-files | grep -E '\.vscode/' | grep -v '\.vscode/extensions/pw-language/' | grep -v '\.vscode/extensions\.json' > /dev/null; then
+    echo -e "${RED}✗ Found forbidden .vscode files (only pw-language extension allowed):${NC}"
+    git ls-files | grep -E '\.vscode/' | grep -v '\.vscode/extensions/pw-language/' | grep -v '\.vscode/extensions\.json' | sed 's/^/  /'
+    ERRORS=$((ERRORS + 1))
+else
+    echo -e "${GREEN}✓ No forbidden IDE configuration found (PW extension allowed)${NC}"
+fi
 
 # Check for credentials
 check_forbidden_files '\.(env|pem|key)$' "credential files"

@@ -1,0 +1,41 @@
+{
+  "name": "pw-language",
+  "displayName": "PW Language Support",
+  "description": "Syntax highlighting and icons for PW (Promptware) language",
+  "version": "2.0.0",
+  "publisher": "promptware",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "pw",
+        "aliases": ["PW", "Promptware"],
+        "extensions": [".pw"],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icons/pw-icon.svg",
+          "dark": "./icons/pw-icon.svg"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "pw",
+        "scopeName": "source.pw",
+        "path": "./syntaxes/pw.tmLanguage.json"
+      }
+    ],
+    "iconThemes": [
+      {
+        "id": "pw-icons",
+        "label": "PW Icons",
+        "path": "./iconTheme.json"
+      }
+    ]
+  }
+}
