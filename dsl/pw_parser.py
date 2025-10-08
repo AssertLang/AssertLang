@@ -210,8 +210,8 @@ class Lexer:
         return char
 
     def skip_whitespace(self) -> None:
-        """Skip spaces and tabs (but not newlines)."""
-        while self.peek() in " \t":
+        """Skip spaces, tabs, and carriage returns (but not newlines)."""
+        while self.peek() and self.peek() in " \t\r":
             self.advance()
 
     def skip_comment(self) -> None:
