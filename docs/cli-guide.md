@@ -63,7 +63,7 @@ promptware generate my-agent.pw --lang python
 promptware generate my-agent.pw --lang go
 
 # Generate Node.js server with custom output
-promptware generate my-agent.pw --lang nodejs --output ./servers/nodejs
+promptware generate my-agent.pw --lang typescript --output ./servers/nodejs
 ```
 
 ### 4. Build & Run
@@ -208,7 +208,7 @@ promptware generate <file.pw> [OPTIONS]
 ```
 
 **Options:**
-- `--lang LANGUAGE` - Target language (python, nodejs, go, csharp, rust). Default: python
+- `--lang LANGUAGE` - Target language (python, typescript, go, csharp, rust). Default: python
 - `--output DIR` - Output directory. Default: `./generated/<agent-name>`
 - `--build` - Build server after generation (for compiled languages)
 - `--yes, -y` - Skip confirmation prompts (for CI/scripts)
@@ -286,7 +286,7 @@ promptware list-tools [OPTIONS]
 ```
 
 **Options:**
-- `--lang LANGUAGE` - Show tools for specific language (python, nodejs, go, csharp, rust, all). Default: all
+- `--lang LANGUAGE` - Show tools for specific language (python, typescript, go, csharp, rust, all). Default: all
 - `--category CATEGORY` - Filter by category
 
 **Categories:**
@@ -616,7 +616,7 @@ promptware generate agent.pw --yes
 ```bash
 # Generate servers in all languages
 promptware generate agent.pw --lang python --output ./servers/python
-promptware generate agent.pw --lang nodejs --output ./servers/nodejs
+promptware generate agent.pw --lang typescript --output ./servers/nodejs
 promptware generate agent.pw --lang go --output ./servers/go
 promptware generate agent.pw --lang csharp --output ./servers/csharp
 promptware generate agent.pw --lang rust --output ./servers/rust
