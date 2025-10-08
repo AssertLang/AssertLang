@@ -1,47 +1,28 @@
 name: Feature Request
-description: Suggest a new feature or enhancement for Promptware
+description: Suggest a new feature or enhancement
 title: "[Feature]: "
-labels: ["enhancement"]
+labels: ["enhancement", "needs-triage"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for suggesting a new feature! Please provide as much detail as possible.
+        Thanks for suggesting a feature! Please describe your idea below.
 
   - type: textarea
-    id: description
+    id: problem
     attributes:
-      label: Feature Description
-      description: A clear and concise description of the feature you'd like to see
-      placeholder: I would like Promptware to...
+      label: Problem Statement
+      description: What problem does this feature solve?
+      placeholder: I'm frustrated when...
     validations:
       required: true
 
   - type: textarea
-    id: use-case
-    attributes:
-      label: Use Case / Problem It Solves
-      description: What problem does this feature solve? What use case does it enable?
-      placeholder: |
-        This would help me...
-        Currently, I have to...
-        This would make it possible to...
-    validations:
-      required: true
-
-  - type: textarea
-    id: proposed-solution
+    id: solution
     attributes:
       label: Proposed Solution
-      description: How would you like this feature to work? Be as specific as possible.
-      placeholder: |
-        The feature could work by...
-        Users would be able to...
-        Example syntax:
-        ```promptware
-        server my-service "Description"
-        new-feature-syntax here
-        ```
+      description: How would you like this to work?
+      placeholder: I'd like to be able to...
     validations:
       required: true
 
@@ -49,30 +30,67 @@ body:
     id: alternatives
     attributes:
       label: Alternatives Considered
-      description: What alternative solutions or features have you considered?
-      placeholder: |
-        - Alternative 1: ...
-        - Alternative 2: ...
-        - Workaround I'm currently using: ...
-    validations:
-      required: false
+      description: What other solutions have you considered?
+      placeholder: I've also thought about...
 
   - type: dropdown
-    id: willingness-to-contribute
+    id: component
     attributes:
-      label: Willingness to Contribute
-      description: Would you be willing to contribute to implementing this feature?
+      label: Component
+      description: Which component would this affect?
       options:
-        - Yes, I can submit a PR
-        - Yes, with guidance
-        - No, but I can help test
-        - No
+        - PW Language Syntax
+        - Code Generators
+        - CLI Tool
+        - Client SDKs
+        - Type System
+        - Documentation
+        - New Language Support
+        - Performance
+        - Testing
+        - Other
     validations:
-      required: false
+      required: true
 
   - type: textarea
-    id: additional-context
+    id: example
     attributes:
-      label: Additional Context
-      description: Any other context, screenshots, or examples that would help
-      placeholder: Add any other information here
+      label: Example Usage
+      description: Show how you'd like to use this feature
+      render: pw
+      placeholder: |
+        # Example of proposed feature
+        function example() {
+            // Show proposed syntax
+        }
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this to you?
+      options:
+        - Nice to have
+        - Would improve workflow
+        - Critical for my use case
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: willing-to-contribute
+    attributes:
+      label: Contribution
+      description: Would you be willing to contribute this feature?
+      options:
+        - label: I'm willing to submit a PR for this feature
+        - label: I can help with testing
+        - label: I can help with documentation
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our Code of Conduct
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

@@ -1,132 +1,98 @@
 name: Bug Report
-description: Report a bug or unexpected behavior in Promptware
+description: Report a bug or issue with Promptware
 title: "[Bug]: "
-labels: ["bug"]
+labels: ["bug", "needs-triage"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to report this bug! Please fill out the information below to help us investigate.
+        Thanks for taking the time to report a bug! Please fill out the form below.
 
   - type: textarea
-    id: description
+    id: what-happened
     attributes:
-      label: Description
-      description: A clear and concise description of what the bug is.
-      placeholder: Tell us what happened
+      label: What happened?
+      description: A clear description of what the bug is.
+      placeholder: Tell us what you see!
     validations:
       required: true
 
   - type: textarea
-    id: steps-to-reproduce
-    attributes:
-      label: Steps to Reproduce
-      description: Detailed steps to reproduce the behavior
-      placeholder: |
-        1. Run command '...'
-        2. Use .pw file with '...'
-        3. See error
-    validations:
-      required: true
-
-  - type: textarea
-    id: expected-behavior
+    id: expected
     attributes:
       label: Expected Behavior
       description: What did you expect to happen?
-      placeholder: Describe the expected outcome
+      placeholder: What should have happened?
     validations:
       required: true
 
   - type: textarea
-    id: actual-behavior
+    id: reproduce
     attributes:
-      label: Actual Behavior
-      description: What actually happened?
-      placeholder: Describe what actually occurred
+      label: Steps to Reproduce
+      description: How can we reproduce this issue?
+      placeholder: |
+        1. Run command...
+        2. See error...
     validations:
       required: true
 
   - type: dropdown
-    id: os
+    id: component
     attributes:
-      label: Operating System
-      description: Which operating system are you using?
+      label: Component
+      description: Which component is affected?
       options:
-        - macOS
-        - Linux
-        - Windows
+        - PW Parser
+        - Code Generator (Python)
+        - Code Generator (Go)
+        - Code Generator (Rust)
+        - Code Generator (TypeScript)
+        - Code Generator (C#)
+        - CLI Tool
+        - SDK (Python)
+        - SDK (JavaScript)
+        - SDK (Go)
+        - SDK (.NET)
+        - Type System
+        - Documentation
         - Other
     validations:
       required: true
 
   - type: input
-    id: python-version
-    attributes:
-      label: Python Version
-      description: Output of `python --version`
-      placeholder: e.g., Python 3.11.5
-    validations:
-      required: true
-
-  - type: input
-    id: promptware-version
+    id: version
     attributes:
       label: Promptware Version
-      description: Output of `promptware --version` or commit hash if using from source
-      placeholder: e.g., 0.1.0 or commit abc123
+      description: What version are you using?
+      placeholder: "v2.1.0-beta"
     validations:
       required: true
-
-  - type: dropdown
-    id: language-generated
-    attributes:
-      label: Target Language (if relevant)
-      description: Which language were you generating code for?
-      options:
-        - Python
-        - Node.js
-        - Go
-        - Rust
-        - .NET
-        - C++
-        - Not applicable
-    validations:
-      required: false
 
   - type: textarea
     id: code-sample
     attributes:
-      label: Code Sample
-      description: Minimal .pw file or code snippet that reproduces the issue
+      label: Code Sample (if applicable)
+      description: Minimal code sample to reproduce the issue
+      render: pw
       placeholder: |
-        ```promptware
-        server calculator "A simple calculator"
-        tool add(a: number, b: number) -> number
-        ```
-      render: text
-    validations:
-      required: false
+        function example() {
+            // Your PW code here
+        }
 
   - type: textarea
-    id: error-messages
+    id: error-output
     attributes:
-      label: Error Messages / Logs
-      description: Full error messages, stack traces, or relevant log output
-      placeholder: Paste error messages here
+      label: Error Output
+      description: Paste any error messages or stack traces
       render: shell
-    validations:
-      required: false
+      placeholder: Paste error output here
 
   - type: checkboxes
-    id: checklist
+    id: terms
     attributes:
-      label: Pre-submission Checklist
-      description: Please confirm the following before submitting
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our Code of Conduct
       options:
-        - label: I have searched existing issues to ensure this is not a duplicate
-          required: true
-        - label: I am using the latest version of Promptware
-          required: true
-        - label: I have included all relevant information above
+        - label: I agree to follow this project's Code of Conduct
           required: true
