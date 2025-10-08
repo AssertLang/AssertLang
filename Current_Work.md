@@ -1,9 +1,9 @@
 # Current Work - Promptware
 
-**Version**: 2.0.0 🎉
-**Last Updated**: 2025-10-07
-**Current Branch**: `raw-code-parsing`
-**Session**: 17
+**Version**: 2.1.0b1 🚀
+**Last Updated**: 2025-10-08
+**Current Branch**: `main`
+**Session**: 20 (Documentation Consistency & Demo Creation)
 
 ---
 
@@ -793,3 +793,86 @@ trufflehog git file://. --json | grep -c "Anthropic"
 - TestPyPI is valuable for testing before production
 
 **Status**: ✅ Release workflow corrected, both versions properly tagged and published
+
+---
+
+## 📋 Session 20: Documentation Consistency & CLI Flag Fixes (2025-10-08)
+
+### Issues Found & Fixed
+
+**Problem**: CLI documentation inconsistencies across GitHub repository
+- README and docs showed `--lang nodejs` (invalid flag)
+- Some examples showed `--lang c#` (invalid - special character)
+- Confusion about Node.js vs TypeScript vs JavaScript
+
+**Root Cause**: 
+- Promptware generates **TypeScript** code that runs on **Node.js**
+- CLI flag is `typescript` (or `ts` shorthand)
+- Marketing/prose correctly said "Node.js" (the platform)
+- But CLI examples incorrectly said `nodejs` (doesn't work)
+
+### Documentation Standard Established
+
+**For prose/marketing**:
+- ✅ "Supports Python, Go, Rust, Node.js, and C#" (platforms developers know)
+- ✅ "TypeScript/Node.js" in technical tables (language/runtime)
+
+**For CLI commands**:
+- ✅ Always use actual flags: `python`, `go`, `rust`, `typescript`, `csharp`
+- ✅ Shorthands: `ts` (typescript), `cs` (csharp)
+- ❌ Never: `nodejs`, `c#`, `javascript`, `dotnet`
+
+**Why TypeScript not JavaScript**:
+- Promptware generates `.ts` files with type annotations
+- Industry standard: "TypeScript/Node.js" (language/runtime)
+- Developers understand: TypeScript → compiles to → JavaScript → runs on → Node.js
+
+### Files Fixed
+
+1. **README.md** (main, line 106) - `nodejs` → `typescript` ✅
+2. **README_NEW_HERO.md** (line 106) - `nodejs` → `typescript` ✅  
+3. **docs/cli-guide.md** (3 locations):
+   - Line 66: command example ✅
+   - Line 211: parameter docs ✅
+   - Line 289: parameter docs ✅
+   - Line 619: command example ✅
+
+### Testing Performed
+
+All 5 language compilations tested and working:
+```bash
+✅ --lang python    → generates .py files
+✅ --lang go        → generates .go files
+✅ --lang rust      → generates .rs files
+✅ --lang typescript (or ts) → generates .ts files
+✅ --lang csharp (or cs) → generates .cs files
+```
+
+### GitHub Status
+
+- All fixes committed: commits a5ad252, 1452f43
+- Pushed to upstream: Promptware-dev/promptware main branch
+- Live on GitHub: https://github.com/Promptware-dev/promptware
+- README consistency: 10/10 ✅
+
+### Website Status
+
+- Created `WEBSITE_UPDATE_PROMPT_v2.md` for promptware.dev updates
+- One fix needed: `--lang c#` → `--lang csharp`
+- All other CLI examples already correct on website
+
+---
+
+## 🎬 Next: Demo Animation
+
+**Goal**: Create animated terminal demo for README hero section
+
+**Demo Script** (30 seconds):
+1. `pip install promptware-dev`
+2. Create calculator.pw file
+3. Compile to 5 languages (Python, Go, Rust, TypeScript, C#)
+4. Show all outputs generated
+
+**Status**: Tested workflow - all compilations work perfectly ✅
+**Remaining**: Create SVG animation or record terminal session
+
