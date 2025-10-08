@@ -33,6 +33,12 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
+# Import version from package
+try:
+    from promptware import __version__
+except ImportError:
+    __version__ = "2.1.0b1"  # Fallback
+
 # Color support and output utilities
 NO_COLOR = os.environ.get('NO_COLOR') is not None or not sys.stdout.isatty()
 
@@ -108,7 +114,7 @@ For more help: promptware help <command>
     parser.add_argument(
         '--version',
         action='version',
-        version='Promptware 1.1.0'
+        version=f'Promptware {__version__}'
     )
 
     # Subcommands

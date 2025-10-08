@@ -9,7 +9,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="promptware-dev",
-    version="2.1.0b0",
+    version="2.1.0b1",
     author="Promptware Contributors",
     author_email="hello@promptware.dev",
     description="Production-ready MCP agent framework with multi-language support",
