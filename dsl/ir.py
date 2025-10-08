@@ -513,14 +513,16 @@ class IRFor(IRNode):
     """
     For loop.
 
-    Example:
-        for item in items:
-          process(item)
+    Examples:
+        for (item in items) { process(item) }
+        for (i in range(0, 10)) { print(i) }
+        for (index, value in enumerate(items)) { print(index, value) }
     """
 
-    iterator: str  # Variable name
+    iterator: str  # Variable name (or value variable for enumerate)
     iterable: IRExpression
     body: List[IRStatement] = field(default_factory=list)
+    index_var: Optional[str] = None  # For enumerate pattern: (index, value)
 
     def __post_init__(self) -> None:
         self.type = NodeType.FOR
