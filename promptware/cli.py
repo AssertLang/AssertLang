@@ -315,6 +315,74 @@ For more help: promptware help <command>
     config_path.add_argument(
         '--project', action='store_true', help='Show project config path')
 
+    # Build command (NEW - Universal code compilation)
+    build_parser = subparsers.add_parser(
+        'build',
+        help='Compile PW file to target language',
+        description='Compile PW source code to Python, Go, Rust, TypeScript, or C#.'
+    )
+    build_parser.add_argument(
+        'file',
+        type=str,
+        help='.pw source file'
+    )
+    build_parser.add_argument(
+        '--lang', '-l',
+        type=str,
+        choices=['python', 'go', 'rust', 'typescript', 'csharp', 'ts', 'cs'],
+        default='python',
+        help='Target language (default: python)'
+    )
+    build_parser.add_argument(
+        '--output', '-o',
+        type=str,
+        help='Output file (default: stdout)'
+    )
+    build_parser.add_argument(
+        '--verbose', '-v',
+        action='store_true',
+        help='Verbose output'
+    )
+
+    # Compile command (NEW - Compile to MCP JSON)
+    compile_parser = subparsers.add_parser(
+        'compile',
+        help='Compile PW file to MCP JSON',
+        description='Compile PW source to MCP JSON intermediate representation.'
+    )
+    compile_parser.add_argument(
+        'file',
+        type=str,
+        help='.pw source file'
+    )
+    compile_parser.add_argument(
+        '--output', '-o',
+        type=str,
+        help='Output JSON file (default: <input>.pw.json)'
+    )
+    compile_parser.add_argument(
+        '--verbose', '-v',
+        action='store_true',
+        help='Verbose output'
+    )
+
+    # Run command (NEW - Execute PW file)
+    run_parser = subparsers.add_parser(
+        'run',
+        help='Execute PW file',
+        description='Compile PW source to Python and execute it.'
+    )
+    run_parser.add_argument(
+        'file',
+        type=str,
+        help='.pw source file'
+    )
+    run_parser.add_argument(
+        '--verbose', '-v',
+        action='store_true',
+        help='Verbose output'
+    )
+
     # AI Guide command
     subparsers.add_parser(
         'ai-guide',
@@ -983,6 +1051,202 @@ def cmd_config(args) -> int:
     return 0
 
 
+def cmd_build(args) -> int:
+    """Execute build command - compile PW to target language."""
+    # Add pw-syntax-mcp-server to path
+    sys.path.insert(0, str(Path(__file__).parent.parent / 'pw-syntax-mcp-server'))
+
+    from dsl.pw_parser import parse_pw
+    from translators.ir_converter import ir_to_mcp
+    from translators.python_bridge import pw_to_python
+    from language.go_generator_v2 import GoGeneratorV2
+    from language.rust_generator_v2 import RustGeneratorV2
+    from translators.typescript_bridge import pw_to_typescript
+    from translators.csharp_bridge import pw_to_csharp
+
+    try:
+        # Read PW source
+        input_path = Path(args.file)
+        if not input_path.exists():
+            print(error(f"File not found: {input_path}"))
+            return 1
+
+        if args.verbose:
+            print(info(f"Reading: {input_path}"))
+
+        pw_code = input_path.read_text()
+
+        # Parse PW → IR
+        if args.verbose:
+            print(info("Parsing PW code..."))
+
+        ir = parse_pw(pw_code)
+
+        if args.verbose:
+            print(success(f"Parsed: {len(ir.functions)} functions, {len(ir.classes)} classes"))
+
+        # IR → MCP
+        if args.verbose:
+            print(info("Converting to MCP..."))
+
+        mcp_tree = ir_to_mcp(ir)
+
+        # Normalize language names
+        lang = args.lang
+        if lang in ('ts', 'typescript'):
+            lang = 'typescript'
+        elif lang in ('cs', 'csharp'):
+            lang = 'csharp'
+
+        # MCP → Target language
+        if args.verbose:
+            print(info(f"Generating {lang} code..."))
+
+        if lang == 'python':
+            code = pw_to_python(mcp_tree)
+        elif lang == 'go':
+            generator = GoGeneratorV2()
+            code = generator.generate(ir)
+        elif lang == 'rust':
+            generator = RustGeneratorV2()
+            code = generator.generate(ir)
+        elif lang == 'typescript':
+            code = pw_to_typescript(mcp_tree)
+        elif lang == 'csharp':
+            code = pw_to_csharp(mcp_tree)
+        else:
+            print(error(f"Unsupported language: {lang}"))
+            return 1
+
+        # Output
+        if args.output:
+            output_path = Path(args.output)
+            output_path.write_text(code)
+            if args.verbose:
+                print(info(f"Written: {output_path} ({len(code)} chars)"))
+            print(success(f"Compiled {input_path} → {output_path}"))
+        else:
+            # Print to stdout
+            print(code)
+
+        return 0
+
+    except Exception as e:
+        print(error(f"Build failed: {e}"))
+        if args.verbose:
+            import traceback
+            traceback.print_exc()
+        return 1
+
+
+def cmd_compile(args) -> int:
+    """Execute compile command - compile PW to MCP JSON."""
+    # Add pw-syntax-mcp-server to path
+    sys.path.insert(0, str(Path(__file__).parent.parent / 'pw-syntax-mcp-server'))
+
+    from dsl.pw_parser import parse_pw
+    from translators.ir_converter import ir_to_mcp
+    import json
+
+    try:
+        # Read PW source
+        input_path = Path(args.file)
+        if not input_path.exists():
+            print(error(f"File not found: {input_path}"))
+            return 1
+
+        if args.verbose:
+            print(info(f"Reading: {input_path}"))
+
+        pw_code = input_path.read_text()
+
+        # Parse PW → IR
+        if args.verbose:
+            print(info("Parsing PW code..."))
+
+        ir = parse_pw(pw_code)
+
+        # IR → MCP
+        if args.verbose:
+            print(info("Converting to MCP JSON..."))
+
+        mcp_tree = ir_to_mcp(ir)
+
+        # Serialize to JSON
+        json_output = json.dumps(mcp_tree, indent=2, default=str)
+
+        # Determine output path
+        if not args.output:
+            args.output = str(input_path) + '.json'
+
+        output_path = Path(args.output)
+        output_path.write_text(json_output)
+
+        if args.verbose:
+            print(info(f"Written: {output_path} ({len(json_output)} chars)"))
+
+        print(success(f"Compiled {input_path} → {output_path}"))
+        return 0
+
+    except Exception as e:
+        print(error(f"Compile failed: {e}"))
+        if args.verbose:
+            import traceback
+            traceback.print_exc()
+        return 1
+
+
+def cmd_run(args) -> int:
+    """Execute run command - compile PW to Python and execute."""
+    # Add pw-syntax-mcp-server to path
+    sys.path.insert(0, str(Path(__file__).parent.parent / 'pw-syntax-mcp-server'))
+
+    from dsl.pw_parser import parse_pw
+    from translators.ir_converter import ir_to_mcp
+    from translators.python_bridge import pw_to_python
+
+    try:
+        # Read PW source
+        input_path = Path(args.file)
+        if not input_path.exists():
+            print(error(f"File not found: {input_path}"))
+            return 1
+
+        if args.verbose:
+            print(info(f"Reading: {input_path}"))
+
+        pw_code = input_path.read_text()
+
+        # Parse PW → IR
+        if args.verbose:
+            print(info("Parsing PW code..."))
+
+        ir = parse_pw(pw_code)
+
+        # IR → MCP → Python
+        if args.verbose:
+            print(info("Generating Python code..."))
+
+        mcp_tree = ir_to_mcp(ir)
+        python_code = pw_to_python(mcp_tree)
+
+        if args.verbose:
+            print(info("Executing..."))
+            print("─" * 60)
+
+        # Execute Python code
+        exec(python_code)
+
+        return 0
+
+    except Exception as e:
+        print(error(f"Run failed: {e}"))
+        if args.verbose:
+            import traceback
+            traceback.print_exc()
+        return 1
+
+
 def cmd_ai_guide(args) -> int:
     """Execute ai-guide command - show AI agent onboarding guide."""
     guide_path = Path(__file__).parent.parent / "AI-AGENT-GUIDE.md"
@@ -1122,6 +1386,9 @@ def main():
         'list-tools': cmd_list_tools,
         'init': cmd_init,
         'config': cmd_config,
+        'build': cmd_build,      # NEW
+        'compile': cmd_compile,  # NEW
+        'run': cmd_run,          # NEW
         'ai-guide': cmd_ai_guide,
         'help': cmd_help,
     }

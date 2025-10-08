@@ -1,0 +1,116 @@
+
+    def _convert_list_comprehension(self, node: ast.ListComp) -> IRCall:
+        """
+        Convert list comprehension to a lambda-based representation.
+        Python: [item.price for item in items]
+        IR: _list_comp(lambda item: item.price, items)
+        """
+        if not node.generators:
+            return IRArray(elements=[])
+
+        gen = node.generators[0]
+        iterator_name = gen.target.id if isinstance(gen.target, ast.Name) else "_item"
+        iterable = self._convert_expression(gen.iter)
+        elt = self._convert_expression(node.elt)
+
+        elt_lambda = IRLambda(
+            params=[IRParameter(name=iterator_name, param_type=IRType(name="any"))],
+            body=elt
+        )
+
+        if gen.ifs:
+            cond = self._convert_expression(gen.ifs[0])
+            filter_lambda = IRLambda(
+                params=[IRParameter(name=iterator_name, param_type=IRType(name="any"))],
+                body=cond
+            )
+            return IRCall(
+                function=IRIdentifier(name="_list_comp_filtered"),
+                args=[elt_lambda, iterable, filter_lambda]
+            )
+        else:
+            return IRCall(
+                function=IRIdentifier(name="_list_comp"),
+                args=[elt_lambda, iterable]
+            )
+
+    def _convert_generator_expression(self, node: ast.GeneratorExp) -> IRCall:
+        """
+        Convert generator expression to a lambda-based representation.
+        Python: (item.price for item in items)
+        IR: _gen_exp(lambda item: item.price, items)
+        """
+        if not node.generators:
+            return IRArray(elements=[])
+
+        gen = node.generators[0]
+        iterator_name = gen.target.id if isinstance(gen.target, ast.Name) else "_item"
+        iterable = self._convert_expression(gen.iter)
+        elt = self._convert_expression(node.elt)
+
+        elt_lambda = IRLambda(
+            params=[IRParameter(name=iterator_name, param_type=IRType(name="any"))],
+            body=elt
+        )
+
+        if gen.ifs:
+            cond = self._convert_expression(gen.ifs[0])
+            filter_lambda = IRLambda(
+                params=[IRParameter(name=iterator_name, param_type=IRType(name="any"))],
+                body=cond
+            )
+            return IRCall(
+                function=IRIdentifier(name="_gen_exp_filtered"),
+                args=[elt_lambda, iterable, filter_lambda]
+            )
+        else:
+            return IRCall(
+                function=IRIdentifier(name="_gen_exp"),
+                args=[elt_lambda, iterable]
+            )
+
+    def _convert_fstring(self, node: ast.JoinedStr) -> IRExpression:
+        """
+        Convert f-string to concatenation.
+        Python: f"Hello {name}!"
+        IR: "Hello " + str(name) + "!"
+        """
+        if not node.values:
+            return IRLiteral(value="", literal_type=LiteralType.STRING)
+
+        parts = []
+        for value in node.values:
+            if isinstance(value, ast.Constant):
+                parts.append(IRLiteral(value=str(value.value), literal_type=LiteralType.STRING))
+            elif isinstance(value, ast.FormattedValue):
+                expr = self._convert_expression(value.value)
+                parts.append(IRCall(
+                    function=IRIdentifier(name="str"),
+                    args=[expr]
+                ))
+
+        if not parts:
+            return IRLiteral(value="", literal_type=LiteralType.STRING)
+
+        result = parts[0]
+        for part in parts[1:]:
+            result = IRBinaryOp(op=BinaryOperator.ADD, left=result, right=part)
+
+        return result
+
+    def _convert_await(self, node: ast.Await) -> IRCall:
+        """
+        Convert await expression.
+        Python: await some_async_func()
+        IR: Mark the call with async metadata
+        """
+        value = self._convert_expression(node.value)
+
+        if isinstance(value, IRCall):
+            value.metadata["awaited"] = True
+            return value
+
+        return IRCall(
+            function=IRIdentifier(name="_await"),
+            args=[value]
+        )
