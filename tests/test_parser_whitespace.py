@@ -16,33 +16,35 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent.parent / 'pw-syntax-mcp-server'))
 
-from dsl.pw_parser import Lexer, Parser
+from dsl.pw_parser import parse_pw
 from translators.ir_converter import ir_to_mcp
 from translators.python_bridge import pw_to_python
 
 
 def test_minimal_whitespace():
     """Test code with minimal whitespace."""
-    print(f"\n{'='*60}")
-    print("Testing minimal whitespace")
-    print(f"{'='*60}")
+    import sys
+    sys.stdout.flush()
+    print(f"\n{'='*60}", flush=True)
+    print("Testing minimal whitespace", flush=True)
+    print(f"{'='*60}", flush=True)
 
     pw_code = """function add(x:int,y:int)->int{return x+y;}"""
 
     try:
-        print(f"Code: {pw_code}")
+        print(f"Code: {pw_code}", flush=True)
 
-        lexer = Lexer(pw_code)
-        tokens = lexer.tokenize()
-        print(f"  ✅ Lexer: {len(tokens)} tokens")
+        print("  About to call parse_pw...", flush=True)
+        ir = parse_pw(pw_code)
+        print(f"  ✅ Parser: {len(ir.functions)} functions", flush=True)
 
-        parser = Parser(tokens)
-        ir = parser.parse()
-        print(f"  ✅ Parser: {len(ir.functions)} functions")
-
+        print("  About to call ir_to_mcp...", flush=True)
         mcp_tree = ir_to_mcp(ir)
+        print("  MCP tree created", flush=True)
+
+        print("  About to call pw_to_python...", flush=True)
         python_code = pw_to_python(mcp_tree)
-        print(f"  ✅ Python: generated")
+        print(f"  ✅ Python: generated", flush=True)
 
         print(f"\n✅ SUCCESS: Minimal whitespace works!")
         return True
@@ -63,12 +65,7 @@ def test_excessive_whitespace():
 }"""
 
     try:
-        lexer = Lexer(pw_code)
-        tokens = lexer.tokenize()
-        print(f"  ✅ Lexer: {len(tokens)} tokens")
-
-        parser = Parser(tokens)
-        ir = parser.parse()
+        ir = parse_pw(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
 
         mcp_tree = ir_to_mcp(ir)
@@ -93,12 +90,7 @@ def test_mixed_tabs_spaces():
     pw_code = "function add(x: int, y: int) -> int {\n\treturn x + y;\n}"
 
     try:
-        lexer = Lexer(pw_code)
-        tokens = lexer.tokenize()
-        print(f"  ✅ Lexer: {len(tokens)} tokens")
-
-        parser = Parser(tokens)
-        ir = parser.parse()
+        ir = parse_pw(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
 
         mcp_tree = ir_to_mcp(ir)
@@ -124,12 +116,7 @@ def test_trailing_whitespace():
 }   """
 
     try:
-        lexer = Lexer(pw_code)
-        tokens = lexer.tokenize()
-        print(f"  ✅ Lexer: {len(tokens)} tokens")
-
-        parser = Parser(tokens)
-        ir = parser.parse()
+        ir = parse_pw(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
 
         mcp_tree = ir_to_mcp(ir)
@@ -162,12 +149,7 @@ def test_blank_lines_between_statements():
 }"""
 
     try:
-        lexer = Lexer(pw_code)
-        tokens = lexer.tokenize()
-        print(f"  ✅ Lexer: {len(tokens)} tokens")
-
-        parser = Parser(tokens)
-        ir = parser.parse()
+        ir = parse_pw(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
 
         mcp_tree = ir_to_mcp(ir)
@@ -204,12 +186,7 @@ function multiply(x: int, y: int) -> int {
 }"""
 
     try:
-        lexer = Lexer(pw_code)
-        tokens = lexer.tokenize()
-        print(f"  ✅ Lexer: {len(tokens)} tokens")
-
-        parser = Parser(tokens)
-        ir = parser.parse()
+        ir = parse_pw(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
 
         mcp_tree = ir_to_mcp(ir)
@@ -233,12 +210,7 @@ def test_only_blank_lines():
     pw_code = "\n\n\n\n\n"
 
     try:
-        lexer = Lexer(pw_code)
-        tokens = lexer.tokenize()
-        print(f"  ✅ Lexer: {len(tokens)} tokens")
-
-        parser = Parser(tokens)
-        ir = parser.parse()
+        ir = parse_pw(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions (expected 0)")
 
         if len(ir.functions) == 0:
@@ -264,12 +236,7 @@ def test_crlf_line_endings():
     pw_code = "function add(x: int, y: int) -> int {\r\n    return x + y;\r\n}"
 
     try:
-        lexer = Lexer(pw_code)
-        tokens = lexer.tokenize()
-        print(f"  ✅ Lexer: {len(tokens)} tokens")
-
-        parser = Parser(tokens)
-        ir = parser.parse()
+        ir = parse_pw(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
 
         mcp_tree = ir_to_mcp(ir)
@@ -286,9 +253,11 @@ def test_crlf_line_endings():
 
 def run_all_tests():
     """Run all whitespace tests."""
-    print("\n" + "="*60)
-    print("PW PARSER WHITESPACE HANDLING TESTS")
-    print("="*60)
+    import sys
+    print("\n" + "="*60, flush=True)
+    print("PW PARSER WHITESPACE HANDLING TESTS", flush=True)
+    print("="*60, flush=True)
+    sys.stdout.flush()
 
     tests = [
         ("Minimal Whitespace", test_minimal_whitespace),
