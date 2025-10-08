@@ -3,8 +3,8 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "promptware"
-version = "1.1.0"
+name = "promptware-dev"
+version = "2.1.0b0"
 description = "Production-ready MCP agent framework with multi-language support"
 requires-python = ">=3.9"
 readme = "README.md"

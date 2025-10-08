@@ -8,8 +8,8 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="promptware",
-    version="1.1.0",
+    name="promptware-dev",
+    version="2.1.0b0",
     author="Promptware Contributors",
     author_email="hello@promptware.dev",
     description="Production-ready MCP agent framework with multi-language support",
