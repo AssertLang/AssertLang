@@ -1641,6 +1641,196 @@ class Parser:
 # ============================================================================
 
 
+class TypeChecker:
+    """Type checker for PW IR."""
+
+    def __init__(self):
+        self.type_env: Dict[str, str] = {}  # Variable name -> type
+        self.function_signatures: Dict[str, Tuple[List[str], str]] = {}  # name -> (param_types, return_type)
+        self.errors: List[str] = []
+
+    def check_module(self, module: IRModule) -> None:
+        """Type check entire module."""
+        # First pass: collect function signatures
+        for func in module.functions:
+            param_types = [self._extract_type_name(p.param_type) for p in func.params]
+            return_type = self._extract_type_name(func.return_type)
+            self.function_signatures[func.name] = (param_types, return_type)
+
+        # Second pass: type check each function
+        for func in module.functions:
+            self.check_function(func)
+
+        # If any errors, raise
+        if self.errors:
+            raise PWParseError("\n".join(self.errors))
+
+    def _extract_type_name(self, type_obj) -> str:
+        """Extract type name from IRType or string."""
+        if isinstance(type_obj, str):
+            return type_obj
+        elif hasattr(type_obj, 'name'):
+            return type_obj.name
+        else:
+            return str(type_obj)
+
+    def check_function(self, func: IRFunction) -> None:
+        """Type check a function."""
+        # Clear variable env for new function
+        self.type_env = {}
+
+        # Add parameters to environment
+        for param in func.params:
+            param_type = self._extract_type_name(param.param_type)
+            self.type_env[param.name] = param_type
+
+        # Check function has return type
+        return_type = self._extract_type_name(func.return_type)
+        if not return_type or return_type == "":
+            self.errors.append(f"Function '{func.name}' missing return type annotation")
+            return
+
+        # Type check body
+        for stmt in func.body:
+            self.check_statement(stmt, return_type)
+
+    def check_statement(self, stmt: IRStatement, expected_return_type: str) -> None:
+        """Type check a statement."""
+        if isinstance(stmt, IRReturn):
+            if stmt.value:
+                actual_type = self.infer_type(stmt.value)
+                if not self.types_compatible(actual_type, expected_return_type):
+                    self.errors.append(
+                        f"Return type mismatch: expected {expected_return_type}, got {actual_type}"
+                    )
+        elif isinstance(stmt, IRAssignment):
+            # Infer type from value
+            value_type = self.infer_type(stmt.value)
+            self.type_env[stmt.target] = value_type
+        elif isinstance(stmt, IRIf):
+            # Check condition is boolean (or can be used as bool)
+            cond_type = self.infer_type(stmt.condition)
+            # For now, accept any type as condition
+
+            # Check then branch
+            for s in stmt.then_body:
+                self.check_statement(s, expected_return_type)
+
+            # Check else branch
+            if stmt.else_body:
+                for s in stmt.else_body:
+                    self.check_statement(s, expected_return_type)
+
+    def infer_type(self, expr: IRExpression) -> str:
+        """Infer the type of an expression."""
+        if isinstance(expr, IRLiteral):
+            if expr.literal_type == LiteralType.INTEGER:
+                return "int"
+            elif expr.literal_type == LiteralType.FLOAT:
+                return "float"
+            elif expr.literal_type == LiteralType.STRING:
+                return "string"
+            elif expr.literal_type == LiteralType.BOOLEAN:
+                return "bool"
+            elif expr.literal_type == LiteralType.NULL:
+                return "null"
+            else:
+                return "any"
+
+        elif isinstance(expr, IRIdentifier):
+            # Look up in environment
+            if expr.name in self.type_env:
+                return self.type_env[expr.name]
+            else:
+                # Unknown variable - could be error or any
+                return "any"
+
+        elif isinstance(expr, IRBinaryOp):
+            left_type = self.infer_type(expr.left)
+            right_type = self.infer_type(expr.right)
+
+            # Arithmetic operators
+            if expr.op in [BinaryOperator.ADD, BinaryOperator.SUBTRACT,
+                          BinaryOperator.MULTIPLY, BinaryOperator.DIVIDE]:
+                # Special case: string concatenation
+                if expr.op == BinaryOperator.ADD and (left_type == "string" or right_type == "string"):
+                    return "string"
+
+                # Type check: operands should be compatible
+                if left_type != right_type and left_type != "any" and right_type != "any":
+                    # Check int/float compatibility
+                    if not ((left_type in ["int", "float"] and right_type in ["int", "float"])):
+                        self.errors.append(
+                            f"Binary operation type mismatch: {left_type} {expr.op.value} {right_type}"
+                        )
+
+                # Return type
+                if left_type == "float" or right_type == "float":
+                    return "float"
+                return left_type if left_type != "any" else right_type
+
+            # Comparison operators
+            elif expr.op in [BinaryOperator.EQUAL, BinaryOperator.NOT_EQUAL,
+                           BinaryOperator.LESS_THAN, BinaryOperator.GREATER_THAN,
+                           BinaryOperator.LESS_EQUAL, BinaryOperator.GREATER_EQUAL]:
+                return "bool"
+
+            # Logical operators
+            elif expr.op in [BinaryOperator.AND, BinaryOperator.OR]:
+                return "bool"
+
+            else:
+                return "any"
+
+        elif isinstance(expr, IRCall):
+            # Extract function name
+            func_name = None
+            if isinstance(expr.function, IRIdentifier):
+                func_name = expr.function.name
+            elif isinstance(expr.function, str):
+                func_name = expr.function
+
+            # Look up function signature
+            if func_name and func_name in self.function_signatures:
+                param_types, return_type = self.function_signatures[func_name]
+
+                # Check argument count
+                if len(expr.args) != len(param_types):
+                    self.errors.append(
+                        f"Function '{func_name}' expects {len(param_types)} arguments, got {len(expr.args)}"
+                    )
+
+                # Check argument types
+                for i, (arg, expected_type) in enumerate(zip(expr.args, param_types)):
+                    actual_type = self.infer_type(arg)
+                    if not self.types_compatible(actual_type, expected_type):
+                        self.errors.append(
+                            f"Argument {i+1} to '{func_name}': expected {expected_type}, got {actual_type}"
+                        )
+
+                return return_type
+            else:
+                # Unknown function - assume any
+                return "any"
+
+        else:
+            return "any"
+
+    def types_compatible(self, actual: str, expected: str) -> bool:
+        """Check if actual type is compatible with expected type."""
+        if actual == expected:
+            return True
+        if actual == "any" or expected == "any":
+            return True
+        # Int is compatible with float
+        if actual == "int" and expected == "float":
+            return True
+        # Void is special
+        if expected == "void":
+            return True
+        return False
+
+
 def parse_pw(text: str) -> IRModule:
     """
     Parse PW DSL 2.0 text into IR.
@@ -1660,4 +1850,10 @@ def parse_pw(text: str) -> IRModule:
 
     # Syntax analysis
     parser = Parser(tokens)
-    return parser.parse()
+    ir = parser.parse()
+
+    # Type checking
+    type_checker = TypeChecker()
+    type_checker.check_module(ir)
+
+    return ir
