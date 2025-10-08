@@ -1,0 +1,187 @@
+{
+  "summary": {
+    "total": 25,
+    "passed": 0,
+    "failed": 25,
+    "success_rate": 0.0,
+    "total_time_ms": 3.3991336822509766,
+    "avg_time_ms": 0.13596534729003906
+  },
+  "tests": [
+    {
+      "name": "Python \u2192 IR \u2192 Python",
+      "passed": false,
+      "duration_ms": 0.36978721618652344,
+      "error": "'PythonParserV2' object has no attribute 'parse'",
+      "metrics": {}
+    },
+    {
+      "name": "Node.js \u2192 IR \u2192 Node.js",
+      "passed": false,
+      "duration_ms": 0.14495849609375,
+      "error": "'NodeJSParserV2' object has no attribute 'parse'",
+      "metrics": {}
+    },
+    {
+      "name": "Go \u2192 IR \u2192 Go",
+      "passed": false,
+      "duration_ms": 0.11801719665527344,
+      "error": "'GoParserV2' object has no attribute 'parse'",
+      "metrics": {}
+    },
+    {
+      "name": "Rust \u2192 IR \u2192 Rust",
+      "passed": false,
+      "duration_ms": 0.11229515075683594,
+      "error": "'RustParserV2' object has no attribute 'parse'",
+      "metrics": {}
+    },
+    {
+      "name": ".NET \u2192 IR \u2192 .NET",
+      "passed": false,
+      "duration_ms": 0.10895729064941406,
+      "error": "'DotNetParserV2' object has no attribute 'parse'",
+      "metrics": {}
+    },
+    {
+      "name": "Python \u2192 Node.js",
+      "passed": false,
+      "duration_ms": 0.18286705017089844,
+      "error": "'PythonParserV2' object has no attribute 'parse'",
+      "metrics": {}
+    },
+    {
+      "name": "Python \u2192 Go",
+      "passed": false,
+      "duration_ms": 0.141143798828125,
+      "error": "'PythonParserV2' object has no attribute 'parse'",
+      "metrics": {}
+    },
+    {
+      "name": "Python \u2192 Rust",
+      "passed": false,
+      "duration_ms": 0.13303756713867188,
+      "error": "'PythonParserV2' object has no attribute 'parse'",
+      "metrics": {}
+    },
+    {
+      "name": "Python \u2192 .NET",
+      "passed": false,
+      "duration_ms": 0.1327991485595703,
+      "error": "'PythonParserV2' object has no attribute 'parse'",
+      "metrics": {}
+    },
+    {
+      "name": "Node.js \u2192 Python",
+      "passed": false,
+      "duration_ms": 0.13399124145507812,
+      "error": "'NodeJSParserV2' object has no attribute 'parse'",
+      "metrics": {}
+    },
+    {
+      "name": "Node.js \u2192 Go",
+      "passed": false,
+      "duration_ms": 0.1373291015625,
+      "error": "'NodeJSParserV2' object has no attribute 'parse'",
+      "metrics": {}
+    },
+    {
+      "name": "Node.js \u2192 Rust",
+      "passed": false,
+      "duration_ms": 0.13518333435058594,
+      "error": "'NodeJSParserV2' object has no attribute 'parse'",
+      "metrics": {}
+    },
+    {
+      "name": "Node.js \u2192 .NET",
+      "passed": false,
+      "duration_ms": 0.1239776611328125,
+      "error": "'NodeJSParserV2' object has no attribute 'parse'",
+      "metrics": {}
+    },
+    {
+      "name": "Go \u2192 Python",
+      "passed": false,
+      "duration_ms": 0.11181831359863281,
+      "error": "'GoParserV2' object has no attribute 'parse'",
+      "metrics": {}
+    },
+    {
+      "name": "Go \u2192 Node.js",
+      "passed": false,
+      "duration_ms": 0.11491775512695312,
+      "error": "'GoParserV2' object has no attribute 'parse'",
+      "metrics": {}
+    },
+    {
+      "name": "Go \u2192 Rust",
+      "passed": false,
+      "duration_ms": 0.11205673217773438,
+      "error": "'GoParserV2' object has no attribute 'parse'",
+      "metrics": {}
+    },
+    {
+      "name": "Go \u2192 .NET",
+      "passed": false,
+      "duration_ms": 0.11396408081054688,
+      "error": "'GoParserV2' object has no attribute 'parse'",
+      "metrics": {}
+    },
+    {
+      "name": "Rust \u2192 Python",
+      "passed": false,
+      "duration_ms": 0.11801719665527344,
+      "error": "'RustParserV2' object has no attribute 'parse'",
+      "metrics": {}
+    },
+    {
+      "name": "Rust \u2192 Node.js",
+      "passed": false,
+      "duration_ms": 0.11277198791503906,
+      "error": "'RustParserV2' object has no attribute 'parse'",
+      "metrics": {}
+    },
+    {
+      "name": "Rust \u2192 Go",
+      "passed": false,
+      "duration_ms": 0.11277198791503906,
+      "error": "'RustParserV2' object has no attribute 'parse'",
+      "metrics": {}
+    },
+    {
+      "name": "Rust \u2192 .NET",
+      "passed": false,
+      "duration_ms": 0.11706352233886719,
+      "error": "'RustParserV2' object has no attribute 'parse'",
+      "metrics": {}
+    },
+    {
+      "name": ".NET \u2192 Python",
+      "passed": false,
+      "duration_ms": 0.13518333435058594,
+      "error": "'DotNetParserV2' object has no attribute 'parse'",
+      "metrics": {}
+    },
+    {
+      "name": ".NET \u2192 Node.js",
+      "passed": false,
+      "duration_ms": 0.12803077697753906,
+      "error": "'DotNetParserV2' object has no attribute 'parse'",
+      "metrics": {}
+    },
+    {
+      "name": ".NET \u2192 Go",
+      "passed": false,
+      "duration_ms": 0.12803077697753906,
+      "error": "'DotNetParserV2' object has no attribute 'parse'",
+      "metrics": {}
+    },
+    {
+      "name": ".NET \u2192 Rust",
+      "passed": false,
+      "duration_ms": 0.1201629638671875,
+      "error": "'DotNetParserV2' object has no attribute 'parse'",
+      "metrics": {}
+    }
+  ]
+}
