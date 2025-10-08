@@ -670,6 +670,126 @@ promptware run calculator.pw
 - ✅ README.md updated
 - ⏳ Git tag (ready to create)
 
-**Last Updated**: 2025-10-07 by Claude (Session 17)
-**Version**: 2.1.0-beta (RELEASE READY!)
-**Branch**: `raw-code-parsing`
+**Last Updated**: 2025-10-08 by Claude (Session 19)
+**Version**: 2.1.0b1 (PUBLISHED TO PYPI! 🎉)
+**Branch**: `main`
+**PyPI**: https://pypi.org/project/promptware-dev/
+
+---
+
+## 📦 Session 18: PyPI Publishing + Security (2025-10-08)
+
+### PyPI Publishing Complete ✅
+- **Package Name**: `promptware-dev` (v2.1.0b0)
+- **Install Command**: `pip install promptware-dev`
+- **PyPI URL**: https://pypi.org/project/promptware-dev/2.1.0b0/
+- **TestPyPI**: https://test.pypi.org/project/promptware/2.1.0b0/ (tested first)
+- **Free Forever**: No cost to publish or install
+
+**Files Modified**:
+- `setup.py`: Updated to v2.1.0b0, renamed to `promptware-dev`
+- `pyproject.toml`: Updated to v2.1.0b0, renamed to `promptware-dev`
+- `README.md`: Added PyPI install instructions
+- Built and uploaded: `promptware_dev-2.1.0b0-py3-none-any.whl` (1.1MB) + `.tar.gz` (921KB)
+
+**Why promptware-dev?**
+- Original `promptware` name taken on PyPI (owned by ExpressAI, last updated 2023)
+- `promptware-dev` matches GitHub org `Promptware-dev`
+
+---
+
+## 🔒 Security Hardening (Session 18)
+
+**Activity**: Systematic secret removal and security setup
+
+### Security Audit Complete ✅
+- [x] **TruffleHog installed** - Open source secret scanning tool (AGPL 3.0)
+- [x] **Repository scanned** - Found Anthropic API key in git history
+- [x] **Secrets removed from history** - Rewritten 136 commits across all branches
+  - Removed `.env.local` from all commits
+  - Redacted API key in `PR_READINESS_ASSESSMENT.md`
+  - Cleaned: `main`, `CC45`, `pw-native-language`, `raw-code-parsing`
+  - Cleaned: All remote refs (origin, upstream)
+  - Cleaned: Tags `v2.0.0`, `v2.1.0-beta`
+- [x] **Pre-commit hook** - Blocks commits containing secrets
+- [x] **.gitignore verified** - Already includes `.env`, `.env.local`, `.env.*.local`
+
+### Files Modified
+- `.git/hooks/pre-commit` - TruffleHog scan on every commit
+- All git history rewritten (force push required)
+
+### Verification
+```bash
+trufflehog git file://. --json | grep -c "Anthropic"
+# Result: 0 (API key completely removed)
+```
+
+### Next Steps (CRITICAL)
+1. **Rotate API key at https://console.anthropic.com** (assume compromised)
+2. **Force push to remote**: `git push --force --all origin`
+3. **Force push tags**: `git push --force --tags origin`
+4. **Notify collaborators** to re-clone the repository
+
+**Security Status**: ✅ Repository cleaned, hook active, ready for force push
+
+---
+
+## 📋 Session 19: Release Workflow + Git Tag Cleanup (2025-10-08)
+
+**Activity**: Establishing proper release workflow and fixing git tag issues
+
+### Issues Found ✅
+- **Problem**: PyPI published before git tags created (backwards workflow)
+- **PyPI State**: Both v2.1.0b0 and v2.1.0b1 published
+- **Git State**: Tags missing for both versions
+- **Install Test**: ✅ `pip install promptware-dev` works globally (v2.1.0b1)
+
+### Actions Taken ✅
+1. **Created retroactive git tags**:
+   - `v2.1.0b0` → commit 2ce31c1 (PyPI publishing commit)
+   - `v2.1.0b1` → commit 4a09676 (version bump + announcement)
+2. **Pushed tags to GitHub**: Both tags now on origin
+3. **Verified PyPI install**: Fresh venv test successful (v2.1.0b1 installed)
+4. **Committed changes**: ANNOUNCEMENT_v2.0.0.md + version bumps
+
+### Standard Release Workflow Documented 📚
+
+**Correct Order**:
+1. Git: Update version in files → commit
+2. Git: Create tag (`git tag -a v2.1.0b1 -m "message"`)
+3. Git: Push to GitHub (`git push origin main && git push origin v2.1.0b1`)
+4. PyPI: Build (`python -m build`)
+5. PyPI: Upload to TestPyPI (optional)
+6. PyPI: Upload to production (`twine upload dist/*`)
+7. Verify: Test install in fresh venv
+
+**Why Git First?**
+- Git is source of truth
+- GitHub Releases auto-generated from tags
+- Easy rollback if PyPI fails
+- Enables CI/CD automation
+- Clear version history
+
+### Current State ✅
+| Version | Git Commit | Git Tag | PyPI | Install Test |
+|---------|-----------|---------|------|--------------|
+| 2.1.0b0 | 2ce31c1 | ✅ v2.1.0b0 | ✅ Published | ✅ Works |
+| 2.1.0b1 | 4a09676 | ✅ v2.1.0b1 | ✅ Published | ✅ Works |
+
+**Files Added**:
+- `ANNOUNCEMENT_v2.0.0.md` - Marketing announcement for v2.0 release
+
+**Files Modified**:
+- `promptware/__init__.py`: v2.1.0b1
+- `promptware/cli.py`: Dynamic version from `__version__`
+- `pyproject.toml`: v2.1.0b1
+- `setup.py`: v2.1.0b1
+
+### Lessons Learned 📖
+- Always create git tags BEFORE publishing to PyPI
+- Test PyPI install in isolated venv (not editable install)
+- Retroactive tagging is possible but avoid it
+- Use `python -m build` not `setup.py sdist`
+- TestPyPI is valuable for testing before production
+
+**Status**: ✅ Release workflow corrected, both versions properly tagged and published
