@@ -221,17 +221,20 @@ class PythonGeneratorV2:
         # Collect types from classes
         for cls in module.classes:
             for prop in cls.properties:
-                all_types.append(prop.prop_type)
+                if prop and prop.prop_type:
+                    all_types.append(prop.prop_type)
             for method in cls.methods:
                 for param in method.params:
-                    all_types.append(param.param_type)
+                    if param and param.param_type:
+                        all_types.append(param.param_type)
                 if method.return_type:
                     all_types.append(method.return_type)
 
         # Collect types from type definitions
         for type_def in module.types:
             for field in type_def.fields:
-                all_types.append(field.prop_type)
+                if field and field.prop_type:
+                    all_types.append(field.prop_type)
 
         # Get required imports
         imports = self.type_system.get_required_imports(all_types, "python")
@@ -361,7 +364,7 @@ class PythonGeneratorV2:
         # Class-level properties (without default values)
         has_properties = False
         for prop in cls.properties:
-            if not prop.default_value:
+            if prop and not getattr(prop, 'default_value', None):
                 prop_line = f"{self.indent()}{prop.name}: {self.generate_type(prop.prop_type)}"
                 lines.append(prop_line)
                 has_properties = True
@@ -567,11 +570,18 @@ class PythonGeneratorV2:
         """Generate assignment statement."""
         value = self.generate_expression(stmt.value)
 
-        # Handle empty target (shouldn't happen, but be defensive)
-        target = stmt.target if stmt.target else "_unknown"
+        # Generate target (could be variable or property access)
+        if stmt.target:
+            if isinstance(stmt.target, str):
+                target = stmt.target
+            else:
+                # Target is an expression (like property access)
+                target = self.generate_expression(stmt.target)
+        else:
+            target = "_unknown"
 
         # Type annotation for declarations (only for simple variables, not attributes)
-        if stmt.is_declaration and stmt.var_type and "." not in target:
+        if stmt.is_declaration and stmt.var_type and isinstance(stmt.target, str) and "." not in target:
             type_hint = self.generate_type(stmt.var_type)
             return f"{self.indent()}{target}: {type_hint} = {value}"
         else:

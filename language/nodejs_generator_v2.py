@@ -499,7 +499,8 @@ class NodeJSGeneratorV2:
         # Properties
         if self.typescript and cls.properties:
             for prop in cls.properties:
-                lines.append(self.generate_property(prop))
+                if prop is not None:
+                    lines.append(self.generate_property(prop))
 
         # Constructor
         if cls.constructor:
@@ -616,8 +617,19 @@ class NodeJSGeneratorV2:
         """
         value_expr = self.generate_expression(stmt.value)
 
-        # Check if this is a property assignment (e.g., "this.db" or "self.db")
-        is_property_assignment = "." in stmt.target
+        # Generate target (could be variable or property access)
+        if stmt.target:
+            if isinstance(stmt.target, str):
+                target = stmt.target
+                # Check if this is a property assignment (e.g., "this.db" or "self.db")
+                is_property_assignment = "." in target
+            else:
+                # Target is an expression (property access, array index, etc.)
+                target = self.generate_expression(stmt.target)
+                is_property_assignment = True  # Expressions are not simple declarations
+        else:
+            target = "_unknown"
+            is_property_assignment = False
 
         if stmt.is_declaration and not is_property_assignment:
             # New variable declaration
@@ -634,12 +646,11 @@ class NodeJSGeneratorV2:
                 ts_type = self._generate_type(stmt.var_type)
                 type_annotation = f": {ts_type}"
 
-            return f"{self.indent()}{keyword} {stmt.target}{type_annotation} = {value_expr};"
+            return f"{self.indent()}{keyword} {target}{type_annotation} = {value_expr};"
         else:
             # Re-assignment or property assignment
             # For property assignments like "this.db" or "self.db", we need to convert self → this
-            target = stmt.target
-            if self.in_class_method and target.startswith("self."):
+            if self.in_class_method and isinstance(stmt.target, str) and target.startswith("self."):
                 target = "this." + target[5:]  # Replace "self." with "this."
 
             return f"{self.indent()}{target} = {value_expr};"
