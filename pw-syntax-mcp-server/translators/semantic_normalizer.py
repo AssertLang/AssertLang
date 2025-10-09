@@ -165,14 +165,10 @@ class SemanticNormalizer:
 
         Transformations:
         - Throws declarations → raise statements in body
-        - Add __future__ annotations if using type hints
         - Error returns → ignore (Python uses exceptions)
-        """
 
-        # Add Python-specific imports
-        python_imports = [
-            IRImport(module="__future__", alias=None, items=["annotations"])
-        ]
+        Note: __future__ annotations import is handled by PythonGeneratorV2.
+        """
 
         # Filter out language-specific imports from other languages
         filtered_imports = [
@@ -191,7 +187,7 @@ class SemanticNormalizer:
         return IRModule(
             name=ir_module.name,
             version=ir_module.version,
-            imports=python_imports + filtered_imports,
+            imports=filtered_imports,
             functions=denormalized_functions,
             classes=ir_module.classes,
             types=ir_module.types,
