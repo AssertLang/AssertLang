@@ -91,6 +91,7 @@ class PythonGeneratorV2:
         self.required_imports: Set[str] = set()
         self.source_language: Optional[str] = None  # Track source language for mapping
         self.variable_types: Dict[str, IRType] = {}  # Track variable types for safe map indexing
+        self.property_types: Dict[str, IRType] = {}  # Track class property types (e.g., "users": map)
 
     # ========================================================================
     # Indentation Management
@@ -349,6 +350,11 @@ class PythonGeneratorV2:
         """Generate Python class."""
         lines = []
 
+        # Register class property types for safe map/array indexing
+        for prop in cls.properties:
+            if prop and hasattr(prop, 'prop_type'):
+                self.property_types[prop.name] = prop.prop_type
+
         # Class signature
         class_sig = f"class {cls.name}"
         if cls.base_classes:
@@ -393,6 +399,9 @@ class PythonGeneratorV2:
         # Remove trailing empty line from class
         while lines and lines[-1] == "":
             lines.pop()
+
+        # Clear property types (class scope ended)
+        self.property_types.clear()
 
         return "\n".join(lines)
 
@@ -581,6 +590,12 @@ class PythonGeneratorV2:
     def generate_assignment(self, stmt: IRAssignment) -> str:
         """Generate assignment statement."""
         value = self.generate_expression(stmt.value)
+
+        # Infer and track variable types for local assignments
+        if isinstance(stmt.target, str):
+            inferred_type = self._infer_expression_type(stmt.value)
+            if inferred_type:
+                self.variable_types[stmt.target] = inferred_type
 
         # Generate target (could be variable or property access)
         if stmt.target:
@@ -816,13 +831,22 @@ class PythonGeneratorV2:
             # Determine if object is a map/dict (use .get()) or array (use [index])
             is_map = False
 
-            # Check if object is an identifier with known type
+            # Check if object is an identifier with known type (e.g., function parameter)
             if isinstance(expr.object, IRIdentifier):
                 var_name = expr.object.name
                 if var_name in self.variable_types:
                     var_type = self.variable_types[var_name]
                     # Check if type is "map" or "dict"
                     if var_type.name in ("map", "dict", "Dict", "dictionary"):
+                        is_map = True
+
+            # Check if object is a property access (e.g., self.users[key])
+            elif isinstance(expr.object, IRPropertyAccess):
+                # Check if the property is a known map type
+                prop_name = expr.object.property
+                if prop_name in self.property_types:
+                    prop_type = self.property_types[prop_name]
+                    if prop_type.name in ("map", "dict", "Dict", "dictionary"):
                         is_map = True
 
             # If not determined by variable type, use index type as heuristic
@@ -867,8 +891,68 @@ class PythonGeneratorV2:
         else:
             return str(lit.value)
 
+    def _infer_expression_type(self, expr: IRExpression) -> Optional[IRType]:
+        """
+        Infer the type of an expression for type-aware code generation.
+
+        This is a lightweight type inference specifically for the generator.
+        Used primarily to distinguish int/int division from float division.
+        """
+        if isinstance(expr, IRLiteral):
+            # Literal types are known directly
+            if expr.literal_type == LiteralType.INTEGER:
+                return IRType(name="int")
+            elif expr.literal_type == LiteralType.FLOAT:
+                return IRType(name="float")
+            elif expr.literal_type == LiteralType.STRING:
+                return IRType(name="string")
+            elif expr.literal_type == LiteralType.BOOLEAN:
+                return IRType(name="bool")
+            elif expr.literal_type == LiteralType.NULL:
+                return IRType(name="null")
+
+        elif isinstance(expr, IRIdentifier):
+            # Look up in variable types (from function parameters)
+            return self.variable_types.get(expr.name)
+
+        elif isinstance(expr, IRBinaryOp):
+            # For binary operations, infer result type
+            left_type = self._infer_expression_type(expr.left)
+            right_type = self._infer_expression_type(expr.right)
+
+            # Arithmetic operations: if either is float, result is float
+            if expr.op in [BinaryOperator.ADD, BinaryOperator.SUBTRACT, BinaryOperator.MULTIPLY, BinaryOperator.DIVIDE]:
+                if (left_type and left_type.name == "float") or (right_type and right_type.name == "float"):
+                    return IRType(name="float")
+                elif (left_type and left_type.name == "int") and (right_type and right_type.name == "int"):
+                    return IRType(name="int")
+
+        elif isinstance(expr, IRPropertyAccess):
+            # Special case: .length property returns int
+            if expr.property == "length":
+                return IRType(name="int")
+
+        elif isinstance(expr, IRCall):
+            # Special case: len() returns int
+            if isinstance(expr.function, IRIdentifier) and expr.function.name == "len":
+                return IRType(name="int")
+
+        return None
+
     def generate_binary_op(self, expr: IRBinaryOp) -> str:
         """Generate binary operation."""
+        # Special handling for division: use // for integer division
+        if expr.op == BinaryOperator.DIVIDE:
+            left_type = self._infer_expression_type(expr.left)
+            right_type = self._infer_expression_type(expr.right)
+
+            # If both operands are integers, use integer division (//)
+            if (left_type and left_type.name == "int") and (right_type and right_type.name == "int"):
+                left = self.generate_expression(expr.left)
+                right = self.generate_expression(expr.right)
+                return f"({left} // {right})"
+
+        # Regular binary operations
         left = self.generate_expression(expr.left)
         right = self.generate_expression(expr.right)
 

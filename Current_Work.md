@@ -1,14 +1,309 @@
 # Current Work - Promptware
 
-**Version**: 2.1.0b3 🚀
+**Version**: 2.1.0b5 (in development)
 **Last Updated**: 2025-10-08
 **Current Branch**: `main`
-**Session**: 29 (100% Test Coverage - v2.1.0b3 Released)
-**Commit**: 33bc8ce
+**Session**: 32 (Bug #7 CLI Path Fixed - Property Type Preservation)
+**Commit**: TBD
+
+---
+
+## 🎯 Session 32 Summary (2025-10-08)
+
+**Achievement**: Bug #7 FULLY FIXED - Property type information now preserved through CLI path
+
+### What Was Done
+1. ✅ Identified missing `pw_property` handler in `mcp_to_ir()` function
+2. ✅ Added proper property type conversion in IR ↔ MCP roundtrip
+3. ✅ Verified CLI `promptware build` now generates safe map access
+4. ✅ Created comprehensive CLI path test suite (3 new tests, all passing)
+5. ✅ Confirmed all existing Bug #7 tests still pass (7 tests)
+
+### The Bug
+**Problem**: Bug #7 was partially fixed - it worked when using `Lexer → Parser → PythonGeneratorV2` directly (as tests did), but NOT when using the CLI `promptware build` command. The CLI uses a different code path that converts IR → MCP → IR, and property type information was lost during this roundtrip.
+
+**Root Cause**: The `mcp_to_ir()` function in `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/pw-syntax-mcp-server/translators/ir_converter.py` was missing a handler for `pw_property` tool calls. This meant when IRProperty objects were converted to MCP and back, the property type information was lost.
+
+**Example**:
+```pw
+class AuthManager {
+    users: map;  // Type info lost in CLI path
+    function has_user(username: string) -> bool {
+        if (self.users[username] != null) {
+            return true;
+        }
+        return false;
+    }
+}
+```
+
+**CLI Before (BROKEN)**:
+```bash
+$ python -m promptware.cli build test.pw --lang python
+```
+```python
+class AuthManager:
+    def has_user(self, username: str) -> bool:
+        if (self.users[username] != None):  # ❌ Unsafe access
+            return True
+```
+
+**CLI After (FIXED)**:
+```bash
+$ python -m promptware.cli build test.pw --lang python
+```
+```python
+class AuthManager:
+    users: Dict  # ✅ Type preserved
+
+    def has_user(self, username: str) -> bool:
+        if (self.users.get(username) != None):  # ✅ Safe access
+            return True
+```
+
+### Files Modified
+
+1. **`pw-syntax-mcp-server/translators/ir_converter.py`**:
+   - Lines 436-442: Added `pw_property` handler to `mcp_to_ir()`
+   - Properly converts MCP property nodes back to IRProperty with type information
+   - Ensures property types survive the IR → MCP → IR roundtrip
+
+### Tests Added
+
+1. **`tests/test_bug7_cli_path.py`** (NEW):
+   - `test_bug7_cli_path_preserves_property_types()`: End-to-end test of CLI path
+   - `test_bug7_property_roundtrip()`: Tests IRProperty MCP roundtrip
+   - `test_bug7_class_properties_roundtrip()`: Tests class properties with types
+
+### Code Path Fixed
+
+**CLI Path** (now works):
+1. PW text → IR (via `parse_pw`)
+2. IR → MCP tree (via `ir_to_mcp`) ✅
+3. MCP tree → IR (via `mcp_to_ir`) ✅ FIXED
+4. IR → Python (via `PythonGeneratorV2`) ✅
+
+### Test Results
+```bash
+$ python -m pytest tests/test_bug7_cli_path.py -v
+======================== 3 passed in 0.03s =========================
+
+$ python -m pytest tests/test_bug7_safe_map_access.py -v
+======================== 7 passed in 0.03s =========================
+
+$ python -m pytest tests/test_maps.py -v
+======================== 9 passed, 9 warnings in 0.05s =============
+```
+
+### Success Criteria Met ✅
+
+```bash
+$ cat test.pw
+class AuthManager {
+    users: map;
+    function has_user(username: string) -> bool {
+        if (self.users[username] != null) {
+            return true;
+        }
+        return false;
+    }
+}
+
+$ python -m promptware.cli build test.pw --lang python -o test.py
+$ grep "self.users" test.py
+        if (self.users.get(username) != None):  # ✅ Uses .get()
+```
+
+### Impact
+- Bug #7 is now COMPLETELY fixed for both direct usage and CLI usage
+- Property types are preserved through all code paths
+- Safe map access is guaranteed in all scenarios
+- 19 total tests passing (7 original + 9 map tests + 3 new CLI tests)
+
+---
+
+## 🎯 Session 31 Summary (2025-10-08)
+
+**Achievement**: Bug #9 FIXED - Type-Aware Integer Division in Python Generator
+
+### What Was Done
+1. ✅ Implemented type-aware division operator selection in Python generator
+2. ✅ Added lightweight type inference system for expression types
+3. ✅ Enabled automatic assignment-based type tracking for local variables
+4. ✅ Created comprehensive test suite (14 tests, all passing)
+5. ✅ Verified binary_search example now works correctly
+
+### The Bug
+**Problem**: When dividing two integers in PW, the Python generator used `/` (float division) instead of `//` (integer division), causing TypeErrors when the result was used as an array index.
+
+**Example**:
+```pw
+let mid = (left + right) / 2;  // PW code
+let val = arr[mid];            // Crashes: float used as index
+```
+
+**Generated (BROKEN)**:
+```python
+mid = ((left + right) / 2)  # Returns 3.0, not 3
+val = arr[mid]              # TypeError: list indices must be integers, not float
+```
+
+**Generated (FIXED)**:
+```python
+mid = ((left + right) // 2)  # Returns 3
+val = arr[mid]               # Works!
+```
+
+### Files Modified
+
+1. **`language/python_generator_v2.py`**:
+   - Lines 888-934: Added `_infer_expression_type()` method
+     - Infers types from literals (int, float, string, bool, null)
+     - Looks up variable types from tracked assignments
+     - Infers binary operation result types
+     - Handles special cases: `len()` returns int, `.length` returns int
+
+   - Lines 936-946: Enhanced `generate_binary_op()`
+     - Detects integer division: both operands are int
+     - Generates `//` for int/int, `/` for all other divisions
+
+   - Lines 590-598: Enhanced `generate_assignment()`
+     - Tracks variable types from assignments
+     - Enables type inference for local variables
+
+2. **`tests/test_bug9_integer_division.py`** (NEW):
+   - 14 comprehensive tests covering all division scenarios
+   - Tests int/int, float/int, int/float, float/float
+   - Tests with literals, parameters, and expressions
+   - Tests binary_search example from bug report
+
+### Test Results
+- **New Tests**: 14/14 passing (100%)
+- **Existing Python Generator Tests**: 30/30 passing (100%)
+- **Total Bug #9 Coverage**: All division scenarios validated
+
+### Technical Details
+
+**Solution Architecture**:
+1. **Type Inference**: Lightweight inference at generation time
+   - Tracks parameter types (from function signatures)
+   - Tracks local variable types (from assignments)
+   - Infers expression types recursively
+
+2. **Division Operator Selection**:
+   ```python
+   if left_type == int AND right_type == int:
+       use "//"  # Integer division
+   else:
+       use "/"   # Float division
+   ```
+
+3. **Type Tracking Flow**:
+   - Function parameters → `variable_types` dict
+   - Assignment: `let x = expr` → infer type of `expr`, store in `variable_types`
+   - Binary op: look up operand types, select appropriate operator
+
+**Test Coverage**:
+```python
+# Integer divisions (use //)
+10 / 3           →  (10 // 3)
+a / b            →  (a // b)          # where a, b are int
+(a + b) / 2      →  ((a + b) // 2)   # where a, b are int
+len(arr) / 2     →  (len(arr) // 2)  # len() returns int
+
+# Float divisions (use /)
+10.0 / 3.0       →  (10.0 / 3.0)
+a / b            →  (a / b)          # where a is float OR b is float
+c / 2            →  (c / 2)          # where c is float
+```
+
+**Generated Code Example**:
+```python
+# Binary search - BEFORE (BROKEN):
+def binary_search(arr: List, target: int) -> int:
+    left = 0
+    right = (len(arr) - 1)
+    while (left <= right):
+        mid = ((left + right) / 2)   # ❌ Float!
+        val = arr[mid]               # ❌ TypeError!
+
+# Binary search - AFTER (FIXED):
+def binary_search(arr: List, target: int) -> int:
+    left = 0
+    right = (len(arr) - 1)
+    while (left <= right):
+        mid = ((left + right) // 2)  # ✅ Integer!
+        val = arr[mid]               # ✅ Works!
+```
+
+### Next Steps
+- Consider extending fix to other generators (Rust: uses `/`, C#: uses `/`, etc.)
+- Monitor for edge cases with complex type inference
+- Ready for v2.1.0b4 release with this fix
+
+---
+
+## 🎯 Session 30 Summary (2025-10-08)
+
+**Achievement**: Bug #7 FIXED - Enhanced Safe Map Access for Class Properties
+
+### What Was Done
+1. ✅ Enhanced Python generator to track class property types
+2. ✅ Fixed `self.users[key]` to generate `self.users.get(key)` for safe reads
+3. ✅ Maintained `self.users[key] = value` for direct writes
+4. ✅ Created comprehensive test suite (7 tests, all passing)
+5. ✅ Verified fix works for both standalone functions and class properties
+
+### Files Modified
+1. **`language/python_generator_v2.py`**:
+   - Line 94: Added `property_types: Dict[str, IRType]` to track class properties
+   - Lines 353-356: Register class property types when generating classes
+   - Lines 834-841: Enhanced IRIndex generation to check property types
+   - Line 404: Clear property types after class generation (scope cleanup)
+
+2. **`tests/test_bug7_safe_map_access.py`** (NEW):
+   - 7 comprehensive tests covering all scenarios
+   - Tests standalone functions, class properties, reads, writes, and multi-language
+
+### Test Results
+- **New Tests**: 7/7 passing (100%)
+- **Existing Map Tests**: 9/9 passing (100%)
+- **Total Coverage**: All safe map access scenarios validated
+
+### Technical Details
+
+**Problem**:
+- `users[username]` in function parameters: ✅ Already used `.get()` (safe)
+- `self.users[username]` in class methods: ❌ Used `[]` (KeyError on missing key)
+
+**Solution**:
+- Track class property types in `property_types` dictionary
+- Check both `variable_types` (parameters) and `property_types` (class properties)
+- Generate `.get()` for reads, `[]` for writes
+
+**Generated Code Example**:
+```python
+# Before (BROKEN):
+def has_user(self, username: str) -> bool:
+    if (self.users[username] != None):  # KeyError!
+        return True
+
+# After (FIXED):
+def has_user(self, username: str) -> bool:
+    if (self.users.get(username) != None):  # Safe!
+        return True
+```
+
+### Next Steps
+- Consider extending fix to other generators (Rust, C#) if needed
+- Monitor for edge cases with nested property access
+- Consider v2.1.0b4 release with this fix
 
 ---
 
 ## 📦 Release Sync Status
+
+✅ **LIVE AND PUBLISHED**
 
 **GitHub Release**: [v2.1.0b3](https://github.com/Promptware-dev/promptware/releases/tag/v2.1.0b3)
 **PyPI Package**: [2.1.0b3](https://pypi.org/project/promptware-dev/2.1.0b3/)
@@ -18,9 +313,9 @@
 - `pyproject.toml` - version = "2.1.0b3"
 - `setup.py` - version = "2.1.0b3"
 - `promptware/__init__.py` - __version__ = "2.1.0b3"
-- Git tag - v2.1.0b3
-- GitHub release - v2.1.0b3
-- PyPI package - 2.1.0b3
+- Git tag - v2.1.0b3 ✅ Pushed
+- GitHub release - v2.1.0b3 ✅ Published (prerelease)
+- PyPI package - 2.1.0b3 ✅ Published
 - CHANGELOG.md - ## [2.1.0b3]
 
 ---
