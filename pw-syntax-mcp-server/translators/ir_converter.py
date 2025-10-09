@@ -433,6 +433,14 @@ def mcp_to_ir(mcp_tree: Dict[str, Any]) -> Any:
             constructor=mcp_to_ir(params["constructor"]) if params.get("constructor") else None,
         )
 
+    # Property
+    elif tool == "pw_property":
+        return IRProperty(
+            name=params["name"],
+            prop_type=mcp_to_ir(params["prop_type"]) if params.get("prop_type") else None,
+            default_value=mcp_to_ir(params["default_value"]) if params.get("default_value") else None,
+        )
+
     # Statements
     elif tool == "pw_assignment":
         return IRAssignment(

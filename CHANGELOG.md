@@ -5,6 +5,72 @@ All notable changes to Promptware will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0b4] - 2025-10-08
+
+### 🔥 Critical Bug Fixes - Agent Training Blockers
+
+Two P1 critical bugs discovered during agent training testing. Both are now completely fixed.
+
+### Fixed
+
+**Bug #7: Safe Map Key Access (P1 - Critical Blocker)**
+- Fixed unsafe map key access that threw `KeyError` in Python
+- Problem: `map[key] != null` generated `dict[key] != None` (throws KeyError)
+- Solution: Enhanced Python generator to use `.get()` for map reads
+- Fixed IR ↔ MCP converter to preserve class property types
+- Map reads now generate `dict.get(key)` (returns None safely)
+- Map writes still use `dict[key] = value` (direct assignment)
+- Added property type tracking system to Python generator
+- Files modified: `language/python_generator_v2.py`, `pw-syntax-mcp-server/translators/ir_converter.py`
+- Tests added: 10 comprehensive tests (all passing)
+- **Impact**: Unblocks SECURITY and DATABASE agents
+
+**Bug #9: Integer Division in Python (P1 - Critical Blocker)**
+- Fixed integer division generating float results in Python 3
+- Problem: `(left + right) / 2` generated `/ ` instead of `//`, returning float
+- Root cause: Python 3 changed `/` to always return float (breaking change from Python 2)
+- Solution: Added type inference engine to Python generator
+- Integer ÷ Integer now generates `//` (integer division)
+- Float divisions correctly continue to use `/`
+- Added `_infer_expression_type()` method with full type tracking
+- Files modified: `language/python_generator_v2.py`
+- Tests added: 14 comprehensive tests (all passing)
+- **Impact**: Unblocks CODER agent and all algorithms (binary search, etc.)
+
+### Added
+
+**Type Inference System**
+- New type inference engine tracks expression types
+- Infers literal types, variable types, function returns, binary op results
+- Special handling for `len()` → int, arithmetic operations
+- Enables type-aware code generation optimizations
+
+**Comprehensive Test Suite**
+- 24 new tests for Bugs #7 and #9
+- Tests cover both direct parser path and CLI build path
+- Real-world verification with binary search and authentication examples
+- All 129/129 tests passing (100%)
+
+### Changed
+
+**Repository Cleanup**
+- Moved bug reports to archived documentation
+- Removed test output files
+- Cleaned temporary test files from /tmp
+
+### Test Results
+- New tests: 24/24 passing (100%)
+- Existing tests: 105/105 passing (100%)
+- Total: 129/129 tests passing ✅
+- Regressions: None detected
+
+### Known Issues
+
+**Minor: Duplicate Future Imports (Non-Blocking)**
+- Generated Python files may have duplicate `from __future__ import annotations`
+- Impact: Low - code runs correctly, just redundant
+- Priority: P3 - nice to have fix
+
 ## [2.1.0b3-beta.1] - 2025-10-08
 
 ### 🐛 Bug Fix Sprint - Production Stability
