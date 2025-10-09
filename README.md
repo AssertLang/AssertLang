@@ -630,37 +630,86 @@ promptware run calculator.pw
 
 **Complete specification**: See [`docs/PW_NATIVE_SYNTAX.md`](docs/PW_NATIVE_SYNTAX.md)
 
-### New Language Features
+### New Language Features (v2.1.0b3)
 
-**For Loops**
+**For Loops** ✅ Working
 ```pw
+// C-style for loops
+for (let i = 0; i < 10; i = i + 1) {
+    // Loop body
+}
+
+// For-in loops
 for (item in items) { }
 for (i in range(0, 10)) { }
 for (index, value in enumerate(items)) { }
 ```
 
-**While Loops**
+**While Loops** ✅ Working
 ```pw
-while (condition) { }
+while (condition) {
+    if (should_skip) {
+        continue;  // Skip to next iteration
+    }
+    if (should_stop) {
+        break;     // Exit loop
+    }
+}
 ```
 
-**Arrays**
+**Try/Catch** ✅ Working
+```pw
+try {
+    let result = risky_operation();
+    return result;
+} catch (error) {
+    return default_value;
+} finally {
+    cleanup();  // Always runs
+}
+```
+
+**Arrays** ✅ Working
 ```pw
 let numbers = [1, 2, 3, 4, 5];
 numbers[0] = 10;
+let count = numbers.length;  // Array length property
 ```
 
-**Maps/Dictionaries**
+**Maps/Dictionaries** ✅ Working (Safe Access)
 ```pw
 let user = {
     name: "Alice",
     age: 30,
     email: "alice@example.com"
 };
-let name = user["name"];
+
+// Safe map access - returns null if key missing (no exceptions!)
+if (user["name"] != null) {
+    let name = user["name"];
+}
 ```
 
-**Classes**
+**Optional Types** ✅ Working
+```pw
+// Function returning optional (nullable) map
+function find_user(id: int) -> map? {
+    if (id < 0) {
+        return null;  // Valid for optional types
+    }
+    return {id: id, name: "User"};
+}
+
+// Optional parameters
+function greet(name: string?) -> string {
+    if (name != null) {
+        return "Hello, " + name;
+    }
+    return "Hello, Guest";
+}
+```
+
+**Classes** ✅ Working
 ```pw
 class User {
     name: string;
@@ -683,8 +732,12 @@ See `examples/` for complete working programs:
 - **Calculator CLI** (`calculator_cli.pw`) - 3,676 chars
 - **Todo List Manager** (`todo_list_manager.pw`) - 5,350 chars
 - **Simple Web API** (`simple_web_api.pw`) - 7,535 chars
+- **Error Handling** (`error_handling.pw`) - Try/catch patterns
+- **Array and Map Basics** (`array_and_map_basics.pw`) - Safe collection operations
 
 **Total**: 16,561 characters of production-ready PW code
+
+**📚 Best Practices**: See [`docs/SAFE_PATTERNS.md`](docs/SAFE_PATTERNS.md) for safe programming patterns that work across all 5 languages
 
 ### Test Coverage: 99%
 
