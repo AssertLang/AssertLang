@@ -98,6 +98,7 @@ class RustGeneratorV2:
         self.indent_size = 4  # Rust standard
         self.needs_hashmap = False
         self.needs_error = False
+        self.variable_types: Dict[str, IRType] = {}  # Track variable types for safe map indexing
         self.current_context = "function"  # function, struct, impl
         self.source_language: Optional[str] = None  # Track source language for mapping
 
@@ -479,6 +480,10 @@ class RustGeneratorV2:
         """Generate function definition."""
         lines = []
 
+        # Register parameter types for safe map/array indexing
+        for param in func.params:
+            self.variable_types[param.name] = param.param_type
+
         base_indent = "    " * indent
 
         # Doc comment
@@ -498,6 +503,9 @@ class RustGeneratorV2:
             lines.append(f"{base_indent}    todo!()")
 
         lines.append(f"{base_indent}}}")
+
+        # Clear variable types for this function scope
+        self.variable_types.clear()
 
         return "\n".join(lines)
 
@@ -669,8 +677,29 @@ class RustGeneratorV2:
         if stmt.target:
             if isinstance(stmt.target, str):
                 target = self._to_snake_case(stmt.target)
+            elif isinstance(stmt.target, IRIndex):
+                # Special case: Index assignment (map[key] = value or arr[i] = value)
+                # For maps, use .insert() instead of [key] = value
+                obj = self._generate_expression(stmt.target.object)
+                index = self._generate_expression(stmt.target.index)
+
+                # Check if it's a map
+                is_map = False
+                if isinstance(stmt.target.object, IRIdentifier):
+                    var_name = stmt.target.object.name
+                    if var_name in self.variable_types:
+                        var_type = self.variable_types[var_name]
+                        if var_type.name in ("map", "dict", "Dict", "HashMap", "dictionary"):
+                            is_map = True
+
+                if is_map:
+                    # HashMap assignment: use .insert(key, value)
+                    return f"{base_indent}{obj}.insert({index}, {value});"
+                else:
+                    # Array assignment: use [index] = value
+                    target = f"{obj}[{index}]"
             else:
-                # Target is an expression (property access, array index, etc.)
+                # Target is an expression (property access, etc.)
                 target = self._generate_expression(stmt.target)
         else:
             target = "_unknown"
@@ -861,12 +890,39 @@ class RustGeneratorV2:
             return self._generate_call(expr)
         elif isinstance(expr, IRPropertyAccess):
             obj = self._generate_expression(expr.object)
+            # Special case: .length property should use .len() method in Rust
+            if expr.property == "length":
+                return f"{obj}.len()"
             prop = self._to_snake_case(expr.property)
             return f"{obj}.{prop}"
         elif isinstance(expr, IRIndex):
             obj = self._generate_expression(expr.object)
             index = self._generate_expression(expr.index)
-            return f"{obj}[{index}]"
+
+            # Determine if object is a map/HashMap (use .get()) or array/Vec (use [index])
+            is_map = False
+
+            # Check if object is an identifier with known type
+            if isinstance(expr.object, IRIdentifier):
+                var_name = expr.object.name
+                if var_name in self.variable_types:
+                    var_type = self.variable_types[var_name]
+                    # Check if type is "map" or "HashMap"
+                    if var_type.name in ("map", "dict", "Dict", "HashMap", "dictionary"):
+                        is_map = True
+
+            # If not determined by variable type, use index type as heuristic
+            if not is_map and isinstance(expr.index, IRLiteral) and expr.index.literal_type == LiteralType.STRING:
+                # String key → likely map/dict access
+                is_map = True
+
+            # Generate safe map access with .get() or regular array access
+            if is_map:
+                # Rust HashMap.get() returns Option<&V>, unwrap_or() returns &V with default
+                # For now, use .get().cloned() to get Option<V> then unwrap_or(None equivalent)
+                return f"{obj}.get(&{index}).cloned()"
+            else:
+                return f"{obj}[{index}]"
         elif isinstance(expr, IRArray):
             return self._generate_array(expr)
         elif isinstance(expr, IRMap):

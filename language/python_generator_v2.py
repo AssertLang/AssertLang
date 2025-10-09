@@ -90,6 +90,7 @@ class PythonGeneratorV2:
         self.indent_size = 4  # PEP 8 standard
         self.required_imports: Set[str] = set()
         self.source_language: Optional[str] = None  # Track source language for mapping
+        self.variable_types: Dict[str, IRType] = {}  # Track variable types for safe map indexing
 
     # ========================================================================
     # Indentation Management
@@ -484,6 +485,10 @@ class PythonGeneratorV2:
         """Generate standalone function."""
         lines = []
 
+        # Register parameter types for safe map/array indexing
+        for param in func.params:
+            self.variable_types[param.name] = param.param_type
+
         # Decorators (use direct field, fall back to metadata)
         decorators = func.decorators if hasattr(func, 'decorators') else func.metadata.get("decorators", [])
         for dec in decorators:
@@ -523,6 +528,10 @@ class PythonGeneratorV2:
             lines.append(f"{self.indent()}pass")
 
         self.decrease_indent()
+
+        # Clear variable types for this function scope
+        self.variable_types.clear()
+
         return "\n".join(lines)
 
     # ========================================================================
@@ -577,6 +586,12 @@ class PythonGeneratorV2:
         if stmt.target:
             if isinstance(stmt.target, str):
                 target = stmt.target
+            elif isinstance(stmt.target, IRIndex):
+                # Special case: Index assignment (map[key] = value or arr[i] = value)
+                # Use direct bracket notation for assignment (don't use .get())
+                obj = self.generate_expression(stmt.target.object)
+                index = self.generate_expression(stmt.target.index)
+                target = f"{obj}[{index}]"
             else:
                 # Target is an expression (like property access)
                 target = self.generate_expression(stmt.target)
@@ -790,11 +805,36 @@ class PythonGeneratorV2:
             return self.generate_call(expr)
         elif isinstance(expr, IRPropertyAccess):
             obj = self.generate_expression(expr.object)
+            # Special case: .length property should use len() in Python
+            if expr.property == "length":
+                return f"len({obj})"
             return f"{obj}.{expr.property}"
         elif isinstance(expr, IRIndex):
             obj = self.generate_expression(expr.object)
             index = self.generate_expression(expr.index)
-            return f"{obj}[{index}]"
+
+            # Determine if object is a map/dict (use .get()) or array (use [index])
+            is_map = False
+
+            # Check if object is an identifier with known type
+            if isinstance(expr.object, IRIdentifier):
+                var_name = expr.object.name
+                if var_name in self.variable_types:
+                    var_type = self.variable_types[var_name]
+                    # Check if type is "map" or "dict"
+                    if var_type.name in ("map", "dict", "Dict", "dictionary"):
+                        is_map = True
+
+            # If not determined by variable type, use index type as heuristic
+            if not is_map and isinstance(expr.index, IRLiteral) and expr.index.literal_type == LiteralType.STRING:
+                # String key → likely map/dict access
+                is_map = True
+
+            # Generate safe map access with .get() or regular array access
+            if is_map:
+                return f"{obj}.get({index})"
+            else:
+                return f"{obj}[{index}]"
         elif isinstance(expr, IRArray):
             return self.generate_array(expr)
         elif isinstance(expr, IRMap):
