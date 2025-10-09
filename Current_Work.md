@@ -1,10 +1,230 @@
 # Current Work - Promptware
 
-**Version**: 2.1.0b5 (in development)
-**Last Updated**: 2025-10-08
+**Version**: 2.1.0b6 (released)
+**Last Updated**: 2025-10-09
 **Current Branch**: `main`
-**Session**: 32 (Bug #7 CLI Path Fixed - Property Type Preservation)
-**Commit**: TBD
+**Session**: 34 (Bug #12 Fixed - Duplicate Future Imports)
+**Commit**: 0e52228
+
+---
+
+## 🎯 Session 34 Summary (2025-10-09)
+
+**Achievement**: Bug #12 FIXED - Duplicate `from __future__ import annotations` regression resolved
+
+### What Was Done
+1. ✅ Fixed duplicate future imports in all generated Python files
+2. ✅ Removed duplicate import from semantic_normalizer.py
+3. ✅ Created comprehensive test suite (4 tests, all passing)
+4. ✅ Verified no regressions in existing tests (39 tests pass)
+5. ✅ Released v2.1.0b6 to PyPI and GitHub
+6. ✅ Updated CHANGELOG.md with release notes
+
+### The Bug
+**Problem**: ALL generated Python files had duplicate `from __future__ import annotations`, causing SyntaxError. This was a critical regression introduced in v2.1.0b5 that blocked all 11 agents.
+
+**Example (Before - BROKEN)**:
+```python
+from __future__ import annotations
+
+from __future__ import annotations  # ❌ DUPLICATE - causes SyntaxError
+
+class User:
+    id: int
+```
+
+**Example (After - FIXED)**:
+```python
+from __future__ import annotations  # ✅ Only one
+
+class User:
+    id: int
+```
+
+### Root Cause
+- `semantic_normalizer.py` line 174 added `from __future__ import annotations`
+- `python_generator_v2.py` line 139 also added it
+- Result: Two imports in generated code
+
+### Solution
+Removed import from semantic_normalizer.py. Architecture principle: generators handle language-specific boilerplate, normalizers handle structure.
+
+### Files Modified
+1. **`pw-syntax-mcp-server/translators/semantic_normalizer.py`**: Removed duplicate import addition (lines 173-175)
+2. **`tests/test_bug12_duplicate_future_imports.py`**: New comprehensive test suite with 4 tests
+
+### Test Results
+- New tests: 4/4 passing (100%)
+- Regression tests: 39/39 passing (100%)
+- Total: 43/43 tests ✅
+
+### Release
+- **PyPI**: https://pypi.org/project/promptware-dev/2.1.0b6/
+- **GitHub**: https://github.com/Promptware-dev/promptware/releases/tag/v2.1.0b6
+- **Commit**: 0e52228
+
+---
+
+## 🎯 Session 33 Summary (2025-10-09)
+
+**Achievement**: Bug #10 FIXED - Reserved keywords can now be used as class property names
+
+### What Was Done
+1. ✅ Fixed parser to allow reserved keywords as class property names
+2. ✅ Allowed keywords as constructor parameter names
+3. ✅ Allowed keywords in property access expressions (e.g., `self.method`)
+4. ✅ Allowed keywords as identifiers in primary expressions
+5. ✅ Created comprehensive test suite (7 tests, all passing)
+6. ✅ Verified no regressions in existing DSL 2.0 tests (39 tests pass)
+7. ✅ Committed fix to git (commit fd1860a)
+
+### The Bug
+**Problem**: Reserved keywords like `method`, `body`, `name`, `type` couldn't be used as class property names. This forced unnatural workarounds like renaming `method` → `http_method` or `body` → `data`, reducing code readability.
+
+**Example (Before - BROKEN)**:
+```pw
+class Request {
+    method: string;  // ❌ ERROR: Unexpected keyword in class body: method
+    body: map;       // ❌ ERROR: Unexpected keyword in class body: body
+}
+```
+
+**Example (After - FIXED)**:
+```pw
+class Request {
+    method: string;  // ✅ Works
+    body: map;       // ✅ Works
+    path: string;
+
+    constructor(method: string, path: string, body: map) {
+        self.method = method;
+        self.path = path;
+        self.body = body;
+    }
+
+    function get_method() -> string {
+        return self.method;
+    }
+}
+```
+
+### Solution Approach
+Implemented context-aware keyword parsing:
+- Created blacklist of control flow keywords that must remain syntactic (`if`, `else`, `while`, `for`, `return`, etc.)
+- Allowed non-control keywords to be used as identifiers in specific contexts
+- Modified parser in three locations to handle keywords contextually
+
+### Files Modified
+
+1. **`dsl/pw_parser.py`** (3 locations):
+
+   **Lines 893-906**: Constructor parameter parsing
+   ```python
+   # Allow both identifiers and keywords as parameter names
+   if self.match(TokenType.IDENTIFIER):
+       param_name = self.advance().value
+   elif self.match(TokenType.KEYWORD):
+       param_name = self.advance().value
+   else:
+       raise self.error("Expected parameter name")
+   ```
+
+   **Lines 927-938**: Class property parsing
+   ```python
+   # Check if keyword is followed by colon (property with keyword name)
+   elif self.peek().type == TokenType.COLON:
+       prop_name = self.advance().value  # consume keyword as property name
+       self.expect(TokenType.COLON)
+       prop_type = self.parse_type()
+       properties.append(IRProperty(name=prop_name, prop_type=prop_type))
+   ```
+
+   **Lines 1823-1833**: Property access parsing
+   ```python
+   # Allow both identifiers and keywords as property names
+   if self.match(TokenType.IDENTIFIER):
+       property = self.advance().value
+   elif self.match(TokenType.KEYWORD):
+       property = self.advance().value
+   else:
+       raise self.error("Expected property name")
+   ```
+
+   **Lines 1857-1872**: Primary expression parsing
+   ```python
+   # Keywords that can be used as identifiers
+   if self.match(TokenType.KEYWORD):
+       keyword_value = self.current().value
+       control_keywords = {
+           'if', 'else', 'elif', 'for', 'while', 'try', 'catch', 'finally',
+           'return', 'throw', 'break', 'continue', 'pass', 'let',
+           'function', 'class', 'constructor', 'enum', 'import', 'from', 'as',
+           'async', 'await', 'lambda', 'module', 'version'
+       }
+       if keyword_value not in control_keywords:
+           self.advance()
+           return IRIdentifier(name=keyword_value)
+   ```
+
+### Tests Added
+
+**`tests/test_bug10_reserved_keywords.py`** (NEW):
+- `test_method_as_property()`: Keyword 'method' as property
+- `test_body_as_property()`: Keyword 'body' as property
+- `test_name_as_property()`: Keyword 'name' as property
+- `test_type_as_property()`: Keyword 'type' as property
+- `test_all_keywords_as_properties()`: Multiple keywords in one class
+- `test_keywords_still_work_as_keywords()`: Control keywords still syntactic
+- `test_generated_python_uses_property_names()`: End-to-end code generation
+
+### Test Results
+```bash
+$ python -m pytest tests/test_bug10_reserved_keywords.py -v
+======================== 7 passed in 0.03s =========================
+
+$ python -m pytest tests/test_classes.py tests/test_bug7_*.py tests/test_bug9_*.py -v
+======================== 39 passed, 8 warnings in 0.08s =============
+```
+
+### Impact
+- ✅ Allows natural property names for REST API development (`method`, `body`, `headers`)
+- ✅ Consistent with Python, TypeScript, Go, Rust (all allow these names)
+- ✅ Eliminates need for workarounds like `http_method` or `data`
+- ✅ Improves code readability and developer experience
+- ✅ No breaking changes - backward compatible
+
+### Keywords Now Allowed as Identifiers
+- `method`, `body`, `name`, `type`, `params`, `returns`, `throws`
+- `self` (already worked)
+- Any keyword not in the control flow blacklist
+
+### Keywords Still Reserved (Syntactic)
+- Control flow: `if`, `else`, `elif`, `for`, `while`
+- Declarations: `function`, `class`, `constructor`, `enum`, `let`
+- Operations: `return`, `throw`, `break`, `continue`, `pass`
+- Module: `import`, `from`, `as`, `module`, `version`
+- Async: `async`, `await`, `lambda`
+
+### Bug #11 Status
+Bug #11 (Complex parser error in nested code) cannot be investigated without the actual failing file (`training/database_query_optimizer.pw`). This file is not in the repository. Bug #11 is P3-Low priority and the report states it cannot be reproduced in isolation.
+
+**Recommendation**: Bug #11 needs the actual 237-line failing file to debug. Until that file is provided, investigation cannot proceed.
+
+### Release Status
+✅ **v2.1.0b5 released successfully**
+- GitHub Release: https://github.com/Promptware-dev/promptware/releases/tag/v2.1.0b5
+- PyPI Package: https://pypi.org/project/promptware-dev/2.1.0b5/
+- All artifacts uploaded
+- Documentation updated
+
+### Bug Batch 5 Status
+Checked `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/Bugs/v2.1.0b5/PW_BUG_REPORT_BATCH_5.md`:
+- **0 new bugs discovered**
+- v2.1.0b4+ is stable
+- Agent training proceeding without blockers
+- Only outstanding issue: Bug #4 (optional types) - low priority with clean workaround
+
+**Status:** v2.1.0b5 is production-ready with no critical bugs.
 
 ---
 
