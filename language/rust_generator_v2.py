@@ -57,6 +57,7 @@ from dsl.ir import (
     IRReturn,
     IRIf,
     IRFor,
+    IRForCStyle,
     IRWhile,
     IRTry,
     IRCatch,
@@ -628,6 +629,8 @@ class RustGeneratorV2:
             return self._generate_return(stmt, indent)
         elif isinstance(stmt, IRIf):
             return self._generate_if(stmt, indent)
+        elif isinstance(stmt, IRForCStyle):
+            return self._generate_for_c_style(stmt, indent)
         elif isinstance(stmt, IRFor):
             return self._generate_for(stmt, indent)
         elif isinstance(stmt, IRWhile):
@@ -729,6 +732,55 @@ class RustGeneratorV2:
         body_lines = self._generate_statements(stmt.body, indent + 1)
         lines.extend(body_lines)
 
+        lines.append(f"{base_indent}}}")
+
+        return lines
+
+    def _generate_for_c_style(self, stmt: IRForCStyle, indent: int) -> List[str]:
+        """
+        Generate C-style for loop as while loop in Rust.
+        Rust doesn't have C-style for loops, so convert to:
+
+        {
+            let mut i = 0;
+            while i < 10 {
+                ...
+                i = i + 1;
+            }
+        }
+        """
+        base_indent = "    " * indent
+        lines = []
+
+        # Open scope block
+        lines.append(f"{base_indent}{{")
+
+        # Generate initialization
+        init_lines = self._generate_statement(stmt.init, indent + 1)
+        if isinstance(init_lines, list):
+            lines.extend(init_lines)
+        else:
+            lines.append(init_lines)
+
+        # Generate while loop with condition
+        condition = self._generate_expression(stmt.condition)
+        lines.append(f"{base_indent}    while {condition} {{")
+
+        # Generate body
+        body_lines = self._generate_statements(stmt.body, indent + 2)
+        lines.extend(body_lines)
+
+        # Add increment at end of loop body
+        increment_lines = self._generate_statement(stmt.increment, indent + 2)
+        if isinstance(increment_lines, list):
+            lines.extend(increment_lines)
+        else:
+            lines.append(increment_lines)
+
+        # Close while loop
+        lines.append(f"{base_indent}    }}")
+
+        # Close scope block
         lines.append(f"{base_indent}}}")
 
         return lines

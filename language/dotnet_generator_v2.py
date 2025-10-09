@@ -40,6 +40,7 @@ from dsl.ir import (
     IREnumVariant,
     IRExpression,
     IRFor,
+    IRForCStyle,
     IRFunction,
     IRIdentifier,
     IRIf,
@@ -541,6 +542,8 @@ class DotNetGeneratorV2:
             return self._generate_assignment(stmt)
         elif isinstance(stmt, IRIf):
             return self._generate_if(stmt)
+        elif isinstance(stmt, IRForCStyle):
+            return self._generate_for_c_style(stmt)
         elif isinstance(stmt, IRFor):
             return self._generate_for(stmt)
         elif isinstance(stmt, IRWhile):
@@ -630,6 +633,42 @@ class DotNetGeneratorV2:
         iterable = self._generate_expression(stmt.iterable)
 
         lines.append(f"{self.indent()}foreach (var {iterator} in {iterable})")
+        lines.append(f"{self.indent()}{{")
+        self.increase_indent()
+
+        for s in stmt.body:
+            lines.extend(self._generate_statement(s))
+
+        self.decrease_indent()
+        lines.append(f"{self.indent()}}}")
+
+        return lines
+
+    def _generate_for_c_style(self, stmt: IRForCStyle) -> List[str]:
+        """
+        Generate C-style for loop (C# supports this natively).
+
+        Example:
+            for (int i = 0; i < 10; i = i + 1)
+            {
+                ...
+            }
+        """
+        lines = []
+
+        # Generate init statement
+        init_lines = self._generate_statement(stmt.init)
+        init_str = init_lines[0].strip() if init_lines else ""
+
+        # Generate condition
+        condition = self._generate_expression(stmt.condition)
+
+        # Generate increment
+        increment_lines = self._generate_statement(stmt.increment)
+        increment_str = increment_lines[0].strip() if increment_lines else ""
+
+        # Build for loop header
+        lines.append(f"{self.indent()}for ({init_str}; {condition}; {increment_str})")
         lines.append(f"{self.indent()}{{")
         self.increase_indent()
 

@@ -1,0 +1,11 @@
+// Test 4: Break in While
+function count_until_five() -> int {
+    let i = 0;
+    while (true) {
+        i = i + 1;
+        if (i == 5) {
+            break;
+        }
+    }
+    return i;
+}
