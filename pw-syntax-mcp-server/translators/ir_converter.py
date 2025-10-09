@@ -327,6 +327,7 @@ def ir_to_mcp(node: Any) -> Dict[str, Any]:
             "params": {
                 "name": node.name,
                 "generic_args": [ir_to_mcp(arg) for arg in node.generic_args] if node.generic_args else [],
+                "is_optional": node.is_optional,
             }
         }
 
@@ -563,6 +564,7 @@ def mcp_to_ir(mcp_tree: Dict[str, Any]) -> Any:
         return IRType(
             name=params["name"],
             generic_args=[mcp_to_ir(arg) for arg in params.get("generic_args", [])],
+            is_optional=params.get("is_optional", False),
         )
 
     else:

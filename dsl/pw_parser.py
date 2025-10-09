@@ -17,7 +17,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from dsl.ir import (
     BinaryOperator,
@@ -1985,24 +1985,25 @@ class TypeChecker:
             param_type = self._extract_type_name(param.param_type)
             self.type_env[param.name] = param_type
 
-        # Check function has return type
-        return_type = self._extract_type_name(func.return_type)
-        if not return_type or return_type == "":
+        # Check function has return type (keep as IRType object)
+        if not func.return_type:
             self.errors.append(f"Function '{func.name}' missing return type annotation")
             return
 
-        # Type check body
+        # Type check body with IRType object
         for stmt in func.body:
-            self.check_statement(stmt, return_type)
+            self.check_statement(stmt, func.return_type)
 
-    def check_statement(self, stmt: IRStatement, expected_return_type: str) -> None:
+    def check_statement(self, stmt: IRStatement, expected_return_type: Union[str, IRType]) -> None:
         """Type check a statement."""
         if isinstance(stmt, IRReturn):
             if stmt.value:
                 actual_type = self.infer_type(stmt.value)
                 if not self.types_compatible(actual_type, expected_return_type):
+                    # Format expected type for error message
+                    expected_str = str(expected_return_type) if isinstance(expected_return_type, IRType) else expected_return_type
                     self.errors.append(
-                        f"Return type mismatch: expected {expected_return_type}, got {actual_type}"
+                        f"Return type mismatch: expected {expected_str}, got {actual_type}"
                     )
         elif isinstance(stmt, IRAssignment):
             # Infer type from value
@@ -2121,17 +2122,41 @@ class TypeChecker:
         else:
             return "any"
 
-    def types_compatible(self, actual: str, expected: str) -> bool:
-        """Check if actual type is compatible with expected type."""
-        if actual == expected:
+    def types_compatible(self, actual: Union[str, IRType], expected: Union[str, IRType]) -> bool:
+        """
+        Check if actual type is compatible with expected type.
+
+        Supports both string type names and IRType objects.
+        Handles optional types (T?) - null is always compatible with optional types.
+        """
+        # Convert to IRType objects if needed
+        if isinstance(actual, str):
+            actual_type = IRType(name=actual, is_optional=False)
+        else:
+            actual_type = actual
+
+        if isinstance(expected, str):
+            expected_type = IRType(name=expected, is_optional=False)
+        else:
+            expected_type = expected
+
+        # Special case: If expected is optional (T?), null is always valid
+        if expected_type.is_optional and actual_type.name == "null":
             return True
-        if actual == "any" or expected == "any":
+
+        # Compare base type names
+        actual_name = actual_type.name
+        expected_name = expected_type.name
+
+        if actual_name == expected_name:
+            return True
+        if actual_name == "any" or expected_name == "any":
             return True
         # Int is compatible with float
-        if actual == "int" and expected == "float":
+        if actual_name == "int" and expected_name == "float":
             return True
         # Void is special
-        if expected == "void":
+        if expected_name == "void":
             return True
         return False
 
