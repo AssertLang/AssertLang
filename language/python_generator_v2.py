@@ -926,6 +926,9 @@ class PythonGeneratorV2:
                     return IRType(name="float")
                 elif (left_type and left_type.name == "int") and (right_type and right_type.name == "int"):
                     return IRType(name="int")
+            # Floor division always returns int
+            elif expr.op == BinaryOperator.FLOOR_DIVIDE:
+                return IRType(name="int")
 
         elif isinstance(expr, IRPropertyAccess):
             # Special case: .length property returns int
@@ -962,6 +965,7 @@ class PythonGeneratorV2:
             BinaryOperator.SUBTRACT: "-",
             BinaryOperator.MULTIPLY: "*",
             BinaryOperator.DIVIDE: "/",
+            BinaryOperator.FLOOR_DIVIDE: "//",
             BinaryOperator.MODULO: "%",
             BinaryOperator.POWER: "**",
             BinaryOperator.EQUAL: "==",
