@@ -5,6 +5,50 @@ All notable changes to Promptware will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0b6] - 2025-10-09
+
+### 🔥 Critical Regression Fix
+
+**Bug #12: Duplicate `from __future__ import annotations` (P0 - Complete Blocker)**
+- Fixed duplicate future imports causing ALL Python files to fail with SyntaxError
+- Problem: `semantic_normalizer.py` AND `python_generator_v2.py` both added the import
+- Root cause: Architecture violation - normalizer adding language-specific boilerplate
+- Solution: Removed duplicate from semantic_normalizer, generator handles all boilerplate
+- Files modified: `pw-syntax-mcp-server/translators/semantic_normalizer.py`
+- Tests added: 4 comprehensive tests (all passing)
+- **Impact**: Unblocks ALL 11 agents - complete fix for v2.1.0b5 regression
+
+### Fixed
+
+**Duplicate Future Imports**
+- Semantic normalizer no longer adds `from __future__ import annotations`
+- Python generator correctly handles all Python-specific boilerplate at line 139
+- All generated Python files now have exactly ONE future import at the top
+- Files compile and run without SyntaxError
+
+### Added
+
+**Test Suite for Bug #12**
+- `tests/test_bug12_duplicate_future_imports.py` - 4 comprehensive tests
+- Tests simple classes, typing imports, syntax validation, and import ordering
+- Verifies fix works via CLI build path (not just direct generation)
+
+### Changed
+
+**Architecture Clarification**
+- Established principle: Generators handle language boilerplate, normalizers handle structure
+- Updated semantic_normalizer.py docstring to document this
+
+### Test Results
+- New tests: 4/4 passing (100%)
+- Regression tests: 39/39 passing (100%)
+- Total: 43/43 tests passing ✅
+- Zero regressions introduced
+
+### Notes
+
+This release fixes a critical regression introduced in v2.1.0b5. All generated Python code now runs correctly without manual editing.
+
 ## [2.1.0b4] - 2025-10-08
 
 ### 🔥 Critical Bug Fixes - Agent Training Blockers
