@@ -37,6 +37,7 @@ from dsl.ir import (
     IREnumVariant,
     IRExpression,
     IRFor,
+    IRForCStyle,
     IRFString,
     IRFunction,
     IRIdentifier,
@@ -583,6 +584,8 @@ class NodeJSGeneratorV2:
             return self.generate_assignment(stmt)
         elif isinstance(stmt, IRIf):
             return self.generate_if(stmt)
+        elif isinstance(stmt, IRForCStyle):
+            return self.generate_for_c_style(stmt)
         elif isinstance(stmt, IRFor):
             return self.generate_for(stmt)
         elif isinstance(stmt, IRWhile):
@@ -700,6 +703,39 @@ class NodeJSGeneratorV2:
         iterable = self.generate_expression(stmt.iterable)
         lines.append(f"{self.indent()}for (const {stmt.iterator} of {iterable}) {{")
 
+        self.increase_indent()
+        for s in stmt.body:
+            lines.append(self.generate_statement(s))
+        self.decrease_indent()
+
+        lines.append(f"{self.indent()}}}")
+
+        return "\n".join(lines)
+
+    def generate_for_c_style(self, stmt: IRForCStyle) -> str:
+        """
+        Generate C-style for loop (TypeScript/JavaScript supports this natively).
+
+        Example:
+            for (let i = 0; i < 10; i = i + 1) {
+                ...
+            }
+        """
+        lines = []
+
+        # Generate init statement
+        init_line = self.generate_statement(stmt.init).strip()
+
+        # Generate condition
+        condition = self.generate_expression(stmt.condition)
+
+        # Generate increment
+        increment_line = self.generate_statement(stmt.increment).strip()
+
+        # Build for loop header
+        lines.append(f"{self.indent()}for ({init_line}; {condition}; {increment_line}) {{")
+
+        # Generate body
         self.increase_indent()
         for s in stmt.body:
             lines.append(self.generate_statement(s))

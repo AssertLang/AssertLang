@@ -1,0 +1,9 @@
+// Test 2: Break
+function find_first_even(numbers: array<int>) -> int {
+    for (num in numbers) {
+        if (num % 2 == 0) {
+            return num;
+        }
+    }
+    return -1;
+}

@@ -33,6 +33,7 @@ from dsl.ir import (
     IREnumVariant,
     IRExpression,
     IRFor,
+    IRForCStyle,
     IRFunction,
     IRIdentifier,
     IRIf,
@@ -1402,18 +1403,34 @@ class Parser:
 
         return IRIf(condition=condition, then_body=then_body, else_body=else_body)
 
-    def parse_for(self) -> IRFor:
+    def parse_for(self):
         """
-        Parse for loop (C-style syntax).
+        Parse for loop - detects and delegates to appropriate parser.
+
+        Syntax:
+            for (item in items) { body }              # for-in loop
+            for (let i = 0; i < 10; i = i + 1) { }    # C-style loop
+        """
+        self.expect(TokenType.KEYWORD)  # "for"
+        self.expect(TokenType.LPAREN)   # "("
+
+        # Peek ahead to determine loop type
+        # C-style: starts with "let"
+        # for-in: starts with identifier
+        if self.match(TokenType.KEYWORD) and self.current().value == "let":
+            return self.parse_for_c_style()
+        else:
+            return self.parse_for_in()
+
+    def parse_for_in(self) -> IRFor:
+        """
+        Parse for-in loop.
 
         Syntax:
             for (item in items) { body }
             for (i in range(0, 10)) { body }
             for (index, value in enumerate(items)) { body }
         """
-        self.expect(TokenType.KEYWORD)  # "for"
-        self.expect(TokenType.LPAREN)   # "("
-
         # Parse iterator(s) - could be single or tuple (for enumerate)
         iterator = self.expect(TokenType.IDENTIFIER).value
         index_var = None
@@ -1450,6 +1467,61 @@ class Parser:
 
         return for_node
 
+    def parse_for_c_style(self) -> IRForCStyle:
+        """
+        Parse C-style for loop.
+
+        Syntax:
+            for (let i = 0; i < 10; i = i + 1) { body }
+        """
+        # Parse initialization: let i = 0
+        self.expect(TokenType.KEYWORD)  # "let"
+        var_name = self.expect(TokenType.IDENTIFIER).value
+        self.expect(TokenType.ASSIGN)
+        init_value = self.parse_expression()
+        init = IRAssignment(target=var_name, value=init_value, is_declaration=True)
+
+        # Parse condition: i < 10
+        self.expect(TokenType.SEMICOLON)
+        condition = self.parse_expression()
+
+        # Parse increment: i = i + 1
+        self.expect(TokenType.SEMICOLON)
+        increment_target_name = self.expect(TokenType.IDENTIFIER).value
+        increment_target = IRIdentifier(name=increment_target_name)
+
+        # Parse assignment operator
+        operator = "="
+        if self.match(TokenType.ASSIGN):
+            self.advance()
+        elif self.match(TokenType.PLUS_ASSIGN):
+            operator = "+="
+            self.advance()
+        elif self.match(TokenType.MINUS_ASSIGN):
+            operator = "-="
+            self.advance()
+        elif self.match(TokenType.STAR_ASSIGN):
+            operator = "*="
+            self.advance()
+        elif self.match(TokenType.SLASH_ASSIGN):
+            operator = "/="
+            self.advance()
+        else:
+            raise self.error("Expected assignment operator in for loop increment")
+
+        increment_value = self.parse_expression()
+        increment = IRAssignment(target=increment_target_name, value=increment_value, is_declaration=False)
+
+        self.expect(TokenType.RPAREN)   # ")"
+        self.expect(TokenType.LBRACE)   # "{"
+
+        # Parse body
+        body = self.parse_statement_list()
+
+        self.expect(TokenType.RBRACE)   # "}"
+
+        return IRForCStyle(init=init, condition=condition, increment=increment, body=body)
+
     def parse_while(self) -> IRWhile:
         """
         Parse while loop (C-style syntax).
@@ -1468,13 +1540,22 @@ class Parser:
         return IRWhile(condition=condition, body=body)
 
     def parse_try(self) -> IRTry:
-        """Parse try-catch statement."""
+        """
+        Parse try-catch statement with C-style brace syntax.
+
+        Syntax:
+            try {
+                // try body
+            } catch (error_var) {
+                // catch body
+            } finally {
+                // finally body
+            }
+        """
         self.expect(TokenType.KEYWORD)  # "try"
-        self.expect(TokenType.COLON)
-        self.expect(TokenType.NEWLINE)
-        self.expect(TokenType.INDENT)
+        self.expect(TokenType.LBRACE)   # "{"
         try_body = self.parse_statement_list()
-        self.expect(TokenType.DEDENT)
+        self.expect(TokenType.RBRACE)   # "}"
 
         catch_blocks = []
         while self.match(TokenType.KEYWORD) and self.current().value == "catch":
@@ -1482,16 +1563,27 @@ class Parser:
             exception_type = None
             exception_var = None
 
-            if self.match(TokenType.IDENTIFIER):
-                exception_type = self.advance().value
-                if self.match(TokenType.IDENTIFIER):
-                    exception_var = self.advance().value
+            # Parse catch parameter: (error_var) or (ExceptionType error_var)
+            if self.match(TokenType.LPAREN):
+                self.advance()
 
-            self.expect(TokenType.COLON)
-            self.expect(TokenType.NEWLINE)
-            self.expect(TokenType.INDENT)
+                # Check if we have type annotation or just variable
+                if self.match(TokenType.IDENTIFIER):
+                    first_identifier = self.advance().value
+
+                    # If another identifier follows, first is type, second is variable
+                    if self.match(TokenType.IDENTIFIER):
+                        exception_type = first_identifier
+                        exception_var = self.advance().value
+                    else:
+                        # Just a variable name
+                        exception_var = first_identifier
+
+                self.expect(TokenType.RPAREN)
+
+            self.expect(TokenType.LBRACE)   # "{"
             catch_body = self.parse_statement_list()
-            self.expect(TokenType.DEDENT)
+            self.expect(TokenType.RBRACE)   # "}"
 
             catch_blocks.append(IRCatch(
                 exception_type=exception_type,
@@ -1502,11 +1594,9 @@ class Parser:
         finally_body = []
         if self.match(TokenType.KEYWORD) and self.current().value == "finally":
             self.advance()
-            self.expect(TokenType.COLON)
-            self.expect(TokenType.NEWLINE)
-            self.expect(TokenType.INDENT)
+            self.expect(TokenType.LBRACE)   # "{"
             finally_body = self.parse_statement_list()
-            self.expect(TokenType.DEDENT)
+            self.expect(TokenType.RBRACE)   # "}"
 
         return IRTry(try_body=try_body, catch_blocks=catch_blocks, finally_body=finally_body)
 

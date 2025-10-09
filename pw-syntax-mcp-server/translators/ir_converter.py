@@ -15,8 +15,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from dsl.ir import (
     IRModule, IRFunction, IRParameter, IRClass, IRProperty,
-    IRStatement, IRExpression, IRAssignment, IRReturn, IRIf, IRFor, IRWhile,
-    IRTry, IRCatch, IRCall, IRBinaryOp, IRUnaryOp, IRLiteral, IRIdentifier,
+    IRStatement, IRExpression, IRAssignment, IRReturn, IRThrow, IRIf, IRFor, IRForCStyle, IRWhile,
+    IRTry, IRCatch, IRBreak, IRContinue, IRCall, IRBinaryOp, IRUnaryOp, IRLiteral, IRIdentifier,
     IRPropertyAccess, IRIndex, IRLambda, IRArray, IRMap, IRTernary,
     IRType, IRImport, IRTypeDefinition, IREnum, IREnumVariant,
     BinaryOperator, UnaryOperator, LiteralType,
@@ -136,6 +136,26 @@ def ir_to_mcp(node: Any) -> Dict[str, Any]:
             }
         }
 
+    elif isinstance(node, IRThrow):
+        return {
+            "tool": "pw_throw",
+            "params": {
+                "exception": ir_to_mcp(node.exception),
+            }
+        }
+
+    elif isinstance(node, IRBreak):
+        return {
+            "tool": "pw_break",
+            "params": {}
+        }
+
+    elif isinstance(node, IRContinue):
+        return {
+            "tool": "pw_continue",
+            "params": {}
+        }
+
     elif isinstance(node, IRIf):
         return {
             "tool": "pw_if",
@@ -143,6 +163,17 @@ def ir_to_mcp(node: Any) -> Dict[str, Any]:
                 "condition": ir_to_mcp(node.condition),
                 "then_body": [ir_to_mcp(stmt) for stmt in node.then_body],
                 "else_body": [ir_to_mcp(stmt) for stmt in node.else_body] if node.else_body else None,
+            }
+        }
+
+    elif isinstance(node, IRForCStyle):
+        return {
+            "tool": "pw_for_c_style",
+            "params": {
+                "init": ir_to_mcp(node.init),
+                "condition": ir_to_mcp(node.condition),
+                "increment": ir_to_mcp(node.increment),
+                "body": [ir_to_mcp(stmt) for stmt in node.body],
             }
         }
 
@@ -169,8 +200,8 @@ def ir_to_mcp(node: Any) -> Dict[str, Any]:
         return {
             "tool": "pw_try",
             "params": {
-                "body": [ir_to_mcp(stmt) for stmt in node.body],
-                "catch_clauses": [ir_to_mcp(c) for c in node.catch_clauses],
+                "body": [ir_to_mcp(stmt) for stmt in node.try_body],
+                "catch_clauses": [ir_to_mcp(c) for c in node.catch_blocks],
                 "finally_body": [ir_to_mcp(stmt) for stmt in node.finally_body] if node.finally_body else None,
             }
         }
@@ -180,7 +211,7 @@ def ir_to_mcp(node: Any) -> Dict[str, Any]:
             "tool": "pw_catch",
             "params": {
                 "exception_type": node.exception_type,
-                "variable": node.variable,
+                "variable": node.exception_var,
                 "body": [ir_to_mcp(stmt) for stmt in node.body],
             }
         }
@@ -422,6 +453,14 @@ def mcp_to_ir(mcp_tree: Dict[str, Any]) -> Any:
             else_body=[mcp_to_ir(stmt) for stmt in params.get("else_body", [])] if params.get("else_body") else None,
         )
 
+    elif tool == "pw_for_c_style":
+        return IRForCStyle(
+            init=mcp_to_ir(params["init"]),
+            condition=mcp_to_ir(params["condition"]),
+            increment=mcp_to_ir(params["increment"]),
+            body=[mcp_to_ir(stmt) for stmt in params.get("body", [])],
+        )
+
     elif tool == "pw_for":
         return IRFor(
             iterator=params["iterator"],
@@ -434,6 +473,31 @@ def mcp_to_ir(mcp_tree: Dict[str, Any]) -> Any:
             condition=mcp_to_ir(params["condition"]),
             body=[mcp_to_ir(stmt) for stmt in params.get("body", [])],
         )
+
+    elif tool == "pw_try":
+        return IRTry(
+            try_body=[mcp_to_ir(stmt) for stmt in params.get("body", [])],
+            catch_blocks=[mcp_to_ir(c) for c in params.get("catch_clauses", [])],
+            finally_body=[mcp_to_ir(stmt) for stmt in params.get("finally_body", [])] if params.get("finally_body") else [],
+        )
+
+    elif tool == "pw_catch":
+        return IRCatch(
+            exception_type=params.get("exception_type"),
+            exception_var=params.get("variable"),
+            body=[mcp_to_ir(stmt) for stmt in params.get("body", [])],
+        )
+
+    elif tool == "pw_throw":
+        return IRThrow(
+            exception=mcp_to_ir(params["exception"]),
+        )
+
+    elif tool == "pw_break":
+        return IRBreak()
+
+    elif tool == "pw_continue":
+        return IRContinue()
 
     # Expressions
     elif tool == "pw_call":
