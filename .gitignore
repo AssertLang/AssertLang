@@ -48,7 +48,10 @@ venv.bak/
 .cursor/
 .claude/
 # Keep: CLAUDE.md (project instructions)
-# Keep: CURRENT_WORK.md (status tracking)
+# Keep: Current_Work.md (status tracking)
+
+# Archive (session docs, old files)
+.archive/
 
 # Testing
 .pytest_cache/
