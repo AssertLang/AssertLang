@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "promptware-dev"
-version = "2.1.0b1"
+version = "2.1.0b2"
 description = "Production-ready MCP agent framework with multi-language support"
 requires-python = ">=3.9"
 readme = "README.md"
