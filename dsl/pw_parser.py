@@ -893,7 +893,14 @@ class Parser:
                     # Parse parameters
                     params = []
                     while not self.match(TokenType.RPAREN):
-                        param_name = self.expect(TokenType.IDENTIFIER).value
+                        # Allow both identifiers and keywords as parameter names
+                        if self.match(TokenType.IDENTIFIER):
+                            param_name = self.advance().value
+                        elif self.match(TokenType.KEYWORD):
+                            param_name = self.advance().value
+                        else:
+                            raise self.error("Expected parameter name")
+
                         self.expect(TokenType.COLON)
                         param_type = self.parse_type()
                         params.append(IRParameter(name=param_name, param_type=param_type))
@@ -923,10 +930,24 @@ class Parser:
                     method = self.parse_function()
                     methods.append(method)
 
+                # Check if keyword is followed by colon (property with keyword name)
+                elif self.peek().type == TokenType.COLON:
+                    # This is a property with a keyword as its name
+                    # (e.g., method: string, body: map, type: string)
+                    prop_name = self.advance().value  # consume keyword as property name
+                    self.expect(TokenType.COLON)
+                    prop_type = self.parse_type()
+                    self.consume_statement_terminator()
+
+                    properties.append(IRProperty(
+                        name=prop_name,
+                        prop_type=prop_type
+                    ))
+
                 else:
                     raise self.error(f"Unexpected keyword in class body: {keyword}")
 
-            # Check for property declaration
+            # Check for property declaration (identifier)
             elif self.match(TokenType.IDENTIFIER):
                 # Property: name: type;
                 prop_name = self.advance().value
@@ -1823,7 +1844,13 @@ class Parser:
             elif self.match(TokenType.DOT):
                 # Member access
                 self.advance()
-                property = self.expect(TokenType.IDENTIFIER).value
+                # Allow both identifiers and keywords as property names
+                if self.match(TokenType.IDENTIFIER):
+                    property = self.advance().value
+                elif self.match(TokenType.KEYWORD):
+                    property = self.advance().value
+                else:
+                    raise self.error("Expected property name")
                 expr = IRPropertyAccess(object=expr, property=property)
 
             else:
@@ -1854,10 +1881,22 @@ class Parser:
             self.advance()
             return IRLiteral(value=None, literal_type=LiteralType.NULL)
 
-        # Self (keyword used as identifier in classes)
-        if self.match(TokenType.KEYWORD) and self.current().value == "self":
-            self.advance()
-            return IRIdentifier(name="self")
+        # Keywords that can be used as identifiers
+        # Special cases like 'self', 'method', 'body', etc.
+        if self.match(TokenType.KEYWORD):
+            keyword_value = self.current().value
+            # Only allow keywords that don't have syntactic meaning in this context
+            # (exclude control flow keywords that must be keywords)
+            control_keywords = {
+                'if', 'else', 'elif', 'for', 'while', 'try', 'catch', 'finally',
+                'return', 'throw', 'break', 'continue', 'pass', 'let',
+                'function', 'class', 'constructor', 'enum', 'import', 'from', 'as',
+                'async', 'await', 'lambda', 'module', 'version'
+            }
+            if keyword_value not in control_keywords:
+                # Allow keywords like 'self', 'method', 'body', 'type', 'name', etc. as identifiers
+                self.advance()
+                return IRIdentifier(name=keyword_value)
 
         # Identifier
         if self.match(TokenType.IDENTIFIER):
