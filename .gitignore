@@ -147,3 +147,29 @@ GOOD_FIRST_ISSUES.md
 # IDE/Editor directories
 .cursor/
 .claude/
+
+# Internal/temporary documentation (root level)
+README_BACKUP.md
+README_OLD.md
+README_NEW_HERO.md
+README_UPGRADE_INSTRUCTIONS.md
+PR_READINESS_ASSESSMENT.md
+WEBSITE_FAVICON_UPDATE.md
+WEBSITE_REDESIGN_PURPLE.md
+ANNOUNCEMENT_v2.0.0.md
+
+# Generated code outputs (test artifacts)
+test_*.py
+test_*.go
+test_*.rs
+test_*.ts
+test_*.cs
+!tests/test_*.py
+!tests/test_*.go
+!tests/test_*.rs
+!tests/test_*.ts
+!tests/test_*.cs
+
+# MyPy and Ruff cache
+.mypy_cache/
+.ruff_cache/
