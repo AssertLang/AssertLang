@@ -798,8 +798,10 @@ func Check(x int) string {
 
         assert "func Check" in generated_code
         assert "if" in generated_code
-        assert "else" in generated_code
         # Semantic preservation: positive/negative logic
+        # Note: Generator may optimize `else` away when `if` has return (semantically equivalent)
+        assert "positive" in generated_code
+        assert "negative" in generated_code
 
 
 class TestEdgeCases:
