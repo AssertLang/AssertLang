@@ -252,11 +252,211 @@ let or_result = (a > 0) || (b > 0);   // Not yet implemented
  * Spans multiple lines
  */
 
+# Python-style comment also supported
+
 function calculate(x: int) -> int {
     // This is a helper comment
     let result = x * 2;
     return result;
 }
+```
+
+### Loops
+
+**C-Style For Loops** ✅ Working
+```pw
+// Traditional C-style for loop
+for (let i = 0; i < 10; i = i + 1) {
+    // Loop body
+}
+
+// Iterate over arrays
+let numbers = [1, 2, 3, 4, 5];
+for (let i = 0; i < numbers.length; i = i + 1) {
+    let value = numbers[i];
+}
+```
+
+**For-In Loops** ✅ Working
+```pw
+// Iterate over items
+for (item in items) {
+    // Process item
+}
+
+// With index and value
+for (index, value in enumerate(items)) {
+    // Use both index and value
+}
+
+// Range iteration
+for (i in range(0, 10)) {
+    // i goes from 0 to 9
+}
+```
+
+**While Loops** ✅ Working
+```pw
+while (condition) {
+    // Loop body
+}
+
+// With break and continue
+let count = 10;
+while (count > 0) {
+    if (count == 5) {
+        count = count - 1;
+        continue;  // Skip to next iteration
+    }
+    if (count == 2) {
+        break;     // Exit loop
+    }
+    count = count - 1;
+}
+```
+
+### Arrays and Collections
+
+**Array Creation and Access** ✅ Working
+```pw
+// Create array
+let numbers = [1, 2, 3, 4, 5];
+let names = ["Alice", "Bob", "Charlie"];
+
+// Access elements
+let first = numbers[0];
+let last = numbers[4];
+
+// Get array length
+let count = numbers.length;  // Works in all 5 languages!
+
+// Modify elements
+numbers[0] = 10;
+```
+
+**Map/Dictionary Operations** ✅ Working (Safe!)
+```pw
+// Create map
+let user = {
+    name: "Alice",
+    age: 30,
+    email: "alice@example.com"
+};
+
+// Safe map access - returns null if key missing (no exceptions!)
+if (user["name"] != null) {
+    let name = user["name"];
+}
+
+// Add/update entries
+user["phone"] = "555-1234";
+
+// String literal keys (also safe)
+if (user["email"] != null) {
+    let email = user["email"];
+}
+```
+
+### Error Handling
+
+**Try/Catch/Finally** ✅ Working
+```pw
+// Basic try/catch
+try {
+    if (denominator == 0) {
+        throw "Division by zero";
+    }
+    return numerator / denominator;
+} catch (error) {
+    return 0;
+}
+
+// With finally block
+try {
+    let result = risky_operation();
+    return result;
+} catch (error) {
+    return default_value;
+} finally {
+    cleanup();  // Always runs, even if return in try/catch
+}
+
+// Nested error handling
+try {
+    try {
+        inner_risky_operation();
+    } catch (inner_error) {
+        throw "Outer: " + inner_error;
+    }
+} catch (outer_error) {
+    return -1;
+}
+```
+
+### Optional Types
+
+**Optional Type Syntax** ✅ Working
+```pw
+// Optional return type (can return null)
+function find_user(id: int) -> map? {
+    if (id < 0) {
+        return null;  // Valid for optional types
+    }
+    return {id: id, name: "User"};
+}
+
+// Optional parameter
+function greet(name: string?) -> string {
+    if (name != null) {
+        return "Hello, " + name;
+    }
+    return "Hello, Guest";
+}
+
+// Optional with all types
+function get_age(user_id: int) -> int? {
+    if (user_id < 0) {
+        return null;
+    }
+    return 25;
+}
+```
+
+**How Optional Types Map to Target Languages:**
+- **Python**: `Optional[T]` (e.g., `Optional[Dict]`, `Optional[str]`)
+- **Go**: `*T` (pointer types, e.g., `*map`, `*string`)
+- **Rust**: `Option<T>` (e.g., `Option<HashMap>`, `Option<String>`)
+- **TypeScript**: `T | null` (e.g., `Map | null`, `string | null`)
+- **C#**: `T?` for value types, `T` for reference types (already nullable)
+
+### Classes
+
+**Class Definition** ✅ Working
+```pw
+class User {
+    id: string;
+    name: string;
+    age: int;
+
+    constructor(id: string, name: string, age: int) {
+        self.id = id;
+        self.name = name;
+        self.age = age;
+    }
+
+    function greet() -> string {
+        return "Hello, " + self.name;
+    }
+
+    function is_adult() -> bool {
+        return self.age >= 18;
+    }
+}
+
+// Usage
+let user = User("123", "Alice", 30);
+let greeting = user.greet();
+let adult = user.is_adult();
 ```
 
 ### Code Style
@@ -268,9 +468,10 @@ function calculate(x: int) -> int {
 let x = 10;
 let y = 20    // Both work
 
-// Parentheses around conditions are optional
-if (x > 10) { }   // C-style
-if x > 10 { }     // Also valid (not yet implemented)
+// Multiple comment styles
+// C-style single-line
+/* C-style multi-line */
+# Python-style
 ```
 
 ---
@@ -320,11 +521,26 @@ go run calculator.go
 - Write descriptive function names
 - Add comments to explain complex logic
 - Test in your target language
+- Use `.length` for arrays - translates correctly to all languages
+- Use map indexing for key checks - automatically safe in all languages
+- Use optional types (`T?`) when values can be null
+- Reference safe patterns guide: [`docs/SAFE_PATTERNS.md`](SAFE_PATTERNS.md)
 
 **❌ DON'T:**
 - Mix PW syntax versions (use C-style consistently)
 - Rely on language-specific features not in PW spec
 - Forget to compile after changes
+- Assume direct map access throws exceptions (it doesn't - PW uses safe patterns)
+
+### Safe Programming Patterns
+
+PW automatically generates safe code patterns. See [`docs/SAFE_PATTERNS.md`](SAFE_PATTERNS.md) for detailed examples of:
+
+- **Array .length property** - Works universally across all languages
+- **Safe map indexing** - Returns null for missing keys (no exceptions!)
+- **Optional types** - Null safety across all 5 languages
+- **Error handling** - Try/catch patterns that work everywhere
+- **Control flow** - C-style for loops, while loops, break/continue
 
 ### Project Structure
 
@@ -825,11 +1041,19 @@ A: Planned! Sublime Text, Vim, and IntelliJ support coming soon.
 
 **Q: Does PW support loops?**
 
-A: `for` and `while` loops are in the specification but parser implementation is in progress.
+A: Yes! ✅ Both C-style for loops (`for (let i = 0; i < 10; i = i + 1)`) and for-in loops (`for (item in items)`) are fully working. While loops with break/continue are also supported.
 
 **Q: Does PW support classes?**
 
-A: Class syntax is specified but parser implementation is coming soon.
+A: Yes! ✅ Classes with constructors, properties, and methods are fully working.
+
+**Q: Does PW support optional types?**
+
+A: Yes! ✅ Use `T?` syntax (e.g., `map?`, `string?`) for optional types. Translates to `Optional[T]` (Python), `*T` (Go), `Option<T>` (Rust), `T | null` (TypeScript), and `T?` (C#).
+
+**Q: Is map access safe?**
+
+A: Yes! ✅ PW automatically generates safe map access. `map[key]` returns null for missing keys in all languages - no exceptions thrown.
 
 **Q: Does PW support imports/modules?**
 

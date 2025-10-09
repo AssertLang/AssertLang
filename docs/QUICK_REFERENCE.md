@@ -97,6 +97,38 @@ if (condition) {
 }
 ```
 
+### Loops ✅ Working
+
+```pw
+// C-style for loop
+for (let i = 0; i < 10; i = i + 1) {
+    // body
+}
+
+// For-in loop
+for (item in items) {
+    // body
+}
+
+// While loop
+while (condition) {
+    if (skip) { continue; }
+    if (done) { break; }
+}
+```
+
+### Error Handling ✅ Working
+
+```pw
+try {
+    risky_operation();
+} catch (error) {
+    handle_error();
+} finally {
+    cleanup();
+}
+```
+
 ### Types
 
 - `int` - Integers
@@ -104,6 +136,21 @@ if (condition) {
 - `string` - Text
 - `bool` - Boolean
 - `void` - No return
+- `T?` - Optional (nullable) ✅ Working
+
+### Collections ✅ Working
+
+```pw
+// Arrays
+let nums = [1, 2, 3];
+let count = nums.length;  // ✅ Works!
+
+// Maps (safe access!)
+let user = {name: "Alice"};
+if (user["name"] != null) {
+    // No exceptions thrown!
+}
+```
 
 ### Operators
 
@@ -191,24 +238,33 @@ my-project/
 
 ---
 
-## Status
+## Status (v2.1.0b3)
 
 ✅ **Working:**
 - Functions with parameters
 - If/else conditionals
 - Variables and assignments
 - Basic types (int, float, string, bool)
+- Optional types (`T?`) ✅
 - Arithmetic and comparison operators
-- Comments (// and /* */)
+- Comments (// and /* */ and #)
 - Compilation to 5 languages
+- C-style for loops ✅
+- For-in loops ✅
+- While loops with break/continue ✅
+- Classes and methods ✅
+- Try/catch/finally ✅
+- Arrays with `.length` property ✅
+- Maps with safe access ✅
 
 🚧 **In Progress:**
-- For/while loops
-- Classes and methods
 - Type definitions
 - Enums
-- Try/catch
-- Arrays and maps
+- Switch/match
+- Imports
+
+📚 **Safe Patterns:**
+See [`docs/SAFE_PATTERNS.md`](SAFE_PATTERNS.md) for patterns that work across all 5 languages
 
 ---
 
