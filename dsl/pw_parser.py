@@ -409,8 +409,57 @@ class Lexer:
             # Skip inline whitespace
             self.skip_whitespace()
 
-            # Skip comments (#, //, /* */)
-            if self.peek() == "#" or (self.peek() == "/" and self.peek(1) in "/*"):
+            # Two-character operators - but check for comment context first
+            # Special handling for // : it's a comment if not in an expression context
+            # Expression context: after identifier, number, closing paren/bracket/brace
+            two_char = self.peek() + self.peek(1)
+
+            # For //, check if we're in expression context
+            if two_char == "//":
+                # Check if previous token suggests we're in an expression
+                in_expression = False
+                if self.tokens:
+                    last_token = self.tokens[-1]
+                    # After these tokens, // is an operator (not comment)
+                    expression_tokens = {
+                        TokenType.IDENTIFIER, TokenType.INTEGER, TokenType.FLOAT,
+                        TokenType.RPAREN, TokenType.RBRACKET, TokenType.STRING,
+                    }
+                    if last_token.type in expression_tokens:
+                        in_expression = True
+
+                if in_expression:
+                    # Tokenize as FLOOR_DIV operator
+                    line, col = self.line, self.column
+                    self.advance()
+                    self.advance()
+                    self.tokens.append(Token(TokenType.FLOOR_DIV, "//", line, col))
+                    continue
+                else:
+                    # Treat as comment
+                    self.skip_comment()
+                    continue
+
+            # Other two-character operators
+            if two_char in ("**", "==", "!=", "<=", ">=", "<<", ">>", "+=", "-=", "*=", "/=", "->", "&&", "||"):
+                line, col = self.line, self.column
+                self.advance()
+                self.advance()
+                type_map = {
+                    "**": TokenType.POWER,
+                    "==": TokenType.EQ, "!=": TokenType.NE,
+                    "<=": TokenType.LE, ">=": TokenType.GE,
+                    "<<": TokenType.LSHIFT, ">>": TokenType.RSHIFT,
+                    "+=": TokenType.PLUS_ASSIGN, "-=": TokenType.MINUS_ASSIGN,
+                    "*=": TokenType.STAR_ASSIGN, "/=": TokenType.SLASH_ASSIGN,
+                    "->": TokenType.ARROW,
+                    "&&": TokenType.LOGICAL_AND, "||": TokenType.LOGICAL_OR,
+                }
+                self.tokens.append(Token(type_map[two_char], two_char, line, col))
+                continue
+
+            # Skip comments (#, /*, but // is handled above)
+            if self.peek() == "#" or (self.peek() == "/" and self.peek(1) == "*"):
                 self.skip_comment()
                 continue
 
@@ -464,24 +513,6 @@ class Lexer:
             # Identifiers and keywords
             if self.peek().isalpha() or self.peek() == "_":
                 self.tokens.append(self.read_identifier())
-                continue
-
-            # Two-character operators
-            two_char = self.peek() + self.peek(1)
-            if two_char in ("**", "//", "==", "!=", "<=", ">=", "<<", ">>", "+=", "-=", "*=", "/=", "->", "&&", "||"):
-                self.advance()
-                self.advance()
-                type_map = {
-                    "**": TokenType.POWER, "//": TokenType.FLOOR_DIV,
-                    "==": TokenType.EQ, "!=": TokenType.NE,
-                    "<=": TokenType.LE, ">=": TokenType.GE,
-                    "<<": TokenType.LSHIFT, ">>": TokenType.RSHIFT,
-                    "+=": TokenType.PLUS_ASSIGN, "-=": TokenType.MINUS_ASSIGN,
-                    "*=": TokenType.STAR_ASSIGN, "/=": TokenType.SLASH_ASSIGN,
-                    "->": TokenType.ARROW,
-                    "&&": TokenType.LOGICAL_AND, "||": TokenType.LOGICAL_OR,
-                }
-                self.tokens.append(Token(type_map[two_char], two_char, line, col))
                 continue
 
             # Single-character operators/delimiters
@@ -1772,16 +1803,17 @@ class Parser:
         return left
 
     def parse_multiplication(self) -> IRExpression:
-        """Parse multiplication, division, modulo."""
+        """Parse multiplication, division, modulo, floor division."""
         left = self.parse_unary()
 
-        while self.match(TokenType.STAR, TokenType.SLASH, TokenType.PERCENT, TokenType.POWER):
+        while self.match(TokenType.STAR, TokenType.SLASH, TokenType.PERCENT, TokenType.POWER, TokenType.FLOOR_DIV):
             tok = self.advance()
             op_map = {
                 "*": BinaryOperator.MULTIPLY,
                 "/": BinaryOperator.DIVIDE,
                 "%": BinaryOperator.MODULO,
                 "**": BinaryOperator.POWER,
+                "//": BinaryOperator.FLOOR_DIVIDE,
             }
             op = op_map[tok.value]
             right = self.parse_unary()
