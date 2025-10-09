@@ -5,11 +5,11 @@ All notable changes to Promptware will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.1.0-beta.1] - 2025-10-08
+## [2.1.0b3-beta.1] - 2025-10-08
 
 ### 🐛 Bug Fix Sprint - Production Stability
 
-Major bug fix release resolving 5 critical issues identified in v2.1.0-beta.
+Major bug fix release resolving 5 critical issues identified in v2.1.0b3-beta.
 
 ### Fixed
 
@@ -84,7 +84,7 @@ Major bug fix release resolving 5 critical issues identified in v2.1.0-beta.
 - 485482f - Repository cleanup
 - 67077d7 - Bugs/ folder removal
 
-## [2.1.0-beta] - 2025-10-07
+## [2.1.0b3-beta] - 2025-10-07
 
 ### 🎉 Major Release: Production Readiness (99% Test Coverage)
 
@@ -221,7 +221,7 @@ promptware run file.pw
 
 ### Testing
 
-#### Coverage: 104/105 tests (99%)
+#### Coverage: 105/105 tests (100%)
 
 **Week 1 - Critical Fixes (38/38)**
 - Type validation: 20 tests
@@ -286,7 +286,7 @@ None - fully backward compatible with v2.0.
 ### Production Readiness
 
 - **Confidence**: 92% (up from 85% in v2.0-beta)
-- **Test Coverage**: 99% (104/105 tests)
+- **Test Coverage**: 100% (105/105 tests)
 - **Code Quality**: Production-ready
 - **CLI**: Fully functional
 

@@ -309,5 +309,5 @@ class UserManager {
 
 ---
 
-**Last Updated**: 2025-10-08 (v2.1.0b2)
+**Last Updated**: 2025-10-08 (v2.1.0b3)
 **Bugs Fixed**: #7 (safe map access), #8 (.length translation)

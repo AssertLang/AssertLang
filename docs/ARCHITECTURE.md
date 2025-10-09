@@ -1,7 +1,7 @@
-# Promptware Architecture v2.1.0-beta
+# Promptware Architecture v2.1.0b3-beta
 
 **Last Updated**: 2025-10-07
-**Version**: 2.1.0-beta
+**Version**: 2.1.0b3-beta
 
 ---
 
@@ -673,6 +673,6 @@ tests/
 
 ---
 
-**Version**: 2.1.0-beta
+**Version**: 2.1.0b3-beta
 **Status**: Production Ready
 **Last Updated**: 2025-10-07

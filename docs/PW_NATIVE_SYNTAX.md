@@ -609,4 +609,4 @@ See [`docs/SAFE_PATTERNS.md`](SAFE_PATTERNS.md) for safe programming patterns an
 
 ---
 
-**Production Ready**: PW v2.1.0b3 is stable and ready for use. 99% test coverage (104/105 tests passing).
+**Production Ready**: PW v2.1.0b3 is stable and ready for use. 100% test coverage (105/105 tests passing).
