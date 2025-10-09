@@ -106,6 +106,7 @@ class BinaryOperator(Enum):
     DIVIDE = "/"
     MODULO = "%"
     POWER = "**"
+    FLOOR_DIVIDE = "//"
 
     # Comparison
     EQUAL = "=="
