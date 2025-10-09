@@ -660,19 +660,28 @@ class RustGeneratorV2:
     def _generate_assignment(self, stmt: IRAssignment, indent: int) -> str:
         """Generate assignment statement."""
         base_indent = "    " * indent
-        var_name = self._to_snake_case(stmt.target)
         value = self._generate_expression(stmt.value)
+
+        # Generate target (could be variable or property access)
+        if stmt.target:
+            if isinstance(stmt.target, str):
+                target = self._to_snake_case(stmt.target)
+            else:
+                # Target is an expression (property access, array index, etc.)
+                target = self._generate_expression(stmt.target)
+        else:
+            target = "_unknown"
 
         if stmt.is_declaration:
             # let binding
             if stmt.var_type:
                 var_type = self._generate_type(stmt.var_type)
-                return f"{base_indent}let {var_name}: {var_type} = {value};"
+                return f"{base_indent}let {target}: {var_type} = {value};"
             else:
-                return f"{base_indent}let {var_name} = {value};"
+                return f"{base_indent}let {target} = {value};"
         else:
             # Re-assignment
-            return f"{base_indent}{var_name} = {value};"
+            return f"{base_indent}{target} = {value};"
 
     def _generate_return(self, stmt: IRReturn, indent: int) -> str:
         """Generate return statement."""
