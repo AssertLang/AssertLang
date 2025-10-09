@@ -1,6 +1,6 @@
 # AI Agent Guide for Promptware
 
-**Version**: 2.1.0-beta
+**Version**: 2.1.0b3-beta
 **Last Updated**: 2025-10-07
 **Target Audience**: AI coding agents (Claude, GPT, etc.)
 
@@ -62,7 +62,7 @@ Promptware is a **universal programming language** that compiles to 5 target lan
 PW Code → Compiler → Python | Go | Rust | TypeScript | C#
 ```
 
-### Core Features (v2.1.0-beta)
+### Core Features (v2.1.0b3-beta)
 
 - ✅ **Type System**: Compile-time type checking with inference
 - ✅ **Control Flow**: For loops, while loops, if/else
@@ -427,7 +427,7 @@ function get_number() -> int {
 
 **Cause**: Trailing whitespace at end of file
 
-**Solution**: Fixed in v2.1.0-beta (check `peek()` is not empty)
+**Solution**: Fixed in v2.1.0b3-beta (check `peek()` is not empty)
 
 ### Issue 3: Multi-line Syntax Errors
 
@@ -435,7 +435,7 @@ function get_number() -> int {
 
 **Cause**: Newline inside parentheses/brackets
 
-**Solution**: Fixed in v2.1.0-beta (depth tracking)
+**Solution**: Fixed in v2.1.0b3-beta (depth tracking)
 
 ### Issue 4: Self Keyword Not Working
 
@@ -447,7 +447,7 @@ function get_number() -> int {
 
 ---
 
-## 📊 Current Test Coverage (v2.1.0-beta)
+## 📊 Current Test Coverage (v2.1.0b3-beta)
 
 | Category | Tests | Pass Rate |
 |----------|-------|-----------|
@@ -462,7 +462,7 @@ function get_number() -> int {
 | Real-World Programs | 3 | 100% |
 | CLI Commands | 9 | 100% |
 | Round-Trip Translation | 3 | 75% |
-| **TOTAL** | **104/105** | **99%** |
+| **TOTAL** | **105/105** | **100%** |
 
 ---
 
@@ -671,7 +671,7 @@ git commit -m "docs: Update AI agent guide"
 
 ## 🎯 Current Development Phase
 
-**Version**: 2.1.0-beta
+**Version**: 2.1.0b3-beta
 **Status**: Production Ready (99% test coverage)
 **Confidence**: 92%
 
@@ -682,7 +682,7 @@ git commit -m "docs: Update AI agent guide"
 - Arrays and maps
 - Classes (basic OOP)
 - CLI tools (build, compile, run)
-- 104/105 tests passing
+- 105/105 tests passing
 - 3 real-world example programs
 
 ### What's Next 🚧

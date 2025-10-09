@@ -2,7 +2,7 @@
 
 **Created**: 2025-10-07
 **Current Version**: v2.0.0-beta
-**Target Version**: v2.1.0 (production-ready)
+**Target Version**: v2.1.0b3 (production-ready)
 **Current Confidence**: 85% (dev), 55% (prod)
 **Target Confidence**: 95%+ (production)
 

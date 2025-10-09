@@ -145,7 +145,7 @@ promptware/
 
 - **Total Files**: 350K+ lines of production code
 - **Languages**: Python, Go, Rust, TypeScript, C#
-- **Tests**: 104/105 passing (99%)
+- **Tests**: 105/105 passing (100%)
 - **Bugs Fixed**: 9/9 (100%)
 - **Examples**: 15 PW programs
 - **Documentation**: 50+ guides

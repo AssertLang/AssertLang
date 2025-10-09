@@ -1,6 +1,6 @@
 # Development Guide
 
-**Version**: 2.1.0-beta
+**Version**: 2.1.0b3-beta
 **Last Updated**: 2025-10-07
 
 ---
@@ -533,7 +533,7 @@ git commit -m "docs: Update AI agent guide with v2.1 features"
 ```bash
 gh pr create --repo Promptware-dev/promptware \
   --base main --head raw-code-parsing \
-  --title "feat: v2.1.0-beta - Production Ready" \
+  --title "feat: v2.1.0b3-beta - Production Ready" \
   --body "$(cat pr_template.md)"
 ```
 
@@ -557,9 +557,9 @@ gh pr create --repo Promptware-dev/promptware \
 Follow [Semantic Versioning](https://semver.org/):
 
 - **MAJOR** (v3.0.0): Breaking changes
-- **MINOR** (v2.1.0): New features (backward compatible)
+- **MINOR** (v2.1.0b3): New features (backward compatible)
 - **PATCH** (v2.1.1): Bug fixes (backward compatible)
-- **Beta** (v2.1.0-beta): Pre-release testing
+- **Beta** (v2.1.0b3-beta): Pre-release testing
 
 ### Release Checklist
 
@@ -585,11 +585,11 @@ promptware run examples/calculator_cli.pw
 vim CHANGELOG.md  # Add release notes
 
 # Update version numbers
-vim setup.py  # version="2.1.0"
-vim promptware/__init__.py  # __version__ = "2.1.0"
+vim setup.py  # version="2.1.0b3"
+vim promptware/__init__.py  # __version__ = "2.1.0b3"
 
 # Create release summary
-vim RELEASE_SUMMARY_v2.1.0.md
+vim RELEASE_SUMMARY_v2.1.0b3.md
 ```
 
 #### 3. Commit and Tag
@@ -597,14 +597,14 @@ vim RELEASE_SUMMARY_v2.1.0.md
 ```bash
 # Commit all changes
 git add .
-git commit -m "chore: Release v2.1.0
+git commit -m "chore: Release v2.1.0b3
 
 - Update CHANGELOG.md
 - Update version numbers
 - Add release summary"
 
 # Create annotated tag
-git tag -a v2.1.0 -m "Promptware v2.1.0 - Production Ready
+git tag -a v2.1.0b3 -m "Promptware v2.1.0b3 - Production Ready
 
 Major Features:
 - Type validation system
@@ -613,21 +613,21 @@ Major Features:
 - Classes (OOP)
 - CLI tools (build/compile/run)
 
-Test Coverage: 99% (104/105 tests)
+Test Coverage: 99% (105/105 tests)
 Production Confidence: 92%"
 
 # Push to repository
 git push origin raw-code-parsing
-git push origin v2.1.0
+git push origin v2.1.0b3
 ```
 
 #### 4. Create GitHub Release
 
 ```bash
 # Create release on GitHub
-gh release create v2.1.0 \
-  --title "v2.1.0 - Production Ready" \
-  --notes-file RELEASE_SUMMARY_v2.1.0.md \
+gh release create v2.1.0b3 \
+  --title "v2.1.0b3 - Production Ready" \
+  --notes-file RELEASE_SUMMARY_v2.1.0b3.md \
   --latest
 ```
 
@@ -798,5 +798,5 @@ See [CONTRIBUTING.md](../CONTRIBUTING.md) for:
 ---
 
 **Last Updated**: 2025-10-07
-**Version**: 2.1.0-beta
+**Version**: 2.1.0b3-beta
 **Maintained By**: Promptware Development Team

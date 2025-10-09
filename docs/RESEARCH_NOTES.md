@@ -744,7 +744,7 @@ pw repl                    Start REPL
 import click
 
 @click.group()
-@click.version_option(version='2.1.0')
+@click.version_option(version='2.1.0b3')
 def cli():
     """PW - Universal Programming Language"""
     pass
