@@ -103,7 +103,7 @@ In Cursor, you can now:
 ```
 @code-reviewer analyze this authentication function for vulnerabilities
 @test-runner execute the unit test suite
-@deployment-orchestrator deploy version 2.1.0 to staging
+@deployment-orchestrator deploy version 2.1.0b3 to staging
 ```
 
 ## Config Format

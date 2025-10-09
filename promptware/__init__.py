@@ -15,7 +15,7 @@ from .exceptions import (
     TimeoutError,
 )
 
-__version__ = "2.1.0b2"
+__version__ = "2.1.0b3"
 
 __all__ = [
     "MCPClient",

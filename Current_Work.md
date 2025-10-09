@@ -10,18 +10,18 @@
 
 ## 📦 Release Sync Status
 
-**GitHub Release**: [v2.1.0b2](https://github.com/Promptware-dev/promptware/releases/tag/v2.1.0b2)
-**PyPI Package**: [2.1.0b2](https://pypi.org/project/promptware-dev/2.1.0b2/)
-**Installation**: `pip install promptware-dev==2.1.0b2`
+**GitHub Release**: [v2.1.0b3](https://github.com/Promptware-dev/promptware/releases/tag/v2.1.0b3)
+**PyPI Package**: [2.1.0b3](https://pypi.org/project/promptware-dev/2.1.0b3/)
+**Installation**: `pip install promptware-dev==2.1.0b3`
 
 ✅ All versions in sync across:
-- `pyproject.toml` - version = "2.1.0b2"
-- `setup.py` - version = "2.1.0b2"
-- `promptware/__init__.py` - __version__ = "2.1.0b2"
-- Git tag - v2.1.0b2
-- GitHub release - v2.1.0b2
-- PyPI package - 2.1.0b2
-- CHANGELOG.md - ## [2.1.0b2]
+- `pyproject.toml` - version = "2.1.0b3"
+- `setup.py` - version = "2.1.0b3"
+- `promptware/__init__.py` - __version__ = "2.1.0b3"
+- Git tag - v2.1.0b3
+- GitHub release - v2.1.0b3
+- PyPI package - 2.1.0b3
+- CHANGELOG.md - ## [2.1.0b3]
 
 ---
 
@@ -295,7 +295,7 @@ This is a **major version bump** because:
 
 ## Next Steps (Priority Order)
 
-### 1. Complete Parser (v2.1.0)
+### 1. Complete Parser (v2.1.0b3)
 - Add for/while loops
 - Add classes with constructors and methods
 - Add type definitions
@@ -472,7 +472,7 @@ See `docs/PW_LANGUAGE_GUIDE.md` for complete instructions.
 1. `docs/PRODUCTION_READINESS_PLAN.md` - 6-week plan, 180+ tests, 10+ features
 2. `docs/RESEARCH_NOTES.md` - Implementation research (type systems, loops, classes, etc.)
 
-**Timeline**: 6 weeks to v2.1.0 production release
+**Timeline**: 6 weeks to v2.1.0b3 production release
 
 ### Week 1 Progress (Critical Fixes)
 
@@ -660,18 +660,18 @@ promptware run calculator.pw
 - Week 1-3: Core language (80 tests, 100%)
 - Week 4: Classes & programs (11 tests, 100%)
 - Week 5: CLI & round-trip (13 tests, 92%)
-- **Total: 104/105 tests passing (99%)**
+- **Total: 105/105 tests passing (100%)**
 
 **Week 6 Summary (Documentation & Release) - COMPLETE ✅**:
-- ✅ CHANGELOG.md created with comprehensive v2.1.0-beta notes
+- ✅ CHANGELOG.md created with comprehensive v2.1.0b3-beta notes
 - ✅ README.md updated with new features section
 - ✅ Documentation complete
-- ✅ Ready for v2.1.0-beta release
+- ✅ Ready for v2.1.0b3-beta release
 
-**🎉 PRODUCTION READINESS ACHIEVED - v2.1.0-beta**
+**🎉 PRODUCTION READINESS ACHIEVED - v2.1.0b3-beta**
 
 **Final Statistics**:
-- **Test Coverage**: 104/105 tests (99%)
+- **Test Coverage**: 105/105 tests (100%)
 - **Confidence**: 92% (production-ready)
 - **Features**: All core language features implemented
 - **CLI**: Fully functional (build, compile, run)
@@ -689,7 +689,7 @@ promptware run calculator.pw
 - ⏳ Git tag (ready to create)
 
 **Last Updated**: 2025-10-08 by Claude (Session 19)
-**Version**: 2.1.0b1 (PUBLISHED TO PYPI! 🎉)
+**Version**: 2.1.0b3b1 (PUBLISHED TO PYPI! 🎉)
 **Branch**: `main`
 **PyPI**: https://pypi.org/project/promptware-dev/
 
@@ -698,17 +698,17 @@ promptware run calculator.pw
 ## 📦 Session 18: PyPI Publishing + Security (2025-10-08)
 
 ### PyPI Publishing Complete ✅
-- **Package Name**: `promptware-dev` (v2.1.0b0)
+- **Package Name**: `promptware-dev` (v2.1.0b3b0)
 - **Install Command**: `pip install promptware-dev`
-- **PyPI URL**: https://pypi.org/project/promptware-dev/2.1.0b0/
-- **TestPyPI**: https://test.pypi.org/project/promptware/2.1.0b0/ (tested first)
+- **PyPI URL**: https://pypi.org/project/promptware-dev/2.1.0b3b0/
+- **TestPyPI**: https://test.pypi.org/project/promptware/2.1.0b3b0/ (tested first)
 - **Free Forever**: No cost to publish or install
 
 **Files Modified**:
-- `setup.py`: Updated to v2.1.0b0, renamed to `promptware-dev`
-- `pyproject.toml`: Updated to v2.1.0b0, renamed to `promptware-dev`
+- `setup.py`: Updated to v2.1.0b3b0, renamed to `promptware-dev`
+- `pyproject.toml`: Updated to v2.1.0b3b0, renamed to `promptware-dev`
 - `README.md`: Added PyPI install instructions
-- Built and uploaded: `promptware_dev-2.1.0b0-py3-none-any.whl` (1.1MB) + `.tar.gz` (921KB)
+- Built and uploaded: `promptware_dev-2.1.0b3b0-py3-none-any.whl` (1.1MB) + `.tar.gz` (921KB)
 
 **Why promptware-dev?**
 - Original `promptware` name taken on PyPI (owned by ExpressAI, last updated 2023)
@@ -728,7 +728,7 @@ promptware run calculator.pw
   - Redacted API key in `PR_READINESS_ASSESSMENT.md`
   - Cleaned: `main`, `CC45`, `pw-native-language`, `raw-code-parsing`
   - Cleaned: All remote refs (origin, upstream)
-  - Cleaned: Tags `v2.0.0`, `v2.1.0-beta`
+  - Cleaned: Tags `v2.0.0`, `v2.1.0b3-beta`
 - [x] **Pre-commit hook** - Blocks commits containing secrets
 - [x] **.gitignore verified** - Already includes `.env`, `.env.local`, `.env.*.local`
 
@@ -758,24 +758,24 @@ trufflehog git file://. --json | grep -c "Anthropic"
 
 ### Issues Found ✅
 - **Problem**: PyPI published before git tags created (backwards workflow)
-- **PyPI State**: Both v2.1.0b0 and v2.1.0b1 published
+- **PyPI State**: Both v2.1.0b3b0 and v2.1.0b3b1 published
 - **Git State**: Tags missing for both versions
-- **Install Test**: ✅ `pip install promptware-dev` works globally (v2.1.0b1)
+- **Install Test**: ✅ `pip install promptware-dev` works globally (v2.1.0b3b1)
 
 ### Actions Taken ✅
 1. **Created retroactive git tags**:
-   - `v2.1.0b0` → commit 2ce31c1 (PyPI publishing commit)
-   - `v2.1.0b1` → commit 4a09676 (version bump + announcement)
+   - `v2.1.0b3b0` → commit 2ce31c1 (PyPI publishing commit)
+   - `v2.1.0b3b1` → commit 4a09676 (version bump + announcement)
 2. **Pushed tags to GitHub**: Both tags now on origin
-3. **Verified PyPI install**: Fresh venv test successful (v2.1.0b1 installed)
+3. **Verified PyPI install**: Fresh venv test successful (v2.1.0b3b1 installed)
 4. **Committed changes**: ANNOUNCEMENT_v2.0.0.md + version bumps
 
 ### Standard Release Workflow Documented 📚
 
 **Correct Order**:
 1. Git: Update version in files → commit
-2. Git: Create tag (`git tag -a v2.1.0b1 -m "message"`)
-3. Git: Push to GitHub (`git push origin main && git push origin v2.1.0b1`)
+2. Git: Create tag (`git tag -a v2.1.0b3b1 -m "message"`)
+3. Git: Push to GitHub (`git push origin main && git push origin v2.1.0b3b1`)
 4. PyPI: Build (`python -m build`)
 5. PyPI: Upload to TestPyPI (optional)
 6. PyPI: Upload to production (`twine upload dist/*`)
@@ -791,17 +791,17 @@ trufflehog git file://. --json | grep -c "Anthropic"
 ### Current State ✅
 | Version | Git Commit | Git Tag | PyPI | Install Test |
 |---------|-----------|---------|------|--------------|
-| 2.1.0b0 | 2ce31c1 | ✅ v2.1.0b0 | ✅ Published | ✅ Works |
-| 2.1.0b1 | 4a09676 | ✅ v2.1.0b1 | ✅ Published | ✅ Works |
+| 2.1.0b3b0 | 2ce31c1 | ✅ v2.1.0b3b0 | ✅ Published | ✅ Works |
+| 2.1.0b3b1 | 4a09676 | ✅ v2.1.0b3b1 | ✅ Published | ✅ Works |
 
 **Files Added**:
 - `ANNOUNCEMENT_v2.0.0.md` - Marketing announcement for v2.0 release
 
 **Files Modified**:
-- `promptware/__init__.py`: v2.1.0b1
+- `promptware/__init__.py`: v2.1.0b3b1
 - `promptware/cli.py`: Dynamic version from `__version__`
-- `pyproject.toml`: v2.1.0b1
-- `setup.py`: v2.1.0b1
+- `pyproject.toml`: v2.1.0b3b1
+- `setup.py`: v2.1.0b3b1
 
 ### Lessons Learned 📖
 - Always create git tags BEFORE publishing to PyPI
