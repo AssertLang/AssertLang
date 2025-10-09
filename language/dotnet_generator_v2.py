@@ -98,6 +98,7 @@ class DotNetGeneratorV2:
         self.indent_level = 0
         self.type_system = TypeSystem()
         self.library_mapper = LibraryMapper()
+        self.variable_types: dict[str, IRType] = {}  # Track variable types for safe map indexing
         self.required_imports: Set[str] = set()
         self.source_language: Optional[str] = None  # Track source language for mapping
 
@@ -426,6 +427,10 @@ class DotNetGeneratorV2:
         """Generate method definition."""
         lines = []
 
+        # Register parameter types for safe map/array indexing
+        for param in method.params:
+            self.variable_types[param.name] = param.param_type
+
         # Doc comment
         if method.doc:
             lines.append(f"{self.indent()}/// <summary>")
@@ -462,6 +467,9 @@ class DotNetGeneratorV2:
 
         self.decrease_indent()
         lines.append(f"{self.indent()}}}")
+
+        # Clear variable types for this function scope
+        self.variable_types.clear()
 
         return lines
 
@@ -578,8 +586,14 @@ class DotNetGeneratorV2:
         if stmt.target:
             if isinstance(stmt.target, str):
                 target = self._to_camel_case(stmt.target)
+            elif isinstance(stmt.target, IRIndex):
+                # Special case: Index assignment (map[key] = value or arr[i] = value)
+                # Use direct bracket notation for assignment (don't use ContainsKey check)
+                obj = self._generate_expression(stmt.target.object)
+                idx = self._generate_expression(stmt.target.index)
+                target = f"{obj}[{idx}]"
             else:
-                # Target is an expression (property access, array index, etc.)
+                # Target is an expression (property access, etc.)
                 target = self._generate_expression(stmt.target)
         else:
             target = "_unknown"
@@ -789,12 +803,43 @@ class DotNetGeneratorV2:
             return self._generate_call(expr)
         elif isinstance(expr, IRPropertyAccess):
             obj = self._generate_expression(expr.object)
+            # Special case: .length property
+            # In C#: strings and arrays use .Length, but List<T> uses .Count
+            # Since PW arrays map to List<T>, we use .Count for better compatibility
+            # Note: This won't work for string.length - that's a known limitation
+            if expr.property == "length":
+                return f"{obj}.Count"
             prop = self._to_pascal_case(expr.property)
             return f"{obj}.{prop}"
         elif isinstance(expr, IRIndex):
             obj = self._generate_expression(expr.object)
             idx = self._generate_expression(expr.index)
-            return f"{obj}[{idx}]"
+
+            # Determine if object is a map/Dictionary (use TryGetValue or ContainsKey) or array/List (use [index])
+            is_map = False
+
+            # Check if object is an identifier with known type
+            if isinstance(expr.object, IRIdentifier):
+                var_name = expr.object.name
+                if var_name in self.variable_types:
+                    var_type = self.variable_types[var_name]
+                    # Check if type is "map" or "Dictionary"
+                    if var_type.name in ("map", "dict", "Dict", "Dictionary", "dictionary"):
+                        is_map = True
+
+            # If not determined by variable type, use index type as heuristic
+            if not is_map and isinstance(expr.index, IRLiteral) and expr.index.literal_type == LiteralType.STRING:
+                # String key → likely map/dict access
+                is_map = True
+
+            # Generate safe map access with null coalescing or regular array access
+            if is_map:
+                # C# Dictionary: use ContainsKey() ? dict[key] : null pattern
+                # Or use TryGetValue, but that's more complex
+                # For now, use the ternary pattern that matches other generators
+                return f"({obj}.ContainsKey({idx}) ? {obj}[{idx}] : null)"
+            else:
+                return f"{obj}[{idx}]"
         elif isinstance(expr, IRArray):
             return self._generate_array(expr)
         elif isinstance(expr, IRMap):

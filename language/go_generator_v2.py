@@ -984,6 +984,9 @@ class GoGeneratorV2:
             return self._generate_call(expr)
         elif isinstance(expr, IRPropertyAccess):
             obj = self._generate_expression(expr.object)
+            # Special case: .length property should use len() in Go
+            if expr.property == "length":
+                return f"len({obj})"
             # Capitalize property for Go exported fields
             prop = self._capitalize(expr.property)
             return f"{obj}.{prop}"
