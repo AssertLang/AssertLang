@@ -1,0 +1,8 @@
+// Test 1: While Loop
+function count() -> int {
+    let i = 0;
+    while (i < 10) {
+        i = i + 1;
+    }
+    return i;
+}

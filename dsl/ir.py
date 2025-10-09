@@ -55,6 +55,7 @@ class NodeType(Enum):
     # Statements
     IF = "if"
     FOR = "for"
+    FOR_C_STYLE = "for_c_style"
     WHILE = "while"
     SWITCH = "switch"
     CASE = "case"
@@ -527,6 +528,27 @@ class IRFor(IRNode):
     def __post_init__(self) -> None:
         self.type = NodeType.FOR
         super().__init__(type=NodeType.FOR)
+
+
+@dataclass
+class IRForCStyle(IRNode):
+    """
+    C-style for loop.
+
+    Example:
+        for (let i = 0; i < 10; i = i + 1) {
+            print(i)
+        }
+    """
+
+    init: IRStatement  # Initialization statement (usually IRAssignment)
+    condition: IRExpression  # Loop condition
+    increment: IRStatement  # Increment statement (usually IRAssignment)
+    body: List[IRStatement] = field(default_factory=list)
+
+    def __post_init__(self) -> None:
+        self.type = NodeType.FOR_C_STYLE
+        super().__init__(type=NodeType.FOR_C_STYLE)
 
 
 @dataclass

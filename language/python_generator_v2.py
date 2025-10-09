@@ -41,6 +41,7 @@ from dsl.ir import (
     IREnumVariant,
     IRExpression,
     IRFor,
+    IRForCStyle,
     IRFunction,
     IRIdentifier,
     IRIf,
@@ -542,6 +543,8 @@ class PythonGeneratorV2:
             return self.generate_assignment(stmt)
         elif isinstance(stmt, IRIf):
             return self.generate_if(stmt)
+        elif isinstance(stmt, IRForCStyle):
+            return self.generate_for_c_style(stmt)
         elif isinstance(stmt, IRFor):
             return self.generate_for(stmt)
         elif isinstance(stmt, IRWhile):
@@ -627,6 +630,44 @@ class PythonGeneratorV2:
                 lines.append(self.generate_statement(s))
         else:
             lines.append(f"{self.indent()}pass")
+        self.decrease_indent()
+
+        return "\n".join(lines)
+
+    def generate_for_c_style(self, stmt: IRForCStyle) -> str:
+        """
+        Generate C-style for loop as Python while loop.
+
+        for (let i = 0; i < 10; i = i + 1) { ... }
+        becomes:
+        i = 0
+        while i < 10:
+            ...
+            i = i + 1
+        """
+        lines = []
+
+        # Generate initialization
+        init_line = self.generate_statement(stmt.init)
+        lines.append(init_line)
+
+        # Generate while loop with condition
+        condition = self.generate_expression(stmt.condition)
+        lines.append(f"{self.indent()}while {condition}:")
+
+        # Generate body with increment at the end
+        self.increase_indent()
+        if stmt.body:
+            for s in stmt.body:
+                lines.append(self.generate_statement(s))
+
+        # Add increment at end of loop body
+        increment_line = self.generate_statement(stmt.increment)
+        lines.append(increment_line)
+
+        if not stmt.body:
+            lines.append(f"{self.indent()}pass")
+
         self.decrease_indent()
 
         return "\n".join(lines)
