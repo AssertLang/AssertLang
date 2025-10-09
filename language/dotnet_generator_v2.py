@@ -196,7 +196,8 @@ class DotNetGeneratorV2:
             if cls is None:
                 continue
             for prop in cls.properties:
-                self._check_type_imports(prop.prop_type)
+                if prop is not None and prop.prop_type:
+                    self._check_type_imports(prop.prop_type)
             for method in cls.methods:
                 if method.return_type:
                     self._check_type_imports(method.return_type)
@@ -351,8 +352,9 @@ class DotNetGeneratorV2:
 
         # Properties
         for prop in cls.properties:
-            lines.extend(self._generate_property(prop))
-            lines.append("")
+            if prop is not None:
+                lines.extend(self._generate_property(prop))
+                lines.append("")
 
         # Constructor
         if cls.constructor:
@@ -567,8 +569,17 @@ class DotNetGeneratorV2:
 
     def _generate_assignment(self, stmt: IRAssignment) -> List[str]:
         """Generate assignment statement."""
-        target = self._to_camel_case(stmt.target)
         value = self._generate_expression(stmt.value)
+
+        # Generate target (could be variable or property access)
+        if stmt.target:
+            if isinstance(stmt.target, str):
+                target = self._to_camel_case(stmt.target)
+            else:
+                # Target is an expression (property access, array index, etc.)
+                target = self._generate_expression(stmt.target)
+        else:
+            target = "_unknown"
 
         # Handle await for async values
         if self._is_async_expression(stmt.value):
