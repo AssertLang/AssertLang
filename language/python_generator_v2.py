@@ -462,6 +462,10 @@ class PythonGeneratorV2:
         """Generate class method."""
         lines = []
 
+        # Register parameter types for safe map/array indexing (same as functions)
+        for param in method.params:
+            self.variable_types[param.name] = param.param_type
+
         # Decorators (use direct field, fall back to metadata)
         decorators = method.decorators if hasattr(method, 'decorators') else method.metadata.get("decorators", [])
         for dec in decorators:
@@ -957,8 +961,8 @@ class PythonGeneratorV2:
             # Other primitive types (string, int, etc.) are not maps
             if expr_type.name in ("string", "int", "float", "bool", "null", "any", "array", "list", "List"):
                 return False
-            # Unknown type - be conservative and assume map
-            return True
+            # Unknown type - default to class (safer, more common)
+            return False
 
         # Check if expression is a map literal
         if isinstance(expr, IRMap):
@@ -977,11 +981,11 @@ class PythonGeneratorV2:
                 # Primitive types
                 if var_type.name in ("string", "int", "float", "bool", "array", "list"):
                     return False
-            # Unknown identifier - be conservative, assume it could be a map
-            # (unless it's 'self', which is always a class instance)
+            # Unknown identifier - default to class (safer)
+            # 'self' is always a class instance
             if var_name == "self":
                 return False
-            return True
+            return False
 
         # Check if expression is a property access
         if isinstance(expr, IRPropertyAccess):
@@ -993,11 +997,11 @@ class PythonGeneratorV2:
                     return prop_type.name in ("map", "dict", "Dict", "dictionary")
                 return False  # Class properties are not maps by default
 
-            # Otherwise, conservative approach: assume property access on unknown could be map
-            return True
+            # Otherwise, default to class (safer, more common)
+            return False
 
-        # Default: be conservative - if we don't know, assume map (safer for runtime)
-        return False  # Changed: default to False for safety, only use bracket when we know it's a map
+        # Default: use dot notation (classes) when type is unknown
+        return False
 
     def _infer_expression_type(self, expr: IRExpression) -> Optional[IRType]:
         """
@@ -1027,6 +1031,12 @@ class PythonGeneratorV2:
             # For binary operations, infer result type
             left_type = self._infer_expression_type(expr.left)
             right_type = self._infer_expression_type(expr.right)
+
+            # String concatenation: if either operand is string, result is string
+            if expr.op == BinaryOperator.ADD:
+                if (left_type and left_type.name == "string") or (right_type and right_type.name == "string"):
+                    return IRType(name="string")
+                # Otherwise fall through to numeric addition
 
             # Arithmetic operations: if either is float, result is float
             if expr.op in [BinaryOperator.ADD, BinaryOperator.SUBTRACT, BinaryOperator.MULTIPLY, BinaryOperator.DIVIDE]:
@@ -1102,6 +1112,26 @@ class PythonGeneratorV2:
                 left = self.generate_expression(expr.left)
                 right = self.generate_expression(expr.right)
                 return f"({left} // {right})"
+
+        # Special handling for addition: auto-convert types for string concatenation
+        if expr.op == BinaryOperator.ADD:
+            left_type = self._infer_expression_type(expr.left)
+            right_type = self._infer_expression_type(expr.right)
+
+            # If one operand is string and the other is not, wrap non-string with str()
+            left_is_string = left_type and left_type.name == "string"
+            right_is_string = right_type and right_type.name == "string"
+
+            if left_is_string and right_type and not right_is_string:
+                # String + non-string: wrap right side with str()
+                left = self.generate_expression(expr.left)
+                right = self.generate_expression(expr.right)
+                return f"({left} + str({right}))"
+            elif right_is_string and left_type and not left_is_string:
+                # Non-string + string: wrap left side with str()
+                left = self.generate_expression(expr.left)
+                right = self.generate_expression(expr.right)
+                return f"(str({left}) + {right})"
 
         # Regular binary operations
         left = self.generate_expression(expr.left)
