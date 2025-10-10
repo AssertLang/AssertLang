@@ -119,6 +119,7 @@ class TokenType(Enum):
     # C-style logical operators
     LOGICAL_AND = "&&"
     LOGICAL_OR = "||"
+    LOGICAL_NOT = "!"  # C-style NOT operator
 
     BIT_AND = "&"
     BIT_OR = "|"
@@ -522,6 +523,7 @@ class Lexer:
                 "*": TokenType.STAR, "/": TokenType.SLASH,
                 "%": TokenType.PERCENT,
                 "=": TokenType.ASSIGN,
+                "!": TokenType.LOGICAL_NOT,  # C-style NOT operator
                 "<": TokenType.LT, ">": TokenType.GT,
                 "&": TokenType.BIT_AND, "|": TokenType.BIT_OR,
                 "^": TokenType.BIT_XOR, "~": TokenType.BIT_NOT,
@@ -1823,12 +1825,13 @@ class Parser:
 
     def parse_unary(self) -> IRExpression:
         """Parse unary operators."""
-        if self.match(TokenType.MINUS, TokenType.PLUS, TokenType.BIT_NOT):
+        if self.match(TokenType.MINUS, TokenType.PLUS, TokenType.BIT_NOT, TokenType.LOGICAL_NOT):
             tok = self.advance()
             op_map = {
                 "-": UnaryOperator.NEGATE,
                 "+": UnaryOperator.POSITIVE,
                 "~": UnaryOperator.BIT_NOT,
+                "!": UnaryOperator.NOT,  # C-style NOT operator
             }
             op = op_map[tok.value]
             operand = self.parse_unary()
