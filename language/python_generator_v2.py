@@ -94,6 +94,7 @@ class PythonGeneratorV2:
         self.property_types: Dict[str, IRType] = {}  # Track class property types (e.g., "users": map)
         self.function_return_types: Dict[str, IRType] = {}  # Track function return types
         self.method_return_types: Dict[str, Dict[str, IRType]] = {}  # Track method return types by class
+        self.current_class: Optional[str] = None  # Track current class being generated (for 'self' type inference)
 
     # ========================================================================
     # Indentation Management
@@ -371,6 +372,9 @@ class PythonGeneratorV2:
         """Generate Python class."""
         lines = []
 
+        # Track current class for 'self' type inference
+        self.current_class = cls.name
+
         # Register class property types for safe map/array indexing
         for prop in cls.properties:
             if prop and hasattr(prop, 'prop_type'):
@@ -423,6 +427,8 @@ class PythonGeneratorV2:
 
         # Clear property types (class scope ended)
         self.property_types.clear()
+        # Clear current class
+        self.current_class = None
 
         return "\n".join(lines)
 
@@ -1024,6 +1030,9 @@ class PythonGeneratorV2:
                 return IRType(name="null")
 
         elif isinstance(expr, IRIdentifier):
+            # Special case: 'self' has the type of the current class
+            if expr.name == "self" and self.current_class:
+                return IRType(name=self.current_class)
             # Look up in variable types (from function parameters)
             return self.variable_types.get(expr.name)
 
