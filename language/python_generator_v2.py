@@ -92,6 +92,8 @@ class PythonGeneratorV2:
         self.source_language: Optional[str] = None  # Track source language for mapping
         self.variable_types: Dict[str, IRType] = {}  # Track variable types for safe map indexing
         self.property_types: Dict[str, IRType] = {}  # Track class property types (e.g., "users": map)
+        self.function_return_types: Dict[str, IRType] = {}  # Track function return types
+        self.method_return_types: Dict[str, Dict[str, IRType]] = {}  # Track method return types by class
 
     # ========================================================================
     # Indentation Management
@@ -134,6 +136,9 @@ class PythonGeneratorV2:
 
         # Collect required imports from types
         self._collect_imports(module)
+
+        # Track function return types for type-aware code generation
+        self._register_function_signatures(module)
 
         # Add future imports first (PEP 563)
         lines.append("from __future__ import annotations")
@@ -209,6 +214,22 @@ class PythonGeneratorV2:
     # ========================================================================
     # Import Collection and Generation
     # ========================================================================
+
+    def _register_function_signatures(self, module: IRModule) -> None:
+        """Register function and method return types for type-aware code generation."""
+        # Register standalone function return types
+        for func in module.functions:
+            if func.return_type:
+                self.function_return_types[func.name] = func.return_type
+
+        # Register class method return types
+        for cls in module.classes:
+            if cls.name not in self.method_return_types:
+                self.method_return_types[cls.name] = {}
+
+            for method in cls.methods:
+                if method.return_type:
+                    self.method_return_types[cls.name][method.name] = method.return_type
 
     def _collect_imports(self, module: IRModule) -> None:
         """Collect all required imports from types used in module."""
@@ -593,9 +614,14 @@ class PythonGeneratorV2:
 
         # Infer and track variable types for local assignments
         if isinstance(stmt.target, str):
-            inferred_type = self._infer_expression_type(stmt.value)
-            if inferred_type:
-                self.variable_types[stmt.target] = inferred_type
+            # Use explicit type annotation if provided
+            if stmt.var_type:
+                self.variable_types[stmt.target] = stmt.var_type
+            else:
+                # Otherwise, infer from value
+                inferred_type = self._infer_expression_type(stmt.value)
+                if inferred_type:
+                    self.variable_types[stmt.target] = inferred_type
 
         # Generate target (could be variable or property access)
         if stmt.target:
@@ -655,6 +681,11 @@ class PythonGeneratorV2:
         lines.append(f"{self.indent()}for {stmt.iterator} in {iterable}:")
 
         self.increase_indent()
+
+        # Try to infer iterator element type for better code generation
+        # If iterating over array/list, iterator could be any type
+        # For now, we don't track iterator types, but this is where we would
+
         if stmt.body:
             for s in stmt.body:
                 lines.append(self.generate_statement(s))
@@ -823,7 +854,16 @@ class PythonGeneratorV2:
             # Special case: .length property should use len() in Python
             if expr.property == "length":
                 return f"len({obj})"
-            return f"{obj}.{expr.property}"
+
+            # Determine if object is a map/dict (use bracket notation) or class (use dot notation)
+            is_map = self._is_map_type(expr.object)
+
+            if is_map:
+                # Generate dictionary access for maps: obj["field"]
+                return f'{obj}["{expr.property}"]'
+            else:
+                # Generate attribute access for classes: obj.field
+                return f"{obj}.{expr.property}"
         elif isinstance(expr, IRIndex):
             obj = self.generate_expression(expr.object)
             index = self.generate_expression(expr.index)
@@ -891,6 +931,74 @@ class PythonGeneratorV2:
         else:
             return str(lit.value)
 
+    def _is_map_type(self, expr: IRExpression) -> bool:
+        """
+        Determine if an expression evaluates to a map/dict type.
+
+        This enables context-aware code generation:
+        - Maps use bracket notation: obj["field"]
+        - Classes use dot notation: obj.field
+
+        Strategy: Be conservative - when in doubt, use bracket notation (safer for dicts).
+        Only use dot notation when we're CERTAIN it's a class instance.
+
+        Returns:
+            True if expr is a map/dict, False if it's a class/object
+        """
+        # Check if expression has an inferred type
+        expr_type = self._infer_expression_type(expr)
+        if expr_type:
+            # Explicitly a map/dict type
+            if expr_type.name in ("map", "dict", "Dict", "dictionary"):
+                return True
+            # Explicitly a class type (known class name)
+            if expr_type.name in self.method_return_types:
+                return False
+            # Other primitive types (string, int, etc.) are not maps
+            if expr_type.name in ("string", "int", "float", "bool", "null", "any", "array", "list", "List"):
+                return False
+            # Unknown type - be conservative and assume map
+            return True
+
+        # Check if expression is a map literal
+        if isinstance(expr, IRMap):
+            return True
+
+        # Check if expression is an identifier with known type
+        if isinstance(expr, IRIdentifier):
+            var_name = expr.name
+            if var_name in self.variable_types:
+                var_type = self.variable_types[var_name]
+                if var_type.name in ("map", "dict", "Dict", "dictionary"):
+                    return True
+                # Known class type
+                if var_type.name in self.method_return_types:
+                    return False
+                # Primitive types
+                if var_type.name in ("string", "int", "float", "bool", "array", "list"):
+                    return False
+            # Unknown identifier - be conservative, assume it could be a map
+            # (unless it's 'self', which is always a class instance)
+            if var_name == "self":
+                return False
+            return True
+
+        # Check if expression is a property access
+        if isinstance(expr, IRPropertyAccess):
+            # Check if accessing a property on 'self' (class property)
+            if isinstance(expr.object, IRIdentifier) and expr.object.name == "self":
+                # Check if property is a map type
+                if expr.property in self.property_types:
+                    prop_type = self.property_types[expr.property]
+                    return prop_type.name in ("map", "dict", "Dict", "dictionary")
+                return False  # Class properties are not maps by default
+
+            # Otherwise, conservative approach: assume property access on unknown could be map
+            return True
+
+        # Default: be conservative - if we don't know, assume map (safer for runtime)
+        return False  # Changed: default to False for safety, only use bracket when we know it's a map
+
     def _infer_expression_type(self, expr: IRExpression) -> Optional[IRType]:
         """
         Infer the type of an expression for type-aware code generation.
@@ -935,10 +1043,50 @@ class PythonGeneratorV2:
             if expr.property == "length":
                 return IRType(name="int")
 
+            # Check if we're accessing a property of a map
+            # If object is a map, the accessed property value could also be a map
+            obj_type = self._infer_expression_type(expr.object)
+            if obj_type and obj_type.name in ("map", "dict", "Dict", "dictionary"):
+                # We're accessing a field of a map
+                # Check if the object is a map literal with known structure
+                if isinstance(expr.object, IRMap):
+                    # Check the value type of the accessed field
+                    if expr.property in expr.object.entries:
+                        field_value = expr.object.entries[expr.property]
+                        return self._infer_expression_type(field_value)
+                # For non-literal maps, we conservatively assume the value is also a map
+                # This ensures bracket notation propagates through nested map access
+                return IRType(name="map")
+
         elif isinstance(expr, IRCall):
             # Special case: len() returns int
             if isinstance(expr.function, IRIdentifier) and expr.function.name == "len":
                 return IRType(name="int")
+
+            # Look up function return type
+            if isinstance(expr.function, IRIdentifier):
+                func_name = expr.function.name
+                if func_name in self.function_return_types:
+                    return self.function_return_types[func_name]
+
+                # Check if it's a class constructor (capitalized name)
+                # This is a heuristic - if a call matches a known class name, it's a constructor
+                if func_name in self.method_return_types:
+                    # It's a class constructor
+                    return IRType(name=func_name)
+
+            # Look up method return type
+            elif isinstance(expr.function, IRPropertyAccess):
+                method_name = expr.function.property
+                # Try to determine the class of the object
+                obj_type = self._infer_expression_type(expr.function.object)
+                if obj_type and obj_type.name in self.method_return_types:
+                    if method_name in self.method_return_types[obj_type.name]:
+                        return self.method_return_types[obj_type.name][method_name]
+
+        elif isinstance(expr, IRMap):
+            # Map literals have type "map"
+            return IRType(name="map")
 
         return None
 
