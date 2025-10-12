@@ -6,7 +6,7 @@ Follow these steps whenever Hustler asks to build, review, or release Promptware
 
 | Agent | Mission Focus | Branch | Mission Brief | Progress Log | Status |
 |-------|---------------|--------|---------------|--------------|--------|
-| TA1 | Standard Library & Syntax (Batch #11) | `feature/pw-standard-librarian` | `missions/TA1/mission.md` | `.claude/Task Agent 1/ta1-current-progress.md` | _unassigned_ |
+| TA1 | Standard Library & Syntax (Batch #11) | `feature/pw-standard-librarian` | `missions/TA1/mission.md` | `.claude/Task Agent 1/ta1-current-progress.md` | **IN PROGRESS** - Lead agent coordinating Bug Batch #11 fixes + stdlib foundation |
 | TA2 | Runtime + CLI Core | `feature/pw-runtime-core` | `missions/TA2/mission.md` | `.claude/Task Agent 2/ta2-current-progress.md` | _unassigned_ |
 | TA3 | Tooling & DevEx (LSP, fmt, lint, test) | `feature/pw-tooling-devex` | `missions/TA3/mission.md` | `.claude/Task Agent 3/ta3-current-progress.md` | _unassigned_ |
 | TA4 | Ecosystem & Governance Launch | `feature/pw-ecosystem-launch` | `missions/TA4/mission.md` | `.claude/Task Agent 4/ta4-current-progress.md` | _unassigned_ |
