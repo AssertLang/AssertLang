@@ -1,0 +1,179 @@
+# TA1 Test Requirements
+
+mission: "Standard Library & Syntax (Batch #11)"
+
+# Required test coverage
+coverage:
+  minimum: 90%
+  target: 95%
+  exclude:
+    - "stdlib/experimental/*"
+    - "examples/*"
+
+# Test suites (all must pass before merge)
+test_suites:
+  - name: "Bug Batch #11 - Enum Syntax"
+    path: "tests/test_bug19_enum_syntax.py"
+    must_pass: true
+    coverage_min: 100%
+    description: "C-style and YAML-style enum parsing"
+
+  - name: "Bug Batch #11 - Global Variables"
+    path: "tests/test_bug19_global_vars.py"
+    must_pass: true
+    description: "Verify no global vars allowed, document pattern"
+
+  - name: "Bug Batch #11 - Var Keyword"
+    path: "tests/test_bug19_var_keyword.py"
+    must_pass: true
+    description: "Confirm var doesn't exist, only let"
+
+  - name: "Bug Batch #11 - Array Types"
+    path: "tests/test_bug19_array_types.py"
+    must_pass: true
+    description: "array<T> syntax works correctly"
+
+  - name: "Bug Batch #11 - Map Types"
+    path: "tests/test_bug19_map_types.py"
+    must_pass: true
+    description: "map<K,V> syntax, no {} as type"
+
+  - name: "Stdlib Core"
+    path: "tests/test_stdlib_core.py"
+    must_pass: true
+    coverage_min: 95%
+    description: "Option, Result, assert functionality"
+
+  - name: "Stdlib Types"
+    path: "tests/test_stdlib_types.py"
+    must_pass: true
+    coverage_min: 95%
+    description: "String, List, Map, Set operations"
+
+  - name: "Stdlib Iterators"
+    path: "tests/test_stdlib_iter.py"
+    must_pass: true
+    coverage_min: 90%
+    description: "map, filter, reduce, zip"
+
+  - name: "Stdlib FS"
+    path: "tests/test_stdlib_fs.py"
+    must_pass: true
+    coverage_min: 90%
+    description: "File operations with capability checks"
+
+  - name: "Stdlib JSON"
+    path: "tests/test_stdlib_json.py"
+    must_pass: true
+    coverage_min: 90%
+    description: "Parse/encode with streaming"
+
+  - name: "Cross-Language Roundtrip"
+    path: "tests/test_stdlib_roundtrip.py"
+    must_pass: true
+    description: "Stdlib works in Python, Go, Rust, TypeScript, C#"
+
+  - name: "Regression Suite"
+    path: "tests/"
+    pattern: "test_bug*.py"
+    must_pass: true
+    description: "No previous bug fixes broken"
+
+# Benchmarks (performance SLA)
+benchmarks:
+  - name: "Option<T> overhead"
+    metric: "latency_ns"
+    baseline: 5
+    threshold: 10
+    comparison: "native Python Optional"
+
+  - name: "Result<T,E> pattern match"
+    metric: "latency_ns"
+    baseline: 50
+    threshold: 75
+    comparison: "native Rust Result"
+
+  - name: "List iteration"
+    metric: "throughput_ops_per_sec"
+    baseline: 1000000
+    threshold: 850000
+    comparison: "Python list comprehension"
+
+  - name: "Map lookup"
+    metric: "latency_ns"
+    baseline: 100
+    threshold: 150
+    comparison: "Python dict access"
+
+  - name: "JSON parse (1MB)"
+    metric: "latency_ms"
+    baseline: 50
+    threshold: 58
+    comparison: "Python json.loads (within 15%)"
+
+  - name: "FS read (10MB)"
+    metric: "latency_ms"
+    baseline: 100
+    threshold: 115
+    comparison: "Python open().read() (within 15%)"
+
+# Integration tests (with other TAs)
+integration_tests:
+  - name: "TA2 Runtime Integration"
+    description: "Stdlib async modules work with TA2 scheduler"
+    path: "tests/integration/test_ta1_ta2.py"
+    status: "blocked"
+    blocker: "TA2 not ready"
+
+  - name: "TA3 LSP Integration"
+    description: "Stdlib types provide autocomplete data"
+    path: "tests/integration/test_ta1_ta3.py"
+    status: "optional"
+
+  - name: "TA5 FFI Integration"
+    description: "Stdlib types map to Python/Go/Rust correctly"
+    path: "tests/integration/test_ta1_ta5.py"
+    status: "pending"
+
+# Quality gates (all must be green)
+quality_gates:
+  - gate: "all_unit_tests_pass"
+    status: "pending"
+
+  - gate: "coverage_above_90_percent"
+    status: "pending"
+
+  - gate: "no_regressions"
+    status: "pending"
+
+  - gate: "benchmarks_within_sla"
+    status: "pending"
+
+  - gate: "integration_tests_pass"
+    status: "blocked"
+    blocker: "TA2 not ready"
+
+  - gate: "security_scan_clean"
+    status: "pending"
+
+  - gate: "docs_coverage_100_percent"
+    status: "pending"
+
+# Failure actions
+on_failure:
+  test_failure:
+    - "Block merge immediately"
+    - "Assign fix to responsible sub-agent"
+    - "Update context.json with blocker"
+    - "Notify lead agent"
+
+  benchmark_failure:
+    - "Document performance regression"
+    - "Determine if acceptable tradeoff"
+    - "Get lead agent approval if proceeding"
+    - "Add tracking issue if deferred"
+
+  coverage_failure:
+    - "Identify uncovered code paths"
+    - "Write missing tests"
+    - "Do not merge until 90% met"
