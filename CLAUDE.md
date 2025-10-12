@@ -79,10 +79,83 @@ _First-time setup_: ensure `planning/master-plan` exists on origin with the miss
 - Verify GitHub release + PyPI page show the new version.
 - Notify Hustler with a short summary (what shipped, test status, links).
 
+## Sub-Agent Spawn Protocol
+
+### Lead Agent Responsibilities:
+When user requests work, lead agent:
+1. Reads all `.claude/Task Agent N/context.json` files (assess current state)
+2. Checks `dependencies.yml` for blockers (what's available, what's blocked)
+3. Identifies critical path (what's blocking everything)
+4. Spawns sub-agent(s) with full context via Task tool:
+
+```python
+Task(
+  description="Fix Bug Batch #11 enum syntax",
+  subagent_type="general-purpose",
+  prompt=f"""
+  You are TA{N}-[TaskName] sub-agent.
+
+  MISSION: [Specific task description]
+  BRANCH: [feature branch name]
+  EXIT CRITERIA: [When you're done]
+
+  SETUP (Read First):
+  1. Read .claude/SUB_AGENT_TEMPLATE.md for full protocol
+  2. Read .claude/Task Agent {N}/context.json (current status)
+  3. Read .claude/Task Agent {N}/dependencies.yml (what you can use)
+  4. Read .claude/Task Agent {N}/decisions.md (follow these)
+  5. Read missions/TA{N}/mission.md (overall objective)
+
+  YOUR TASK:
+  [Detailed task description]
+
+  FILES YOU'LL UPDATE:
+  - [Code files to modify]
+  - .claude/Task Agent {N}/context.json (remove blocker when done)
+  - Via agent_sync.py log (progress updates)
+
+  DO NOT TOUCH:
+  - dependencies.yml (lead agent territory)
+  - CLAUDE.md (lead agent territory)
+  - Other TA files (stay in your lane)
+
+  REPORT BACK WITH:
+  - Completion summary
+  - Test results
+  - Files changed
+  - Blockers removed
+  - Next recommended actions
+  """
+)
+```
+
+5. Update CLAUDE.md roster (agent assigned)
+6. Update context.json (track assignment)
+
+### Automation Scripts (Lead Agent Uses):
+- `scripts/check_status.sh` - Check all TA status
+- `scripts/check_deps.sh` - Analyze dependencies, find critical path
+- `scripts/update_status.py` - Sync CLAUDE.md + Current_Work.md from context files
+- `scripts/git_sync.sh` - Auto-push branch to origin
+- `scripts/create_pr.sh` - Auto-create PR to upstream
+- `scripts/release.sh vX.Y.Z` - Full release automation (version, tag, publish)
+- `scripts/integration_run.sh` - Merge all TAs, run tests
+- `scripts/create_ta.sh N "Name" "branch"` - Bootstrap new TA
+
+### User Never Touches:
+- ✅ Git commands (lead agent automates via scripts)
+- ✅ File updates (sub-agents self-document, lead coordinates)
+- ✅ Status tracking (auto-synced from context.json)
+- ✅ Releases (one command: "Release v2.2.0")
+
+User only talks to lead agent. Lead agent orchestrates everything.
+
 ## Guardrails
 
 - Use GitHub noreply identity (`3CH0xyz@users.noreply.github.com`).
 - No force pushes to `upstream/main`.
 - Keep mission edits on `planning/master-plan` (script handles progress logging).
 - When editing mission files manually, stage with `git add --force .claude/...` so the planning branch captures changes.
-- Document any manual steps in `Current_Work.md` until CI/CD automation exists.
+- **User never runs manual git/scripts** - lead agent automates everything.
+- Sub-agents update tactical files only (progress, tests, checklist).
+- Lead agent updates strategic files only (context, dependencies, roster).
