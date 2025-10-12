@@ -177,3 +177,6 @@ test_*.cs
 # MyPy and Ruff cache
 .mypy_cache/
 .ruff_cache/
+
+# Agent mission working copies (never commit)
+missions/
