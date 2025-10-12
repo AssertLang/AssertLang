@@ -37,6 +37,34 @@ When starting work on Promptware:
 
 ## Development Workflow Expectations
 
+### Source of Truth & Branching
+
+- `upstream/main` is the production branch. Never push directly.
+- Planning artifacts (`.claude/Task Agent*/`) live on `planning/master-plan` (fork only).
+- Implementation work happens on `feature/<mission>` branches created from `upstream/main` and pushed to `origin`.
+- First-time setup: create planning branch once
+  ```bash
+  git checkout -b planning/master-plan
+  git push origin HEAD:planning/master-plan
+  git checkout feature/<mission>
+  ```
+
+**One-command setup for any mission**
+```
+python scripts/agent_sync.py start --mission TA<n>
+```
+The helper script:
+1. Verifies the working tree is clean.
+2. Fetches `origin/planning/master-plan` and the mission feature branch.
+3. Checks out `feature/<mission>` and rebases on `origin`.
+4. Writes the mission brief under `missions/TA<n>/mission.md` (ignored by git).
+
+To log progress (without touching feature branches):
+```
+python scripts/agent_sync.py log --mission TA<n> --entry "What changed"
+```
+This appends an entry to the mission progress file on `planning/master-plan` using a temporary worktree and pushes it to origin.
+
 ### Local Testing
 
 - Run language-specific smoke tests before committing adapter changes:
@@ -132,3 +160,32 @@ Before handing off to the next agent or human:
 ---
 
 Keep this file in sync with `execution-plan.md` so handoffs remain seamless.
+
+---
+
+## CI/CD & Operator Prompts
+
+- **“Start mission TA<n>”** → run `python scripts/agent_sync.py start --mission TA<n>`; obey the mission brief under `missions/`.
+- **“Log progress for TA<n>”** → run `python scripts/agent_sync.py log --mission TA<n> --entry "…"` to append on `planning/master-plan`.
+- **“Open a PR for <branch>”** → ensure tests pass, push `feature/<mission>` to origin, then open a PR targeting `upstream/main`.
+- **“Ship version <tag>”** → after merge, tag release (`git tag vX.Y.Z`), push to both remotes, and rely on publish workflow (or run manual release script until automation lands).
+
+### Integration Workflow
+
+- Use `scripts/integration_run.sh` to merge all mission branches into `integration/nightly`, run tests, and prepare review builds.
+- Resolve conflicts on `integration/nightly`, re-run the script, then push the integration branch and open a PR to `upstream/main`.
+- After PR approval, run release tagging/publish steps.
+
+### Planning Branch Maintenance
+
+- Modify mission briefs/progress logs on `planning/master-plan` only. Feature branches should stay free of `.claude/` and `missions/`.
+- To edit missions manually:
+  ```
+  git checkout -b planning/master-plan origin/planning/master-plan
+  # edit files
+  git add --force .claude/Task\ Agent\ */ta*-current-*.md
+  git commit -m "Update missions"
+  git push origin HEAD:planning/master-plan
+```
+- The helper script will always pull the latest mission snapshot before agents begin work.
+- Update the roster table in `CLAUDE.md` whenever agents are reassigned or complete missions so every task knows which branch and status belongs to each TA<n>.
