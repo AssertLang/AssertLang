@@ -1019,6 +1019,33 @@ pip install -e .
    - Monitor for new bug reports
    - Prepare v2.1.0b9 release
 4. **Testing**: All new tests passing, no regressions, cross-language verification complete
+5. **Bug Triage**: Batch #11 syntax issues (Bugs/v2.1.0b12) queued for immediate fix
+
+---
+
+## 🐞 Priority Bug Queue — v2.1.0b12
+
+Source: `Bugs/v2.1.0b12/PW_BUG_REPORT_BATCH_11.md`
+
+### Blockers (High)
+- **Issue #19 — Enum syntax**: DSL rejects C-style enums but docs lack supported syntax. Action: document enum grammar (or confirm unsupported) and adjust parser error messaging.
+
+### Documentation Gaps (Medium)
+- Global variable declarations (`PW_SYNTAX_CLARIFICATION_NEEDED.md` §2) unclear.
+- `var` with type annotations (§3) needs specification.
+- Array type annotation rules (§4) missing.
+- Empty map literal syntax (§5) ambiguous.
+- Map parameter types (§6) need explicit examples.
+
+### Immediate Actions
+1. Assign agent to author syntax clarifications + parser adjustments on `feature/pw-standard-librarian`.
+2. Update docs (PW_PROGRAMMING_GUIDE.md + language spec) with final decisions.
+3. Add regression tests covering enum/global/array/map syntax once behavior is defined.
+
+### Exit Criteria
+- Parser/doc agreement for all 6 topics.
+- CI passes with new syntax fixtures.
+- Enterprise validation files (GraphQL Gateway, Cache Manager, Workflow Engine) compile without workarounds.
 
 ---
 
