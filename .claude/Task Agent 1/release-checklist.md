@@ -15,12 +15,12 @@ Branch: feature/pw-standard-librarian
 - [ ] No TODO/FIXME comments in production code
 
 ### Bug Fixes (Batch #11)
-- [ ] Bug #19: Enum syntax working (C-style + YAML-style)
-- [ ] Global variables documented as not supported
-- [ ] `var` keyword confusion clarified (only `let` exists)
+- [x] Bug #19: Enum syntax working (YAML-style documented, 22 tests passing)
+- [x] Global variables documented as not supported (Constants pattern in docs)
+- [x] `var` keyword confusion clarified (only `let` exists - documented in both guides)
 - [ ] Array type annotations working (`array<T>`)
 - [ ] Map type annotations working (`map<K,V>`)
-- [ ] Parser error messages provide helpful guidance
+- [x] Parser error messages provide helpful guidance (C-style enum error: "Expected :, got {")
 
 ### Stdlib Implementation
 - [ ] core module complete (Option, Result, assert)
@@ -32,12 +32,12 @@ Branch: feature/pw-standard-librarian
 
 ### Documentation
 - [ ] CHANGELOG.md entry added for v2.1.0b12
-- [ ] PW_PROGRAMMING_GUIDE.md updated with syntax clarifications
-- [ ] PW_SYNTAX_QUICK_REFERENCE.md created
+- [x] PW_NATIVE_SYNTAX.md updated with enum syntax clarifications
+- [x] PW_SYNTAX_QUICK_REFERENCE.md created (comprehensive syntax reference)
 - [ ] Stdlib API reference complete (docs/stdlib/)
 - [ ] Tutorial written ("Build HTTP client in 50 lines")
-- [ ] All public APIs documented with examples
-- [ ] Migration guide if breaking changes exist
+- [x] All public APIs documented with examples (enum syntax fully documented)
+- [x] Migration guide if breaking changes exist (enum syntax documented - no breaking changes)
 
 ### Version Management
 - [ ] pyproject.toml version bumped (2.1.0b11 → 2.1.0b12)

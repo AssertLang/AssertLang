@@ -125,7 +125,17 @@
       "Bash(git log:*)",
       "Bash(git filter-branch:*)",
       "Bash(pip3 install:*)",
-      "Bash(gh release create:*)"
+      "Bash(gh release create:*)",
+      "Bash(do)",
+      "Bash(if [ -f \".claude/Task Agent $i/ta$i-current-mission.md\" ])",
+      "Bash(then)",
+      "Bash(else)",
+      "Bash(fi)",
+      "Bash(xargs kill:*)",
+      "Bash(sed:*)",
+      "Bash(while read file)",
+      "Bash(do echo \"=== $file ===\")",
+      "Bash(tee:*)"
     ],
     "deny": [],
     "ask": []

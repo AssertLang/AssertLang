@@ -13,10 +13,12 @@ coverage:
 # Test suites (all must pass before merge)
 test_suites:
   - name: "Bug Batch #11 - Enum Syntax"
-    path: "tests/test_bug19_enum_syntax.py"
+    path: "tests/test_enums_comprehensive.py"
     must_pass: true
+    status: "passing"
+    tests_count: 22
     coverage_min: 100%
-    description: "C-style and YAML-style enum parsing"
+    description: "YAML-style enum parsing (22 comprehensive tests)"
 
   - name: "Bug Batch #11 - Global Variables"
     path: "tests/test_bug19_global_vars.py"

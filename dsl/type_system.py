@@ -283,7 +283,26 @@ class TypeSystem:
 
             return collection_type
 
-        # Custom type (User, Payment, etc.) - return as-is
+        # Check if it's a generic type parameter (single uppercase letter or CamelCase type param)
+        # Type parameters like T, E, K, V should stay as-is
+        if len(type_name) == 1 and type_name.isupper():
+            # Single letter type parameter (T, E, K, V)
+            return type_name
+
+        # Custom type (User, Payment, Option, Result, etc.) - handle generic args
+        if generic_args:
+            mapped_args = [
+                self.map_to_language(arg, target_lang) for arg in generic_args
+            ]
+            args_str = ", ".join(mapped_args)
+            # Python/TypeScript style generic: Option[T]
+            if target_lang in ("python", "nodejs", "dotnet"):
+                return f"{type_name}[{args_str}]"
+            elif target_lang in ("rust", "go"):
+                return f"{type_name}<{args_str}>"
+            return f"{type_name}[{args_str}]"
+
+        # Custom type without generics - return as-is
         return type_name
 
     def _wrap_optional(self, base_type: str, target_lang: str) -> str:

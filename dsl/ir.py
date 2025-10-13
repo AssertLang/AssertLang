@@ -94,6 +94,7 @@ class NodeType(Enum):
     SPREAD = "spread"
     AWAIT = "await"
     DECORATOR = "decorator"
+    PATTERN_MATCH = "pattern_match"
 
 
 class BinaryOperator(Enum):
@@ -361,9 +362,14 @@ class IREnum(IRNode):
           - pending
           - completed
           - failed
+
+        enum Option<T>:
+          - Some(value: T)
+          - None
     """
 
     name: str
+    generic_params: List[str] = field(default_factory=list)  # Generic type parameters
     variants: List[IREnumVariant] = field(default_factory=list)
     doc: Optional[str] = None
 
@@ -414,9 +420,13 @@ class IRFunction(IRNode):
             - ValidationError
           body:
             # statements
+
+        function option_map<T, U>(opt: Option<T>, fn: function(T) -> U) -> Option<U>:
+          # body
     """
 
     name: str
+    generic_params: List[str] = field(default_factory=list)  # Generic type parameters
     params: List[IRParameter] = field(default_factory=list)
     return_type: Optional[IRType] = None
     throws: List[str] = field(default_factory=list)
@@ -470,9 +480,13 @@ class IRClass(IRNode):
               self.api_key = api_key
           methods:
             - function charge: ...
+
+        class List<T>:
+          items: array<T>
     """
 
     name: str
+    generic_params: List[str] = field(default_factory=list)  # Generic type parameters
     properties: List[IRProperty] = field(default_factory=list)
     methods: List[IRFunction] = field(default_factory=list)
     constructor: Optional[IRFunction] = None
@@ -1198,6 +1212,30 @@ class IRAwait(IRNode):
         super().__init__(type=NodeType.AWAIT)
 
 
+@dataclass
+class IRPatternMatch(IRNode):
+    """
+    Pattern matching expression using 'is' operator.
+
+    Example:
+        opt is Some(val)  // Matches Some variant and binds val
+        opt is None       // Matches None variant
+        res is Ok(_)      // Matches Ok variant, ignores value
+        res is Err(e)     // Matches Err variant and binds e
+    """
+
+    value: IRExpression  # The value being matched (left side)
+    pattern: IRExpression  # The pattern (right side) - usually IRCall or IRIdentifier
+    # pattern can be:
+    # - IRIdentifier("None") for simple enum variants
+    # - IRCall(IRIdentifier("Some"), [IRIdentifier("val")]) for variants with capture
+    # - IRPropertyAccess(IRIdentifier("Option"), "Some") for qualified variants
+
+    def __post_init__(self) -> None:
+        self.type = NodeType.PATTERN_MATCH
+        super().__init__(type=NodeType.PATTERN_MATCH)
+
+
 # ============================================================================
 # Type Aliases
 # ============================================================================
@@ -1220,6 +1258,7 @@ IRExpression = Union[
     IRSlice,
     IRSpread,
     IRAwait,
+    IRPatternMatch,
 ]
 
 # Union type for all statement nodes

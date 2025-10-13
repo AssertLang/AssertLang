@@ -1,0 +1,77 @@
+// Real PW Code with MCP-Backed Operations
+// Each operation is an MCP endpoint that knows ALL target languages
+
+import http
+import json
+import file
+import concurrency
+
+// Data pipeline: Fetch weather, process, cache to disk
+function get_weather_report(city: string) -> Result<WeatherData, string>:
+    // http.get - MCP endpoint that knows:
+    //   Python:     requests.get(url)
+    //   Rust:       reqwest::blocking::get(url)
+    //   Go:         http.Get(url)
+    //   JavaScript: axios.get(url)
+    let url = "https://api.weather.com/v1/current?city=" + city
+    let response = http.get(url)?
+
+    // json.parse - MCP endpoint that knows:
+    //   Python:     json.loads(text)
+    //   Rust:       serde_json::from_str(text)
+    //   Go:         json.Unmarshal([]byte(text), &result)
+    //   JavaScript: JSON.parse(text)
+    let data = json.parse(response.body)?
+
+    // Extract weather info
+    let weather = WeatherData {
+        city: data.city,
+        temp: data.temperature,
+        conditions: data.conditions,
+        timestamp: time.now()
+    }
+
+    // file.write - MCP endpoint that knows:
+    //   Python:     open(path, 'w').write(content)
+    //   Rust:       fs::write(path, content)
+    //   Go:         os.WriteFile(path, []byte(content), 0644)
+    //   JavaScript: fs.writeFileSync(path, content)
+    let cache_path = "/tmp/weather_" + city + ".json"
+    file.write(cache_path, json.stringify(weather))?
+
+    return Ok(weather)
+
+// Concurrent fetching for multiple cities
+function fetch_all_weather(cities: List<string>) -> List<WeatherData>:
+    // concurrency.map - MCP endpoint that knows:
+    //   Python:     with ThreadPoolExecutor() as ex: ex.map(fn, cities)
+    //   Rust:       cities.par_iter().map(fn).collect()
+    //   Go:         sync.WaitGroup with goroutines
+    //   JavaScript: Promise.all(cities.map(async fn))
+    let results = concurrency.map(cities, |city| {
+        get_weather_report(city)
+    })
+
+    // Filter successful results
+    return results.filter_map(|result| {
+        if result is Ok(data):
+            Some(data)
+        else:
+            None
+    })
+
+// Main entry point
+function main():
+    let cities = ["NYC", "SF", "Chicago", "Austin"]
+
+    // print - MCP endpoint that knows:
+    //   Python:     print(msg)
+    //   Rust:       println!("{}", msg)
+    //   Go:         fmt.Println(msg)
+    //   JavaScript: console.log(msg)
+    print("Fetching weather for " + cities.length + " cities...")
+
+    let weather_data = fetch_all_weather(cities)
+
+    for report in weather_data:
+        print(report.city + ": " + report.temp + "°F - " + report.conditions)

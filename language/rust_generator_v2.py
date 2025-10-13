@@ -150,8 +150,19 @@ class RustGeneratorV2:
         # Generate struct definitions + impl blocks (from classes not marked as traits)
         for cls in module.classes:
             if not cls.metadata.get('rust_trait'):
-                # Generate struct definition first
-                struct_lines = [f"pub struct {cls.name} {{"]
+                # Generate struct definition first with generic parameters
+                struct_name = cls.name
+                if cls.generic_params:
+                    # Add generic type parameters: struct List<T>
+                    generic_str = ", ".join(cls.generic_params)
+                    struct_name = f"{cls.name}<{generic_str}>"
+
+                struct_lines = []
+                # Doc comment
+                if cls.doc:
+                    struct_lines.append(f"/// {cls.doc}")
+
+                struct_lines.append(f"pub struct {struct_name} {{")
                 if cls.properties:
                     for prop in cls.properties:
                         visibility = "pub " if not prop.is_private else ""
@@ -311,7 +322,13 @@ class RustGeneratorV2:
                 return f"HashMap<{key}, {val}>"
             return "HashMap<String, Box<dyn std::any::Any>>"
 
-        # Custom type - return as-is (assume it's defined)
+        # Custom type - may have generic arguments (e.g., Option<T>, List<T>)
+        if generic_args:
+            # Generate generic arguments recursively
+            args = ", ".join(self._generate_type(arg, context) for arg in generic_args)
+            return f"{type_name}<{args}>"
+
+        # Custom type without generics - return as-is (assume it's defined)
         return type_name
 
     # ========================================================================
@@ -330,6 +347,7 @@ class RustGeneratorV2:
         lines.append("#[derive(Debug, Clone)]")
 
         # Struct declaration
+        # Note: IRTypeDefinition doesn't have generic_params, but IRClass does
         lines.append(f"pub struct {type_def.name} {{")
 
         # Fields
@@ -358,19 +376,25 @@ class RustGeneratorV2:
         # Derive clause
         lines.append("#[derive(Debug, Clone, PartialEq)]")
 
-        # Enum declaration
-        lines.append(f"pub enum {enum.name} {{")
+        # Enum declaration with generic parameters
+        enum_name = enum.name
+        if enum.generic_params:
+            # Add generic type parameters: enum Option<T>
+            generic_str = ", ".join(enum.generic_params)
+            enum_name = f"{enum.name}<{generic_str}>"
+
+        lines.append(f"pub enum {enum_name} {{")
 
         # Variants
         for variant in enum.variants:
             variant_name = variant.name
 
             if variant.associated_types:
-                # Tuple variant: Status::Completed(u64)
+                # Tuple variant: Status::Completed(u64) or Some(T)
                 types = ", ".join(self._generate_type(t) for t in variant.associated_types)
                 lines.append(f"    {variant_name}({types}),")
             else:
-                # Simple variant: Status::Pending
+                # Simple variant: Status::Pending or None
                 lines.append(f"    {variant_name},")
 
         lines.append("}")
@@ -409,14 +433,24 @@ class RustGeneratorV2:
         """Generate impl block."""
         lines = []
 
+        # Build type name with generic parameters
+        type_name = cls.name
+        generic_decl = ""
+        if cls.generic_params:
+            # Add generic parameters to both impl declaration and type name
+            # impl<T> List<T> { ... }
+            generic_str = ", ".join(cls.generic_params)
+            generic_decl = f"<{generic_str}>"
+            type_name = f"{cls.name}<{generic_str}>"
+
         # Impl declaration
         if cls.base_classes:
-            # impl TraitName for TypeName
+            # impl<T> TraitName for TypeName<T>
             trait_name = cls.base_classes[0]
-            lines.append(f"impl {trait_name} for {cls.name} {{")
+            lines.append(f"impl{generic_decl} {trait_name} for {type_name} {{")
         else:
-            # impl TypeName
-            lines.append(f"impl {cls.name} {{")
+            # impl<T> TypeName<T>
+            lines.append(f"impl{generic_decl} {type_name} {{")
 
         self.current_context = "impl"
 
@@ -524,8 +558,12 @@ class RustGeneratorV2:
         # Function keyword
         parts.append("fn")
 
-        # Function name
+        # Function name with generic parameters
         func_name = self._to_snake_case(func.name)
+        if func.generic_params:
+            # Add generic type parameters: fn map<T, U>
+            generic_str = ", ".join(func.generic_params)
+            func_name = f"{func_name}<{generic_str}>"
 
         # Parameters
         params = []

@@ -69,8 +69,10 @@ function divide(x: int, y: int) -> int throws DivisionError {
 
 ### Variables and Types
 
+**IMPORTANT: Only `let` keyword exists** (NOT `var`):
+
 ```pw
-// Type annotations
+// ✅ Correct: Use let for variable declarations
 let x: int = 42;
 let name: string = "Alice";
 let price: float = 99.99;
@@ -81,11 +83,56 @@ let user: map<string, any> = {
     "age": 30
 };
 
-// Type inference
+// ✅ Type inference (optional type annotation)
 let count = 10;              // inferred as int
 let message = "Hello";       // inferred as string
 let items = [1, 2, 3];       // inferred as array<int>
+
+// ❌ ERROR: 'var' keyword does NOT exist in PW
+var x = 42;  // Error: Unexpected keyword: var
 ```
+
+**Variable Scope Rules:**
+
+```pw
+// ✅ Local variables (inside functions)
+function example() -> int {
+    let x = 10;              // Local to this function
+    let y: int = 20;         // With explicit type
+    return x + y;
+}
+
+// ❌ ERROR: Global variables are NOT allowed
+let GLOBAL_CONSTANT = 42;    // Error at module level
+```
+
+### Constants and Global Values
+
+**PW does NOT support module-level variable declarations.** Use the Constants class pattern instead:
+
+```pw
+// ✅ Recommended: Constants class
+class Constants {
+    MAX_RETRIES: int;
+    API_URL: string;
+    TIMEOUT_MS: int;
+
+    constructor() {
+        self.MAX_RETRIES = 3;
+        self.API_URL = "https://api.example.com";
+        self.TIMEOUT_MS = 5000;
+    }
+}
+
+// Usage in functions
+function connect() -> bool {
+    let config = Constants();
+    let url = config.API_URL;
+    return http.connect(url);
+}
+```
+
+**Why no global variables?** Cross-language portability. Python, Go, and Rust handle module-level initialization differently. The Constants class pattern works consistently in all target languages.
 
 ### Control Flow
 
@@ -210,20 +257,45 @@ type Response<T> {
 
 ### Enums
 
+**Correct Syntax** (YAML-style with colon and dashes):
+
 ```pw
+enum Status:
+    - Pending
+    - Active
+    - Completed
+    - Failed
+
+enum Color:
+    - Red
+    - Green
+    - Blue
+```
+
+**With Associated Types** (Rust-style enum variants):
+
+```pw
+enum Result:
+    - Ok(int)
+    - Error(string)
+
+enum Option:
+    - Some(string)
+    - None
+```
+
+**IMPORTANT: C-style brace syntax is NOT supported:**
+
+```pw
+// ❌ ERROR: This syntax does NOT work
 enum Status {
     Pending,
-    Active,
-    Completed,
-    Failed
+    Active
 }
-
-enum Color {
-    Red = 1,
-    Green = 2,
-    Blue = 3
-}
+// Error: Expected :, got {
 ```
+
+**Why YAML-style?** PW's enum syntax uses colon + indented dash list for consistency with Python/YAML patterns. This ensures clean parsing and cross-language portability.
 
 ### Error Handling
 
@@ -402,15 +474,171 @@ if (user["name"] != null) {
 user["phone"] = "555-1234";
 ```
 
-### Generic Types
+### Generic Types and Type Parameters
+
+PW supports generic types with type parameters, allowing you to write reusable, type-safe code.
+
+#### Generic Type Syntax
 
 ```pw
+// Generic type parameter T
+array<T>       // Array with element type T
+map<K, V>      // Map with key type K and value type V
+
+// Concrete instantiations
+array<int>               // Array of integers
+array<string>            // Array of strings
+map<string, int>         // Map from string to int
+map<int, array<string>>  // Map from int to array of strings
+```
+
+#### Nested Generic Types
+
+```pw
+// Two-dimensional array
+let matrix: array<array<int>> = [[1, 2], [3, 4]];
+
+// Map of arrays
+let user_tags: map<string, array<string>> = {
+    "user1": ["admin", "developer"],
+    "user2": ["guest"]
+};
+
+// Array of maps
+let records: array<map<string, int>> = [
+    {"score": 95, "age": 25},
+    {"score": 87, "age": 30}
+];
+
+// Complex nesting
+let complex: map<string, array<map<int, string>>> = {
+    "data": [
+        {1: "first", 2: "second"},
+        {3: "third"}
+    ]
+};
+```
+
+#### Generic Enums (Stdlib Pattern)
+
+```pw
+// Option<T> - represents optional values
+enum Option<T>:
+    - Some(T)
+    - None
+
+// Result<T, E> - represents success or error
+enum Result<T, E>:
+    - Ok(T)
+    - Err(E)
+
+// Usage examples
+let some_value: Option<int> = Option.Some(42);
+let no_value: Option<string> = Option.None;
+let success: Result<int, string> = Result.Ok(100);
+let failure: Result<int, string> = Result.Err("error");
+```
+
+#### Generic Functions
+
+```pw
+// Function with generic type parameter
 function first<T>(items: array<T>) -> T? {
     if (items.length > 0) {
         return items[0];
     }
     return null;
 }
+
+// Multiple generic parameters
+function pair<T, U>(first: T, second: U) -> map<string, any> {
+    return {
+        "first": first,
+        "second": second
+    };
+}
+
+// Usage with explicit type parameters
+let num = first<int>([1, 2, 3]);
+let str = first<string>(["a", "b"]);
+
+// Type inference (parameters inferred from arguments)
+let value = first([10, 20]);  // T inferred as int
+```
+
+#### Generic Classes
+
+```pw
+// Generic class with type parameter
+class Container<T> {
+    value: T;
+
+    constructor(value: T) {
+        self.value = value;
+    }
+
+    function get() -> T {
+        return self.value;
+    }
+
+    function set(new_value: T) {
+        self.value = new_value;
+    }
+}
+
+// Instantiation with concrete types
+let int_box = Container<int>(42);
+let str_box = Container<string>("hello");
+let array_box = Container<array<int>>([1, 2, 3]);
+```
+
+#### Type Parameter Constraints
+
+```pw
+// Currently, PW generic types are unconstrained
+// Future: trait bounds like Rust's T: Display
+
+// Multiple type parameters
+class Pair<K, V> {
+    key: K;
+    value: V;
+
+    constructor(key: K, value: V) {
+        self.key = key;
+        self.value = value;
+    }
+}
+
+// Usage
+let entry = Pair<string, int>("age", 30);
+```
+
+#### Cross-Language Generic Mapping
+
+| PW Syntax | Python | Go | Rust | TypeScript | C# |
+|-----------|--------|-----|------|------------|-----|
+| `array<int>` | `List[int]` | `[]int` | `Vec<i32>` | `number[]` | `List<int>` |
+| `array<string>` | `List[str]` | `[]string` | `Vec<String>` | `string[]` | `List<string>` |
+| `map<string, int>` | `Dict[str, int]` | `map[string]int` | `HashMap<String, i32>` | `Map<string, number>` | `Dictionary<string, int>` |
+| `Option<T>` | `Optional[T]` | `*T` (pointer) | `Option<T>` | `T \| null` | `T?` |
+| `Result<T, E>` | `Union[Ok[T], Err[E]]` | Custom struct | `Result<T, E>` | Custom type | Custom type |
+| `array<array<int>>` | `List[List[int]]` | `[][]int` | `Vec<Vec<i32>>` | `number[][]` | `List<List<int>>` |
+
+#### Type Parameter Naming Conventions
+
+```pw
+// Standard type parameter names:
+// T     - generic type (Thing)
+// E     - error type (Error)
+// K     - key type (Key)
+// V     - value type (Value)
+// U     - second generic type (when T is taken)
+
+// Good examples:
+function map<T, U>(items: array<T>, fn: function(T) -> U) -> array<U>
+function filter<T>(items: array<T>, pred: function(T) -> bool) -> array<T>
+class HashMap<K, V> { ... }
+enum Result<T, E> { ... }
 ```
 
 ---
