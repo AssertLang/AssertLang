@@ -63,6 +63,14 @@ from dsl.ir import (
     UnaryOperator,
 )
 
+# Optional CharCNN integration for operation lookup
+try:
+    from ml.inference import lookup_operation
+    CHARCNN_AVAILABLE = True
+except ImportError:
+    CHARCNN_AVAILABLE = False
+    lookup_operation = None
+
 
 # ============================================================================
 # Error Handling
@@ -639,6 +647,25 @@ class Parser:
         if pos < len(self.tokens):
             return self.tokens[pos].type == TokenType.ARROW
         return False
+
+    def _reconstruct_operation_code(self, expr: IRExpression) -> str:
+        """
+        Reconstruct PW code string from IRExpression for CharCNN lookup.
+
+        This converts an IR node back to approximate PW syntax for operation identification.
+
+        Example:
+            IRPropertyAccess(IRIdentifier("file"), "read") → "file.read"
+            IRIdentifier("print") → "print"
+        """
+        if isinstance(expr, IRIdentifier):
+            return expr.name
+        elif isinstance(expr, IRPropertyAccess):
+            obj_code = self._reconstruct_operation_code(expr.object)
+            return f"{obj_code}.{expr.property}"
+        else:
+            # For other expressions, return empty (won't match operations)
+            return ""
 
     def consume_statement_terminator(self) -> None:
         """
@@ -2166,7 +2193,30 @@ class Parser:
                         raise self.error("Expected ',' or ')' in function call")
 
                 self.expect(TokenType.RPAREN)
-                expr = IRCall(function=expr, args=args, kwargs=kwargs)
+
+                # Use CharCNN to predict operation_id
+                operation_id = None
+                operation_confidence = None
+                if CHARCNN_AVAILABLE:
+                    try:
+                        # Reconstruct operation code (e.g., "file.read")
+                        op_code = self._reconstruct_operation_code(expr)
+                        if op_code:
+                            # Get top prediction from CharCNN
+                            predictions = lookup_operation(op_code, top_k=1)
+                            if predictions:
+                                operation_id, operation_confidence = predictions[0]
+                    except Exception:
+                        # Silently ignore CharCNN errors (don't break parsing)
+                        pass
+
+                expr = IRCall(
+                    function=expr,
+                    args=args,
+                    kwargs=kwargs,
+                    operation_id=operation_id,
+                    operation_confidence=operation_confidence
+                )
 
             elif self.match(TokenType.LBRACKET):
                 # Array/map indexing or slice notation

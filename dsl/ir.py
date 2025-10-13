@@ -779,6 +779,8 @@ class IRCall(IRNode):
     function: IRExpression  # Usually IRIdentifier or IRPropertyAccess
     args: List[IRExpression] = field(default_factory=list)
     kwargs: Dict[str, IRExpression] = field(default_factory=dict)
+    operation_id: Optional[str] = None  # CharCNN-predicted operation (e.g., "file.read")
+    operation_confidence: Optional[float] = None  # Confidence score from CharCNN
 
     def __post_init__(self) -> None:
         self.type = NodeType.CALL
