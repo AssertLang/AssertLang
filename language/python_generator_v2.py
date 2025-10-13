@@ -141,6 +141,9 @@ class PythonGeneratorV2:
         # Track function return types for type-aware code generation
         self._register_function_signatures(module)
 
+        # Collect all TypeVars needed in the module
+        type_vars = self._collect_type_vars(module)
+
         # Add future imports first (PEP 563)
         lines.append("from __future__ import annotations")
         lines.append("")
@@ -150,6 +153,11 @@ class PythonGeneratorV2:
             self.required_imports.add("from enum import Enum")
         if module.types:
             self.required_imports.add("from dataclasses import dataclass")
+
+        # If we have TypeVars, add the import
+        if type_vars:
+            self.required_imports.add("from typing import TypeVar")
+            self.required_imports.add("from typing import Generic")
 
         # Standard library imports (non-typing)
         stdlib_imports = sorted([imp for imp in self.required_imports
@@ -174,6 +182,13 @@ class PythonGeneratorV2:
         for imp in module.imports:
             lines.append(self.generate_import(imp))
         if module.imports:
+            lines.append("")
+
+        # TypeVar definitions (module-level, before any classes/functions that use them)
+        if type_vars:
+            for type_var in sorted(type_vars):
+                lines.append(f"{type_var} = TypeVar('{type_var}')")
+            lines.append("")
             lines.append("")
 
         # Enums
@@ -211,6 +226,31 @@ class PythonGeneratorV2:
         while "\n\n\n\n" in result:
             result = result.replace("\n\n\n\n", "\n\n\n")
         return result.rstrip() + "\n"
+
+    def _collect_type_vars(self, module: IRModule) -> Set[str]:
+        """
+        Collect all TypeVar names used in the module.
+
+        This scans enums, classes, and functions for generic_params.
+        """
+        type_vars = set()
+
+        # Collect from enums
+        for enum in module.enums:
+            if enum.generic_params:
+                type_vars.update(enum.generic_params)
+
+        # Collect from classes
+        for cls in module.classes:
+            if cls.generic_params:
+                type_vars.update(cls.generic_params)
+
+        # Collect from functions
+        for func in module.functions:
+            if func.generic_params:
+                type_vars.update(func.generic_params)
+
+        return type_vars
 
     # ========================================================================
     # Import Collection and Generation
@@ -306,9 +346,21 @@ class PythonGeneratorV2:
     # ========================================================================
 
     def generate_enum(self, enum: IREnum) -> str:
-        """Generate Python Enum class."""
+        """
+        Generate Python Enum class or generic enum with dataclasses.
+
+        For generic enums like Option<T>, generates dataclass variants instead of Enum:
+        - enum Option<T>: -> Union[Some[T], None_]
+        - Each variant becomes a dataclass
+        """
         lines = []
 
+        # Check if this is a generic enum (has type parameters)
+        if enum.generic_params:
+            # Generate generic enum as Union of dataclasses
+            return self.generate_generic_enum(enum)
+
+        # Regular enum (non-generic)
         # Docstring
         if enum.doc:
             lines.append(f"class {enum.name}(Enum):")
@@ -333,6 +385,88 @@ class PythonGeneratorV2:
                     lines.append(f'{self.indent()}{variant.name} = {i + 1}')
 
         self.decrease_indent()
+        return "\n".join(lines)
+
+    def generate_generic_enum(self, enum: IREnum) -> str:
+        """
+        Generate a generic enum as Union of dataclass variants.
+
+        Example:
+            enum Option<T>:
+                - Some(T)
+                - None
+
+        Generates:
+            @dataclass
+            class Some(Generic[T]):
+                value: T
+
+            @dataclass
+            class None_:
+                pass
+
+            Option = Union[Some[T], None_]
+
+        Note: TypeVar definitions are emitted at module level, not inline.
+        """
+        lines = []
+
+        # Add required imports (but don't emit TypeVars here - they're module-level)
+        self.required_imports.add("from typing import TypeVar")
+        self.required_imports.add("from typing import Generic")
+        self.required_imports.add("from typing import Union")
+        self.required_imports.add("from dataclasses import dataclass")
+
+        # Generate dataclass for each variant
+        for variant in enum.variants:
+            lines.append("")
+            lines.append("@dataclass")
+
+            # Check if variant has associated types
+            if variant.associated_types:
+                # Variant with data: class Some(Generic[T])
+                generic_params_str = ", ".join(enum.generic_params)
+                lines.append(f"class {variant.name}(Generic[{generic_params_str}]):")
+                self.increase_indent()
+
+                # Generate fields for associated types
+                # For unnamed tuple syntax like Some(T), create a 'value' field
+                if len(variant.associated_types) == 1:
+                    type_str = self.generate_type(variant.associated_types[0])
+                    lines.append(f"{self.indent()}value: {type_str}")
+                else:
+                    # Multiple associated types become numbered fields
+                    for i, assoc_type in enumerate(variant.associated_types):
+                        type_str = self.generate_type(assoc_type)
+                        lines.append(f"{self.indent()}field_{i}: {type_str}")
+
+                self.decrease_indent()
+            else:
+                # Variant without data: class None_
+                # Use trailing underscore to avoid Python keyword conflicts
+                variant_name = f"{variant.name}_" if variant.name in ("None", "True", "False") else variant.name
+                lines.append(f"class {variant_name}:")
+                self.increase_indent()
+                lines.append(f"{self.indent()}pass")
+                self.decrease_indent()
+
+        # Generate type alias as Union
+        lines.append("")
+        lines.append("")
+        variant_names = []
+        for variant in enum.variants:
+            if variant.associated_types:
+                # Generic variant: Some[T]
+                generic_params_str = ", ".join(enum.generic_params)
+                variant_names.append(f"{variant.name}[{generic_params_str}]")
+            else:
+                # Non-generic variant: None_
+                variant_name = f"{variant.name}_" if variant.name in ("None", "True", "False") else variant.name
+                variant_names.append(variant_name)
+
+        union_str = ", ".join(variant_names)
+        lines.append(f"{enum.name} = Union[{union_str}]")
+
         return "\n".join(lines)
 
     def generate_type_definition(self, type_def: IRTypeDefinition) -> str:
@@ -369,7 +503,7 @@ class PythonGeneratorV2:
     # ========================================================================
 
     def generate_class(self, cls: IRClass) -> str:
-        """Generate Python class."""
+        """Generate Python class with optional generic type parameters."""
         lines = []
 
         # Track current class for 'self' type inference
@@ -380,10 +514,25 @@ class PythonGeneratorV2:
             if prop and hasattr(prop, 'prop_type'):
                 self.property_types[prop.name] = prop.prop_type
 
+        # If class has generic parameters, add TypeVar and Generic imports
+        if cls.generic_params:
+            self.required_imports.add("from typing import TypeVar")
+            self.required_imports.add("from typing import Generic")
+
         # Class signature
         class_sig = f"class {cls.name}"
+
+        # Add base classes or Generic[T]
+        bases = []
+        if cls.generic_params:
+            # Add Generic[T, U, ...]
+            generic_params_str = ", ".join(cls.generic_params)
+            bases.append(f"Generic[{generic_params_str}]")
         if cls.base_classes:
-            class_sig += f"({', '.join(cls.base_classes)})"
+            bases.extend(cls.base_classes)
+
+        if bases:
+            class_sig += f"({', '.join(bases)})"
         class_sig += ":"
         lines.append(class_sig)
 
@@ -522,12 +671,22 @@ class PythonGeneratorV2:
     # ========================================================================
 
     def generate_function(self, func: IRFunction) -> str:
-        """Generate standalone function."""
+        """Generate standalone function with optional generic type parameters."""
         lines = []
 
         # Register parameter types for safe map/array indexing
         for param in func.params:
             self.variable_types[param.name] = param.param_type
+
+        # If function has generic parameters, add TypeVar imports and definitions
+        if func.generic_params:
+            self.required_imports.add("from typing import TypeVar")
+            # TypeVar definitions are emitted inline before the function
+            for type_param in func.generic_params:
+                # Only emit TypeVar if not already defined (to avoid duplicates)
+                # In a real implementation, we'd track which TypeVars are already defined
+                # For now, we'll emit them and let Python handle duplicates
+                pass
 
         # Decorators (use direct field, fall back to metadata)
         decorators = func.decorators if hasattr(func, 'decorators') else func.metadata.get("decorators", [])

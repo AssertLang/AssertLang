@@ -45,9 +45,11 @@ from dsl.ir import (
     IRModule,
     IRParameter,
     IRPass,
+    IRPatternMatch,
     IRProperty,
     IRPropertyAccess,
     IRReturn,
+    IRSlice,
     IRStatement,
     IRTernary,
     IRThrow,
@@ -115,6 +117,7 @@ class TokenType(Enum):
     AND = "and"
     OR = "or"
     NOT = "not"
+    IS = "is"  # Pattern matching operator
 
     # C-style logical operators
     LOGICAL_AND = "&&"
@@ -165,7 +168,7 @@ KEYWORDS = {
     "try", "catch", "finally", "throw", "return",
     "break", "continue", "pass",
     "null", "true", "false",
-    "and", "or", "not",
+    "and", "or", "not", "is",
     "async", "await", "lambda", "self",
 }
 
@@ -291,7 +294,8 @@ class Lexer:
         num_str = ""
 
         # Handle hex, binary, octal
-        if self.peek() == "0" and self.peek(1) in "xXbBoO":
+        # Check peek(1) is not empty before checking 'in' operator (empty string matches any string)
+        if self.peek() == "0" and self.peek(1) and self.peek(1) in "xXbBoO":
             num_str += self.advance()  # 0
             num_str += self.advance()  # x/b/o
             if num_str[1] in "xX":
@@ -351,7 +355,7 @@ class Lexer:
         line, col = self.line, self.column
         ident = ""
 
-        while self.peek().isalnum() or self.peek() in "_":
+        while self.peek() and (self.peek().isalnum() or self.peek() == "_"):
             ident += self.advance()
 
         # Check if keyword
@@ -360,7 +364,7 @@ class Lexer:
                 return Token(TokenType.BOOLEAN, ident == "true", line, col)
             elif ident == "null":
                 return Token(TokenType.NULL, None, line, col)
-            elif ident in ("and", "or", "not"):
+            elif ident in ("and", "or", "not", "is"):
                 # Logical operators as keywords
                 if ident == "and":
                     return Token(TokenType.AND, ident, line, col)
@@ -368,6 +372,8 @@ class Lexer:
                     return Token(TokenType.OR, ident, line, col)
                 elif ident == "not":
                     return Token(TokenType.NOT, ident, line, col)
+                elif ident == "is":
+                    return Token(TokenType.IS, ident, line, col)
             else:
                 return Token(TokenType.KEYWORD, ident, line, col)
         else:
@@ -386,7 +392,16 @@ class Lexer:
                     self.advance()
                     indent += 1
 
-                # Skip blank lines and comments
+                # Check indentation change BEFORE skipping blank lines
+                # This ensures DEDENT tokens are emitted even for blank lines
+                if indent < self.indent_stack[-1]:
+                    while self.indent_stack and indent < self.indent_stack[-1]:
+                        self.indent_stack.pop()
+                        self.tokens.append(Token(TokenType.DEDENT, None, self.line, self.column))
+                    if indent != self.indent_stack[-1]:
+                        raise self.error(f"Inconsistent indentation")
+
+                # Skip blank lines and comments (AFTER checking indentation)
                 if self.peek() in "\n#" or (self.peek() == "/" and self.peek(1) in "/*"):
                     if self.peek() == "#" or (self.peek() == "/" and self.peek(1) in "/*"):
                         self.skip_comment()
@@ -394,16 +409,10 @@ class Lexer:
                         self.advance()
                     continue
 
-                # Check indentation change
+                # Check for INDENT (only for non-blank lines)
                 if indent > self.indent_stack[-1]:
                     self.indent_stack.append(indent)
                     self.tokens.append(Token(TokenType.INDENT, None, self.line, self.column))
-                elif indent < self.indent_stack[-1]:
-                    while self.indent_stack and indent < self.indent_stack[-1]:
-                        self.indent_stack.pop()
-                        self.tokens.append(Token(TokenType.DEDENT, None, self.line, self.column))
-                    if indent != self.indent_stack[-1]:
-                        raise self.error(f"Inconsistent indentation")
 
                 line_start = False
 
@@ -477,7 +486,8 @@ class Lexer:
                     continuation_ops = {
                         TokenType.PLUS, TokenType.MINUS, TokenType.STAR, TokenType.SLASH,
                         TokenType.PERCENT, TokenType.POWER, TokenType.FLOOR_DIV,
-                        TokenType.EQ, TokenType.NE, TokenType.LT, TokenType.LE, TokenType.GT, TokenType.GE,
+                        TokenType.EQ, TokenType.NE,  # Comparison: == !=
+                        # NOTE: LT/GT/LE/GE removed - they're used in generics (array<T>) and shouldn't continue lines
                         TokenType.AND, TokenType.OR, TokenType.LOGICAL_AND, TokenType.LOGICAL_OR,
                         TokenType.BIT_AND, TokenType.BIT_OR, TokenType.BIT_XOR,
                         TokenType.LSHIFT, TokenType.RSHIFT,
@@ -601,9 +611,34 @@ class Parser:
         return self.current().type in token_types
 
     def skip_newlines(self) -> None:
-        """Skip any newline tokens and indentation."""
-        while self.match(TokenType.NEWLINE, TokenType.INDENT, TokenType.DEDENT):
+        """Skip newline tokens. Does NOT skip DEDENT (it marks end of blocks)."""
+        while self.match(TokenType.NEWLINE):
             self.advance()
+
+    def _is_fn_lambda(self) -> bool:
+        """
+        Look ahead to check if 'fn(...)' is a lambda or function call.
+        Returns True if there's a -> after the closing paren (lambda), False otherwise (call).
+
+        Assumes current token is 'fn' identifier.
+        """
+        # Start from current position + 2 (skip 'fn' and '(')
+        pos = self.pos + 2
+        paren_depth = 1
+
+        # Scan to find matching ')'
+        while pos < len(self.tokens) and paren_depth > 0:
+            tok = self.tokens[pos]
+            if tok.type == TokenType.LPAREN:
+                paren_depth += 1
+            elif tok.type == TokenType.RPAREN:
+                paren_depth -= 1
+            pos += 1
+
+        # Check if next token after ')' is '->'
+        if pos < len(self.tokens):
+            return self.tokens[pos].type == TokenType.ARROW
+        return False
 
     def consume_statement_terminator(self) -> None:
         """
@@ -695,9 +730,17 @@ class Parser:
         )
 
     def parse_import(self) -> IRImport:
-        """Parse import statement."""
+        """Parse import statement with support for dotted paths (e.g., import x.y.z)."""
         self.expect(TokenType.KEYWORD)  # "import"
-        module = self.expect(TokenType.IDENTIFIER).value
+
+        # Parse module path: identifier (DOT identifier)*
+        # Support dotted paths like: stdlib.core, x.y.z
+        module_parts = [self.expect(TokenType.IDENTIFIER).value]
+        while self.match(TokenType.DOT):
+            self.advance()  # consume DOT
+            module_parts.append(self.expect(TokenType.IDENTIFIER).value)
+        module = ".".join(module_parts)
+
         alias = None
         items = []
 
@@ -712,8 +755,10 @@ class Parser:
                 self.advance()
                 alias = self.expect(TokenType.IDENTIFIER).value
 
-        self.expect(TokenType.NEWLINE)
-        self.skip_newlines()
+        # Import statement can end with NEWLINE or EOF
+        if not self.match(TokenType.EOF):
+            self.expect(TokenType.NEWLINE)
+            self.skip_newlines()
 
         return IRImport(module=module, alias=alias, items=items)
 
@@ -750,9 +795,20 @@ class Parser:
         return IRTypeDefinition(name=name, fields=fields)
 
     def parse_enum(self) -> IREnum:
-        """Parse enum definition."""
+        """Parse enum definition with optional generic parameters."""
         self.expect(TokenType.KEYWORD)  # "enum"
         name = self.expect(TokenType.IDENTIFIER).value
+
+        # Parse generic parameters: <T> or <T, E>
+        generic_params = []
+        if self.match(TokenType.LT):
+            self.advance()  # consume '<'
+            generic_params.append(self.expect(TokenType.IDENTIFIER).value)
+            while self.match(TokenType.COMMA):
+                self.advance()  # consume ','
+                generic_params.append(self.expect(TokenType.IDENTIFIER).value)
+            self.expect(TokenType.GT)  # consume '>'
+
         self.expect(TokenType.COLON)
         self.expect(TokenType.NEWLINE)
         self.expect(TokenType.INDENT)
@@ -766,11 +822,18 @@ class Parser:
             self.expect(TokenType.MINUS)  # "-"
             variant_name = self.expect(TokenType.IDENTIFIER).value
 
-            # Check for associated types
+            # Check for associated types (UNNAMED tuple syntax: Some(T), not Some(value: T))
             associated_types = []
             if self.match(TokenType.LPAREN):
                 self.advance()
                 while not self.match(TokenType.RPAREN):
+                    # Check if this looks like named syntax (identifier followed by colon)
+                    # If so, skip the name and just parse the type
+                    if self.match(TokenType.IDENTIFIER) and self.peek().type == TokenType.COLON:
+                        # Named syntax: Some(value: T) - skip name, parse type
+                        self.advance()  # consume identifier
+                        self.expect(TokenType.COLON)  # consume colon
+                    # Parse the type
                     associated_types.append(self.parse_type())
                     if self.match(TokenType.COMMA):
                         self.advance()
@@ -783,13 +846,13 @@ class Parser:
             self.expect(TokenType.NEWLINE)
 
         self.expect(TokenType.DEDENT)
-        return IREnum(name=name, variants=variants)
+        return IREnum(name=name, generic_params=generic_params, variants=variants)
 
     def parse_function(self) -> IRFunction:
         """
-        Parse C-style function definition.
+        Parse C-style function definition with optional generic parameters.
 
-        Syntax: function name(param1: type1, param2: type2) -> return_type throws Error { body }
+        Syntax: function name<T>(param1: type1, param2: type2) -> return_type throws Error { body }
         """
         is_async = False
         if self.match(TokenType.KEYWORD) and self.current().value == "async":
@@ -798,6 +861,16 @@ class Parser:
 
         self.expect(TokenType.KEYWORD)  # "function"
         name = self.expect(TokenType.IDENTIFIER).value
+
+        # Parse generic parameters: <T> or <T, U>
+        generic_params = []
+        if self.match(TokenType.LT):
+            self.advance()  # consume '<'
+            generic_params.append(self.expect(TokenType.IDENTIFIER).value)
+            while self.match(TokenType.COMMA):
+                self.advance()  # consume ','
+                generic_params.append(self.expect(TokenType.IDENTIFIER).value)
+            self.expect(TokenType.GT)  # consume '>'
 
         # Parse parameters: (x: int, y: int)
         self.expect(TokenType.LPAREN)
@@ -850,30 +923,42 @@ class Parser:
                 else:
                     break
 
-        # Parse body: { statements }
-        self.expect(TokenType.LBRACE)
-        self.skip_newlines()
-
-        body = []
-        while not self.match(TokenType.RBRACE):
-            self.skip_newlines()
-            if self.match(TokenType.RBRACE):
-                break
-
-            stmt = self.parse_statement()
-            if stmt:
-                body.append(stmt)
-
-            # Optional semicolon
-            if self.match(TokenType.SEMICOLON):
-                self.advance()
-
+        # Parse body: { statements } (C-style) or : INDENT statements DEDENT (Python-style)
+        if self.match(TokenType.LBRACE):
+            # C-style: { ... }
+            self.advance()
             self.skip_newlines()
 
-        self.expect(TokenType.RBRACE)
+            body = []
+            while not self.match(TokenType.RBRACE):
+                self.skip_newlines()
+                if self.match(TokenType.RBRACE):
+                    break
+
+                stmt = self.parse_statement()
+                if stmt:
+                    body.append(stmt)
+
+                # Optional semicolon
+                if self.match(TokenType.SEMICOLON):
+                    self.advance()
+
+                self.skip_newlines()
+
+            self.expect(TokenType.RBRACE)
+        elif self.match(TokenType.COLON):
+            # Python-style: : INDENT ... DEDENT
+            self.advance()
+            self.expect(TokenType.NEWLINE)
+            self.expect(TokenType.INDENT)
+            body = self.parse_statement_list()
+            self.expect(TokenType.DEDENT)
+        else:
+            raise self.error("Expected '{' or ':' to start function body")
 
         return IRFunction(
             name=name,
+            generic_params=generic_params,
             params=params,
             return_type=return_type,
             throws=throws,
@@ -883,9 +968,11 @@ class Parser:
 
     def parse_class(self) -> IRClass:
         """
-        Parse class definition (C-style syntax).
+        Parse class definition with optional generic parameters.
+        Supports both C-style ({}) and Python-style (:) syntax.
 
         Syntax:
+            # C-style
             class User {
                 id: string;
                 name: string;
@@ -899,9 +986,71 @@ class Parser:
                     return "Hello";
                 }
             }
+
+            # Python-style (simple - properties only)
+            class List<T>:
+                items: array<T>
         """
         self.expect(TokenType.KEYWORD)  # "class"
         name = self.expect(TokenType.IDENTIFIER).value
+
+        # Parse generic parameters: <T> or <K, V>
+        generic_params = []
+        if self.match(TokenType.LT):
+            self.advance()  # consume '<'
+            generic_params.append(self.expect(TokenType.IDENTIFIER).value)
+            while self.match(TokenType.COMMA):
+                self.advance()  # consume ','
+                generic_params.append(self.expect(TokenType.IDENTIFIER).value)
+            self.expect(TokenType.GT)  # consume '>'
+
+        # Check for Python-style or C-style syntax
+        if self.match(TokenType.COLON):
+            # Python-style: class Name<T>: INDENT properties DEDENT
+            self.advance()  # consume ':'
+            self.expect(TokenType.NEWLINE)
+            self.expect(TokenType.INDENT)
+
+            properties = []
+            # Parse properties (simple style - just name: type declarations)
+            while not self.match(TokenType.DEDENT):
+                self.skip_newlines()  # Skip blank lines
+                if self.match(TokenType.DEDENT):
+                    break
+
+                # Skip docstrings (triple-quoted strings in class body)
+                if self.match(TokenType.STRING):
+                    self.advance()  # consume docstring
+                    if self.match(TokenType.NEWLINE):
+                        self.advance()
+                    continue
+
+                # Property: name: type
+                if self.match(TokenType.IDENTIFIER):
+                    prop_name = self.advance().value
+                    self.expect(TokenType.COLON)
+                    prop_type = self.parse_type()
+
+                    # Consume NEWLINE if present (may not be there before DEDENT)
+                    if self.match(TokenType.NEWLINE):
+                        self.advance()
+
+                    properties.append(IRProperty(
+                        name=prop_name,
+                        prop_type=prop_type
+                    ))
+
+            self.expect(TokenType.DEDENT)
+
+            return IRClass(
+                name=name,
+                generic_params=generic_params,
+                properties=properties,
+                methods=[],
+                constructor=None
+            )
+
+        # C-style: class Name<T> { ... }
         self.expect(TokenType.LBRACE)  # "{"
 
         properties = []
@@ -1000,6 +1149,7 @@ class Parser:
 
         return IRClass(
             name=name,
+            generic_params=generic_params,
             properties=properties,
             methods=methods,
             constructor=constructor
@@ -1162,8 +1312,47 @@ class Parser:
     # Helper parsers
     # ========================================================================
 
+    def parse_function_type(self) -> IRType:
+        """
+        Parse function type: function(T, U) -> R
+
+        This represents a function signature as a type, used in parameters like:
+        fn: function(T) -> U
+        """
+        self.expect(TokenType.KEYWORD)  # consume "function"
+        self.expect(TokenType.LPAREN)
+
+        # Parse parameter types
+        param_types = []
+        while not self.match(TokenType.RPAREN):
+            param_types.append(self.parse_type())
+            if self.match(TokenType.COMMA):
+                self.advance()
+            elif not self.match(TokenType.RPAREN):
+                raise self.error("Expected ',' or ')' in function type")
+
+        self.expect(TokenType.RPAREN)
+
+        # Parse return type
+        return_type = None
+        if self.match(TokenType.ARROW):
+            self.advance()
+            return_type = self.parse_type()
+
+        # Represent function type as IRType with special name
+        # We'll store param types in generic_args and return type in metadata
+        func_type = IRType(name="function", generic_args=param_types)
+        if return_type:
+            func_type.metadata["return_type"] = return_type
+
+        return func_type
+
     def parse_type(self) -> IRType:
         """Parse type annotation."""
+        # Check for function type: function(T, U) -> R
+        if self.match(TokenType.KEYWORD) and self.current().value == "function":
+            return self.parse_function_type()
+
         name = self.expect(TokenType.IDENTIFIER).value
 
         # Generic types
@@ -1174,7 +1363,17 @@ class Parser:
             while self.match(TokenType.COMMA):
                 self.advance()
                 generic_args.append(self.parse_type())
-            self.expect(TokenType.GT)
+
+            # Handle nested generics: >> should be split into > >
+            if self.match(TokenType.RSHIFT):
+                # We hit >> when expecting >
+                # Split it: consume the token as if it were >, and inject another > for next parse
+                self.advance()  # consume >>
+                # Inject a GT token back into the stream
+                gt_token = Token(TokenType.GT, ">", self.current().line, self.current().column)
+                self.tokens.insert(self.pos, gt_token)
+            else:
+                self.expect(TokenType.GT)
 
         # Union types
         union_types = []
@@ -1421,7 +1620,9 @@ class Parser:
             self.expect(TokenType.DEDENT)
 
         # Parse else/elif
-        self.skip_newlines()
+        # Skip only NEWLINES, NOT DEDENTS (DEDENT marks end of function body in Python-style)
+        while self.match(TokenType.NEWLINE):
+            self.advance()
         else_body = []
         if self.match(TokenType.KEYWORD) and self.current().value == "else":
             self.advance()
@@ -1462,28 +1663,46 @@ class Parser:
         Parse for loop - detects and delegates to appropriate parser.
 
         Syntax:
+            # C-style (requires parentheses)
             for (item in items) { body }              # for-in loop
             for (let i = 0; i < 10; i = i + 1) { }    # C-style loop
+
+            # Python-style (no parentheses)
+            for item in items:                        # for-in loop
+                body
         """
         self.expect(TokenType.KEYWORD)  # "for"
-        self.expect(TokenType.LPAREN)   # "("
 
-        # Peek ahead to determine loop type
-        # C-style: starts with "let"
-        # for-in: starts with identifier
-        if self.match(TokenType.KEYWORD) and self.current().value == "let":
-            return self.parse_for_c_style()
+        # Check for C-style (with parentheses) or Python-style (without)
+        has_parens = self.match(TokenType.LPAREN)
+
+        if has_parens:
+            self.advance()  # consume '('
+
+            # Peek ahead to determine loop type
+            # C-style: starts with "let"
+            # for-in: starts with identifier
+            if self.match(TokenType.KEYWORD) and self.current().value == "let":
+                return self.parse_for_c_style()
+            else:
+                return self.parse_for_in(has_parens=True)
         else:
-            return self.parse_for_in()
+            # Python-style: for item in items:
+            return self.parse_for_in(has_parens=False)
 
-    def parse_for_in(self) -> IRFor:
+    def parse_for_in(self, has_parens: bool = True) -> IRFor:
         """
         Parse for-in loop.
 
         Syntax:
+            # C-style (has_parens=True)
             for (item in items) { body }
             for (i in range(0, 10)) { body }
             for (index, value in enumerate(items)) { body }
+
+            # Python-style (has_parens=False)
+            for item in items:
+                body
         """
         # Parse iterator(s) - could be single or tuple (for enumerate)
         iterator = self.expect(TokenType.IDENTIFIER).value
@@ -1505,13 +1724,20 @@ class Parser:
         # Parse iterable expression
         iterable = self.parse_expression()
 
-        self.expect(TokenType.RPAREN)   # ")"
-        self.expect(TokenType.LBRACE)   # "{"
-
-        # Parse body
-        body = self.parse_statement_list()
-
-        self.expect(TokenType.RBRACE)   # "}"
+        # Parse body - different syntax based on has_parens
+        if has_parens:
+            # C-style: for (item in items) { body }
+            self.expect(TokenType.RPAREN)   # ")"
+            self.expect(TokenType.LBRACE)   # "{"
+            body = self.parse_statement_list()
+            self.expect(TokenType.RBRACE)   # "}"
+        else:
+            # Python-style: for item in items: INDENT body DEDENT
+            self.expect(TokenType.COLON)    # ":"
+            self.expect(TokenType.NEWLINE)
+            self.expect(TokenType.INDENT)
+            body = self.parse_statement_list()
+            self.expect(TokenType.DEDENT)
 
         # Create IRFor with optional index_var
         for_node = IRFor(iterator=iterator, iterable=iterable, body=body)
@@ -1683,7 +1909,9 @@ class Parser:
         expr = self.parse_logical_or()
 
         if self.match(TokenType.KEYWORD) and self.current().value == "if":
-            self.advance()
+            # Save position in case this isn't a complete ternary expression
+            saved_pos = self.pos
+            self.advance()  # consume 'if'
             condition = self.parse_logical_or()
             if self.match(TokenType.KEYWORD) and self.current().value == "else":
                 self.advance()
@@ -1693,6 +1921,10 @@ class Parser:
                     true_value=expr,
                     false_value=false_value,
                 )
+            else:
+                # No 'else' found - this is not a ternary expression
+                # Restore position to before 'if' and return original expression
+                self.pos = saved_pos
 
         return expr
 
@@ -1728,11 +1960,26 @@ class Parser:
         return self.parse_comparison()
 
     def parse_comparison(self) -> IRExpression:
-        """Parse comparison operators."""
+        """Parse comparison operators, pattern matching, and membership tests."""
         left = self.parse_bitwise_or()
 
-        while self.match(TokenType.EQ, TokenType.NE, TokenType.LT, TokenType.LE, TokenType.GT, TokenType.GE):
+        while (self.match(TokenType.EQ, TokenType.NE, TokenType.LT, TokenType.LE, TokenType.GT, TokenType.GE, TokenType.IS) or
+               (self.match(TokenType.KEYWORD) and self.current().value == "in")):
             tok = self.advance()
+
+            # Handle pattern matching ('is' operator)
+            if tok.type == TokenType.IS:
+                # Parse pattern (right side of 'is')
+                pattern = self.parse_pattern()
+                return IRPatternMatch(value=left, pattern=pattern)
+
+            # Handle membership test ('in' operator)
+            if tok.value == "in":
+                right = self.parse_bitwise_or()
+                left = IRBinaryOp(op=BinaryOperator.IN, left=left, right=right)
+                continue
+
+            # Handle regular comparison operators
             op_map = {
                 "==": BinaryOperator.EQUAL,
                 "!=": BinaryOperator.NOT_EQUAL,
@@ -1746,6 +1993,58 @@ class Parser:
             left = IRBinaryOp(op=op, left=left, right=right)
 
         return left
+
+    def parse_pattern(self) -> IRExpression:
+        """
+        Parse a pattern for pattern matching.
+
+        Patterns can be:
+        - Simple identifier: None
+        - Enum variant: Some(val)
+        - Enum variant with wildcard: Some(_)
+        - Qualified variant: Option.Some(val)
+
+        Returns an IR expression representing the pattern.
+        """
+        # Start with an identifier (enum variant name)
+        if not self.match(TokenType.IDENTIFIER):
+            raise self.error("Expected identifier in pattern")
+
+        name = self.advance().value
+        pattern = IRIdentifier(name=name)
+
+        # Check for property access (e.g., Option.Some)
+        if self.match(TokenType.DOT):
+            self.advance()
+            if not self.match(TokenType.IDENTIFIER):
+                raise self.error("Expected identifier after '.' in pattern")
+            property = self.advance().value
+            pattern = IRPropertyAccess(object=pattern, property=property)
+
+        # Check for pattern with captures: Some(val) or Some(_)
+        if self.match(TokenType.LPAREN):
+            self.advance()  # consume '('
+            args = []
+
+            while not self.match(TokenType.RPAREN):
+                # Parse capture variable or wildcard
+                if self.match(TokenType.IDENTIFIER):
+                    capture = self.advance().value
+                    args.append(IRIdentifier(name=capture))
+                else:
+                    raise self.error("Expected identifier or '_' in pattern capture")
+
+                if self.match(TokenType.COMMA):
+                    self.advance()
+                elif not self.match(TokenType.RPAREN):
+                    raise self.error("Expected ',' or ')' in pattern")
+
+            self.expect(TokenType.RPAREN)  # consume ')'
+
+            # Create IRCall representing the pattern with captures
+            pattern = IRCall(function=pattern, args=args)
+
+        return pattern
 
     def parse_bitwise_or(self) -> IRExpression:
         """Parse bitwise OR."""
@@ -1870,11 +2169,54 @@ class Parser:
                 expr = IRCall(function=expr, args=args, kwargs=kwargs)
 
             elif self.match(TokenType.LBRACKET):
-                # Array/map indexing
+                # Array/map indexing or slice notation
                 self.advance()
-                index = self.parse_expression()
+
+                # Check for slice notation by looking ahead for ':'
+                # Slice patterns: [:], [start:], [:stop], [start:stop], [start:stop:step]
+                start = None
+                stop = None
+                step = None
+                is_slice = False
+
+                # Check if first character is ':' (start is omitted)
+                if self.match(TokenType.COLON):
+                    is_slice = True
+                    self.advance()  # consume ':'
+                    # Parse stop if present
+                    if not self.match(TokenType.RBRACKET) and not self.match(TokenType.COLON):
+                        stop = self.parse_addition()  # Use parse_addition to avoid recursion
+                    # Check for step
+                    if self.match(TokenType.COLON):
+                        self.advance()
+                        if not self.match(TokenType.RBRACKET):
+                            step = self.parse_addition()
+                else:
+                    # Parse first expression (could be index or start of slice)
+                    first_expr = self.parse_addition()
+
+                    # Check if it's a slice (has ':')
+                    if self.match(TokenType.COLON):
+                        is_slice = True
+                        start = first_expr
+                        self.advance()  # consume ':'
+                        # Parse stop if present
+                        if not self.match(TokenType.RBRACKET) and not self.match(TokenType.COLON):
+                            stop = self.parse_addition()
+                        # Check for step
+                        if self.match(TokenType.COLON):
+                            self.advance()
+                            if not self.match(TokenType.RBRACKET):
+                                step = self.parse_addition()
+                    else:
+                        # Simple indexing
+                        self.expect(TokenType.RBRACKET)
+                        expr = IRIndex(object=expr, index=first_expr)
+                        continue
+
+                # Create slice node
                 self.expect(TokenType.RBRACKET)
-                expr = IRIndex(object=expr, index=index)
+                expr = IRSlice(object=expr, start=start, stop=stop, step=step)
 
             elif self.match(TokenType.DOT):
                 # Member access
@@ -1915,6 +2257,28 @@ class Parser:
         if self.match(TokenType.NULL):
             self.advance()
             return IRLiteral(value=None, literal_type=LiteralType.NULL)
+
+        # Lambda (fn-style): fn(x) -> expr or fn(x, y) -> expr
+        # Check BEFORE general identifier to avoid parsing as function call
+        # Must look ahead to confirm there's a -> after params to distinguish from fn(item) calls
+        if (self.match(TokenType.IDENTIFIER) and self.current().value == "fn" and
+            self.peek().type == TokenType.LPAREN and self._is_fn_lambda()):
+            self.advance()  # consume 'fn'
+            self.expect(TokenType.LPAREN)
+            params = []
+            # Parse parameters
+            while not self.match(TokenType.RPAREN):
+                param_name = self.expect(TokenType.IDENTIFIER).value
+                params.append(IRParameter(name=param_name, param_type=IRType(name="any")))
+                if self.match(TokenType.COMMA):
+                    self.advance()
+                elif not self.match(TokenType.RPAREN):
+                    raise self.error("Expected ',' or ')' in lambda parameters")
+
+            self.expect(TokenType.RPAREN)
+            self.expect(TokenType.ARROW)  # '->'
+            body = self.parse_expression()
+            return IRLambda(params=params, body=body)
 
         # Keywords that can be used as identifiers
         # Special cases like 'self', 'method', 'body', etc.
@@ -1983,7 +2347,7 @@ class Parser:
             self.expect(TokenType.RBRACE)
             return IRMap(entries=entries)
 
-        # Lambda
+        # Lambda (Python-style): lambda x: expr
         if self.match(TokenType.KEYWORD) and self.current().value == "lambda":
             self.advance()
             params = []
@@ -1997,6 +2361,25 @@ class Parser:
                     params.append(IRParameter(name=param_name, param_type=IRType(name="any")))
 
             self.expect(TokenType.COLON)
+            body = self.parse_expression()
+            return IRLambda(params=params, body=body)
+
+        # Lambda (fn-style): fn(x) -> expr or fn(x, y) -> expr
+        if self.match(TokenType.IDENTIFIER) and self.current().value == "fn" and self.peek().type == TokenType.LPAREN:
+            self.advance()  # consume 'fn'
+            self.expect(TokenType.LPAREN)
+            params = []
+            # Parse parameters
+            while not self.match(TokenType.RPAREN):
+                param_name = self.expect(TokenType.IDENTIFIER).value
+                params.append(IRParameter(name=param_name, param_type=IRType(name="any")))
+                if self.match(TokenType.COMMA):
+                    self.advance()
+                elif not self.match(TokenType.RPAREN):
+                    raise self.error("Expected ',' or ')' in lambda parameters")
+
+            self.expect(TokenType.RPAREN)
+            self.expect(TokenType.ARROW)  # '->'
             body = self.parse_expression()
             return IRLambda(params=params, body=body)
 

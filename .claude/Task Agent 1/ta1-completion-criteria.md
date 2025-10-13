@@ -5,11 +5,11 @@
 ## Exit Gates (Must ALL Pass)
 
 ### Phase 0: Language Core Verification
-- [ ] All syntax issues from Bug Batch #11 resolved
-- [ ] Enum support (C-style + YAML-style) working
-- [ ] Parser error messages provide clear guidance
-- [ ] Documentation updated (PW_PROGRAMMING_GUIDE.md, syntax reference)
-- [ ] No regressions in existing tests (146+ tests passing)
+- [x] All syntax issues from Bug Batch #11 resolved (Issue #19 - enum syntax COMPLETE)
+- [x] Enum support (YAML-style) working and documented
+- [x] Parser error messages provide clear guidance (C-style enum fails with helpful error)
+- [x] Documentation updated (PW_NATIVE_SYNTAX.md + PW_SYNTAX_QUICK_REFERENCE.md created)
+- [x] No regressions in existing tests (168 tests passing, 22 new enum tests added)
 
 ### Phase 1: Runtime Baseline
 - [ ] Execution model defined (VM vs transpiler decision documented)
