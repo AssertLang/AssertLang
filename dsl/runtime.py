@@ -90,6 +90,9 @@ class PWRuntime:
                 raise NameError(f"Variable not defined: {node.name}")
             return self.context.variables[node.name]
 
+        elif isinstance(node, IRArray):
+            return [self.execute_node(item) for item in node.elements]
+
         elif isinstance(node, IRBinaryOp):
             left = self.execute_node(node.left)
             right = self.execute_node(node.right)
@@ -143,11 +146,6 @@ class PWRuntime:
             self.context.return_value = self.execute_node(node.value) if node.value else None
             return self.context.return_value
 
-        elif isinstance(node, IRPrint):
-            values = [self.execute_node(arg) for arg in node.values]
-            print(*values)
-            return None
-
         else:
             raise NotImplementedError(f"Node type not implemented: {type(node).__name__}")
 
@@ -188,12 +186,19 @@ class PWRuntime:
         else:
             raise NotImplementedError(f"Binary operator not implemented: {op}")
 
-    def execute_unaryop(self, op: str, operand: Any) -> Any:
+    def execute_unaryop(self, op, operand: Any) -> Any:
         """Execute unary operation"""
-        if op == '-':
+        # Handle both string and enum
+        op_str = op.value if hasattr(op, 'value') else op
+
+        if op_str == '-':
             return -operand
-        elif op == 'not':
+        elif op_str == 'not':
             return not operand
+        elif op_str == '+':
+            return +operand
+        elif op_str == '~':
+            return ~operand
         else:
             raise NotImplementedError(f"Unary operator not implemented: {op}")
 
@@ -245,7 +250,7 @@ class PWRuntime:
                 raise NameError(f"Function not defined: {func_name}")
 
         # Method call (e.g., str.split, file.read)
-        elif isinstance(node.function, IRMemberAccess):
+        elif isinstance(node.function, IRPropertyAccess):
             return self.execute_method_call(node)
 
         else:
@@ -253,8 +258,8 @@ class PWRuntime:
 
     def execute_method_call(self, node: IRCall) -> Any:
         """Execute method call using CharCNN + MCP"""
-        if not isinstance(node.function, IRMemberAccess):
-            raise TypeError("Expected IRMemberAccess for method call")
+        if not isinstance(node.function, IRPropertyAccess):
+            raise TypeError("Expected IRPropertyAccess for method call")
 
         member_access = node.function
         namespace = None
@@ -263,18 +268,18 @@ class PWRuntime:
         # Get namespace and method name
         if isinstance(member_access.object, IRIdentifier):
             namespace = member_access.object.name
-            method = member_access.member
+            method = member_access.property
         else:
-            raise NotImplementedError("Complex member access not yet supported")
+            raise NotImplementedError("Complex property access not yet supported")
 
         operation_id = f"{namespace}.{method}"
 
         # Evaluate arguments
         args = [self.execute_node(arg) for arg in node.args]
 
-        # Use CharCNN if available
-        if self.operation_lookup and hasattr(node, 'operation_id') and node.operation_id:
-            operation_id = node.operation_id
+        # Note: CharCNN predictions are available in node.operation_id (from parser)
+        # but we don't override the namespace.method from AST since that's authoritative
+        # CharCNN is useful for ambiguous cases or LSP suggestions, not runtime execution
 
         # Execute operation
         return self.execute_operation(operation_id, args)
@@ -337,6 +342,8 @@ class PWRuntime:
             elif method == 'sort':
                 args[0].sort()
                 return None
+            elif method == 'contains':
+                return args[1] in args[0]
 
         # JSON operations
         elif namespace == 'json':
