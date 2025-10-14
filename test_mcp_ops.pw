@@ -1,0 +1,12 @@
+#lang python
+
+function main() -> int {
+    let text = "hello world";
+    let words = str.split(text, " ");
+    print("Split result:", words);
+    
+    let upper = str.upper(text);
+    print("Uppercase:", upper);
+    
+    return 0;
+}
