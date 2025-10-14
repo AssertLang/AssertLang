@@ -113,12 +113,12 @@ class PWRuntime:
         elif isinstance(node, IRIf):
             condition = self.execute_node(node.condition)
             if condition:
-                for stmt in node.then_branch:
+                for stmt in node.then_body:
                     result = self.execute_node(stmt)
                     if self.context.return_value is not None:
                         return result
-            elif node.else_branch:
-                for stmt in node.else_branch:
+            elif node.else_body:
+                for stmt in node.else_body:
                     result = self.execute_node(stmt)
                     if self.context.return_value is not None:
                         return result
@@ -149,39 +149,42 @@ class PWRuntime:
         else:
             raise NotImplementedError(f"Node type not implemented: {type(node).__name__}")
 
-    def execute_binop(self, op: str, left: Any, right: Any) -> Any:
+    def execute_binop(self, op, left: Any, right: Any) -> Any:
         """Execute binary operation"""
-        if op == '+':
+        # Handle both string and enum
+        op_str = op.value if hasattr(op, 'value') else op
+
+        if op_str == '+':
             return left + right
-        elif op == '-':
+        elif op_str == '-':
             return left - right
-        elif op == '*':
+        elif op_str == '*':
             return left * right
-        elif op == '/':
+        elif op_str == '/':
             return left / right
-        elif op == '//':
+        elif op_str == '//':
             return left // right
-        elif op == '%':
+        elif op_str == '%':
             return left % right
-        elif op == '**':
+        elif op_str == '**':
             return left ** right
-        elif op == '==':
+        elif op_str == '==':
             return left == right
-        elif op == '!=':
+        elif op_str == '!=':
             return left != right
-        elif op == '<':
+        elif op_str == '<':
             return left < right
-        elif op == '<=':
+        elif op_str == '<=':
             return left <= right
-        elif op == '>':
+        elif op_str == '>':
             return left > right
-        elif op == '>=':
+        elif op_str == '>=':
             return left >= right
-        elif op == 'and':
+        elif op_str == 'and':
             return left and right
-        elif op == 'or':
+        elif op_str == 'or':
             return left or right
-        elif op == 'in':
+        elif op_str == 'in':
             return left in right
         else:
             raise NotImplementedError(f"Binary operator not implemented: {op}")
