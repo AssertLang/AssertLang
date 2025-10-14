@@ -1,0 +1,121 @@
+// Promptware Demo - All Features
+// Demonstrates LSP + Runtime capabilities
+
+function main() -> int {
+    print("==================================================");
+    print("   PROMPTWARE RUNTIME DEMO - Phase 4.2");
+    print("==================================================");
+    print("");
+
+    // 1. String Operations
+    print("1. STRING OPERATIONS");
+    print("-------------------");
+    let text = "Hello, Promptware!";
+    print("Original:", text);
+    print("Uppercase:", str.upper(text));
+    print("Lowercase:", str.lower(text));
+
+    let words = str.split(text, ", ");
+    print("Split by ', ':", words);
+
+    let joined = str.join(" + ", words);
+    print("Joined:", joined);
+    print("");
+
+    // 2. Math Operations
+    print("2. MATH OPERATIONS");
+    print("------------------");
+    let num = -42;
+    print("Number:", num);
+    print("Absolute:", math.abs(num));
+    print("Square root of 16:", math.sqrt(16));
+    print("3.7 ceiling:", math.ceil(3.7));
+    print("3.7 floor:", math.floor(3.7));
+    print("Max(10, 20):", math.max(10, 20));
+    print("Min(10, 20):", math.min(10, 20));
+    print("");
+
+    // 3. File Operations
+    print("3. FILE OPERATIONS");
+    print("------------------");
+    let filename = "demo_data.txt";
+    let content = "This is PW runtime!\nSecond line here.";
+
+    print("Writing to file:", filename);
+    file.write(filename, content);
+    print("File exists?", file.exists(filename));
+
+    print("Reading file...");
+    let read_content = file.read(filename);
+    print("Content:", read_content);
+
+    print("Cleaning up...");
+    file.delete(filename);
+    print("File exists now?", file.exists(filename));
+    print("");
+
+    // 4. JSON Operations
+    print("4. JSON OPERATIONS");
+    print("------------------");
+    let name = "Promptware";
+    let json_str = json.stringify(name);
+    print("JSON string:", json_str);
+
+    let parsed = json.parse(json_str);
+    print("Parsed back:", parsed);
+    print("");
+
+    // 5. Array Operations
+    print("5. ARRAY OPERATIONS");
+    print("-------------------");
+    let numbers = [1, 2, 3, 4, 5];
+    print("Array:", numbers);
+    print("Length:", len(numbers));
+
+    let search = 3;
+    let found = str.contains("12345", "3");
+    print("Contains", search, "?", found);
+    print("");
+
+    // 6. Control Flow
+    print("6. CONTROL FLOW");
+    print("---------------");
+    let x = 10;
+    if (x > 5) {
+        print("x is greater than 5");
+    }
+
+    let i = 0;
+    print("While loop counting to 3:");
+    while (i < 3) {
+        print("  Count:", i);
+        i = i + 1;
+    }
+    print("");
+
+    // 7. User Functions
+    print("7. USER-DEFINED FUNCTIONS");
+    print("-------------------------");
+    let result = add_numbers(15, 27);
+    print("15 + 27 =", result);
+
+    let greeting = make_greeting("World");
+    print(greeting);
+    print("");
+
+    print("==================================================");
+    print("   DEMO COMPLETE - All operations successful!");
+    print("==================================================");
+
+    return 0;
+}
+
+function add_numbers(a: int, b: int) -> int {
+    return a + b;
+}
+
+function make_greeting(name: string) -> string {
+    let base = "Hello, ";
+    let suffix = "!";
+    return str.join("", [base, name, suffix]);
+}
