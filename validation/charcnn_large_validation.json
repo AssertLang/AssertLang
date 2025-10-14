@@ -1,0 +1,514 @@
+{
+  "model": "charcnn_large.pt",
+  "training_size": 9760,
+  "total_tests": 368,
+  "total_correct": 368,
+  "overall_accuracy": 1.0,
+  "passed": true,
+  "results_by_operation": [
+    {
+      "operation": "array.contains",
+      "tested": 8,
+      "correct": 8,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "array.index_of",
+      "tested": 7,
+      "correct": 7,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "array.len",
+      "tested": 8,
+      "correct": 8,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "array.pop",
+      "tested": 7,
+      "correct": 7,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "array.push",
+      "tested": 7,
+      "correct": 7,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "array.reverse",
+      "tested": 7,
+      "correct": 7,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "array.slice",
+      "tested": 7,
+      "correct": 7,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "array.sort",
+      "tested": 7,
+      "correct": 7,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "base64.decode",
+      "tested": 5,
+      "correct": 5,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "base64.encode",
+      "tested": 6,
+      "correct": 6,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "env.get",
+      "tested": 5,
+      "correct": 5,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "env.set",
+      "tested": 5,
+      "correct": 5,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "file.append",
+      "tested": 4,
+      "correct": 4,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "file.copy",
+      "tested": 3,
+      "correct": 3,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "file.delete",
+      "tested": 3,
+      "correct": 3,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "file.exists",
+      "tested": 2,
+      "correct": 2,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "file.list_dir",
+      "tested": 2,
+      "correct": 2,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "file.mkdir",
+      "tested": 3,
+      "correct": 3,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "file.read",
+      "tested": 3,
+      "correct": 3,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "file.read_lines",
+      "tested": 3,
+      "correct": 3,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "file.rmdir",
+      "tested": 3,
+      "correct": 3,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "file.size",
+      "tested": 4,
+      "correct": 4,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "file.write",
+      "tested": 3,
+      "correct": 3,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "file.write_lines",
+      "tested": 2,
+      "correct": 2,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "hash.md5",
+      "tested": 4,
+      "correct": 4,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "hash.sha256",
+      "tested": 6,
+      "correct": 6,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "hex.decode",
+      "tested": 7,
+      "correct": 7,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "hex.encode",
+      "tested": 4,
+      "correct": 4,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "http.download",
+      "tested": 2,
+      "correct": 2,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "http.get",
+      "tested": 2,
+      "correct": 2,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "http.get_json",
+      "tested": 2,
+      "correct": 2,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "http.post",
+      "tested": 2,
+      "correct": 2,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "http.post_json",
+      "tested": 2,
+      "correct": 2,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "json.parse",
+      "tested": 1,
+      "correct": 1,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "json.stringify",
+      "tested": 4,
+      "correct": 4,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "json.stringify_pretty",
+      "tested": 4,
+      "correct": 4,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "json.validate",
+      "tested": 3,
+      "correct": 3,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "math.abs",
+      "tested": 1,
+      "correct": 1,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "math.ceil",
+      "tested": 3,
+      "correct": 3,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "math.floor",
+      "tested": 3,
+      "correct": 3,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "math.max",
+      "tested": 3,
+      "correct": 3,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "math.min",
+      "tested": 4,
+      "correct": 4,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "math.pow",
+      "tested": 3,
+      "correct": 3,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "math.random",
+      "tested": 2,
+      "correct": 2,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "math.random_int",
+      "tested": 6,
+      "correct": 6,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "math.round",
+      "tested": 4,
+      "correct": 4,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "math.sqrt",
+      "tested": 4,
+      "correct": 4,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "process.chdir",
+      "tested": 5,
+      "correct": 5,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "process.cwd",
+      "tested": 6,
+      "correct": 6,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "process.exit",
+      "tested": 4,
+      "correct": 4,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "process.run",
+      "tested": 4,
+      "correct": 4,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "str.contains",
+      "tested": 6,
+      "correct": 6,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "str.ends_with",
+      "tested": 7,
+      "correct": 7,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "str.index_of",
+      "tested": 4,
+      "correct": 4,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "str.is_empty",
+      "tested": 3,
+      "correct": 3,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "str.join",
+      "tested": 2,
+      "correct": 2,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "str.len",
+      "tested": 2,
+      "correct": 2,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "str.lower",
+      "tested": 2,
+      "correct": 2,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "str.replace",
+      "tested": 3,
+      "correct": 3,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "str.reverse",
+      "tested": 4,
+      "correct": 4,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "str.split",
+      "tested": 5,
+      "correct": 5,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "str.starts_with",
+      "tested": 6,
+      "correct": 6,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "str.substring",
+      "tested": 3,
+      "correct": 3,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "str.trim",
+      "tested": 4,
+      "correct": 4,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "str.upper",
+      "tested": 5,
+      "correct": 5,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "time.add_days",
+      "tested": 5,
+      "correct": 5,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "time.format",
+      "tested": 6,
+      "correct": 6,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "time.now",
+      "tested": 5,
+      "correct": 5,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "time.now_iso",
+      "tested": 5,
+      "correct": 5,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "time.now_ms",
+      "tested": 5,
+      "correct": 5,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "time.parse",
+      "tested": 4,
+      "correct": 4,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "time.sleep",
+      "tested": 5,
+      "correct": 5,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "time.sleep_ms",
+      "tested": 7,
+      "correct": 7,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "type.bool",
+      "tested": 5,
+      "correct": 5,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "type.float",
+      "tested": 7,
+      "correct": 7,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "type.int",
+      "tested": 5,
+      "correct": 5,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "type.is_bool",
+      "tested": 6,
+      "correct": 6,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "type.is_float",
+      "tested": 6,
+      "correct": 6,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "type.is_int",
+      "tested": 4,
+      "correct": 4,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "type.is_string",
+      "tested": 4,
+      "correct": 4,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "type.str",
+      "tested": 7,
+      "correct": 7,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "url.decode",
+      "tested": 5,
+      "correct": 5,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "url.encode",
+      "tested": 7,
+      "correct": 7,
+      "accuracy": 1.0
+    },
+    {
+      "operation": "url.parse",
+      "tested": 5,
+      "correct": 5,
+      "accuracy": 1.0
+    }
+  ]
+}
