@@ -53,6 +53,7 @@ from dsl.ir import (
     IRModule,
     IRParameter,
     IRPass,
+    IRPatternMatch,
     IRProperty,
     IRPropertyAccess,
     IRReturn,
@@ -816,8 +817,26 @@ class PythonGeneratorV2:
             return f"{self.indent()}{target} = {value}"
 
     def generate_if(self, stmt: IRIf) -> str:
-        """Generate if statement."""
+        """Generate if statement with pattern match support."""
         lines = []
+
+        # Check if condition is a pattern match with bindings
+        bindings = []
+        if isinstance(stmt.condition, IRPatternMatch):
+            # Pattern match condition - extract bindings
+            pattern = stmt.condition.pattern
+            value = self.generate_expression(stmt.condition.value)
+
+            if isinstance(pattern, IRCall) and pattern.args:
+                # Pattern like Some(val) - bind variables
+                variant_name = self.generate_expression(pattern.function)
+                for i, arg in enumerate(pattern.args):
+                    if isinstance(arg, IRIdentifier) and arg.name != "_":
+                        # Bind arg.name to value.field
+                        if len(pattern.args) == 1:
+                            bindings.append((arg.name, f"{value}.value"))
+                        else:
+                            bindings.append((arg.name, f"{value}.field_{i}"))
 
         # If condition
         condition = self.generate_expression(stmt.condition)
@@ -825,11 +844,18 @@ class PythonGeneratorV2:
 
         # Then body
         self.increase_indent()
+
+        # Add variable bindings at start of then block
+        for var_name, var_value in bindings:
+            lines.append(f"{self.indent()}{var_name} = {var_value}")
+
         if stmt.then_body:
             for s in stmt.then_body:
                 lines.append(self.generate_statement(s))
         else:
-            lines.append(f"{self.indent()}pass")
+            if not bindings:
+                lines.append(f"{self.indent()}pass")
+
         self.decrease_indent()
 
         # Else body
@@ -1008,6 +1034,9 @@ class PythonGeneratorV2:
         if isinstance(expr, IRLiteral):
             return self.generate_literal(expr)
         elif isinstance(expr, IRIdentifier):
+            # Special case: enum variant without data (None, True, False)
+            if expr.name in ("None", "True", "False"):
+                return f"{expr.name}_()"
             return expr.name
         elif isinstance(expr, IRAwait):
             inner = self.generate_expression(expr.expression)
@@ -1023,6 +1052,11 @@ class PythonGeneratorV2:
             # Special case: .length property should use len() in Python
             if expr.property == "length":
                 return f"len({obj})"
+
+            # Special case: enum variant without data (Option.None, Result.Ok, etc.)
+            if expr.property in ("None", "True", "False"):
+                # Option.None → None_()
+                return f"{expr.property}_()"
 
             # Determine if object is a map/dict (use bracket notation) or class (use dot notation)
             is_map = self._is_map_type(expr.object)
@@ -1078,6 +1112,8 @@ class PythonGeneratorV2:
             return self.generate_lambda(expr)
         elif isinstance(expr, IRComprehension):
             return self.generate_comprehension(expr)
+        elif isinstance(expr, IRPatternMatch):
+            return self.generate_pattern_match(expr)
         else:
             return f"<unknown: {type(expr).__name__}>"
 
@@ -1353,6 +1389,14 @@ class PythonGeneratorV2:
 
     def generate_call(self, expr: IRCall) -> str:
         """Generate function call."""
+        # Check if this is an enum variant constructor
+        is_enum_variant = False
+        if isinstance(expr.function, IRIdentifier):
+            # Heuristic: uppercase first letter = enum variant
+            # Known variants: Some, Ok, Err, etc.
+            if expr.function.name and expr.function.name[0].isupper():
+                is_enum_variant = True
+
         func = self.generate_expression(expr.function)
 
         # Special case: Convert map(lambda, iterable) to comprehension
@@ -1383,11 +1427,23 @@ class PythonGeneratorV2:
                     return f"({body_expr} for {param_name} in {iterable})"
 
         # Regular function call
-        args = [self.generate_expression(arg) for arg in expr.args]
-        kwargs = [f"{k}={self.generate_expression(v)}" for k, v in expr.kwargs.items()]
+        if is_enum_variant and expr.args and not expr.kwargs:
+            # Enum variant constructor: Some(x) → Some(value=x)
+            # Use keyword argument for single-argument variants
+            if len(expr.args) == 1:
+                arg_value = self.generate_expression(expr.args[0])
+                return f"{func}(value={arg_value})"
+            else:
+                # Multiple arguments: use field_0, field_1, etc.
+                kwargs_list = [f"field_{i}={self.generate_expression(arg)}" for i, arg in enumerate(expr.args)]
+                return f"{func}({', '.join(kwargs_list)})"
+        else:
+            # Regular function call
+            args = [self.generate_expression(arg) for arg in expr.args]
+            kwargs = [f"{k}={self.generate_expression(v)}" for k, v in expr.kwargs.items()]
 
-        all_args = args + kwargs
-        return f"{func}({', '.join(all_args)})"
+            all_args = args + kwargs
+            return f"{func}({', '.join(all_args)})"
 
     def generate_array(self, expr: IRArray) -> str:
         """Generate list literal."""
@@ -1462,6 +1518,36 @@ class PythonGeneratorV2:
         else:
             body = self.generate_expression(expr.body)
             return f"lambda {params}: {body}"
+
+    def generate_pattern_match(self, expr: IRPatternMatch) -> str:
+        """
+        Generate pattern matching expression.
+
+        For pattern `opt is Some(val)`, generates: isinstance(opt, Some)
+        The value binding happens in the if statement generation.
+
+        For pattern `opt is None`, generates: isinstance(opt, None_)
+        """
+        value = self.generate_expression(expr.value)
+
+        # Pattern can be IRCall (Some(val)) or IRIdentifier (None)
+        if isinstance(expr.pattern, IRCall):
+            # Pattern like Some(val) or Ok(val)
+            variant_name = self.generate_expression(expr.pattern.function)
+            return f"isinstance({value}, {variant_name})"
+        elif isinstance(expr.pattern, IRIdentifier):
+            # Pattern like None or Some without binding
+            variant_name = expr.pattern.name
+            # Handle Python keyword conflicts (None → None_)
+            if variant_name in ("None", "True", "False"):
+                variant_name = f"{variant_name}_"
+            return f"isinstance({value}, {variant_name})"
+        elif isinstance(expr.pattern, IRPropertyAccess):
+            # Pattern like Option.Some
+            variant_name = self.generate_expression(expr.pattern)
+            return f"isinstance({value}, {variant_name})"
+        else:
+            return f"isinstance({value}, {self.generate_expression(expr.pattern)})"
 
 
 # ============================================================================
