@@ -29,6 +29,9 @@ class ValidationMode(Enum):
 # Global validation mode
 _VALIDATION_MODE = ValidationMode.FULL
 
+# Global coverage tracking
+_CLAUSE_COVERAGE: Dict[str, int] = {}
+
 
 def set_validation_mode(mode: ValidationMode) -> None:
     """
@@ -240,6 +243,11 @@ def check_precondition(
     if not should_check_preconditions():
         return
 
+    # Track coverage
+    full_name = f"{class_name}.{function_name}" if class_name else function_name
+    key = f"{full_name}.requires.{clause_name}"
+    _CLAUSE_COVERAGE[key] = _CLAUSE_COVERAGE.get(key, 0) + 1
+
     if not condition:
         raise ContractViolationError(
             type="precondition",
@@ -288,6 +296,11 @@ def check_postcondition(
     if not should_check_postconditions():
         return
 
+    # Track coverage
+    full_name = f"{class_name}.{function_name}" if class_name else function_name
+    key = f"{full_name}.ensures.{clause_name}"
+    _CLAUSE_COVERAGE[key] = _CLAUSE_COVERAGE.get(key, 0) + 1
+
     if not condition:
         raise ContractViolationError(
             type="postcondition",
@@ -334,6 +347,10 @@ def check_invariant(
     if not should_check_invariants():
         return
 
+    # Track coverage
+    key = f"{class_name}.invariant.{clause_name}"
+    _CLAUSE_COVERAGE[key] = _CLAUSE_COVERAGE.get(key, 0) + 1
+
     if not condition:
         raise ContractViolationError(
             type="invariant",
@@ -343,3 +360,28 @@ def check_invariant(
             class_name=class_name,
             context=context
         )
+
+
+# ============================================================================
+# Coverage Tracking Functions
+# ============================================================================
+
+
+def get_coverage() -> Dict[str, int]:
+    """
+    Get contract clause coverage data.
+
+    Returns:
+        Dict mapping clause keys to execution counts
+
+    Example:
+        coverage = get_coverage()
+        # {"createUser.requires.name_not_empty": 5, ...}
+    """
+    return _CLAUSE_COVERAGE.copy()
+
+
+def reset_coverage() -> None:
+    """Reset contract coverage tracking."""
+    global _CLAUSE_COVERAGE
+    _CLAUSE_COVERAGE = {}
