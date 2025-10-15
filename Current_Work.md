@@ -4634,11 +4634,12 @@ All READMEs follow world-class patterns from research phase:
 
 ### Documentation Progress
 
-**Completed (Week 2 Day 1-2)**:
+**Completed (Week 2 Day 1-3)**:
 - ✅ Quickstart Guide (~200 lines)
 - ✅ Cookbook Index (~150 lines, 30 recipe outlines)
 - ✅ 5 Complete Recipes (~1,200 lines total)
 - ✅ **API Reference Complete** (~2,850 lines, 5 files)
+- ✅ **How-To Guides Started** (~2,000 lines, 4 files)
 
 **API Reference Files:**
 1. `docs/reference/contract-syntax.md` (~500 lines) - Complete PW language reference
@@ -4647,14 +4648,20 @@ All READMEs follow world-class patterns from research phase:
 4. `docs/reference/cli-commands.md` (~800 lines) - CLI commands reference
 5. `docs/reference/error-codes.md` (~700 lines) - Error codes and debugging guide
 
+**How-To Guides (3 of ~15 complete)**:
+1. `docs/how-to/index.md` (~150 lines) - How-To index with 15 guide outlines
+2. `docs/how-to/getting-started/first-contract.md` (~600 lines) - Write first contract (beginner)
+3. `docs/how-to/getting-started/multi-language.md` (~700 lines) - Multi-language generation
+4. `docs/how-to/integration/mcp-server.md` (~550 lines) - MCP server setup (intermediate)
+
 **Remaining:**
 - 25 more cookbook recipes (~6,000 lines estimated)
-- How-To Guides (~6-8 hours)
+- 12 more How-To Guides (~3-5 hours)
 - Architecture Guide (~4-6 hours)
 
 ### Session Summary
 
-**Status**: Week 2 Day 2 complete, API Reference 100% complete
+**Status**: Week 2 Day 3 complete, How-To Guides started (3 of 15 complete)
 
 **Key Achievements:**
 1. ✅ Created 5-minute quickstart guide
@@ -4663,6 +4670,7 @@ All READMEs follow world-class patterns from research phase:
 4. ✅ Recipe format validated (Problem → Solution → Explanation → Variations → Pitfalls)
 5. ✅ Demonstrated variety (validation, framework, patterns)
 6. ✅ **Completed comprehensive API Reference** (contract syntax, runtime, MCP, CLI, errors)
+7. ✅ **Started How-To Guides** (first contract, multi-language, MCP server)
 
 **Files Created:**
 - `QUICKSTART.md`
@@ -4677,17 +4685,22 @@ All READMEs follow world-class patterns from research phase:
 - `docs/reference/mcp-operations.md`
 - `docs/reference/cli-commands.md`
 - `docs/reference/error-codes.md`
+- `docs/how-to/index.md`
+- `docs/how-to/getting-started/first-contract.md`
+- `docs/how-to/getting-started/multi-language.md`
+- `docs/how-to/integration/mcp-server.md`
 
 **Time Invested:**
 - Session 64 Day 1: Quickstart + Cookbook (~4 hours)
 - Session 64 Day 2: API Reference (~4 hours)
-- **Cumulative Week 2**: ~8 hours
+- Session 64 Day 3: How-To Guides (~2 hours)
+- **Cumulative Week 2**: ~10 hours
 
 **Remaining in Week 2:**
 - 25 cookbook recipes (~5-7 hours)
-- How-To Guides (~6-8 hours)
+- 12 more How-To Guides (~3-4 hours)
 - Architecture Guide (~4-6 hours)
-- **Total Remaining**: ~15-21 hours
+- **Total Remaining**: ~12-17 hours
 
-**Next Session**: Continue with How-To Guides or additional cookbook recipes
+**Next Session**: Continue How-To Guides (testing, CrewAI, LangGraph) or Architecture Guide
 
