@@ -28,6 +28,8 @@ from dsl.ir import (
     IRCall,
     IRCatch,
     IRClass,
+    IRContractAnnotation,
+    IRContractClause,
     IRContinue,
     IREnum,
     IREnumVariant,
@@ -43,6 +45,7 @@ from dsl.ir import (
     IRLiteral,
     IRMap,
     IRModule,
+    IROldExpr,
     IRParameter,
     IRPass,
     IRPatternMatch,
@@ -159,12 +162,14 @@ class TokenType(Enum):
     PIPE = "|"
     ARROW = "->"
     SEMICOLON = ";"
+    AT = "@"  # For contract annotations
 
     # Special
     NEWLINE = "NEWLINE"
     INDENT = "INDENT"
     DEDENT = "DEDENT"
     EOF = "EOF"
+    DOC_COMMENT = "DOC_COMMENT"  # /// style documentation comments
 
 
 # PW DSL 2.0 keywords
@@ -178,6 +183,8 @@ KEYWORDS = {
     "null", "true", "false",
     "and", "or", "not", "is",
     "async", "await", "lambda", "self",
+    # Contract-related keywords
+    "old", "service",  # 'old' for postconditions, 'service' as alias for 'class'
 }
 
 
@@ -239,13 +246,15 @@ class Lexer:
         - Python-style: # comment
         - C-style single-line: // comment
         - C-style multi-line: /* comment */
+
+        NOTE: /// doc comments are handled separately in read_doc_comment()
         """
         # Python-style comment
         if self.peek() == "#":
             while self.peek() and self.peek() != "\n":
                 self.advance()
-        # C-style single-line comment
-        elif self.peek() == "/" and self.peek(1) == "/":
+        # C-style single-line comment (but NOT ///)
+        elif self.peek() == "/" and self.peek(1) == "/" and self.peek(2) != "/":
             self.advance()  # /
             self.advance()  # /
             while self.peek() and self.peek() != "\n":
@@ -260,6 +269,41 @@ class Lexer:
                     self.advance()  # /
                     break
                 self.advance()
+
+    def read_doc_comment(self) -> str:
+        """
+        Read /// style documentation comment.
+        Returns the comment content without the ///.
+        """
+        line, col = self.line, self.column
+        comment_lines = []
+
+        # Read consecutive /// lines
+        while self.peek() == "/" and self.peek(1) == "/" and self.peek(2) == "/":
+            self.advance()  # /
+            self.advance()  # /
+            self.advance()  # /
+
+            # Skip optional space after ///
+            if self.peek() == " ":
+                self.advance()
+
+            # Read line content
+            line_content = ""
+            while self.peek() and self.peek() != "\n":
+                line_content += self.advance()
+
+            comment_lines.append(line_content)
+
+            # Consume newline
+            if self.peek() == "\n":
+                self.advance()
+
+            # Skip whitespace/indentation on next line
+            while self.peek() == " ":
+                self.advance()
+
+        return "\n".join(comment_lines)
 
     def read_string(self) -> str:
         """Read string literal."""
@@ -427,6 +471,14 @@ class Lexer:
             # Skip inline whitespace
             self.skip_whitespace()
 
+            # Documentation comments: ///
+            three_char = self.peek() + self.peek(1) + self.peek(2)
+            if three_char == "///":
+                # Read doc comment
+                doc_content = self.read_doc_comment()
+                self.tokens.append(Token(TokenType.DOC_COMMENT, doc_content, self.line, self.column))
+                continue
+
             # Two-character operators - but check for comment context first
             # Special handling for // : it's a comment if not in an expression context
             # Expression context: after identifier, number, closing paren/bracket/brace
@@ -551,6 +603,7 @@ class Lexer:
                 ":": TokenType.COLON, ",": TokenType.COMMA,
                 ".": TokenType.DOT, "?": TokenType.QUESTION,
                 ";": TokenType.SEMICOLON,
+                "@": TokenType.AT,  # For contract annotations
             }
             if char in char_map:
                 # Track parenthesis, bracket, and brace depth for multi-line support
@@ -875,6 +928,132 @@ class Parser:
         self.expect(TokenType.DEDENT)
         return IREnum(name=name, generic_params=generic_params, variants=variants)
 
+    # ========================================================================
+    # Contract Annotation Parsing
+    # ========================================================================
+
+    def parse_contract_annotations(self) -> Tuple[Optional[str], List[IRContractClause], Dict[str, Any]]:
+        """
+        Parse contract annotations before a function or class.
+
+        Returns:
+            - doc_comment: Documentation string (from /// comments)
+            - operation_annotations: List of @operation, @contract metadata
+            - metadata: Combined metadata dict
+
+        Handles:
+            /// doc comments
+            @contract(version="1.0.0")
+            @operation(idempotent=true)
+        """
+        doc_comment = None
+        metadata = {}
+
+        # Parse doc comments (///)
+        while self.match(TokenType.DOC_COMMENT):
+            comment = self.advance().value
+            if doc_comment is None:
+                doc_comment = comment
+            else:
+                doc_comment += "\n" + comment
+            self.skip_newlines()
+
+        # Parse @ annotations (@contract, @operation)
+        while self.match(TokenType.AT):
+            self.advance()  # consume '@'
+            annotation_name = self.expect(TokenType.IDENTIFIER).value
+
+            if annotation_name in ("contract", "operation"):
+                # Parse metadata: @contract(key=value, key2=value2)
+                if self.match(TokenType.LPAREN):
+                    self.advance()  # consume '('
+                    while not self.match(TokenType.RPAREN):
+                        key = self.expect(TokenType.IDENTIFIER).value
+                        self.expect(TokenType.ASSIGN)  # consume '='
+
+                        # Parse value (string, boolean, number)
+                        if self.match(TokenType.STRING):
+                            value = self.advance().value
+                        elif self.match(TokenType.BOOLEAN):
+                            value = self.advance().value
+                        elif self.match(TokenType.INTEGER):
+                            value = self.advance().value
+                        elif self.match(TokenType.FLOAT):
+                            value = self.advance().value
+                        else:
+                            raise self.error(f"Expected value for annotation key '{key}'")
+
+                        metadata[key] = value
+
+                        if self.match(TokenType.COMMA):
+                            self.advance()
+                    self.expect(TokenType.RPAREN)
+
+            self.skip_newlines()
+
+        return doc_comment, metadata
+
+    def parse_contract_clause(self) -> IRContractClause:
+        """
+        Parse a contract clause (@requires, @ensures, @invariant).
+
+        Syntax: @requires clause_name: boolean_expression
+        """
+        self.expect(TokenType.AT)  # consume '@'
+        clause_type = self.expect(TokenType.IDENTIFIER).value
+
+        if clause_type not in ("requires", "ensures", "invariant"):
+            raise self.error(f"Expected 'requires', 'ensures', or 'invariant', got '{clause_type}'")
+
+        # Parse clause name
+        clause_name = self.expect(TokenType.IDENTIFIER).value
+        self.expect(TokenType.COLON)  # consume ':'
+
+        # Parse boolean expression
+        expression = self.parse_expression()
+
+        return IRContractClause(
+            clause_type=clause_type,
+            name=clause_name,
+            expression=expression
+        )
+
+    def parse_effects_annotation(self) -> List[str]:
+        """
+        Parse @effects annotation.
+
+        Syntax: @effects [effect1, effect2, effect3]
+        """
+        self.expect(TokenType.AT)  # consume '@'
+        effects_keyword = self.expect(TokenType.IDENTIFIER).value
+        if effects_keyword != "effects":
+            raise self.error(f"Expected 'effects', got '{effects_keyword}'")
+
+        self.expect(TokenType.LBRACKET)  # consume '['
+
+        effects = []
+        while not self.match(TokenType.RBRACKET):
+            # Parse effect as dot-separated identifier: database.write, event.emit("name")
+            # For simplicity, parse as string or property access
+            if self.match(TokenType.STRING):
+                effects.append(self.advance().value)
+            elif self.match(TokenType.IDENTIFIER):
+                # Parse identifier chain: database.write
+                effect_parts = [self.advance().value]
+                while self.match(TokenType.DOT):
+                    self.advance()
+                    effect_parts.append(self.expect(TokenType.IDENTIFIER).value)
+                effects.append(".".join(effect_parts))
+            else:
+                raise self.error("Expected effect identifier or string")
+
+            if self.match(TokenType.COMMA):
+                self.advance()
+
+        self.expect(TokenType.RBRACKET)  # consume ']'
+
+        return effects
+
     def parse_function(self) -> IRFunction:
         """
         Parse C-style function definition with optional generic parameters.
@@ -950,11 +1129,33 @@ class Parser:
                 else:
                     break
 
+        # Parse contract clauses and effects
+        requires = []
+        ensures = []
+        effects = []
+
         # Parse body: { statements } (C-style) or : INDENT statements DEDENT (Python-style)
         if self.match(TokenType.LBRACE):
             # C-style: { ... }
             self.advance()
             self.skip_newlines()
+
+            # Parse contract clauses at the beginning of function body
+            while self.match(TokenType.AT):
+                peek_ahead = self.peek()
+                if peek_ahead.type == TokenType.IDENTIFIER:
+                    clause_type = peek_ahead.value
+                    if clause_type == "requires":
+                        requires.append(self.parse_contract_clause())
+                    elif clause_type == "ensures":
+                        ensures.append(self.parse_contract_clause())
+                    elif clause_type == "effects":
+                        effects = self.parse_effects_annotation()
+                    else:
+                        break  # Not a contract clause
+                else:
+                    break
+                self.skip_newlines()
 
             body = []
             while not self.match(TokenType.RBRACE):
@@ -978,6 +1179,24 @@ class Parser:
             self.advance()
             self.expect(TokenType.NEWLINE)
             self.expect(TokenType.INDENT)
+
+            # Parse contract clauses at the beginning of function body
+            while self.match(TokenType.AT):
+                peek_ahead = self.peek()
+                if peek_ahead.type == TokenType.IDENTIFIER:
+                    clause_type = peek_ahead.value
+                    if clause_type == "requires":
+                        requires.append(self.parse_contract_clause())
+                    elif clause_type == "ensures":
+                        ensures.append(self.parse_contract_clause())
+                    elif clause_type == "effects":
+                        effects = self.parse_effects_annotation()
+                    else:
+                        break  # Not a contract clause
+                else:
+                    break
+                self.skip_newlines()
+
             body = self.parse_statement_list()
             self.expect(TokenType.DEDENT)
         else:
@@ -991,6 +1210,9 @@ class Parser:
             throws=throws,
             body=body,
             is_async=is_async,
+            requires=requires,
+            ensures=ensures,
+            effects=effects,
         )
 
     def parse_class(self) -> IRClass:
@@ -2287,6 +2509,12 @@ class Parser:
 
     def parse_primary(self) -> IRExpression:
         """Parse primary expressions."""
+        # Old keyword for postconditions: old expr
+        if self.match(TokenType.KEYWORD) and self.current().value == "old":
+            self.advance()  # consume 'old'
+            expr = self.parse_primary()  # Parse the expression to reference in pre-state
+            return IROldExpr(expression=expr)
+
         # Literals
         if self.match(TokenType.INTEGER):
             value = self.advance().value

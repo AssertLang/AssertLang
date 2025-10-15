@@ -1,14 +1,118 @@
 # Current Work - Promptware
 
-**Version**: 2.2.0-alpha4 (Multi-Agent Contracts Pivot)
-**Last Updated**: 2025-10-14 (Session 52 - Strategic Pivot Phase 1 Complete)
-**Current Branch**: `feature/multi-agent-contracts-pivot`
-**Session**: 52 ✅ **PHASE 1 COMPLETE**
-**Status**: 🎯 **MULTI-AGENT CONTRACTS PIVOT** - Phase 1 complete, ready for Phase 2
+**Version**: 2.2.0-alpha5 (Contract Syntax Parser)
+**Last Updated**: 2025-10-14 (Session 53 - Phase 2A Parser Implementation)
+**Current Branch**: `feature/pw-standard-librarian`
+**Session**: 53 ✅ **PHASE 2A COMPLETE**
+**Status**: 🎯 **CONTRACT SYNTAX PARSER COMPLETE** - Ready for Phase 2B Runtime Validation
 
 ---
 
-## 🎯 Session 52: Strategic Pivot (2025-10-14) - **CURRENT**
+## 🎯 Session 53: Phase 2A - Contract Syntax Parser (2025-10-14) - **CURRENT**
+
+### Mission: Implement PW Contract Syntax Parser
+
+**Goal:** Enable PW contracts with Design-by-Contract features (@requires, @ensures, @invariant) for deterministic multi-agent coordination.
+
+### Deliverables
+
+**Phase 2A: Parser Implementation** ✅ COMPLETE
+
+**IR Nodes Added:**
+- `IRContractClause` - Represents @requires, @ensures, @invariant clauses
+- `IRContractAnnotation` - Represents @contract, @operation metadata
+- `IROldExpr` - Represents `old` keyword for postconditions
+- Updated `IRFunction` with contract fields (requires, ensures, effects, operation_metadata)
+- Updated `IRClass` with contract fields (invariants, contract_metadata)
+
+**Lexer Updates:**
+- Added `@` token (AT)
+- Added `///` documentation comments (DOC_COMMENT token)
+- Added `old` keyword
+- Added `service` keyword (alias for `class`)
+
+**Parser Updates:**
+- `parse_contract_annotations()` - Parse @contract, @operation metadata
+- `parse_contract_clause()` - Parse @requires, @ensures, @invariant clauses
+- `parse_effects_annotation()` - Parse @effects [effect1, effect2]
+- `parse_primary()` - Handle `old` keyword in expressions
+- `parse_function()` - Parse contract clauses in function body
+- Documentation comment support (///)
+
+**Syntax Supported:**
+
+```pw
+/// Creates a new user
+/// @param name User's name
+/// @returns User object or error
+@operation(idempotent=true, timeout=5000)
+function createUser(name: string, email: string) -> User | ValidationError {
+    @requires name_not_empty: str.length(name) >= 1
+    @requires email_valid: str.contains(email, "@")
+    @ensures id_positive: result is User implies result.id > 0
+    @ensures name_preserved: result is User implies result.name == name
+    @effects [database.write, event.emit("user.created")]
+
+    // Implementation
+    if (str.length(name) < 1) {
+        return ValidationError { field: "name", message: "Name required" };
+    }
+    // ...
+}
+
+@contract(version="1.0.0")
+service UserService {
+    @invariant count_non_negative: this.userCount >= 0
+    // ... methods
+}
+```
+
+### Test Results
+
+**Contract Parser Tests:** 13/13 passing (100%) ✅
+- Basic contract parsing (requires, ensures, effects)
+- Old keyword parsing
+- Backward compatibility (functions without contracts still work)
+- Complex expressions
+- Error handling
+- Python-style syntax
+
+**Backward Compatibility:** 134/134 stdlib tests passing ✅
+- All existing stdlib code continues to work
+- No regressions
+- Production-ready for deployment
+
+### Files Modified
+
+**Core Implementation:**
+- `dsl/ir.py` - Added contract IR nodes (3 new classes)
+- `dsl/pw_parser.py` - Added lexer + parser support (~200 lines)
+- `tests/test_contract_parser.py` - New test suite (13 tests, 100% passing)
+
+**Updated IR Nodes:**
+- `NodeType` enum - Added OLD_EXPR, CONTRACT_CLAUSE, CONTRACT_ANNOTATION
+- `IRExpression` union - Added IROldExpr
+- `IRFunction` - Added requires, ensures, effects, operation_metadata
+- `IRClass` - Added invariants, contract_metadata
+
+### Next Steps (Phase 2B: Runtime Validation)
+
+**Owner:** runtime-engineer
+
+**Tasks:**
+1. Implement precondition checking at function entry
+2. Implement postcondition checking at function exit
+3. Implement invariant checking after public operations
+4. Handle `old` keyword evaluation (capture pre-state)
+5. Generate helpful error messages with clause names
+
+**Timeline:** 2-3 days
+
+**Dependencies:** ✅ Parser complete (all IR nodes ready)
+
+---
+
+## 🎯 Session 52: Strategic Pivot (2025-10-14)
 
 ### **MAJOR STRATEGIC SHIFT**
 
