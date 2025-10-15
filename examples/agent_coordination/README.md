@@ -1,5 +1,9 @@
 # Multi-Agent Coordination via PW Contracts
 
+**Quick Start:** Want to see it in action right now? Run `./run_demo.sh` or read [QUICKSTART.md](QUICKSTART.md)
+
+---
+
 ## The Problem This Solves
 
 **Scenario:** You have two AI agents using different frameworks that need to coordinate:
