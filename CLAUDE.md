@@ -1,34 +1,125 @@
-# Claude Agent Release Playbook
+# Promptware Development - Claude Code Agent System
 
-## Lead Agent Role & Responsibilities
+## Lead Agent Role
 
-**I am the Lead Agent** managing the entire Promptware development team (TA1-TA6+).
+**I am the Lead Agent** - Managing Promptware as we execute the strategic pivot to **executable contracts for multi-agent systems**.
 
-**My role:**
-- **Full-Stack Engineering Lead** - Coordinate all development work based on Hustler's goals
-- **Team Manager** - Spawn, coordinate, and integrate work from TA1-TA6 sub-agents (+ additional TAs as needed)
-- **Research Lead** - Conduct deep research when agents or I identify knowledge gaps
-- **Integration Manager** - Merge work from isolated silos into production-ready releases
-- **Quality Gatekeeper** - Ensure all work meets professional standards (tests, docs, benchmarks)
-
-**How I work:**
-1. **Listen to your goals** - You describe what you want, I coordinate the team to deliver
-2. **Research FIRST (when needed)** - Before spawning agents, do deep research on world-class patterns if unclear
-3. **Plan with research** - Create detailed implementation plans backed by industry best practices
-4. **Spawn agents asynchronously** - TAs work in isolated sandboxes (`.claude/Task Agent N/`)
-5. **Monitor progress** - Track via `context.json`, `dependencies.yml`, status scripts
-6. **Integrate work** - Merge completed work, run tests, create releases
-7. **Communicate status** - Keep `CLAUDE.md` and `Current_Work.md` up-to-date
-8. **Scale team dynamically** - Spawn more TAs (TA7, TA8, ...) if workload requires
+**My Responsibilities:**
+- **Coordinate Development** - Route tasks to specialized agents automatically
+- **Research Lead** - Conduct deep research before major features
+- **Integration Manager** - Merge completed work, run tests, create releases
+- **Quality Gatekeeper** - Ensure all work meets professional standards
+- **Strategic Execution** - Execute 5-phase pivot plan (multi-agent contracts)
 
 **You interact with:** Me (Lead Agent) only
-**I manage:** All TA agents, automation scripts, releases, PRs, git workflow
+**I manage:** All specialized agents, releases, PRs, git workflow
 
-**Goal:** Ship world-class Promptware product through professional async team coordination.
+**Goal:** Ship Promptware as the standard for deterministic multi-agent coordination.
 
 ---
 
-## Deep Research Protocol
+## Strategic Pivot: Multi-Agent Contracts
+
+**What Changed (October 2025):**
+
+**OLD Vision:**
+- "Universal code translator"
+- "Write once, compile to any language"
+- Target: Individual developers, language migration
+
+**NEW Vision:**
+- **"Executable contracts for multi-agent systems"**
+- **"Deterministic coordination across frameworks and languages"**
+- Target: Multi-agent AI developers, framework integrators
+
+**Why This Matters:**
+
+The multi-agent AI market is growing from $5.25B (2024) → $52.62B (2030), but agents from different frameworks (CrewAI, LangGraph, AutoGen) can't reliably coordinate. Existing protocols (MCP, A2A, ACP) handle messaging but NOT semantic contracts.
+
+**PW Contracts solve this:**
+- Define behavior once in PW
+- Transpile to Python, JavaScript, Rust, Go, C#
+- Agents execute identical logic regardless of framework or language
+- **Deterministic coordination guaranteed**
+
+**Proof:** Built working prototype in `examples/agent_coordination/` - Agent A (Python/CrewAI) and Agent B (JavaScript/LangGraph) produce 100% identical outputs (5/5 test cases match perfectly).
+
+**Execution Plan:** See `PIVOT_EXECUTION_PLAN.md` for complete 5-phase roadmap (4-6 weeks to launch).
+
+**Current Phase:** Phase 1 - Strategic Pivot (Week 1)
+- ✅ README.md rewritten with new positioning
+- 🔄 CLAUDE.md update (in progress)
+- ⏳ Create formal elevator pitch
+- ⏳ Polish agent_coordination example
+- ⏳ Update PyPI description
+
+---
+
+## Claude Code Agent System
+
+### Real Agents (Not Simulations)
+
+Promptware uses **real Claude Code subagents** defined in `.claude/agents/`:
+
+| Agent | Role | Status | Expertise |
+|-------|------|--------|-----------|
+| **stdlib-engineer** | Language Engineer #1 | ✅ ACTIVE | Stdlib, types, pattern matching |
+| **runtime-engineer** | Language Engineer #2 | 🟡 READY | VM, CLI, async execution |
+| **codegen-specialist** | Code Generation | 🟡 READY | Multi-language codegen |
+| **devtools-engineer** | Developer Experience | 🟡 READY | LSP, VS Code, formatter |
+| **qa-engineer** | Quality & Ecosystem | 🟡 READY | Testing, benchmarks, packages |
+| **release-engineer** | CI/CD & Security | 🟡 READY | Fuzzing, security, releases |
+| **mcp-specialist** | MCP Integration | ✅ ACTIVE | Operations, multi-language |
+
+**Current Status:**
+- ✅ stdlib-engineer: 134/134 tests passing, 1,027 lines stdlib complete
+- ✅ mcp-specialist: 23 operations working (Python + JavaScript)
+- 🟡 5 other agents ready for immediate deployment
+
+### How Agents Work
+
+**Automatic Delegation:**
+```
+You: "Add async/await to stdlib"
+Claude: [Automatically routes to stdlib-engineer]
+```
+
+**Explicit Invocation:**
+```
+/agent runtime-engineer "Research VM vs transpiler decision"
+```
+
+**View All Agents:**
+```
+/agents
+```
+
+### Agent Coordination
+
+Agents coordinate through:
+- **Shared Context** - All agents read project state
+- **Dependency Awareness** - Agents know what they need
+- **Status Updates** - Agents report progress
+- **Quality Gates** - All work must pass tests
+
+**Dependency Graph:**
+```
+stdlib-engineer (✅ complete)
+  ↓
+runtime-engineer (needs executable stdlib)
+  ↓
+devtools-engineer (needs CLI)
+qa-engineer (needs runtime)
+codegen-specialist (needs stdlib IR)
+  ↓
+release-engineer (needs all for CI/CD)
+
+mcp-specialist (independent, integrates with codegen)
+```
+
+---
+
+## Research Protocol
 
 **BEFORE spawning agents for complex work, I conduct research to ensure world-class implementation.**
 
@@ -61,7 +152,7 @@
 ### Deliverables from Research:
 - `.claude/research/[topic].md` - Research notes and findings
 - Detailed implementation plan for agents
-- Design decisions documented in `decisions.md`
+- Design decisions documented
 - Clear API specifications
 
 **Example:** Before building stdlib Option<T>:
@@ -73,162 +164,311 @@
 
 ---
 
-## Current Agent Assignments
+## Development Workflow
 
-| Agent | Mission Focus | Branch | Mission Brief | Progress Log | Status |
-|-------|---------------|--------|---------------|--------------|--------|
-| TA1 | Standard Library & Syntax (Batch #11) | `feature/pw-standard-librarian` | `missions/TA1/mission.md` | `.claude/Task Agent 1/context.json` | 🔴 **BLOCKED** - Stdlib complete (1,027 lines) but parser lacks generic support (30% complete) |
-| TA2 | Runtime + CLI Core | `feature/pw-runtime-core` | `missions/TA2/mission.md` | `.claude/Task Agent 2/context.json` | _unassigned_ |
-| TA3 | Tooling & DevEx (LSP, fmt, lint, test) | `feature/pw-tooling-devex` | `missions/TA3/mission.md` | `.claude/Task Agent 3/context.json` | _unassigned_ |
-| TA4 | Ecosystem & Governance Launch | `feature/pw-ecosystem-launch` | `missions/TA4/mission.md` | `.claude/Task Agent 4/context.json` | _unassigned_ |
-| TA5 | Interop Conformance & FFI | `feature/pw-interop-parity` | `missions/TA5/mission.md` | `.claude/Task Agent 5/context.json` | _unassigned_ |
-| TA6 | Safety, CI, Release Automation | `feature/pw-safety-release` | `missions/TA6/mission.md` | `.claude/Task Agent 6/context.json` | _unassigned_ |
-| TA7 | Parser - Generic Type Parameters | `feature/pw-parser-generics` | `missions/TA7/mission.md` | `.claude/Task Agent 7/context.json` | 🔴 **PAUSED** - IR updated, parser 40% done (paused for MCP+CharCNN priority) |
-| **Lead** | **CharCNN Tool Lookup System** | `feature/pw-standard-librarian` | Sessions 48-49 | `Current_Work.md` | ✅ **PHASES 1-3 COMPLETE** - MCP server + training data + CharCNN 100% accuracy. Ready for Phase 4 (compiler integration) |
+### Starting Work
 
-> Update the `Status` column whenever a task agent is assigned, paused, or completed. Replace the `_unassigned_` text with a short note like “in progress via Claude task #42” or “complete – awaiting merge”. When reassigning an agent, overwrite the row instead of adding new ones to keep the roster compact.
+When you request a feature or fix:
 
-## Branching & Iteration
+1. **I assess the request** - What agent(s) are needed?
+2. **I check dependencies** - Are prerequisites complete?
+3. **I route to appropriate agent(s)** - Automatic or explicit
+4. **Agent(s) work autonomously** - With full tool access
+5. **Agent(s) report back** - Summary, tests, files changed
+6. **I integrate the work** - Run tests, update docs, commit
 
-_First-time setup_: ensure `planning/master-plan` exists on origin with the mission files.
+### Git Workflow
 
-1. Start mission workspace with helper script:
-   ```bash
-   python scripts/agent_sync.py start --mission TA<n>
-   ```
-   This checks out `feature/<mission>`, rebases on origin, and drops the mission brief under `missions/`.
-2. Build & test within that branch. Keep `.claude/` out of commits.
-3. Push updates to your fork only:
-   ```bash
-   git push origin feature/<mission>
-   ```
+```bash
+# Work happens on feature branches
+git checkout -b feature/new-feature
+
+# Agents make changes, run tests
+pytest
+
+# Commit with descriptive message
+git commit -m "Add feature X - tests passing"
+
+# Push to origin
+git push origin feature/new-feature
+
+# Create PR when ready
+gh pr create --fill
+```
+
+### Testing Requirements
+
+**All work must pass tests before merge:**
+- Unit tests: 100% coverage
+- Integration tests: All scenarios covered
+- Conformance tests: Multi-language output verified
+- Performance tests: No regressions
+
+### Quality Standards
+
+All agents follow **No-BS Engineering**:
+- Blunt, technical, factual communication
+- Real implementations (no placeholders)
+- 100% test coverage required
+- All APIs documented
+- Performance benchmarked
+
+---
 
 ## Preparing a Pull Request
 
-1. Run tests:
+1. **Run tests:**
    ```bash
    pytest
    python -m build
    ```
-2. Ensure docs/changelogs are updated.
-3. Log mission progress on planning branch:
+
+2. **Ensure docs/changelogs updated:**
+   - Update `Current_Work.md`
+   - Add session summary if applicable
+   - Update version in `pyproject.toml`
+
+3. **Push to origin:**
    ```bash
-   python scripts/agent_sync.py log --mission TA<n> --entry "Summary of work"
+   git push origin feature/<branch-name>
    ```
-4. Push latest commits to origin:
+
+4. **Create PR:**
    ```bash
-   git push origin feature/<mission>
+   gh pr create --title "Feature: X" --body "Summary + test results"
    ```
-5. Open PR targeting `Promptware-dev/promptware` (`upstream/main`). Include summary + test results.
+
+5. **Target:** `Promptware-dev/promptware` (`upstream/main`)
+
+---
 
 ## Shipping a Release
 
-1. Ready branch merged into `upstream/main`.
-2. Update version files (`pyproject.toml`, `Current_Work.md`, `RELEASE_NOTES_<version>.md`).
-3. Commit and tag:
+### Manual Release Process
+
+1. **Merge ready branch** into `upstream/main`
+
+2. **Update version files:**
+   - `pyproject.toml`
+   - `Current_Work.md`
+   - Create `RELEASE_NOTES_<version>.md`
+
+3. **Commit and tag:**
    ```bash
    git checkout main
-   git reset --hard upstream/main
-   git tag <version>
+   git pull upstream main
+   git tag v<version>
    git push origin main --tags
    git push upstream main --tags
    ```
-4. Publish artifacts:
+
+4. **Publish artifacts:**
    ```bash
-   gh release create <version> --notes-file RELEASE_NOTES_<version>.md --repo Promptware-dev/promptware
+   gh release create v<version> --notes-file RELEASE_NOTES_<version>.md --repo Promptware-dev/promptware
    python -m build
    twine upload dist/*
    ```
-   *(Replace PyPI step with GitHub Action once automation is live.)*
 
-5. Optionally run integration pipeline before tagging:
-   ```bash
-   scripts/integration_run.sh
-   ```
+### Automated Release (Future)
+
+```bash
+# One-command release via scripts/release.sh
+scripts/release.sh v2.3.0
+```
+
+This will:
+- Run full test suite
+- Bump version
+- Generate changelog
+- Create git tag
+- Publish to PyPI
+- Create GitHub release
+
+---
 
 ## Post-Release Checklist
 
-- Update `Current_Work.md` “Next Work”.
-- Verify GitHub release + PyPI page show the new version.
-- Notify Hustler with a short summary (what shipped, test status, links).
+- ✅ Update `Current_Work.md` with next work
+- ✅ Verify GitHub release shows new version
+- ✅ Verify PyPI page shows new version
+- ✅ Notify Hustler with summary (what shipped, test status, links)
+- ✅ Update agent status if needed
 
-## Sub-Agent Spawn Protocol
+---
 
-### Lead Agent Responsibilities:
-When user requests work, lead agent:
-1. Reads all `.claude/Task Agent N/context.json` files (assess current state)
-2. Checks `dependencies.yml` for blockers (what's available, what's blocked)
-3. Identifies critical path (what's blocking everything)
-4. Spawns sub-agent(s) with full context via Task tool:
+## Available Scripts
 
-```python
-Task(
-  description="Fix Bug Batch #11 enum syntax",
-  subagent_type="general-purpose",
-  prompt=f"""
-  You are TA{N}-[TaskName] sub-agent.
+Useful scripts in `scripts/`:
 
-  MISSION: [Specific task description]
-  BRANCH: [feature branch name]
-  EXIT CRITERIA: [When you're done]
+- `release.sh vX.Y.Z` - Full release automation
+- `git_sync.sh` - Sync branches
+- `create_pr.sh` - Create PR
+- `integration_run.sh` - Run integration tests
+- `cleanup_repo.sh` - Clean up repo
+- `validate_clean_repo.sh` - Verify clean state
 
-  SETUP (Read First):
-  1. Read .claude/SUB_AGENT_TEMPLATE.md for full protocol
-  2. Read .claude/Task Agent {N}/context.json (current status)
-  3. Read .claude/Task Agent {N}/dependencies.yml (what you can use)
-  4. Read .claude/Task Agent {N}/decisions.md (follow these)
-  5. Read missions/TA{N}/mission.md (overall objective)
+---
 
-  YOUR TASK:
-  [Detailed task description]
+## Agent Documentation
 
-  FILES YOU'LL UPDATE:
-  - [Code files to modify]
-  - .claude/Task Agent {N}/context.json (remove blocker when done)
-  - Via agent_sync.py log (progress updates)
+Full agent documentation in `.claude/agents/`:
 
-  DO NOT TOUCH:
-  - dependencies.yml (lead agent territory)
-  - CLAUDE.md (lead agent territory)
-  - Other TA files (stay in your lane)
+- `README.md` - Complete agent usage guide
+- `stdlib-engineer.md` - Standard library specialist
+- `runtime-engineer.md` - Runtime & VM specialist
+- `codegen-specialist.md` - Multi-language codegen
+- `devtools-engineer.md` - LSP & tooling specialist
+- `qa-engineer.md` - Testing & quality specialist
+- `release-engineer.md` - CI/CD & security specialist
+- `mcp-specialist.md` - MCP operations specialist
 
-  REPORT BACK WITH:
-  - Completion summary
-  - Test results
-  - Files changed
-  - Blockers removed
-  - Next recommended actions
-  """
-)
-```
+**See also:**
+- `CLAUDE_CODE_AGENT_ARCHITECTURE.md` - Complete architecture design
+- `REAL_AGENTS_CREATED.md` - Implementation details
+- `SESSION_52_AGENT_ARCHITECTURE.md` - Session summary
 
-5. Update CLAUDE.md roster (agent assigned)
-6. Update context.json (track assignment)
-
-### Automation Scripts (Lead Agent Uses):
-- `scripts/check_status.sh` - Check all TA status
-- `scripts/check_deps.sh` - Analyze dependencies, find critical path
-- `scripts/update_status.py` - Sync CLAUDE.md + Current_Work.md from context files
-- `scripts/git_sync.sh` - Auto-push branch to origin
-- `scripts/create_pr.sh` - Auto-create PR to upstream
-- `scripts/release.sh vX.Y.Z` - Full release automation (version, tag, publish)
-- `scripts/integration_run.sh` - Merge all TAs, run tests
-- `scripts/create_ta.sh N "Name" "branch"` - Bootstrap new TA
-
-### User Never Touches:
-- ✅ Git commands (lead agent automates via scripts)
-- ✅ File updates (sub-agents self-document, lead coordinates)
-- ✅ Status tracking (auto-synced from context.json)
-- ✅ Releases (one command: "Release v2.2.0")
-
-User only talks to lead agent. Lead agent orchestrates everything.
+---
 
 ## Guardrails
 
-- Use GitHub noreply identity (`3CH0xyz@users.noreply.github.com`).
-- No force pushes to `upstream/main`.
-- Keep mission edits on `planning/master-plan` (script handles progress logging).
-- When editing mission files manually, stage with `git add --force .claude/...` so the planning branch captures changes.
-- **User never runs manual git/scripts** - lead agent automates everything.
-- Sub-agents update tactical files only (progress, tests, checklist).
-- Lead agent updates strategic files only (context, dependencies, roster).
+- Use GitHub noreply identity (`3CH0xyz@users.noreply.github.com`)
+- No force pushes to `upstream/main`
+- Keep `.claude/` out of commits (except agent definitions)
+- All work must pass tests before merge
+- Document all major decisions
+- Research before major features
+- User interacts with Lead Agent only
+- Lead Agent coordinates all agent work
+
+---
+
+## Current Focus
+
+**Strategic Pivot - Multi-Agent Contracts (Oct 2025)**
+
+**Completed:**
+- ✅ Market research ($52B multi-agent market, no existing solution)
+- ✅ Proof-of-concept (100% identical Agent A vs Agent B)
+- ✅ README.md rewrite (new positioning)
+- ✅ Execution plan (PIVOT_EXECUTION_PLAN.md)
+- ✅ Standard library (Option, Result, List, Map, Set) - 134/134 tests
+- ✅ Pattern matching (Python codegen working)
+- ✅ Generic type parameters
+- ✅ Real Claude Code agent system (7 specialists)
+
+**Current Phase: Phase 1 - Strategic Pivot (Week 1)**
+1. ✅ Rewrite README.md with multi-agent contracts focus
+2. 🔄 Update CLAUDE.md with new vision (in progress)
+3. ⏳ Create elevator pitch and taglines
+4. ⏳ Polish agent_coordination example
+5. ⏳ Update PyPI description
+
+**Upcoming Phases:**
+- **Phase 2 (Week 2):** Core contract language - syntax enhancements, validation
+- **Phase 3 (Weeks 3-4):** Framework integrations - CrewAI, LangGraph, AutoGen
+- **Phase 4 (Weeks 4-5):** Developer experience - docs, examples, tooling
+- **Phase 5 (Weeks 5-6):** Marketing & launch - community outreach, Hacker News
+
+**Success Targets:**
+- 500+ GitHub stars (Month 1)
+- 2+ framework integrations working
+- 5+ production use cases documented
+
+---
+
+## Communication Protocol
+
+### User → Lead Agent
+- User describes what they want (features, fixes, releases)
+- Lead Agent coordinates team to deliver
+
+### Lead Agent → Agents
+- Routes tasks automatically or explicitly
+- Provides full context and requirements
+- Monitors progress
+- Integrates completed work
+
+### Agents → Lead Agent
+- Report completion summary
+- Provide test results
+- List files changed
+- Request help if blocked
+
+### No Agent-to-Agent Communication
+- All coordination through Lead Agent
+- Shared files for dependency tracking
+- Clear handoffs documented
+
+---
+
+## Project Structure
+
+```
+Promptware/
+├── .claude/
+│   ├── agents/              # Real Claude Code agents
+│   │   ├── README.md
+│   │   ├── stdlib-engineer.md
+│   │   ├── runtime-engineer.md
+│   │   ├── codegen-specialist.md
+│   │   ├── devtools-engineer.md
+│   │   ├── qa-engineer.md
+│   │   ├── release-engineer.md
+│   │   └── mcp-specialist.md
+│   ├── research/            # Research documents
+│   ├── RELEASE_CHECKLIST.md
+│   └── settings.local.json
+├── dsl/                     # Parser, IR, type system
+├── language/                # Code generators
+├── stdlib/                  # Standard library
+├── tests/                   # Test suite
+├── scripts/                 # Automation scripts
+├── docs/                    # Documentation
+├── CLAUDE.md               # This file
+├── Current_Work.md         # Project status
+└── pyproject.toml          # Package config
+```
+
+---
+
+## Success Metrics
+
+### Technical Metrics
+| Metric | Target | Current |
+|--------|--------|---------|
+| Test Coverage | 100% | 100% (302/302) ✅ |
+| Stdlib Tests | 100% | 100% (134/134) ✅ |
+| Python Codegen | 100% | 100% ✅ |
+| JavaScript Codegen | 100% | 85% (proof-of-concept working) |
+| Rust Codegen | 100% | 10% |
+| Go Codegen | 100% | 5% |
+| C# Codegen | 100% | 5% |
+| Active Agents | 7 | 2 ✅ |
+| Ready Agents | 7 | 7 ✅ |
+
+### Adoption Metrics (Multi-Agent Contracts)
+| Metric | Target | Current |
+|--------|--------|---------|
+| GitHub Stars | 500 (Month 1) | ~45 |
+| Framework Integrations | 3+ | 2 (CrewAI ✅, LangGraph ✅) |
+| Production Use Cases | 5+ | 1 (proof-of-concept) |
+| Contributors | 10+ | 1 |
+| Documentation Pages | 20+ | 5 |
+
+---
+
+## Getting Help
+
+- **Agent help:** `/agents` or read `.claude/agents/README.md`
+- **Architecture:** Read `CLAUDE_CODE_AGENT_ARCHITECTURE.md`
+- **Current status:** Read `Current_Work.md`
+- **Ask Lead Agent:** Just ask me - I coordinate everything
+
+---
+
+**Last Updated:** 2025-10-14
+**Current Version:** 2.2.0-alpha3 (pre-pivot)
+**Strategic Phase:** Phase 1 - Strategic Pivot (Week 1 of 6)
+**Agent System:** Real Claude Code agents (7 specialists)
+**Status:** Executing multi-agent contracts pivot
+**License:** MIT (open source for maximum adoption)
