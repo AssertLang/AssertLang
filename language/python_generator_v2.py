@@ -36,6 +36,7 @@ from dsl.ir import (
     IRCatch,
     IRClass,
     IRComprehension,
+    IRContractClause,
     IRContinue,
     IREnum,
     IREnumVariant,
@@ -51,6 +52,7 @@ from dsl.ir import (
     IRLiteral,
     IRMap,
     IRModule,
+    IROldExpr,
     IRParameter,
     IRPass,
     IRPatternMatch,
@@ -284,6 +286,13 @@ class PythonGeneratorV2:
             if func.return_type:
                 all_types.append(func.return_type)
 
+            # Check if function has contracts - add contract imports if needed
+            if func.requires or func.ensures:
+                if func.requires:
+                    self.required_imports.add("from promptware.runtime.contracts import check_precondition")
+                if func.ensures:
+                    self.required_imports.add("from promptware.runtime.contracts import check_postcondition")
+
         # Collect types from classes
         for cls in module.classes:
             for prop in cls.properties:
@@ -295,6 +304,17 @@ class PythonGeneratorV2:
                         all_types.append(param.param_type)
                 if method.return_type:
                     all_types.append(method.return_type)
+
+                # Check if method has contracts
+                if method.requires or method.ensures:
+                    if method.requires:
+                        self.required_imports.add("from promptware.runtime.contracts import check_precondition")
+                    if method.ensures:
+                        self.required_imports.add("from promptware.runtime.contracts import check_postcondition")
+
+            # Check if class has invariants
+            if cls.invariants:
+                self.required_imports.add("from promptware.runtime.contracts import check_invariant")
 
         # Collect types from type definitions
         for type_def in module.types:
@@ -672,7 +692,7 @@ class PythonGeneratorV2:
     # ========================================================================
 
     def generate_function(self, func: IRFunction) -> str:
-        """Generate standalone function with optional generic type parameters."""
+        """Generate standalone function with optional generic type parameters and contract checks."""
         lines = []
 
         # Register parameter types for safe map/array indexing
@@ -682,12 +702,6 @@ class PythonGeneratorV2:
         # If function has generic parameters, add TypeVar imports and definitions
         if func.generic_params:
             self.required_imports.add("from typing import TypeVar")
-            # TypeVar definitions are emitted inline before the function
-            for type_param in func.generic_params:
-                # Only emit TypeVar if not already defined (to avoid duplicates)
-                # In a real implementation, we'd track which TypeVars are already defined
-                # For now, we'll emit them and let Python handle duplicates
-                pass
 
         # Decorators (use direct field, fall back to metadata)
         decorators = func.decorators if hasattr(func, 'decorators') else func.metadata.get("decorators", [])
@@ -720,12 +734,65 @@ class PythonGeneratorV2:
         if func.doc:
             lines.append(f'{self.indent()}"""{func.doc}"""')
 
-        # Body
-        if func.body:
-            for stmt in func.body:
-                lines.append(self.generate_statement(stmt))
+        # Generate contract checks
+        preconditions, postcondition_setup, postcondition_checks = self.generate_contract_checks(func)
+
+        # Add contract checking code if present
+        if preconditions or postcondition_setup or postcondition_checks:
+            # Precondition checks (at function entry)
+            for check in preconditions:
+                lines.append(f"{self.indent()}{check}")
+
+            # Capture old values (before function body)
+            for old_capture in postcondition_setup:
+                lines.append(f"{self.indent()}{old_capture}")
+
+            if postcondition_checks:
+                # Wrap body in try/finally for postconditions
+                lines.append(f"{self.indent()}__result = None")
+                lines.append(f"{self.indent()}try:")
+                self.increase_indent()
+
+                # Body
+                if func.body:
+                    # Capture return values as __result
+                    for stmt in func.body:
+                        stmt_code = self.generate_statement(stmt)
+                        # Replace 'return X' with '__result = X; return __result'
+                        if stmt_code.strip().startswith("return "):
+                            return_val = stmt_code.strip()[7:]  # Remove 'return '
+                            lines.append(f"{self.indent()}__result = {return_val}")
+                        else:
+                            lines.append(stmt_code)
+                else:
+                    lines.append(f"{self.indent()}pass")
+
+                self.decrease_indent()
+                lines.append(f"{self.indent()}finally:")
+                self.increase_indent()
+
+                # Postcondition checks
+                for check in postcondition_checks:
+                    lines.append(f"{self.indent()}{check}")
+
+                self.decrease_indent()
+
+                # Return the result
+                lines.append(f"{self.indent()}return __result")
+            else:
+                # No postconditions, just body
+                if func.body:
+                    for stmt in func.body:
+                        lines.append(self.generate_statement(stmt))
+                else:
+                    lines.append(f"{self.indent()}pass")
         else:
-            lines.append(f"{self.indent()}pass")
+            # No contracts, just regular body
+            if func.body:
+                for stmt in func.body:
+                    lines.append(self.generate_statement(stmt))
+            else:
+                lines.append(f"{self.indent()}pass")
 
         self.decrease_indent()
 
@@ -1114,6 +1181,8 @@ class PythonGeneratorV2:
             return self.generate_comprehension(expr)
         elif isinstance(expr, IRPatternMatch):
             return self.generate_pattern_match(expr)
+        elif isinstance(expr, IROldExpr):
+            return self.generate_old_expr(expr)
         else:
             return f"<unknown: {type(expr).__name__}>"
 
@@ -1548,6 +1617,228 @@ class PythonGeneratorV2:
             return f"isinstance({value}, {variant_name})"
         else:
             return f"isinstance({value}, {self.generate_expression(expr.pattern)})"
+
+    def generate_old_expr(self, expr: IROldExpr) -> str:
+        """
+        Generate 'old' expression for postconditions.
+
+        The old expression references a captured pre-state value.
+        Generated code will access __old_{varname} variables.
+
+        Example:
+            old balance → __old_balance
+            old this.count → __old_this_count
+        """
+        # Generate unique variable name for old value
+        inner_expr = self.generate_expression(expr.expression)
+        # Sanitize expression to create valid variable name
+        var_name = inner_expr.replace(".", "_").replace("[", "_").replace("]", "").replace("(", "").replace(")", "")
+        return f"__old_{var_name}"
+
+    # ========================================================================
+    # Contract Generation
+    # ========================================================================
+
+    def _has_contracts(self, func: IRFunction) -> bool:
+        """Check if function has any contract clauses."""
+        return bool(func.requires or func.ensures or func.effects)
+
+    def _find_old_expressions(self, clauses: List[IRContractClause]) -> List[IRExpression]:
+        """
+        Find all 'old' expressions in contract clauses.
+
+        Returns list of expressions that need to be captured before function execution.
+        """
+        old_exprs = []
+
+        def visit_expr(expr: IRExpression):
+            if isinstance(expr, IROldExpr):
+                old_exprs.append(expr.expression)
+            elif isinstance(expr, IRBinaryOp):
+                visit_expr(expr.left)
+                visit_expr(expr.right)
+            elif isinstance(expr, IRUnaryOp):
+                visit_expr(expr.operand)
+            elif isinstance(expr, IRCall):
+                for arg in expr.args:
+                    visit_expr(arg)
+            # Add more expression types as needed
+
+        for clause in clauses:
+            visit_expr(clause.expression)
+
+        return old_exprs
+
+    def generate_contract_checks(
+        self,
+        func: IRFunction,
+        is_method: bool = False,
+        class_name: Optional[str] = None
+    ) -> tuple[List[str], List[str], List[str]]:
+        """
+        Generate contract checking code for a function.
+
+        Returns:
+            (precondition_lines, postcondition_setup_lines, postcondition_check_lines)
+        """
+        precondition_lines = []
+        postcondition_setup = []
+        postcondition_checks = []
+
+        # Generate precondition checks
+        if func.requires:
+            self.required_imports.add("from promptware.runtime.contracts import check_precondition")
+
+            for clause in func.requires:
+                condition_expr = self.generate_expression(clause.expression)
+                expr_str = self._expression_to_string(clause.expression)
+
+                # Build context dict with parameter values
+                context_items = []
+                for param in func.params:
+                    context_items.append(f'"{param.name}": {param.name}')
+
+                context_str = "{" + ", ".join(context_items) + "}" if context_items else "None"
+
+                check_call = (
+                    f"check_precondition(\n"
+                    f"    {condition_expr},\n"
+                    f'    "{clause.name}",\n'
+                    f'    "{expr_str}",\n'
+                    f'    "{func.name}",\n'
+                )
+                if class_name:
+                    check_call += f'    class_name="{class_name}",\n'
+                check_call += f"    context={context_str}\n)"
+
+                precondition_lines.append(check_call)
+
+        # Generate postcondition checking code
+        if func.ensures:
+            self.required_imports.add("from promptware.runtime.contracts import check_postcondition")
+
+            # Find all 'old' expressions that need capturing
+            old_exprs = self._find_old_expressions(func.ensures)
+
+            # Capture old values before function body
+            for old_expr in old_exprs:
+                expr_code = self.generate_expression(old_expr)
+                var_name = expr_code.replace(".", "_").replace("[", "_").replace("]", "").replace("(", "").replace(")", "")
+                postcondition_setup.append(f"__old_{var_name} = {expr_code}")
+
+            # Generate postcondition checks (to be inserted after function body)
+            for clause in func.ensures:
+                # Replace 'result' identifier with '__result' in expression
+                condition_expr = self._replace_result_with_underscore(clause.expression)
+                expr_str = self._expression_to_string(clause.expression)
+
+                # Build context with result and parameters
+                context_items = ['("result", __result)']
+                for param in func.params:
+                    context_items.append(f'("{param.name}", {param.name})')
+
+                context_str = "dict([" + ", ".join(context_items) + "])"
+
+                check_call = (
+                    f"check_postcondition(\n"
+                    f"    {condition_expr},\n"
+                    f'    "{clause.name}",\n'
+                    f'    "{expr_str}",\n'
+                    f'    "{func.name}",\n'
+                )
+                if class_name:
+                    check_call += f'    class_name="{class_name}",\n'
+                check_call += f"    context={context_str}\n)"
+
+                postcondition_checks.append(check_call)
+
+        return precondition_lines, postcondition_setup, postcondition_checks
+
+    def _replace_result_with_underscore(self, expr: IRExpression) -> str:
+        """
+        Replace 'result' identifier with '__result' in postcondition expressions.
+
+        This handles the special 'result' variable in postconditions that refers
+        to the function's return value.
+        """
+        if isinstance(expr, IRIdentifier):
+            if expr.name == "result":
+                return "__result"
+            return self.generate_expression(expr)
+        elif isinstance(expr, IRBinaryOp):
+            left = self._replace_result_with_underscore(expr.left)
+            right = self._replace_result_with_underscore(expr.right)
+            op_map = {
+                BinaryOperator.ADD: "+",
+                BinaryOperator.SUBTRACT: "-",
+                BinaryOperator.MULTIPLY: "*",
+                BinaryOperator.DIVIDE: "/",
+                BinaryOperator.MODULO: "%",
+                BinaryOperator.EQUAL: "==",
+                BinaryOperator.NOT_EQUAL: "!=",
+                BinaryOperator.LESS_THAN: "<",
+                BinaryOperator.LESS_EQUAL: "<=",
+                BinaryOperator.GREATER_THAN: ">",
+                BinaryOperator.GREATER_EQUAL: ">=",
+                BinaryOperator.AND: "and",
+                BinaryOperator.OR: "or",
+            }
+            op = op_map.get(expr.op, "+")
+            return f"({left} {op} {right})"
+        elif isinstance(expr, IRUnaryOp):
+            operand = self._replace_result_with_underscore(expr.operand)
+            if expr.op == UnaryOperator.NOT:
+                return f"not {operand}"
+            elif expr.op == UnaryOperator.NEGATE:
+                return f"-{operand}"
+            return operand
+        elif isinstance(expr, IRPropertyAccess):
+            obj = self._replace_result_with_underscore(expr.object)
+            return f"{obj}.{expr.property}"
+        elif isinstance(expr, IRCall):
+            func_expr = self._replace_result_with_underscore(expr.function)
+            args = [self._replace_result_with_underscore(arg) for arg in expr.args]
+            return f"{func_expr}({', '.join(args)})"
+        elif isinstance(expr, IROldExpr):
+            # Old expression should use __old_ variable
+            return self.generate_old_expr(expr)
+        else:
+            # For other expressions, use regular generation
+            return self.generate_expression(expr)
+
+    def _expression_to_string(self, expr: IRExpression) -> str:
+        """
+        Convert expression to readable string for error messages.
+
+        This is a simplified version that produces human-readable expression strings.
+        """
+        if isinstance(expr, IRBinaryOp):
+            left = self._expression_to_string(expr.left)
+            right = self._expression_to_string(expr.right)
+            op_str = expr.op.value  # Get the operator string
+            return f"{left} {op_str} {right}"
+        elif isinstance(expr, IRUnaryOp):
+            operand = self._expression_to_string(expr.operand)
+            return f"{expr.op.value} {operand}"
+        elif isinstance(expr, IRLiteral):
+            if expr.literal_type == LiteralType.STRING:
+                return f'"{expr.value}"'
+            else:
+                return str(expr.value)
+        elif isinstance(expr, IRIdentifier):
+            return expr.name
+        elif isinstance(expr, IRPropertyAccess):
+            obj = self._expression_to_string(expr.object)
+            return f"{obj}.{expr.property}"
+        elif isinstance(expr, IRCall):
+            func = self._expression_to_string(expr.function)
+            args = ", ".join(self._expression_to_string(arg) for arg in expr.args)
+            return f"{func}({args})"
+        elif isinstance(expr, IROldExpr):
+            inner = self._expression_to_string(expr.expression)
+            return f"old {inner}"
+        else:
+            return "<expr>"
 
 
 # ============================================================================
