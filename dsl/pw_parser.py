@@ -495,7 +495,11 @@ class Lexer:
                         TokenType.IDENTIFIER, TokenType.INTEGER, TokenType.FLOAT,
                         TokenType.RPAREN, TokenType.RBRACKET, TokenType.STRING,
                     }
-                    if last_token.type in expression_tokens:
+                    # Only treat as floor division if:
+                    # 1. Previous token is an expression token
+                    # 2. Previous token is on the SAME line (not a new line)
+                    if (last_token.type in expression_tokens and
+                        last_token.line == self.line):
                         in_expression = True
 
                 if in_expression:

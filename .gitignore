@@ -173,6 +173,7 @@ test_*.cs
 !tests/test_*.rs
 !tests/test_*.ts
 !tests/test_*.cs
+!examples/real_world/*/test_*.py
 
 # MyPy and Ruff cache
 .mypy_cache/
