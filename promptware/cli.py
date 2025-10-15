@@ -335,7 +335,7 @@ For more help: promptware help <command>
     build_parser.add_argument(
         '--lang', '-l',
         type=str,
-        choices=['python', 'go', 'rust', 'typescript', 'csharp', 'ts', 'cs'],
+        choices=['python', 'go', 'rust', 'typescript', 'javascript', 'csharp', 'ts', 'js', 'cs'],
         default='python',
         help='Target language (default: python)'
     )
@@ -678,8 +678,6 @@ tokio = {{ version = "1", features = ["full"] }}
 
 def cmd_validate(args) -> int:
     """Execute validate command."""
-    from language.agent_parser import parse_agent_pw
-
     pw_file = Path(args.file)
     if not pw_file.exists():
         print(f"✗ Error: File not found: {args.file}", file=sys.stderr)
@@ -687,7 +685,34 @@ def cmd_validate(args) -> int:
 
     print(f"🔍 Validating {pw_file.name}...")
 
+    # Try contract validation first (for .pw files with contracts)
     try:
+        from promptware.cli.validate_contract import validate_contract, print_validation_result
+
+        result = validate_contract(str(pw_file), verbose=args.verbose)
+        print_validation_result(result, verbose=args.verbose)
+
+        return 0 if result.valid else 1
+
+    except ImportError:
+        # Fall back to agent validation
+        pass
+    except Exception as e:
+        # If contract validation fails, try agent validation
+        if "parse" in str(e).lower() or "token" in str(e).lower():
+            pass  # Continue to agent validation
+        else:
+            # Real error, report it
+            print(f"✗ Validation failed: {e}", file=sys.stderr)
+            if args.verbose:
+                import traceback
+                traceback.print_exc()
+            return 1
+
+    # Try agent validation (for agent .pw files)
+    try:
+        from language.agent_parser import parse_agent_pw
+
         pw_code = pw_file.read_text()
         agent = parse_agent_pw(pw_code)
 
@@ -1065,8 +1090,10 @@ def cmd_build(args) -> int:
     from dsl.pw_parser import parse_pw
     from translators.ir_converter import ir_to_mcp
     from translators.python_bridge import pw_to_python
+    from language.python_generator_v2 import generate_python
     from language.go_generator_v2 import GoGeneratorV2
     from language.rust_generator_v2 import RustGeneratorV2
+    from language.javascript_generator import generate_javascript
     from translators.typescript_bridge import pw_to_typescript
     from translators.csharp_bridge import pw_to_csharp
 
@@ -1101,6 +1128,8 @@ def cmd_build(args) -> int:
         lang = args.lang
         if lang in ('ts', 'typescript'):
             lang = 'typescript'
+        elif lang in ('js', 'javascript'):
+            lang = 'javascript'
         elif lang in ('cs', 'csharp'):
             lang = 'csharp'
 
@@ -1109,13 +1138,15 @@ def cmd_build(args) -> int:
             print(info(f"Generating {lang} code..."))
 
         if lang == 'python':
-            code = pw_to_python(mcp_tree)
+            code = generate_python(ir)
         elif lang == 'go':
             generator = GoGeneratorV2()
             code = generator.generate(ir)
         elif lang == 'rust':
             generator = RustGeneratorV2()
             code = generator.generate(ir)
+        elif lang == 'javascript':
+            code = generate_javascript(ir)
         elif lang == 'typescript':
             code = pw_to_typescript(mcp_tree)
         elif lang == 'csharp':
