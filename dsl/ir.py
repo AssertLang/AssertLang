@@ -95,6 +95,11 @@ class NodeType(Enum):
     AWAIT = "await"
     DECORATOR = "decorator"
     PATTERN_MATCH = "pattern_match"
+    OLD_EXPR = "old_expr"  # For `old` keyword in postconditions
+
+    # Contract annotations
+    CONTRACT_CLAUSE = "contract_clause"  # @requires, @ensures, @invariant
+    CONTRACT_ANNOTATION = "contract_annotation"  # @contract, @operation
 
 
 class BinaryOperator(Enum):
@@ -423,6 +428,15 @@ class IRFunction(IRNode):
 
         function option_map<T, U>(opt: Option<T>, fn: function(T) -> U) -> Option<U>:
           # body
+
+        # With contract annotations:
+        @operation(idempotent=true)
+        function createUser(name: string) -> User {
+          @requires name_not_empty: str.length(name) >= 1
+          @ensures id_positive: result.id > 0
+          @effects [database.write, event.emit("user.created")]
+          // body
+        }
     """
 
     name: str
@@ -436,6 +450,12 @@ class IRFunction(IRNode):
     is_private: bool = False
     decorators: List[Union[str, 'IRDecorator']] = field(default_factory=list)
     doc: Optional[str] = None
+
+    # Contract annotations
+    requires: List['IRContractClause'] = field(default_factory=list)  # Preconditions
+    ensures: List['IRContractClause'] = field(default_factory=list)  # Postconditions
+    effects: List[str] = field(default_factory=list)  # Side effects
+    operation_metadata: Dict[str, Any] = field(default_factory=dict)  # @operation metadata
 
     def __post_init__(self) -> None:
         self.type = NodeType.FUNCTION
@@ -483,6 +503,13 @@ class IRClass(IRNode):
 
         class List<T>:
           items: array<T>
+
+        # With contract annotations:
+        @contract(version="1.0.0")
+        service UserService {
+          @invariant count_non_negative: this.userCount >= 0
+          // ... methods
+        }
     """
 
     name: str
@@ -492,6 +519,10 @@ class IRClass(IRNode):
     constructor: Optional[IRFunction] = None
     base_classes: List[str] = field(default_factory=list)
     doc: Optional[str] = None
+
+    # Contract annotations
+    invariants: List['IRContractClause'] = field(default_factory=list)  # Class invariants
+    contract_metadata: Dict[str, Any] = field(default_factory=dict)  # @contract metadata
 
     def __post_init__(self) -> None:
         self.type = NodeType.CLASS
@@ -1238,6 +1269,68 @@ class IRPatternMatch(IRNode):
         super().__init__(type=NodeType.PATTERN_MATCH)
 
 
+@dataclass
+class IROldExpr(IRNode):
+    """
+    Old expression for referencing pre-state in postconditions.
+
+    Example:
+        @ensures increased: balance == old balance + amount
+        @ensures preserved: result.name == old name
+    """
+
+    expression: IRExpression  # The expression to evaluate in pre-state
+
+    def __post_init__(self) -> None:
+        self.type = NodeType.OLD_EXPR
+        super().__init__(type=NodeType.OLD_EXPR)
+
+
+# ============================================================================
+# Contract Annotation Nodes
+# ============================================================================
+
+
+@dataclass
+class IRContractClause(IRNode):
+    """
+    Contract clause (precondition, postcondition, or invariant).
+
+    Example:
+        @requires name_not_empty: str.length(name) >= 1
+        @ensures result_positive: result > 0
+        @invariant count_non_negative: this.count >= 0
+    """
+
+    clause_type: str  # "requires", "ensures", or "invariant"
+    name: str  # Clause name (e.g., "name_not_empty")
+    expression: IRExpression  # Boolean expression
+
+    def __post_init__(self) -> None:
+        self.type = NodeType.CONTRACT_CLAUSE
+        super().__init__(type=NodeType.CONTRACT_CLAUSE)
+
+
+@dataclass
+class IRContractAnnotation(IRNode):
+    """
+    Contract metadata annotation (@contract, @operation, @effects).
+
+    Example:
+        @contract(version="1.0.0", description="User service")
+        @operation(idempotent=true, timeout=5000)
+        @effects [database.write, event.emit("user.created")]
+    """
+
+    annotation_type: str  # "contract", "operation", or "effects"
+    metadata: Dict[str, Any] = field(default_factory=dict)  # Key-value metadata
+    effects: List[str] = field(default_factory=list)  # For @effects
+
+    def __post_init__(self) -> None:
+        self.type = NodeType.CONTRACT_ANNOTATION
+        super().__init__(type=NodeType.CONTRACT_ANNOTATION)
+
+
 # ============================================================================
 # Type Aliases
 # ============================================================================
@@ -1261,6 +1354,7 @@ IRExpression = Union[
     IRSpread,
     IRAwait,
     IRPatternMatch,
+    IROldExpr,
 ]
 
 # Union type for all statement nodes
