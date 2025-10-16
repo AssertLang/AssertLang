@@ -1,0 +1,97 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Test Python ${{ matrix.python-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ['3.9', '3.10', '3.11', '3.12', '3.13']
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev]"
+        pip install pytest pytest-cov pytest-asyncio pytest-mock
+
+    - name: Run tests with coverage
+      run: |
+        pytest tests/ \
+          --cov=assertlang \
+          --cov-report=xml \
+          --cov-report=term \
+          --tb=short \
+          -v
+
+    - name: Upload coverage to Codecov
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
+      uses: codecov/codecov-action@v4
+      with:
+        files: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+        token: ${{ secrets.CODECOV_TOKEN }}
+
+    - name: Test CLI commands
+      run: |
+        asl --version
+        asl --help
+
+    - name: Verify package can be imported
+      run: |
+        python -c "import assertlang; print(f'AssertLang version: {assertlang.__version__}')"
+
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Install AssertLang
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .
+
+    - name: Test contract compilation
+      run: |
+        cd examples/agent_coordination
+        asl build user_service_contract.al --lang python -o test_output.py
+        python -c "import test_output"
+        rm test_output.py
+
+    - name: Test multi-language generation
+      run: |
+        echo 'function greet(name: string) -> string { return "Hello, " + name + "!"; }' > test.al
+        asl build test.al --lang python -o test.py
+        asl build test.al --lang javascript -o test.js
+        python test.py
+        node test.js
+        rm test.al test.py test.js
