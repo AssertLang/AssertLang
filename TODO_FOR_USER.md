@@ -5,9 +5,42 @@
 
 ---
 
-## ⚡ Required Tasks (30 minutes)
+## ⚡ Required Tasks (40 minutes)
 
-### 1. Set Up PyPI Token (10 minutes) - REQUIRED
+### 1. Delete Old PyPI Package (5 minutes) - REQUIRED FIRST
+
+**Why:** 12 versions of `promptware-dev` exist on PyPI and must be removed before AssertLang launch
+
+**Steps:**
+```bash
+# 1. Go to PyPI package management
+https://pypi.org/manage/project/promptware-dev/
+
+# 2. Log in with your PyPI account
+
+# 3. Scroll to bottom → "Delete project" section
+
+# 4. Type "promptware-dev" to confirm
+
+# 5. Click "Delete project"
+
+# 6. Verify deletion:
+curl -s "https://pypi.org/pypi/promptware-dev/json" | head -1
+# Should return: 404 Not Found
+```
+
+**Versions to be deleted:**
+- 2.1.0b0 through 2.1.0b11 (12 total versions)
+
+**Why this matters:** Clean PyPI namespace prevents user confusion and name conflicts
+
+**Result:** `promptware-dev` completely removed from PyPI
+
+**⚠️ IMPORTANT:** Do this BEFORE creating v2.3.0 release (step 4)
+
+---
+
+### 2. Set Up PyPI Token (10 minutes) - REQUIRED
 
 **Why:** Needed for automated package publishing
 
@@ -36,7 +69,7 @@ Value: [paste your token]
 
 ---
 
-### 2. Merge to Main (10 minutes) - REQUIRED
+### 3. Merge to Main (10 minutes) - REQUIRED
 
 **Why:** Activate CI/CD workflows, make changes live
 
@@ -67,7 +100,7 @@ gh pr merge --auto --squash
 
 ---
 
-### 3. Create First Release (10 minutes) - OPTIONAL
+### 4. Create First Release (10 minutes) - TRIGGERS PYPI PUBLISH
 
 **Why:** Trigger automated PyPI publishing
 
@@ -136,7 +169,7 @@ None - first public release as AssertLang
 
 ## 🎯 Optional Tasks (When You Have Time)
 
-### 4. Set Up Codecov (5 minutes) - OPTIONAL
+### 5. Set Up Codecov (5 minutes) - OPTIONAL
 
 **Why:** Get coverage reports on PRs
 
@@ -153,7 +186,7 @@ Name: CODECOV_TOKEN
 Value: [your token]
 ```
 
-### 5. Configure Branch Protection (5 minutes) - RECOMMENDED
+### 6. Configure Branch Protection (5 minutes) - RECOMMENDED
 
 **Why:** Prevent accidental force pushes, require CI
 
@@ -173,7 +206,7 @@ https://github.com/AssertLang/AssertLang/settings/branches
 - No deletions
 ```
 
-### 6. Update Repo Description (2 minutes) - RECOMMENDED
+### 7. Update Repo Description (2 minutes) - RECOMMENDED
 
 **Why:** Better discoverability
 
@@ -190,7 +223,7 @@ https://github.com/AssertLang/AssertLang
 # Save
 ```
 
-### 7. Deploy assertlang.dev (When Ready)
+### 8. Deploy assertlang.dev (When Ready)
 
 **Why:** Professional web presence
 
@@ -206,8 +239,8 @@ https://github.com/AssertLang/AssertLang
 ## 📊 What's Already Done (You Don't Need To Do This)
 
 ✅ Complete rebrand (496 files updated)
-✅ Vercel site deleted
-✅ PyPI package verified clean
+✅ Vercel site deleted (no Promptware projects remain)
+⚠️ PyPI cleanup needed (12 versions of promptware-dev exist - see step 1)
 ✅ Git remote updated
 ✅ 5 GitHub Actions workflows created
 ✅ Dependabot configured
@@ -222,6 +255,7 @@ https://github.com/AssertLang/AssertLang
 
 When you get home, do these in order:
 
+- [ ] **Delete promptware-dev from PyPI** (5 min) - REQUIRED FIRST ⚠️
 - [ ] **Add PYPI_API_TOKEN** (10 min) - REQUIRED
 - [ ] **Merge PR to main** (10 min) - REQUIRED
 - [ ] **Create v2.3.0 release** (10 min) - Triggers auto-publish
@@ -229,7 +263,7 @@ When you get home, do these in order:
 - [ ] *(Optional)* Configure branch protection (5 min)
 - [ ] *(Optional)* Update repo description (2 min)
 
-**Total Required Time:** 30 minutes
+**Total Required Time:** 35 minutes (was 30 - added PyPI cleanup)
 **Total Optional Time:** 12 minutes
 
 ---
