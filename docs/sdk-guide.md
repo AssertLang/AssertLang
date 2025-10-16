@@ -1,6 +1,6 @@
-# Promptware SDK Guide
+# AssertLang SDK Guide
 
-Official client libraries for calling Promptware MCP agents.
+Official client libraries for calling AssertLang MCP agents.
 
 ## Installation
 

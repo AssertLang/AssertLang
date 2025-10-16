@@ -6,7 +6,7 @@
 
 ## Overview
 
-When Promptware generates code, it embeds runtime contract checks. This document describes the runtime API available in generated code.
+When AssertLang generates code, it embeds runtime contract checks. This document describes the runtime API available in generated code.
 
 **Languages**:
 - Python (100% complete)
@@ -582,7 +582,7 @@ ContractViolationError: Precondition 'non_negative' failed
 
   Suggestion: Ensure x is non-negative before calling sqrt()
 
-  Learn more: https://docs.promptware.dev/reference/error-codes#non-negative
+  Learn more: https://docs.assertlang.dev/reference/error-codes#non-negative
 ```
 
 ---

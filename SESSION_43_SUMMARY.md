@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-Session 43 delivered a complete standard library foundation for Promptware based on deep research of industry best practices (Rust, Swift, Kotlin). Three parallel agents produced 1,027 lines of production-ready stdlib code and 124 comprehensive tests. Work revealed a critical parser limitation (no generic type support) which is now being addressed by TA7-Parser (40% complete).
+Session 43 delivered a complete standard library foundation for AssertLang based on deep research of industry best practices (Rust, Swift, Kotlin). Three parallel agents produced 1,027 lines of production-ready stdlib code and 124 comprehensive tests. Work revealed a critical parser limitation (no generic type support) which is now being addressed by TA7-Parser (40% complete).
 
 ---
 
@@ -332,7 +332,7 @@ Next Step:
 1. **Priority:** Resolve enum variant syntax question immediately
 2. **Timeline:** TA7 can complete in 6-8 additional hours after decision
 3. **Risk:** Minimal - all work is additive, no breaking changes
-4. **Value:** Unlocks type-safe stdlib for all Promptware users
+4. **Value:** Unlocks type-safe stdlib for all AssertLang users
 5. **Next Milestone:** Stdlib v1.0 ready for production (1-2 weeks after TA7 complete)
 
 ---

@@ -87,7 +87,7 @@ def generate_operation(self, node):
 ### Scenario 1: Adding Redis Support
 
 **Traditional Approach:**
-1. Fork `Promptware` repo
+1. Fork `AssertLang` repo
 2. Edit `language/python_generator_v2.py`:
    ```python
    def generate_redis_get(self, node):

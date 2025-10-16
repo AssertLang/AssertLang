@@ -9,7 +9,7 @@ This guide documents safe patterns for common operations in PW that work correct
 ### Array Length
 
 **PW Syntax**:
-```pw
+```al
 function count_items(items: array) -> int {
     return items.length;
 }
@@ -23,7 +23,7 @@ function count_items(items: array) -> int {
 - **C#**: `items.Count` (for List<T>)
 
 **Usage Example**:
-```pw
+```al
 function sum_array(numbers: array) -> int {
     let total = 0;
     let i = 0;
@@ -46,7 +46,7 @@ function sum_array(numbers: array) -> int {
 **PW Solution**: Map indexing is automatically safe - returns `null` for missing keys.
 
 **PW Syntax**:
-```pw
+```al
 function has_user(users: map, username: string) -> bool {
     if (users[username] != null) {  // ✅ Safe - no exception
         return true;
@@ -86,17 +86,17 @@ pub fn has_user(users: &HashMap<String, Box<dyn std::any::Any>>, username: Strin
 ### Map Assignment vs Reading
 
 **Reading** (uses safe access):
-```pw
+```al
 let value = users[username];  // Safe - returns null if missing
 ```
 
 **Writing** (uses direct assignment):
-```pw
+```al
 users[username] = "active";  // Direct assignment works
 ```
 
 **Full Example**:
-```pw
+```al
 function add_user(users: map, username: string, email: string) -> bool {
     // Safe read - check if exists
     if (users[username] != null) {
@@ -113,7 +113,7 @@ function add_user(users: map, username: string, email: string) -> bool {
 
 String literal keys are also treated as map access:
 
-```pw
+```al
 function get_config(config: map) -> string {
     if (config["api_key"] != null) {  // ✅ Safe with string literal
         return config["api_key"];
@@ -138,7 +138,7 @@ PW generators use **type-aware indexing**:
    - Direct bracket notation `arr[i]`
 
 **Example**:
-```pw
+```al
 function demo(users: map, items: array, index: int, key: string) -> bool {
     let user = users[key];     // ✅ Map: uses .get() in Python
     let item = items[index];   // ✅ Array: uses [index] in Python
@@ -152,7 +152,7 @@ function demo(users: map, items: array, index: int, key: string) -> bool {
 
 ### C-Style For Loops
 
-```pw
+```al
 for (let i = 0; i < 10; i = i + 1) {
     // Loop body
 }
@@ -167,7 +167,7 @@ for (let i = 0; i < 10; i = i + 1) {
 
 ### For-In Loops
 
-```pw
+```al
 for (item in items) {
     // Process item
 }
@@ -177,7 +177,7 @@ Works in all 5 languages.
 
 ### While Loops with Break/Continue
 
-```pw
+```al
 while (condition) {
     if (skip_this) {
         continue;  // ✅ Works in all languages
@@ -195,7 +195,7 @@ while (condition) {
 
 ### Try/Catch/Finally
 
-```pw
+```al
 try {
     // Risky operation
     throw "error message";
@@ -215,7 +215,7 @@ Works in all 5 languages.
 
 ### Property Assignment in Constructors
 
-```pw
+```al
 class User {
     id: string;
     name: string;
@@ -234,7 +234,7 @@ class User {
 ### ❌ Assuming Direct Map Access is Safe
 
 **Don't assume this**:
-```pw
+```al
 let value = users[key];  // Will be safe in PW!
 // But might throw in raw Python/Rust/C# if you write it manually
 ```
@@ -244,7 +244,7 @@ let value = users[key];  // Will be safe in PW!
 ### ❌ Using `null` in Typed Returns (Bug #4 - Not Fixed Yet)
 
 **Currently broken**:
-```pw
+```al
 function find_user(id: int) -> map {
     if (id < 0) {
         return null;  // ❌ Type error: expected map, got null
@@ -254,7 +254,7 @@ function find_user(id: int) -> map {
 ```
 
 **Workaround**:
-```pw
+```al
 function find_user(id: int) -> map {
     if (id < 0) {
         return {};  // ✅ Return empty map instead
@@ -280,7 +280,7 @@ function find_user(id: int) -> map {
 
 ## Example: Complete Pattern
 
-```pw
+```al
 class UserManager {
     users: map;
     

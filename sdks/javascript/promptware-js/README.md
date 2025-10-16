@@ -1,6 +1,6 @@
 # @promptware/client
 
-Node.js client library for calling Promptware MCP services over HTTP.
+Node.js client library for calling AssertLang MCP services over HTTP.
 
 ## Installation
 

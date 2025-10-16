@@ -1,6 +1,6 @@
 # Contract Syntax Reference
 
-**Complete reference for Promptware contract language.**
+**Complete reference for AssertLang contract language.**
 
 ---
 

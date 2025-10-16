@@ -1,10 +1,10 @@
-# Promptware Testing Guide
+# AssertLang Testing Guide
 
 Comprehensive testing framework for MCP agents.
 
 ## Overview
 
-The Promptware testing framework provides:
+The AssertLang testing framework provides:
 
 - **Auto-generated test fixtures** - Tests generated from verb schemas
 - **Integration testing** - Validate all verbs work correctly
@@ -20,16 +20,16 @@ Test a running agent:
 
 ```bash
 # Health check and verb discovery
-promptware test http://localhost:3000
+asl test http://localhost:3000
 
 # Auto-generated integration tests
-promptware test http://localhost:3000 --auto
+asl test http://localhost:3000 --auto
 
 # Load test a specific verb
-promptware test http://localhost:3000 --load --verb user.create@v1 --requests 1000
+asl test http://localhost:3000 --load --verb user.create@v1 --requests 1000
 
 # Full test suite with coverage
-promptware test http://localhost:3000 --auto --coverage
+asl test http://localhost:3000 --auto --coverage
 ```
 
 ### Python API
@@ -356,7 +356,7 @@ jobs:
 
       - name: Run tests
         run: |
-          promptware test http://localhost:3000 --auto --coverage
+          asl test http://localhost:3000 --auto --coverage
 
       - name: Upload coverage
         uses: actions/upload-artifact@v3
@@ -372,7 +372,7 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-# Install Promptware
+# Install AssertLang
 COPY . .
 RUN pip install -e .
 
@@ -392,7 +392,7 @@ docker build -t my-agent .
 docker run -d -p 3000:3000 my-agent
 
 # Test
-promptware test http://localhost:3000 --auto
+asl test http://localhost:3000 --auto
 ```
 
 ## CLI Reference
@@ -401,16 +401,16 @@ promptware test http://localhost:3000 --auto
 
 ```bash
 # Health check and verb discovery
-promptware test http://localhost:3000
+asl test http://localhost:3000
 
 # Integration tests
-promptware test http://localhost:3000 --auto
+asl test http://localhost:3000 --auto
 
 # Load tests
-promptware test http://localhost:3000 --load --verb user.create@v1
+asl test http://localhost:3000 --load --verb user.create@v1
 
 # Full suite
-promptware test http://localhost:3000 --auto --coverage
+asl test http://localhost:3000 --auto --coverage
 ```
 
 ### Options
@@ -503,14 +503,14 @@ Always test agents during development:
 
 ```bash
 # Generate agent
-promptware generate my-agent.pw
+promptware generate my-agent.al
 
 # Start agent
 cd generated/my-agent
 python my-agent_server.py &
 
 # Test immediately
-promptware test http://localhost:3000 --auto
+asl test http://localhost:3000 --auto
 ```
 
 ### 2. Load Test Before Production
@@ -519,13 +519,13 @@ Run load tests to find performance bottlenecks:
 
 ```bash
 # Start with low concurrency
-promptware test http://localhost:3000 --load --verb user.create@v1 --requests 100 --concurrency 5
+asl test http://localhost:3000 --load --verb user.create@v1 --requests 100 --concurrency 5
 
 # Gradually increase
-promptware test http://localhost:3000 --load --verb user.create@v1 --requests 500 --concurrency 25
+asl test http://localhost:3000 --load --verb user.create@v1 --requests 500 --concurrency 25
 
 # Production-level test
-promptware test http://localhost:3000 --load --verb user.create@v1 --requests 1000 --concurrency 50
+asl test http://localhost:3000 --load --verb user.create@v1 --requests 1000 --concurrency 50
 ```
 
 ### 3. Track Coverage
@@ -534,7 +534,7 @@ Maintain high test coverage:
 
 ```bash
 # Run tests with coverage
-promptware test http://localhost:3000 --auto --coverage
+asl test http://localhost:3000 --auto --coverage
 
 # Check coverage.json
 cat coverage.json | jq '.coverage_pct'
@@ -550,13 +550,13 @@ If you support multiple languages, test each:
 
 ```bash
 # Test Python agent
-promptware test http://localhost:3000 --auto
+asl test http://localhost:3000 --auto
 
 # Test Node.js agent
-promptware test http://localhost:3001 --auto
+asl test http://localhost:3001 --auto
 
 # Test Go agent
-promptware test http://localhost:3002 --auto
+asl test http://localhost:3002 --auto
 ```
 
 ## Examples

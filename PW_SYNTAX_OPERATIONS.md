@@ -1,4 +1,4 @@
-# Promptware Universal Operations: Canonical Syntax Design
+# AssertLang Universal Operations: Canonical Syntax Design
 **Version:** 1.0
 **Date:** 2025-10-13
 **Purpose:** Define optimal PW syntax for 107 universal programming operations based on cross-language research

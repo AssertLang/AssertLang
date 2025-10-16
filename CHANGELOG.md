@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Promptware will be documented in this file.
+All notable changes to AssertLang will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -262,21 +262,21 @@ This release transforms PW from beta to production-ready with comprehensive lang
 
 #### CLI Tools (Week 5)
 
-**`promptware build`** - Universal code compiler
+**`asl build`** - Universal code compiler
 ```bash
-promptware build file.pw --lang python -o file.py
-promptware build file.pw --lang go -o file.go
-promptware build file.pw --lang rust -o file.rs
-promptware build file.pw --lang typescript -o file.ts
-promptware build file.pw --lang csharp -o file.cs
+asl build file.al --lang python -o file.py
+asl build file.al --lang go -o file.go
+asl build file.al --lang rust -o file.rs
+asl build file.al --lang typescript -o file.ts
+asl build file.al --lang csharp -o file.cs
 ```
 - Supports 5 target languages
 - Verbose mode (`--verbose`)
 - Output to file or stdout
 
-**`promptware compile`** - MCP JSON generator
+**`asl compile`** - MCP JSON generator
 ```bash
-promptware compile file.pw -o file.json
+asl compile file.al -o file.json
 ```
 - Generates intermediate representation
 - Shareable with AI agents
@@ -284,7 +284,7 @@ promptware compile file.pw -o file.json
 
 **`promptware run`** - Direct PW execution
 ```bash
-promptware run file.pw
+promptware run file.al
 ```
 - Compiles to Python and executes
 - Ideal for quick testing
@@ -483,7 +483,7 @@ None - fully backward compatible with v2.0.
 
 #### Testing Framework
 - **Auto-Generated Tests**: Generate integration tests from verb schemas
-- **Test Command**: `promptware test <url>` with options:
+- **Test Command**: `asl test <url>` with options:
   - `--auto` - Run auto-generated integration tests
   - `--load` - Run load tests with configurable concurrency
   - `--coverage` - Export coverage report
@@ -527,14 +527,14 @@ None - fully backward compatible with v2.0.
 
 #### CLI Commands
 - `promptware init <name>` - Create new agent from template
-- `promptware generate <file.pw>` - Generate MCP server
-- `promptware validate <file.pw>` - Validate agent syntax
-- `promptware test <url>` - Test running agent
+- `promptware generate <file.al>` - Generate MCP server
+- `promptware validate <file.al>` - Validate agent syntax
+- `asl test <url>` - Test running agent
 - `promptware list-tools` - List available tools
 - `promptware help` - Show help
 - `promptware --version` - Show version
 
-#### Agent Definition Language (.pw)
+#### Agent Definition Language (.al)
 - Declarative agent definitions
 - Verb definitions with typed parameters and returns
 - Tool integration
@@ -550,7 +550,7 @@ None - fully backward compatible with v2.0.
 - **Security**: Input validation, rate limiting, security headers
 
 ### Initial Release
-First stable release of Promptware with complete multi-language support and production-ready features.
+First stable release of AssertLang with complete multi-language support and production-ready features.
 
 ---
 

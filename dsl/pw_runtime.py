@@ -212,11 +212,11 @@ class PWRuntime:
         if self.stdlib_loaded:
             return
 
-        # Parse stdlib/core_simple.pw (temporary until parser supports pattern matching)
-        stdlib_path = Path(__file__).parent.parent / "stdlib" / "core_simple.pw"
+        # Parse stdlib/core_simple.al (temporary until parser supports pattern matching)
+        stdlib_path = Path(__file__).parent.parent / "stdlib" / "core_simple.al"
         if not stdlib_path.exists():
-            # Fallback to core.pw if simple version doesn't exist
-            stdlib_path = Path(__file__).parent.parent / "stdlib" / "core.pw"
+            # Fallback to core.al if simple version doesn't exist
+            stdlib_path = Path(__file__).parent.parent / "stdlib" / "core.al"
             if not stdlib_path.exists():
                 raise PWRuntimeError(f"stdlib not found")
 

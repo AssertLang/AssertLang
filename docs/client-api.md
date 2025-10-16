@@ -1,6 +1,6 @@
-# Promptware MCP Client Library
+# AssertLang MCP Client Library
 
-Python client library for calling Promptware services over HTTP using the MCP protocol.
+Python client library for calling AssertLang services over HTTP using the MCP protocol.
 
 ## Installation
 

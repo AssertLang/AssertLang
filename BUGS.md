@@ -1,4 +1,4 @@
-# Promptware Bug Tracking - v2.1.0b3
+# AssertLang Bug Tracking - v2.1.0b3
 
 **Last Updated**: 2025-10-08 (Session 28 - Documentation Complete)
 **Status**: 100% COMPLETE - All 9 Bugs Fixed! ✅
@@ -15,7 +15,7 @@
 **Commit**: 46b62e1
 
 **Original Issue**:
-ANY .pw file containing a `class` keyword crashed with:
+ANY .al file containing a `class` keyword crashed with:
 ```
 Build failed: 'NoneType' object has no attribute 'prop_type'
 ```
@@ -40,18 +40,18 @@ Build failed: 'NoneType' object has no attribute 'prop_type'
 
 **Test Results**: ✅ All 5 languages compile classes successfully
 ```bash
-✅ promptware build test_class.pw --lang python
-✅ promptware build test_class.pw --lang go
-✅ promptware build test_class.pw --lang rust
-✅ promptware build test_class.pw --lang typescript
-✅ promptware build test_class.pw --lang csharp
+✅ asl build test_class.al --lang python
+✅ asl build test_class.al --lang go
+✅ asl build test_class.al --lang rust
+✅ asl build test_class.al --lang typescript
+✅ asl build test_class.al --lang csharp
 ```
 
 **Affected Examples Now Working**:
-- ✅ examples/todo_list_manager.pw (official example)
-- ✅ test_class.pw (minimal reproduction)
-- ✅ simple_user_manager.pw (49 lines)
-- ✅ user_management_system.pw (470 lines)
+- ✅ examples/todo_list_manager.al (official example)
+- ✅ test_class.al (minimal reproduction)
+- ✅ simple_user_manager.al (49 lines)
+- ✅ user_management_system.al (470 lines)
 
 **Confidence**: 95% - Comprehensive fix tested across all languages
 
@@ -317,11 +317,11 @@ function count() -> int {
 
 **Test Results**:
 ```bash
-✅ promptware build test_while.pw --lang python
-✅ promptware build test_while.pw --lang go
-✅ promptware build test_while.pw --lang rust
-✅ promptware build test_while.pw --lang typescript
-✅ promptware build test_while.pw --lang csharp
+✅ asl build test_while.al --lang python
+✅ asl build test_while.al --lang go
+✅ asl build test_while.al --lang rust
+✅ asl build test_while.al --lang typescript
+✅ asl build test_while.al --lang csharp
 ```
 
 **Confidence**: 100% - Feature already working, no changes needed
@@ -569,7 +569,7 @@ All 8 fixed bugs now documented with examples:
 
 ### Session 23: ✅ COMPLETE
 - [x] Bug #3: Standardize try/catch syntax (C-style braces)
-- [x] Created examples/error_handling.pw
+- [x] Created examples/error_handling.al
 - [x] Documentation: Current_Work.md Session 23
 
 ### Session 24: ✅ COMPLETE
@@ -588,7 +588,7 @@ All 8 fixed bugs now documented with examples:
 - [x] Bug #7: Map key existence check unsafe (Session 26)
 - [x] Bug #8: Array .length not translated (Session 26)
 - [x] Bug #4: Optional types support (Session 27)
-- [x] Created examples/array_and_map_basics.pw
+- [x] Created examples/array_and_map_basics.al
 - [x] Created docs/SAFE_PATTERNS.md
 - [x] Documentation: Current_Work.md Sessions 26-27
 
@@ -618,14 +618,14 @@ All 8 fixed bugs now documented with examples:
 After each session, run:
 ```bash
 pytest tests/  # All existing tests
-promptware build examples/*.pw  # All official examples
+asl build examples/*.al  # All official examples
 ```
 
 ### Cross-Language Testing:
 Every fix must compile to all 5 languages:
 ```bash
 for lang in python go rust typescript csharp; do
-    promptware build test.pw --lang $lang -o test.$lang
+    asl build test.al --lang $lang -o test.$lang
 done
 ```
 
@@ -651,7 +651,7 @@ done
 ### 2025-10-08 - Session 26 (Parallel Bug Fix Sprint #2)
 - ✅ FIXED: Bug #7 - Map key existence check unsafe (Python, Rust, C#)
 - ✅ FIXED: Bug #8 - Array .length not translated (Python, Go, Rust, C#)
-- Created: examples/array_and_map_basics.pw
+- Created: examples/array_and_map_basics.al
 - Created: docs/SAFE_PATTERNS.md (comprehensive guide)
 - Updated: All 5 generators with type tracking and safe access patterns
 - Status: 7/9 bugs fixed (78% complete)
@@ -663,7 +663,7 @@ done
 - ✅ VERIFIED: Bug #5 - While loops working (Session 22)
 - ✅ FIXED: Bug #6 - Break/continue (Session 24)
 - Updated: All 5 generators, parser, MCP converter
-- Created: BUG_FIX_SPRINT_SUMMARY.md, examples/error_handling.pw
+- Created: BUG_FIX_SPRINT_SUMMARY.md, examples/error_handling.al
 - Status: 5/9 bugs fixed (56% complete)
 
 ---

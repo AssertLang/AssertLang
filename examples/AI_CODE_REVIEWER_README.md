@@ -1,11 +1,11 @@
 # AI Code Reviewer Agent Example
 
-Demonstrates LangChain integration with Promptware agents.
+Demonstrates LangChain integration with AssertLang agents.
 
 ## Overview
 
 This example shows how to build an AI-powered code review agent using:
-- **Promptware** - Agent coordination via `.pw` DSL
+- **AssertLang** - Agent coordination via `.pw` DSL
 - **LangChain** - LLM integration framework
 - **Claude 3.5 Sonnet** - Anthropic's latest model
 
@@ -212,7 +212,7 @@ python3 -m py_compile examples/ai_code_reviewer_server.py
 
 ```
 ┌─────────────────┐
-│  .pw Definition │  AI agent + prompts
+│  .al Definition │  AI agent + prompts
 └────────┬────────┘
          │ parse
          ▼

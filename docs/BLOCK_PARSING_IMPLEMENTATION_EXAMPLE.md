@@ -1,7 +1,7 @@
 # Block Parsing Implementation Example
 
 **Context**: How to fix P1-3 bug in Go parser (method body parsing)
-**Reference**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/docs/BLOCK_PARSING_RESEARCH.md`
+**Reference**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/docs/BLOCK_PARSING_RESEARCH.md`
 
 ---
 

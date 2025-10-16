@@ -2,13 +2,13 @@
 
 **Research Date:** 2025-10-13
 **Researcher:** Claude (Task Agent - Research Specialist)
-**Project:** Promptware Programming Language
+**Project:** AssertLang Programming Language
 
 ---
 
 ## Executive Summary
 
-This research evaluates the technical and market viability of pivoting Promptware from a traditional transpiler to an MCP-backed architecture where operations discover their implementations dynamically at compile-time via the Model Context Protocol.
+This research evaluates the technical and market viability of pivoting AssertLang from a traditional transpiler to an MCP-backed architecture where operations discover their implementations dynamically at compile-time via the Model Context Protocol.
 
 **Key Findings:**
 - **Technical Feasibility:** 7.5/10 - Architecturally sound but introduces new complexity
@@ -298,7 +298,7 @@ Next build uses improved implementation, no PW upgrade required.
 
 **Not true transpilers:** Require human review, not production-ready.
 
-**Promptware w/ MCP:** First transpiler with plugin-based operation discovery.
+**AssertLang w/ MCP:** First transpiler with plugin-based operation discovery.
 
 ### 2.2 Market Size
 

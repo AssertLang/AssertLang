@@ -1,6 +1,6 @@
 # Agent Learning PW - Real Session Example
 
-This shows how a coding agent learns PW (Promptware) during an actual session.
+This shows how a coding agent learns PW (AssertLang) during an actual session.
 
 ---
 
@@ -22,7 +22,7 @@ This shows how a coding agent learns PW (Promptware) during an actual session.
   "tools": [
     {
       "name": "pw_function",
-      "description": "Create a PW function. Promptware (PW) is a universal language for agents. Compose code using PW tool calls instead of writing language-specific code.",
+      "description": "Create a PW function. AssertLang (PW) is a universal language for agents. Compose code using PW tool calls instead of writing language-specific code.",
       "examples": [
         {
           "description": "Simple add function",
@@ -49,7 +49,7 @@ This shows how a coding agent learns PW (Promptware) during an actual session.
 ### Turn 2: Agent's First PW Composition
 
 **Agent responds**:
-> "I'll create a compound interest function using PW (Promptware). PW is a universal language that can generate Python, Go, or Rust.
+> "I'll create a compound interest function using PW (AssertLang). PW is a universal language that can generate Python, Go, or Rust.
 >
 > Let me compose this:"
 
@@ -259,7 +259,7 @@ func CompoundInterest(principal float64, rate float64, time int, n int) (float64
 **Agent**:
 > "Sure! Here's what I'd tell them:
 >
-> **PW (Promptware) is a universal programming language for agents.**
+> **PW (AssertLang) is a universal programming language for agents.**
 >
 > Instead of writing Python/Go/Rust directly, you compose code using PW tool calls:
 >

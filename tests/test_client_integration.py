@@ -21,8 +21,8 @@ sys.path.insert(0, str(project_root))
 import uvicorn
 
 from language.mcp_server_generator import generate_mcp_server_from_pw
-from promptware.client import MCPClient, call_verb
-from promptware.exceptions import InvalidVerbError
+from assertlang.client import MCPClient, call_verb
+from assertlang.exceptions import InvalidVerbError
 
 
 @pytest.fixture(scope="module")
@@ -159,7 +159,7 @@ def test_client_missing_params(test_server):
 
     # echo@v1 requires 'message' parameter
     # Server's generated handler checks for required params and returns error
-    from promptware.exceptions import MCPError
+    from assertlang.exceptions import MCPError
 
     with pytest.raises(MCPError, match="Missing required parameter"):
         client.call("echo@v1", {})

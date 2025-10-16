@@ -1,4 +1,4 @@
-# Promptware Pivot: Execution Plan
+# AssertLang Pivot: Execution Plan
 ## From "Universal Transpiler" to "Multi-Agent Contract Language"
 
 **Date:** 2025-10-14
@@ -22,7 +22,7 @@
 ### Why This Matters
 - $52B multi-agent market by 2030
 - No existing solution for deterministic cross-framework coordination
-- Promptware already has 90% of needed tech (transpiler works!)
+- AssertLang already has 90% of needed tech (transpiler works!)
 - Just needs repositioning + integration layer
 
 ---
@@ -166,7 +166,7 @@ service UserService {
 **Tasks:**
 - [ ] Improve CLI error messages (make them helpful)
 - [ ] Add `promptware validate-contract` command
-- [ ] Add `promptware test-contract` command
+- [ ] Add `asl test-contract` command
 - [ ] Improve VS Code extension for contracts
 - [ ] Add syntax highlighting for contract-specific keywords
 
@@ -473,7 +473,7 @@ service UserService {
 **Community:**
 - Respond to all issues within 48 hours
 - Weekly office hours (optional)
-- Monthly "State of Promptware" update
+- Monthly "State of AssertLang" update
 
 ---
 

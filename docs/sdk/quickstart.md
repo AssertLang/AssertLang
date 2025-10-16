@@ -1,6 +1,6 @@
-# Promptware SDK Quick Start
+# AssertLang SDK Quick Start
 
-This guide demonstrates how to integrate Promptware into your applications using the Python SDK.
+This guide demonstrates how to integrate AssertLang into your applications using the Python SDK.
 
 ---
 
@@ -14,7 +14,7 @@ pip install promptware-sdk
 
 **Requirements**:
 - Python 3.10 or higher
-- Promptware daemon running locally (default: `http://localhost:8765`)
+- AssertLang daemon running locally (default: `http://localhost:8765`)
 
 ---
 
@@ -25,7 +25,7 @@ pip install promptware-sdk
 ```python
 from promptware_sdk import mcp
 
-# Define a plan in Promptware DSL
+# Define a plan in AssertLang DSL
 plan_source = """
 call http_client as api {
     url: "https://api.github.com/repos/promptware/promptware"
@@ -92,7 +92,7 @@ mcp.report_finish_v1(run_id, status)
 ## Example: HTTP Health Check
 
 ```python
-from promptware_sdk import mcp, PromptwareError
+from promptware_sdk import mcp, AssertLangError
 
 try:
     # Assert endpoint is healthy
@@ -107,7 +107,7 @@ try:
     else:
         print(f"Health check failed: expected 200, got {result['actual_status_code']}")
 
-except PromptwareError as e:
+except AssertLangError as e:
     print(f"Error: {e.code} - {e.message}")
 ```
 
@@ -135,13 +135,13 @@ run_id = mcp.run_start_v1(plan)
 ## Error Handling
 
 ```python
-from promptware_sdk import PromptwareError, E_RUNTIME, E_TIMEOUT, E_POLICY
+from promptware_sdk import AssertLangError, E_RUNTIME, E_TIMEOUT, E_POLICY
 
 try:
     plan = mcp.plan_create_v1(plan_source)
     run_id = mcp.run_start_v1(plan)
 
-except PromptwareError as e:
+except AssertLangError as e:
     if e.code == E_RUNTIME:
         print(f"Runtime error: {e.message}")
     elif e.code == E_TIMEOUT:
@@ -272,14 +272,14 @@ def test_full_execution():
 ### 1. Always Handle Errors
 
 ```python
-from promptware_sdk import PromptwareError
+from promptware_sdk import AssertLangError
 
 try:
     plan = mcp.plan_create_v1(plan_source)
     run_id = mcp.run_start_v1(plan)
     status = TimelineReader(run_id).wait_for_completion()
 
-except PromptwareError as e:
+except AssertLangError as e:
     # Log error and handle gracefully
     logger.error(f"Execution failed: {e.code} - {e.message}")
     # Implement retry logic or fallback
@@ -295,7 +295,7 @@ reader = TimelineReader(run_id)
 
 try:
     status = reader.wait_for_completion(timeout=60)
-except PromptwareError as e:
+except AssertLangError as e:
     if e.code == E_TIMEOUT:
         # Handle timeout explicitly
         print("Execution exceeded 60s timeout")
@@ -391,7 +391,7 @@ pip install --upgrade promptware-sdk
 
 - **Issues**: https://github.com/promptware/promptware/issues
 - **Discussions**: https://github.com/promptware/promptware/discussions
-- **Documentation**: https://docs.promptware.dev
+- **Documentation**: https://docs.assertlang.dev
 
 ---
 

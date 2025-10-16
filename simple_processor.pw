@@ -1,0 +1,83 @@
+// Simplified data processing - shows what works now
+function main() -> int {
+    print("=== Text Processing Example ===");
+    print("");
+    
+    // 1. File operations
+    print("1. File Operations:");
+    let message = "Hello from Promptware!";
+    file.write("message.txt", message);
+    print("   Written:", message);
+    
+    let read_back = file.read("message.txt");
+    print("   Read back:", read_back);
+    print("   Files match:", str.contains(read_back, "Promptware"));
+    
+    // 2. String processing
+    print("");
+    print("2. String Processing:");
+    let text = "the quick brown fox";
+    print("   Original:", text);
+    print("   Uppercase:", str.upper(text));
+    print("   Starts with 'the':", str.starts_with(text, "the"));
+    
+    let words = str.split(text, " ");
+    print("   Word count:", len(words));
+    let rejoined = str.join("-", words);
+    print("   Rejoined:", rejoined);
+    
+    // 3. Math operations
+    print("");
+    print("3. Math Operations:");
+    let number = -42;
+    print("   Number:", number);
+    print("   Absolute:", math.abs(number));
+    print("   Square root of 144:", math.sqrt(144));
+    print("   Max(10, 99):", math.max(10, 99));
+    
+    // 4. Control flow
+    print("");
+    print("4. Control Flow:");
+    if (math.sqrt(16) == 4) {
+        print("   Math check passed!");
+    }
+    
+    let counter = 0;
+    while (counter < 3) {
+        print("   Loop iteration:", counter);
+        counter = counter + 1;
+    }
+    
+    // 5. User functions
+    print("");
+    print("5. User Functions:");
+    let sum = calculate_sum(15, 27);
+    print("   15 + 27 =", sum);
+    
+    let doubled = double_value(21);
+    print("   21 * 2 =", doubled);
+    
+    // 6. JSON operations
+    print("");
+    print("6. JSON Operations:");
+    let name = "Promptware";
+    let json = json.stringify(name);
+    print("   JSON string:", json);
+    let parsed = json.parse(json);
+    print("   Parsed back:", parsed);
+    
+    // Cleanup
+    file.delete("message.txt");
+    
+    print("");
+    print("=== All Operations Successful ===");
+    return 0;
+}
+
+function calculate_sum(a: int, b: int) -> int {
+    return a + b;
+}
+
+function double_value(x: int) -> int {
+    return x * 2;
+}

@@ -170,7 +170,7 @@ def main():
     """Main entry point."""
     # File paths
     go_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_sentient_maze.go"
-    output_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_sentient_maze_from_go.pw"
+    output_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_sentient_maze_from_go.al"
 
     # Run reverse parsing
     results = reverse_parse_go_to_pw(go_file, output_file)

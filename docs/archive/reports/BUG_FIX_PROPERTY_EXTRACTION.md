@@ -46,7 +46,7 @@ The constructor body was converted to IR statements (`IRAssignment` nodes), but 
 
 ### Implementation
 
-**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/python_parser_v2.py`
+**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/python_parser_v2.py`
 
 #### 1. Added Property Extraction Logic (Lines 291-308)
 
@@ -123,7 +123,7 @@ def _infer_expr_type_from_ir(self, expr: Any) -> IRType:
 ## Testing
 
 ### Test Suite
-Created comprehensive test suite: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/test_constructor_property_extraction.py`
+Created comprehensive test suite: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/test_constructor_property_extraction.py`
 
 ### Test Cases
 
@@ -229,13 +229,13 @@ $ PYTHONPATH=. python3 tests/test_constructor_property_extraction.py
 ## Files Changed
 
 ### Modified
-1. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/python_parser_v2.py`
+1. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/python_parser_v2.py`
    - Added property extraction logic in `_convert_class()` (lines 291-308)
    - Added `_infer_expr_type_from_ir()` method (lines 483-557)
    - Total: +92 lines
 
 ### Created
-1. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/test_constructor_property_extraction.py`
+1. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/test_constructor_property_extraction.py`
    - Comprehensive test suite (157 lines)
    - 7 test cases covering all scenarios
 
@@ -315,9 +315,9 @@ class UserService:
 ## References
 
 ### Code Locations
-- **Parser**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/python_parser_v2.py`
-- **Tests**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/test_constructor_property_extraction.py`
-- **IR Types**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/dsl/ir.py`
+- **Parser**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/python_parser_v2.py`
+- **Tests**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/test_constructor_property_extraction.py`
+- **IR Types**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/dsl/ir.py`
 
 ### Documentation
 - **CURRENT_WORK.md** - Updated with bug fix details

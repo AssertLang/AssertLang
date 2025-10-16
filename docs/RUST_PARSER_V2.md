@@ -8,7 +8,7 @@
 
 ## Overview
 
-The Rust Parser V2 converts arbitrary Rust code into Promptware's intermediate representation (IR), enabling universal code translation between Rust and any other supported language (Python, Node.js, Go, .NET).
+The Rust Parser V2 converts arbitrary Rust code into AssertLang's intermediate representation (IR), enabling universal code translation between Rust and any other supported language (Python, Node.js, Go, .NET).
 
 Unlike the V1 parser which targets specific MCP server patterns, V2 can parse **any Rust codebase** including libraries, applications, and tools.
 
@@ -513,11 +513,11 @@ if expr_str.startswith('vec!'):
 
 - [Rust Language Reference](https://doc.rust-lang.org/reference/)
 - [Rust Type System](https://doc.rust-lang.org/book/ch03-02-data-types.html)
-- [Promptware IR Specification](./IR_SPECIFICATION.md)
+- [AssertLang IR Specification](./IR_SPECIFICATION.md)
 - [Type System Documentation](./TYPE_SYSTEM.md)
 
 ---
 
 **Last Updated**: 2025-10-04
-**Maintainer**: Promptware Rust Parser Team
+**Maintainer**: AssertLang Rust Parser Team
 **Status**: Production Ready ✅

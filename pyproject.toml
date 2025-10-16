@@ -3,12 +3,12 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "promptware-dev"
+name = "assertlang"
 version = "2.2.0-alpha4"
 description = "Executable contracts for multi-agent systems - deterministic coordination across frameworks and languages"
 requires-python = ">=3.9"
 readme = "README.md"
-authors = [{ name = "Promptware Contributors", email = "hello@promptware.dev" }]
+authors = [{ name = "AssertLang Contributors", email = "hello@assertlang.dev" }]
 dependencies = [
   "requests>=2.31.0",
   "tomli>=2.0.0; python_version<'3.11'",
@@ -18,7 +18,7 @@ dependencies = [
 ]
 
 [project.scripts]
-promptware = "promptware.cli:main"
+asl = "assertlang.cli:main"
 
 [project.optional-dependencies]
 dev = [

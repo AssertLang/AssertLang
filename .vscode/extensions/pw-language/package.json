@@ -15,7 +15,7 @@
       {
         "id": "pw",
         "aliases": ["PW", "Promptware"],
-        "extensions": [".pw"],
+        "extensions": [".al"],
         "configuration": "./language-configuration.json",
         "icon": {
           "light": "./icons/pw-icon.svg",
@@ -26,7 +26,7 @@
     "grammars": [
       {
         "language": "pw",
-        "scopeName": "source.pw",
+        "scopeName": "source.al",
         "path": "./syntaxes/pw.tmLanguage.json"
       }
     ],

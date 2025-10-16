@@ -2,7 +2,7 @@
 
 ## Mission Complete ✅
 
-Successfully built a production-grade IR → Python code generator for the Promptware universal translation system.
+Successfully built a production-grade IR → Python code generator for the AssertLang universal translation system.
 
 ## Deliverables
 
@@ -241,7 +241,7 @@ Test Results: 16/16 passed (100%)
 ============================================================
 ```
 
-## Integration with Promptware Ecosystem
+## Integration with AssertLang Ecosystem
 
 ### Current Integration
 - ✅ Uses `dsl/ir.py` for all IR node types
@@ -345,7 +345,7 @@ The Python Generator V2 is **production ready** and fully meets all requirements
 ✅ **Well Documented**: 800+ lines of documentation with examples
 ✅ **Round-Trip Capable**: Preserves semantics across IR translation
 
-The generator successfully enables the Promptware vision: **Any Language → IR → Python**, making cross-language code translation a reality.
+The generator successfully enables the AssertLang vision: **Any Language → IR → Python**, making cross-language code translation a reality.
 
 ---
 

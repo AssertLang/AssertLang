@@ -216,10 +216,10 @@ else:
 
 ## Files Modified
 
-1. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/nodejs_generator_v2.py` (line 744)
-2. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/go_generator_v2.py` (lines 680, 775)
-3. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/rust_generator_v2.py` (line 773)
-4. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/dotnet_generator_v2.py` (line 725)
+1. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/nodejs_generator_v2.py` (line 744)
+2. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/go_generator_v2.py` (lines 680, 775)
+3. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/rust_generator_v2.py` (line 773)
+4. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/dotnet_generator_v2.py` (line 725)
 
 ---
 

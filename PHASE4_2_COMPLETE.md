@@ -108,13 +108,13 @@ pw version             # Show version
 
 **Example Usage**:
 ```bash
-$ bin/pw run test_hello.pw
+$ bin/pw run test_hello.al
 Hello from PW runtime!
 x = 42
-Language: Promptware
+Language: AssertLang
 
 $ bin/pw version
-PW (Promptware) 2.2.0-alpha1
+PW (AssertLang) 2.2.0-alpha1
 Phase 4.2: LSP + Runtime
 ```
 
@@ -206,7 +206,7 @@ All bugs caught and fixed through testing.
 
 **Test Output**:
 ```bash
-$ bin/pw run tests/runtime/test_file_ops.pw
+$ bin/pw run tests/runtime/test_file_ops.al
 === File Operations Test ===
 
 1. Testing file.write...
@@ -258,11 +258,11 @@ bin/
 └── pw                 (65 lines, executable)
 
 tests/runtime/
-├── test_file_ops.pw      (34 lines)
-├── test_string_ops.pw    (74 lines)
-└── test_json_math.pw     (71 lines)
+├── test_file_ops.al      (34 lines)
+├── test_string_ops.al    (74 lines)
+└── test_json_math.al     (71 lines)
 
-test_runtime_hello.pw     (13 lines)
+test_runtime_hello.al     (13 lines)
 ```
 
 **Total New Code**: 1,054 lines
@@ -289,7 +289,7 @@ test_runtime_hello.pw     (13 lines)
 ### Test Execution Time
 
 ```bash
-$ time bin/pw run tests/runtime/test_string_ops.pw
+$ time bin/pw run tests/runtime/test_string_ops.al
 real    0m1.234s  # Includes CharCNN model load
 user    0m1.089s
 sys     0m0.092s

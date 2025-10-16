@@ -5,8 +5,8 @@ Tests service-to-service communication over HTTP.
 """
 
 import pytest
-from promptware import MCPClient, call_verb
-from promptware.exceptions import ConnectionError, InvalidVerbError
+from assertlang import MCPClient, call_verb
+from assertlang.exceptions import ConnectionError, InvalidVerbError
 
 
 def test_http_transport_jsonrpc_format():

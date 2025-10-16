@@ -30,7 +30,7 @@ Computer A                    Computer B                    Computer C
                 │    SHARED PW CODE REPOSITORY       │
                 │  (Git-like, but semantic-aware)    │
                 │                                    │
-                │  app.pw ←→ app.py ←→ app.js        │
+                │  app.al ←→ app.py ←→ app.js        │
                 │  All versions are equivalent!      │
                 └────────────────────────────────────┘
 ```
@@ -61,7 +61,7 @@ $ pwenv commit app.js --message "Add fetchUsers function"
 # Behind the scenes:
 # 1. pwenv detects JavaScript
 # 2. Transpiles JS → PW using MCP Server 1
-# 3. Stores BOTH app.js AND app.pw in repo
+# 3. Stores BOTH app.js AND app.al in repo
 # 4. Pushes to shared repository
 ```
 
@@ -71,7 +71,7 @@ $ cd ~/project
 $ pwenv pull
 
 # Behind the scenes:
-# 1. Pulls app.pw from repo
+# 1. Pulls app.al from repo
 # 2. MCP Server 2 transpiles PW → Python
 # 3. Creates app.py automatically
 
@@ -91,7 +91,7 @@ $ pwenv commit app.py --message "Add error handling"
 
 # Behind the scenes:
 # 1. Transpiles Python → PW
-# 2. Stores app.py AND app.pw
+# 2. Stores app.py AND app.al
 # 3. Pushes both
 ```
 
@@ -100,7 +100,7 @@ $ pwenv commit app.py --message "Add error handling"
 $ pwenv pull
 
 # Behind the scenes:
-# 1. Pulls updated app.pw
+# 1. Pulls updated app.al
 # 2. MCP Server 1 transpiles PW → JavaScript
 # 3. Updates app.js with error handling
 # 4. Developer A sees their JS updated automatically!
@@ -133,22 +133,22 @@ function authenticate_user(username: string, password: string) -> Result<User, s
 }
 
 # Agent commits pure PW:
-$ pwenv commit auth.pw --message "Implement authentication"
+$ pwenv commit auth.al --message "Implement authentication"
 ```
 
 **Human developers pull in ANY language:**
 ```bash
 # Developer A (JavaScript):
 $ pwenv pull --target javascript
-# Gets: auth.js (auto-generated from auth.pw)
+# Gets: auth.js (auto-generated from auth.al)
 
 # Developer B (Python):
 $ pwenv pull --target python
-# Gets: auth.py (auto-generated from auth.pw)
+# Gets: auth.py (auto-generated from auth.al)
 
 # Developer C (Rust):
 $ pwenv pull --target rust
-# Gets: auth.rs (auto-generated from auth.pw)
+# Gets: auth.rs (auto-generated from auth.al)
 ```
 
 **Everyone works in their preferred language, all from the same PW source.**
@@ -193,8 +193,8 @@ my-project/
 │
 ├── .pw-repo/                  # Semantic repository
 │   ├── pw/                   # Canonical PW files
-│   │   ├── auth.pw
-│   │   └── api.pw
+│   │   ├── auth.al
+│   │   └── api.al
 │   ├── python/               # Python versions
 │   │   ├── auth.py
 │   │   └── api.py
@@ -241,28 +241,28 @@ Operations: +23 (107 total)
 
 # Auto-transpile to PW
 (pwenv) $ pwenv transpile auth.py
-✓ Transpiled: auth.py → auth.pw (CharCNN: 100% confidence)
+✓ Transpiled: auth.py → auth.al (CharCNN: 100% confidence)
 ✓ Stored in .pw-repo/
 
 # Transpile PW to other languages
-(pwenv) $ pwenv transpile auth.pw --to javascript
+(pwenv) $ pwenv transpile auth.al --to javascript
 ✓ Generated: auth.js
-(pwenv) $ pwenv transpile auth.pw --to rust
+(pwenv) $ pwenv transpile auth.al --to rust
 ✓ Generated: auth.rs
 
 # Automatic mode (transpile on save)
 (pwenv) $ pwenv watch src/
 Watching src/ for changes...
-[12:34:56] auth.py changed → transpiled to auth.pw
-[12:35:01] api.py changed → transpiled to api.pw
+[12:34:56] auth.py changed → transpiled to auth.al
+[12:35:01] api.py changed → transpiled to api.al
 ```
 
 ### Collaboration
 ```bash
 # Commit (stores all versions)
 (pwenv) $ pwenv commit auth.py --message "Add authentication"
-✓ Transpiled: auth.py → auth.pw
-✓ Stored: auth.py, auth.pw
+✓ Transpiled: auth.py → auth.al
+✓ Stored: auth.py, auth.al
 ✓ Committed to .pw-repo/
 
 # Push to shared repository
@@ -272,13 +272,13 @@ Watching src/ for changes...
 
 # Pull updates
 (pwenv) $ pwenv pull
-✓ Pulled: api.pw (updated by teammate)
-✓ Transpiled: api.pw → api.py
+✓ Pulled: api.al (updated by teammate)
+✓ Transpiled: api.al → api.py
 ✓ Your Python code updated!
 
 # Pull in different language
 (pwenv) $ pwenv pull --target rust
-✓ Pulled: api.pw
+✓ Pulled: api.al
 ✓ Generated: api.rs (Rust version)
 ```
 
@@ -298,8 +298,8 @@ function calculate_fibonacci(n: int) -> int {
     return calculate_fibonacci(n - 1) + calculate_fibonacci(n - 2)
 }
 
-> save fibonacci.pw
-✓ Saved: fibonacci.pw
+> save fibonacci.al
+✓ Saved: fibonacci.al
 
 > transpile --to python,javascript,rust
 ✓ Generated: fibonacci.py, fibonacci.js, fibonacci.rs
@@ -343,14 +343,14 @@ Connected to alice.local
 ✓ New operations: db.*, redis.*, aws.*
 
 # Use remote operations
-(pwenv) $ cat app.pw
+(pwenv) $ cat app.al
 function store_user(user: User) {
     db.insert("users", user)    # This operation comes from alice.local!
     redis.cache("user:" + user.id, user)  # This too!
 }
 
 # Transpile using remote operations
-(pwenv) $ pwenv transpile app.pw --to python
+(pwenv) $ pwenv transpile app.al --to python
 Querying MCP servers...
   db.insert → alice.local (Python impl)
   redis.cache → alice.local (Python impl)
@@ -382,7 +382,7 @@ Will receive updates when new operations are published
 {
   "version": "1.0.0",
   "files": {
-    "auth.pw": {
+    "auth.al": {
       "canonical": true,
       "hash": "a3f5b2c...",
       "versions": {
@@ -429,7 +429,7 @@ $ git add auth.py
 $ pwenv commit --message "Add authentication"
 
 # Behind the scenes:
-# 1. Transpiles auth.py → auth.pw
+# 1. Transpiles auth.py → auth.al
 # 2. Stores BOTH in .pw-repo/
 # 3. Updates manifest.json
 # 4. Git commits ALL versions
@@ -441,7 +441,7 @@ $ git pull
 $ pwenv sync
 
 # Behind the scenes:
-# 1. Detects auth.pw updated
+# 1. Detects auth.al updated
 # 2. Transpiles to teammate's language (JavaScript)
 # 3. Updates their auth.js
 # 4. They see changes in their preferred language!

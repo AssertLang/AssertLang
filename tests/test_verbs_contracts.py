@@ -24,7 +24,7 @@ def daemon():
 
 
 def test_plan_create_v1_schema(daemon):
-    # Use valid .pw DSL input
+    # Use valid .al DSL input
     pw_input = """
 tool logger as log
 call log message="hello"

@@ -1,6 +1,6 @@
 # Toolgen Template Catalog
 
-This catalog lists the Promptware tool specifications currently checked in under `toolgen/specs/`. Each entry shows the tool id, a one-line summary, and the adapter templates that will be rendered when the generator runs. Use this as the jumping-off point when designing new tools or extending template coverage to additional languages.
+This catalog lists the AssertLang tool specifications currently checked in under `toolgen/specs/`. Each entry shows the tool id, a one-line summary, and the adapter templates that will be rendered when the generator runs. Use this as the jumping-off point when designing new tools or extending template coverage to additional languages.
 
 | Tool | Summary | Adapters |
 | --- | --- | --- |

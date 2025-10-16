@@ -24,7 +24,7 @@ def test_api_server_parses():
     print(f"{'='*60}")
 
     # Read the API server program
-    api_file = Path(__file__).parent.parent / "examples" / "simple_web_api.pw"
+    api_file = Path(__file__).parent.parent / "examples" / "simple_web_api.al"
 
     try:
         with open(api_file) as f:

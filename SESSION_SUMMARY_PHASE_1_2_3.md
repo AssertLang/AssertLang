@@ -253,7 +253,7 @@ python -m promptware.cli.generate_docs user_service.pw
    - Error formatting identical to Python
 
 3. **CLI Integration**
-   - `promptware build contract.pw --lang javascript`
+   - `asl build contract.pw --lang javascript`
    - JavaScript added to language choices
    - Automatic import generation
 
@@ -403,10 +403,10 @@ service UserService {
 promptware validate contract.pw
 
 # Build for Python
-promptware build contract.pw --lang python -o output.py
+asl build contract.pw --lang python -o output.py
 
 # Build for JavaScript
-promptware build contract.pw --lang javascript -o output.js
+asl build contract.pw --lang javascript -o output.js
 
 # Generate documentation
 python -m promptware.cli.generate_docs contract.pw

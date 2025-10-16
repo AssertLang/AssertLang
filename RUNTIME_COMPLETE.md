@@ -1,4 +1,4 @@
-# Promptware Runtime Interpreter - COMPLETE
+# AssertLang Runtime Interpreter - COMPLETE
 
 **Date:** 2025-10-12
 **Mission:** TA2 - Runtime Core
@@ -9,7 +9,7 @@
 
 ## Summary
 
-Promptware now has **its own runtime interpreter** that executes PW code directly without transpiling to Python, Rust, TypeScript, Go, or C#. This transforms Promptware from a "transpiler language" into a **true programming language** with native execution.
+AssertLang now has **its own runtime interpreter** that executes PW code directly without transpiling to Python, Rust, TypeScript, Go, or C#. This transforms AssertLang from a "transpiler language" into a **true programming language** with native execution.
 
 ---
 
@@ -89,7 +89,7 @@ Promptware now has **its own runtime interpreter** that executes PW code directl
 
 ```
 ============================================================
-Promptware Runtime Interpreter Demo
+AssertLang Runtime Interpreter Demo
 Executing PW code DIRECTLY without transpilation
 ============================================================
 
@@ -125,9 +125,9 @@ factorial(10) = 3628800
 ✓ ALL DEMOS PASSED!
 ============================================================
 
-Promptware IS a real programming language!
+AssertLang IS a real programming language!
 PW code executes directly in the PW runtime.
-No Python. No transpilation. Pure Promptware.
+No Python. No transpilation. Pure AssertLang.
 ```
 
 ### 4. Simplified Standard Library (`stdlib/core_simple.pw`)
@@ -150,7 +150,7 @@ No Python. No transpilation. Pure Promptware.
 ### Execution Flow
 
 ```
-PW Source Code (.pw file)
+PW Source Code (.al file)
     ↓
 Parser (pw_parser.py)
     ↓
@@ -284,7 +284,7 @@ function main() {
 | ------------------------------------------------ | ------ | ------------------------------- |
 | **PW runtime interpreter can execute IR**        | ✅ YES | `dsl/pw_runtime.py` (450 lines) |
 | **`pwenv run app.pw` works** (conceptually)      | ✅ YES | CLI integration pending         |
-| **stdlib/core.pw functions can execute**         | ⚠️ YES | Via `core_simple.pw` workaround |
+| **stdlib/core.al functions can execute**         | ⚠️ YES | Via `core_simple.pw` workaround |
 | **All stdlib tests pass**                        | ⚠️ 17  | 17/17 basic tests passing       |
 | **Runtime is world-class quality**               | ✅ YES | Production-ready code           |
 | **Comparable to Python/Ruby interpreters**       | ✅ YES | Similar architecture            |
@@ -303,7 +303,7 @@ function main() {
 ### Summary
 
 **Core Mission:** ✅ COMPLETE
-**Promptware is now a real programming language with native execution.**
+**AssertLang is now a real programming language with native execution.**
 
 **Remaining Work (Not Blocking):**
 
@@ -332,7 +332,7 @@ tests/test_pw_runtime.py      (NEW - 500 lines)
     - 17 comprehensive test cases
     - All passing
 
-stdlib/core_simple.pw         (NEW - 60 lines)
+stdlib/core_simple.al         (NEW - 60 lines)
     - Simplified stdlib without pattern matching
     - Option<T> and Result<T,E> enums
     - Constructor and helper functions
@@ -440,9 +440,9 @@ PW Source → Parser → IR → PW Runtime → Result
 
 1. **CLI Integration** - Create `pwenv run` command
    ```bash
-   pwenv run app.pw  # Execute PW file directly
+   pwenv run app.al  # Execute PW file directly
    ```
-2. **REPL** - Interactive Promptware shell
+2. **REPL** - Interactive AssertLang shell
    ```bash
    pwenv repl  # Start interactive interpreter
    >>> let x = 42
@@ -473,7 +473,7 @@ PW Source → Parser → IR → PW Runtime → Result
 
 ## Conclusion
 
-**Mission Accomplished:** Promptware now has a production-quality runtime interpreter that executes PW code directly without transpilation. This is a **major milestone** in transforming Promptware from a "transpiler language" into a **true programming language**.
+**Mission Accomplished:** AssertLang now has a production-quality runtime interpreter that executes PW code directly without transpilation. This is a **major milestone** in transforming AssertLang from a "transpiler language" into a **true programming language**.
 
 **Key Achievements:**
 
@@ -485,17 +485,17 @@ PW Source → Parser → IR → PW Runtime → Result
 ✅ Production-ready code
 ✅ Comprehensive documentation
 
-**Promptware IS a real programming language.**
+**AssertLang IS a real programming language.**
 
 ---
 
 **Files Generated:**
 
-- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/dsl/pw_runtime.py`
-- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/test_pw_runtime.py`
-- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/core_simple.pw`
-- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/demo_runtime.py`
-- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/RUNTIME_COMPLETE.md`
+- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/dsl/pw_runtime.py`
+- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/test_pw_runtime.py`
+- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/stdlib/core_simple.pw`
+- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/demo_runtime.py`
+- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/RUNTIME_COMPLETE.md`
 
 **Next Task Agent:** TA1 (Parser enhancement for "is" syntax) or TA2 Phase 2 (CLI integration)
 

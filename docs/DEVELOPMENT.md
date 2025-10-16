@@ -31,7 +31,7 @@
 
 ```bash
 # Clone repository
-git clone https://github.com/Promptware-dev/promptware.git
+git clone https://github.com/AssertLang/AssertLang.git
 cd promptware
 
 # Install Python dependencies
@@ -74,9 +74,9 @@ promptware/
 │   └── debug/             # Debug scripts
 │
 ├── examples/               # Example programs
-│   ├── calculator_cli.pw
-│   ├── todo_list_manager.pw
-│   └── simple_web_api.pw
+│   ├── calculator_cli.al
+│   ├── todo_list_manager.al
+│   └── simple_web_api.al
 │
 └── docs/                   # Documentation
     ├── AI_AGENT_GUIDE.md  # For AI coding agents
@@ -531,7 +531,7 @@ git commit -m "docs: Update AI agent guide with v2.1 features"
 
 1. **Create PR with comprehensive description**:
 ```bash
-gh pr create --repo Promptware-dev/promptware \
+gh pr create --repo AssertLang/AssertLang \
   --base main --head raw-code-parsing \
   --title "feat: v2.1.0b3-beta - Production Ready" \
   --body "$(cat pr_template.md)"
@@ -573,9 +573,9 @@ python3 -m pytest tests/ -v
 python3 -m pytest tests/integration/ -v
 
 # Test CLI commands
-promptware build examples/calculator_cli.pw --lang python
-promptware compile examples/calculator_cli.pw
-promptware run examples/calculator_cli.pw
+asl build examples/calculator_cli.al --lang python
+asl compile examples/calculator_cli.al
+promptware run examples/calculator_cli.al
 ```
 
 #### 2. Update Documentation
@@ -604,7 +604,7 @@ git commit -m "chore: Release v2.1.0b3
 - Add release summary"
 
 # Create annotated tag
-git tag -a v2.1.0b3 -m "Promptware v2.1.0b3 - Production Ready
+git tag -a v2.1.0b3 -m "AssertLang v2.1.0b3 - Production Ready
 
 Major Features:
 - Type validation system
@@ -799,4 +799,4 @@ See [CONTRIBUTING.md](../CONTRIBUTING.md) for:
 
 **Last Updated**: 2025-10-07
 **Version**: 2.1.0b3-beta
-**Maintained By**: Promptware Development Team
+**Maintained By**: AssertLang Development Team

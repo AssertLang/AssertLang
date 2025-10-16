@@ -20,7 +20,7 @@ State machines without contracts allow:
 
 ## Solution
 
-```pw
+```al
 function can_transition(
     current_state: string,
     next_state: string
@@ -151,7 +151,7 @@ cancelled (terminal)
 ## Variations
 
 ### With State Data Validation
-```pw
+```al
 function validate_state_data(
     state: string,
     data_present: bool,
@@ -188,7 +188,7 @@ function validate_state_data(
 ---
 
 ### With Entry/Exit Actions
-```pw
+```al
 function check_entry_condition(
     target_state: string,
     precondition_met: bool
@@ -237,7 +237,7 @@ function check_exit_condition(
 ---
 
 ### With Timeout Validation
-```pw
+```al
 function check_state_timeout(
     current_state: string,
     time_in_state: int,
@@ -276,14 +276,14 @@ if current_state == "procesing":  # Typo!
 **Problem**: Typos not caught, invalid states accepted.
 
 **Fix**: Use `is_valid_state()` first.
-```pw
+```al
 @requires valid_state: is_valid_state(current_state)
 ```
 
 ---
 
 ### ❌ Allowing backwards transitions
-```pw
+```al
 // ❌ Bad: allows any transition
 function can_transition(from: string, to: string) -> bool {
     return true;  // No validation!
@@ -304,7 +304,7 @@ order.state = "pending"  # ❌ Modified terminal state!
 ```
 
 **Fix**: Check if current state is terminal.
-```pw
+```al
 @requires not_terminal: current_state != "delivered" && current_state != "cancelled"
 ```
 
@@ -317,7 +317,7 @@ order.payment_info = None  # ❌ Paid without payment info!
 ```
 
 **Fix**: Validate state-specific data requirements.
-```pw
+```al
 @requires paid_has_payment: state != "paid" || (data_present && data_valid)
 ```
 
@@ -326,7 +326,7 @@ order.payment_info = None  # ❌ Paid without payment info!
 ## Real-World Example
 
 **Order processing state machine:**
-```pw
+```al
 class OrderStateMachine {
     state: string
     payment_verified: bool

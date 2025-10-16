@@ -1,18 +1,18 @@
 # How to Set Up MCP Server
 
-**Expose Promptware contracts via Model Context Protocol for Claude Desktop and other AI tools.**
+**Expose AssertLang contracts via Model Context Protocol for Claude Desktop and other AI tools.**
 
 ---
 
 ## What You'll Learn
 
 - Install and configure MCP server
-- Connect Claude Desktop to Promptware
-- Use Promptware operations from Claude
+- Connect Claude Desktop to AssertLang
+- Use AssertLang operations from Claude
 - Test MCP integration
 
 **Prerequisites**:
-- Promptware installed
+- AssertLang installed
 - Claude Desktop (for testing)
 
 **Time**: 20 minutes
@@ -25,7 +25,7 @@
 
 **Model Context Protocol (MCP)** is an open standard for connecting AI assistants to external tools and data sources.
 
-**Why use MCP with Promptware?**
+**Why use MCP with AssertLang?**
 - **AI-native** - Claude can parse, validate, and generate contracts directly
 - **No REST API needed** - Standard protocol, no custom endpoints
 - **Real-time validation** - AI gets instant feedback on contract syntax
@@ -46,7 +46,7 @@
          │ (stdio/JSON-RPC)
          ▼
 ┌─────────────────┐
-│ Promptware MCP  │
+│ AssertLang MCP  │
 │    Server       │
 │                 │
 │  23 Operations  │
@@ -69,7 +69,7 @@ promptware-mcp-server --version
 
 **Expected output**:
 ```
-Promptware MCP Server 2.2.0
+AssertLang MCP Server 2.2.0
 ```
 
 **If not found**:
@@ -130,7 +130,7 @@ pip install --upgrade promptware
 
 In Claude chat, type:
 ```
-List available Promptware operations
+List available AssertLang operations
 ```
 
 Claude should respond with 23 available operations.
@@ -143,7 +143,7 @@ Claude should respond with 23 available operations.
 
 **Prompt Claude**:
 ```
-Parse this Promptware contract:
+Parse this AssertLang contract:
 
 function add(x: int, y: int) -> int {
     @requires positive: x > 0 && y > 0
@@ -384,7 +384,7 @@ function calculate_discount(price: float, percent: float) -> float {
 
 ## Troubleshooting
 
-### Problem: Claude says "Promptware operations not available"
+### Problem: Claude says "AssertLang operations not available"
 
 **Fixes**:
 1. **Verify config location**:
@@ -514,7 +514,7 @@ Contract Violation: Postcondition
 
 ## What You Learned
 
-✅ **MCP setup** - Configure Claude Desktop for Promptware
+✅ **MCP setup** - Configure Claude Desktop for AssertLang
 ✅ **23 operations** - Parse, validate, generate, debug contracts
 ✅ **AI integration** - Use Claude as contract assistant
 ✅ **Multi-language** - Generate code in 5 languages via AI

@@ -1,4 +1,4 @@
-# Promptware MCP Operations Server
+# AssertLang MCP Operations Server
 
 **Version:** 1.0.0
 **Protocol:** MCP (JSON-RPC 2.0 over stdio)
@@ -9,7 +9,7 @@
 
 ## Overview
 
-The Promptware MCP Operations Server is a Model Context Protocol (MCP) server that provides implementations of 107 universal programming operations across 5 languages. It acts as a **bidirectional translation layer** between Promptware's canonical syntax and real-world programming languages.
+The AssertLang MCP Operations Server is a Model Context Protocol (MCP) server that provides implementations of 107 universal programming operations across 5 languages. It acts as a **bidirectional translation layer** between AssertLang's canonical syntax and real-world programming languages.
 
 ### Key Features
 
@@ -494,9 +494,9 @@ Then restart Claude Desktop. The server will provide 107 tools for code generati
 
 ---
 
-## Integration with Promptware Compiler
+## Integration with AssertLang Compiler
 
-The MCP server is designed to integrate with the Promptware compiler workflow:
+The MCP server is designed to integrate with the AssertLang compiler workflow:
 
 ```
 PW Code → Parser → IR → MCP Query → Target Code → Output
@@ -609,20 +609,20 @@ echo '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"file.read"
 
 ## License
 
-Part of the Promptware project. See main repository for license information.
+Part of the AssertLang project. See main repository for license information.
 
 ---
 
 ## Support
 
 For issues, questions, or contributions:
-- GitHub: [Promptware Repository]
+- GitHub: [AssertLang Repository]
 - Documentation: `/docs/`
 - Issues: Report via GitHub Issues
 
 ---
 
-**Built with** ❤️ **for the Promptware project**
+**Built with** ❤️ **for the AssertLang project**
 **Total Lines of Code:** ~4,000
 **Total Operations:** 107
 **Target Languages:** 5

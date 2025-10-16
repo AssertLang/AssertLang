@@ -1,8 +1,8 @@
-# Promptware Test Suite
+# AssertLang Test Suite
 
 **Test Coverage**: 105/105 tests passing (99%)
 
-This directory contains comprehensive tests for the Promptware universal code translator.
+This directory contains comprehensive tests for the AssertLang universal code translator.
 
 ---
 
@@ -140,9 +140,9 @@ This directory contains comprehensive tests for the Promptware universal code tr
 
 **Commands Tested**:
 ```bash
-promptware build file.pw --lang python -o file.py
-promptware compile file.pw -o file.json
-promptware run file.pw
+asl build file.al --lang python -o file.py
+asl compile file.al -o file.json
+promptware run file.al
 ```
 
 ---
@@ -438,10 +438,10 @@ See [CONTRIBUTING.md](../CONTRIBUTING.md) for full guidelines.
 **Lines of Test Code**: 297 test files, ~50K lines
 **Test Execution Time**: ~3 minutes (all tests)
 **Coverage**: 99% (105/105 tests passing)
-**Maintained By**: Promptware core team
+**Maintained By**: AssertLang core team
 
 ---
 
 **Last Updated**: 2025-10-08
-**Maintainer**: Promptware Contributors
+**Maintainer**: AssertLang Contributors
 **Test Framework**: pytest 7.4+

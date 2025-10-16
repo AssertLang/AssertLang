@@ -335,7 +335,7 @@ def execute_call(call_node):
    print("Hello, world!")
    ```
    ```bash
-   $ pw run hello.pw
+   $ pw run hello.al
    Hello, world!
    ```
 
@@ -346,7 +346,7 @@ def execute_call(call_node):
    print(content)
    ```
    ```bash
-   $ pw run file_io.pw
+   $ pw run file_io.al
    Hello
    ```
 
@@ -359,7 +359,7 @@ def execute_call(call_node):
    let x = unknown_operation()
    ```
    ```bash
-   $ pw run error.pw
+   $ pw run error.al
    Error at line 1, column 9:
    Unknown operation: unknown_operation
    ```
@@ -541,7 +541,7 @@ code .vscode/extensions/pw-language
 touch dsl/runtime.py dsl/executor.py
 
 # 2. Test with hello world
-echo 'print("Hello")' > test.pw
+echo 'print("Hello")' > test.al
 python3 -c "from dsl.runtime import execute; execute('test.pw')"
 
 # 3. Add operation resolution

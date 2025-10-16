@@ -1,4 +1,4 @@
-# Promptware Standard Library v1.0 - Quality Assessment Report
+# AssertLang Standard Library v1.0 - Quality Assessment Report
 
 **Report Date**: 2025-10-12
 **Agent**: TA1-Test-Validation
@@ -11,7 +11,7 @@
 
 **PRODUCTION READINESS: NOT READY (35% complete)**
 
-The Promptware standard library implementation demonstrates **excellent design and documentation quality** but is **blocked by 2 critical parser limitations** that prevent 56% of tests from passing. The code quality is professional-grade, but parser support must be completed before production release.
+The AssertLang standard library implementation demonstrates **excellent design and documentation quality** but is **blocked by 2 critical parser limitations** that prevent 56% of tests from passing. The code quality is professional-grade, but parser support must be completed before production release.
 
 ### Key Findings
 
@@ -111,7 +111,7 @@ function option_map<T, U>(opt: Option<T>, fn: function(T) -> U) -> Option<U>
 
 **Comparison to industry standards:**
 
-| Criteria | Python stdlib | Rust stdlib | Promptware stdlib |
+| Criteria | Python stdlib | Rust stdlib | AssertLang stdlib |
 |----------|---------------|-------------|-------------------|
 | Docstrings on all functions | ✅ Yes | ✅ Yes | ✅ **Yes (100%)** |
 | Usage examples in docs | ⚠️ Partial | ✅ Yes | ✅ **Yes (100%)** |
@@ -193,8 +193,8 @@ function option_unwrap_or<T>(opt: Option<T>, default: T) -> T:
 **File structure:**
 ```
 stdlib/
-├── core.pw       # Option<T>, Result<T,E> (442 lines)
-└── types.pw      # List<T>, Map<K,V>, Set<T> (585 lines)
+├── core.al       # Option<T>, Result<T,E> (442 lines)
+└── types.al      # List<T>, Map<K,V>, Set<T> (585 lines)
 
 tests/
 ├── test_stdlib_option.py     # 24 tests
@@ -377,13 +377,13 @@ enum Option<T> {
 - ✅ Battle-tested (millions of users)
 - ⚠️ Documentation (good but examples scattered)
 
-**How Promptware compares:**
+**How AssertLang compares:**
 - ✅ **Better documentation** (every function has examples)
 - ⚠️ **Smaller scope** (5 types vs 200 modules - appropriate for v1.0)
 - ⚠️ **Less mature** (brand new)
 - ✅ **Type safe** (generic types, Python 3.5+ typing style)
 
-**Assessment**: Promptware stdlib documentation **exceeds Python quality**. API completeness appropriate for v1.0.
+**Assessment**: AssertLang stdlib documentation **exceeds Python quality**. API completeness appropriate for v1.0.
 
 ### Rust Standard Library
 
@@ -393,13 +393,13 @@ enum Option<T> {
 - ✅ Excellent documentation
 - ✅ Generic types throughout
 
-**How Promptware compares:**
+**How AssertLang compares:**
 - ✅ **Same design philosophy** (Option/Result for safety)
 - ✅ **Same generic patterns** (T, E, K, V)
 - ✅ **Similar API surface** (core subset of Rust APIs)
 - ⚠️ **Fewer methods** (9 vs 30 for Option - intentional minimalism)
 
-**Assessment**: Promptware stdlib is a **well-designed Rust subset**. Quality matches Rust standards.
+**Assessment**: AssertLang stdlib is a **well-designed Rust subset**. Quality matches Rust standards.
 
 ### TypeScript/Swift Standard Libraries
 
@@ -409,7 +409,7 @@ enum Option<T> {
 - ✅ Optional chaining (`?.`)
 - ✅ Pattern matching (Swift)
 
-**How Promptware compares:**
+**How AssertLang compares:**
 - ✅ **Modern generic types** (same as TS/Swift)
 - ⚠️ **Pattern matching** (designed but not parsed yet)
 - ✅ **Functional style** (map, filter, fold)
@@ -498,23 +498,23 @@ function process_numbers(numbers: List<int>) -> List<int>:
 
 **Examples from stdlib:**
 ```pw
-# Line 62 - core.pw
+# Line 62 - core.al
 if opt is Some(val):
     return Some(fn(val))
 
-# Line 91 - core.pw
+# Line 91 - core.al
 if opt is Some(val):
     return fn(val)
 
-# Line 163 - core.pw
+# Line 163 - core.al
 if opt is Some(_):
     return true
 
-# Line 186 - core.pw
+# Line 186 - core.al
 if opt is None:
     return true
 
-# Line 283 - core.pw
+# Line 283 - core.al
 if res is Ok(val):
     return Ok(fn(val))
 else if res is Err(e):
@@ -638,7 +638,7 @@ Once parser issues fixed:
 
 Create end-to-end example:
 ```pw
-# user_auth.pw
+# user_auth.al
 import stdlib.core
 
 function authenticate(username: string, password: string) -> Result<User, string>:
@@ -725,7 +725,7 @@ Before stdlib v1.0 can be marked "production-ready", ALL of these must be true:
 
 ## Conclusion
 
-### Is Promptware stdlib v1.0 production-ready?
+### Is AssertLang stdlib v1.0 production-ready?
 
 **NO - but it's close (65% complete)**
 

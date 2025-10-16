@@ -7,22 +7,22 @@
   "fixtures_failed": 0,
   "test_results": [
     {
-      "fixture": "nodejs_minimal.pw",
+      "fixture": "nodejs_minimal.al",
       "stages": {
         "parse": {
-          "fixture": "nodejs_minimal.pw",
+          "fixture": "nodejs_minimal.al",
           "parsed": true,
           "agent": "AgentDefinition(name='minimal-test-agent', lang='nodejs', port=20100, exposes=[ExposeBlock(verb='echo@v1', params=[{'name': 'message', 'type': 'string'}], returns=[{'name': 'echo', 'type': 'string'}], handler_code=None, prompt_template=None)], calls=[], files=[], llm=None, tools=[], memory=None, prompt_template=None, observability=None, temporal=False, workflows=[])",
           "errors": []
         },
         "generate": {
-          "fixture": "nodejs_minimal.pw",
+          "fixture": "nodejs_minimal.al",
           "generated": true,
           "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-test-agent_server.py",
           "errors": []
         },
         "test": {
-          "fixture": "nodejs_minimal.pw",
+          "fixture": "nodejs_minimal.al",
           "agent_name": "minimal-test-agent",
           "port": 20100,
           "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-test-agent_server.py",
@@ -124,22 +124,22 @@
       "passed": true
     },
     {
-      "fixture": "python_complex.pw",
+      "fixture": "python_complex.al",
       "stages": {
         "parse": {
-          "fixture": "python_complex.pw",
+          "fixture": "python_complex.al",
           "parsed": true,
           "agent": "AgentDefinition(name='complex-test-agent', lang='python', port=23472, exposes=[ExposeBlock(verb='task.create@v1', params=[{'name': 'title', 'type': 'string'}, {'name': 'description', 'type': 'string'}, {'name': 'priority', 'type': 'int'}], returns=[{'name': 'task_id', 'type': 'string'}, {'name': 'status', 'type': 'string'}, {'name': 'created_at', 'type': 'string'}], handler_code=None, prompt_template=None), ExposeBlock(verb='task.get@v1', params=[{'name': 'task_id', 'type': 'string'}], returns=[{'name': 'task_id', 'type': 'string'}, {'name': 'title', 'type': 'string'}, {'name': 'description', 'type': 'string'}, {'name': 'priority', 'type': 'int'}, {'name': 'status', 'type': 'string'}, {'name': 'created_at', 'type': 'string'}], handler_code=None, prompt_template=None), ExposeBlock(verb='task.update@v1', params=[{'name': 'task_id', 'type': 'string'}, {'name': 'status', 'type': 'string'}], returns=[{'name': 'task_id', 'type': 'string'}, {'name': 'status', 'type': 'string'}, {'name': 'updated_at', 'type': 'string'}], handler_code=None, prompt_template=None), ExposeBlock(verb='task.list@v1', params=[{'name': 'limit', 'type': 'int'}, {'name': 'offset', 'type': 'int'}], returns=[{'name': 'tasks', 'type': 'array'}, {'name': 'total', 'type': 'int'}], handler_code=None, prompt_template=None)], calls=[], files=[], llm=None, tools=['http', 'storage', 'logger'], memory=None, prompt_template=None, observability=None, temporal=False, workflows=[])",
           "errors": []
         },
         "generate": {
-          "fixture": "python_complex.pw",
+          "fixture": "python_complex.al",
           "generated": true,
           "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/complex-test-agent_server.py",
           "errors": []
         },
         "test": {
-          "fixture": "python_complex.pw",
+          "fixture": "python_complex.al",
           "agent_name": "complex-test-agent",
           "port": 23472,
           "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/complex-test-agent_server.py",
@@ -468,22 +468,22 @@
       "passed": true
     },
     {
-      "fixture": "python_with_tools.pw",
+      "fixture": "python_with_tools.al",
       "stages": {
         "parse": {
-          "fixture": "python_with_tools.pw",
+          "fixture": "python_with_tools.al",
           "parsed": true,
           "agent": "AgentDefinition(name='tool-test-agent', lang='python', port=23471, exposes=[ExposeBlock(verb='fetch.data@v1', params=[{'name': 'url', 'type': 'string'}], returns=[{'name': 'status', 'type': 'int'}, {'name': 'data', 'type': 'string'}, {'name': 'cached', 'type': 'bool'}], handler_code=None, prompt_template=None), ExposeBlock(verb='store.item@v1', params=[{'name': 'key', 'type': 'string'}, {'name': 'value', 'type': 'string'}], returns=[{'name': 'stored', 'type': 'bool'}, {'name': 'key', 'type': 'string'}, {'name': 'timestamp', 'type': 'string'}], handler_code=None, prompt_template=None), ExposeBlock(verb='retrieve.item@v1', params=[{'name': 'key', 'type': 'string'}], returns=[{'name': 'found', 'type': 'bool'}, {'name': 'value', 'type': 'string'}, {'name': 'key', 'type': 'string'}], handler_code=None, prompt_template=None)], calls=[], files=[], llm=None, tools=['http', 'storage'], memory=None, prompt_template=None, observability=None, temporal=False, workflows=[])",
           "errors": []
         },
         "generate": {
-          "fixture": "python_with_tools.pw",
+          "fixture": "python_with_tools.al",
           "generated": true,
           "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/tool-test-agent_server.py",
           "errors": []
         },
         "test": {
-          "fixture": "python_with_tools.pw",
+          "fixture": "python_with_tools.al",
           "agent_name": "tool-test-agent",
           "port": 23471,
           "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/tool-test-agent_server.py",
@@ -709,22 +709,22 @@
       "passed": true
     },
     {
-      "fixture": "go_minimal.pw",
+      "fixture": "go_minimal.al",
       "stages": {
         "parse": {
-          "fixture": "go_minimal.pw",
+          "fixture": "go_minimal.al",
           "parsed": true,
           "agent": "AgentDefinition(name='minimal-go-agent', lang='go', port=8080, exposes=[ExposeBlock(verb='greet@v1', params=[{'name': 'name', 'type': 'string'}], returns=[{'name': 'message', 'type': 'string'}, {'name': 'timestamp', 'type': 'int'}], handler_code=None, prompt_template=None)], calls=[], files=[], llm=None, tools=[], memory=None, prompt_template=None, observability=None, temporal=False, workflows=[])",
           "errors": []
         },
         "generate": {
-          "fixture": "go_minimal.pw",
+          "fixture": "go_minimal.al",
           "generated": true,
           "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-go-agent_server.py",
           "errors": []
         },
         "test": {
-          "fixture": "go_minimal.pw",
+          "fixture": "go_minimal.al",
           "agent_name": "minimal-go-agent",
           "port": 8080,
           "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-go-agent_server.py",
@@ -827,22 +827,22 @@
       "passed": true
     },
     {
-      "fixture": "nodejs_with_tools.pw",
+      "fixture": "nodejs_with_tools.al",
       "stages": {
         "parse": {
-          "fixture": "nodejs_with_tools.pw",
+          "fixture": "nodejs_with_tools.al",
           "parsed": true,
           "agent": "AgentDefinition(name='tools-test-agent', lang='nodejs', port=20101, exposes=[ExposeBlock(verb='process.data@v1', params=[{'name': 'input', 'type': 'string'}, {'name': 'format', 'type': 'string'}], returns=[{'name': 'output', 'type': 'string'}, {'name': 'status', 'type': 'string'}, {'name': 'timestamp', 'type': 'int'}], handler_code=None, prompt_template=None), ExposeBlock(verb='health.check@v1', params=[], returns=[{'name': 'healthy', 'type': 'bool'}, {'name': 'uptime', 'type': 'int'}, {'name': 'version', 'type': 'string'}], handler_code=None, prompt_template=None)], calls=[], files=[], llm=None, tools=[], memory=None, prompt_template=None, observability=None, temporal=False, workflows=[])",
           "errors": []
         },
         "generate": {
-          "fixture": "nodejs_with_tools.pw",
+          "fixture": "nodejs_with_tools.al",
           "generated": true,
           "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/tools-test-agent_server.py",
           "errors": []
         },
         "test": {
-          "fixture": "nodejs_with_tools.pw",
+          "fixture": "nodejs_with_tools.al",
           "agent_name": "tools-test-agent",
           "port": 20101,
           "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/tools-test-agent_server.py",
@@ -973,22 +973,22 @@
       "passed": true
     },
     {
-      "fixture": "dotnet_with_tools.pw",
+      "fixture": "dotnet_with_tools.al",
       "stages": {
         "parse": {
-          "fixture": "dotnet_with_tools.pw",
+          "fixture": "dotnet_with_tools.al",
           "parsed": true,
           "agent": "AgentDefinition(name='dotnet-http-agent', lang='dotnet', port=5001, exposes=[ExposeBlock(verb='fetch.data@v1', params=[{'name': 'url', 'type': 'string'}], returns=[{'name': 'status', 'type': 'int'}, {'name': 'body', 'type': 'string'}, {'name': 'success', 'type': 'bool'}], handler_code=None, prompt_template=None)], calls=[], files=[], llm=None, tools=['http'], memory=None, prompt_template=None, observability=None, temporal=False, workflows=[])",
           "errors": []
         },
         "generate": {
-          "fixture": "dotnet_with_tools.pw",
+          "fixture": "dotnet_with_tools.al",
           "generated": true,
           "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/dotnet-http-agent_server.py",
           "errors": []
         },
         "test": {
-          "fixture": "dotnet_with_tools.pw",
+          "fixture": "dotnet_with_tools.al",
           "agent_name": "dotnet-http-agent",
           "port": 5001,
           "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/dotnet-http-agent_server.py",
@@ -1103,22 +1103,22 @@
       "passed": true
     },
     {
-      "fixture": "python_minimal.pw",
+      "fixture": "python_minimal.al",
       "stages": {
         "parse": {
-          "fixture": "python_minimal.pw",
+          "fixture": "python_minimal.al",
           "parsed": true,
           "agent": "AgentDefinition(name='minimal-test-agent', lang='python', port=23470, exposes=[ExposeBlock(verb='health.check@v1', params=[], returns=[{'name': 'status', 'type': 'string'}, {'name': 'uptime', 'type': 'int'}], handler_code=None, prompt_template=None), ExposeBlock(verb='echo.message@v1', params=[{'name': 'message', 'type': 'string'}], returns=[{'name': 'echo', 'type': 'string'}, {'name': 'timestamp', 'type': 'string'}], handler_code=None, prompt_template=None)], calls=[], files=[], llm=None, tools=[], memory=None, prompt_template=None, observability=None, temporal=False, workflows=[])",
           "errors": []
         },
         "generate": {
-          "fixture": "python_minimal.pw",
+          "fixture": "python_minimal.al",
           "generated": true,
           "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-test-agent_server.py",
           "errors": []
         },
         "test": {
-          "fixture": "python_minimal.pw",
+          "fixture": "python_minimal.al",
           "agent_name": "minimal-test-agent",
           "port": 23470,
           "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-test-agent_server.py",
@@ -1245,22 +1245,22 @@
       "passed": true
     },
     {
-      "fixture": "dotnet_minimal.pw",
+      "fixture": "dotnet_minimal.al",
       "stages": {
         "parse": {
-          "fixture": "dotnet_minimal.pw",
+          "fixture": "dotnet_minimal.al",
           "parsed": true,
           "agent": "AgentDefinition(name='minimal-dotnet-agent', lang='dotnet', port=5002, exposes=[ExposeBlock(verb='echo@v1', params=[{'name': 'message', 'type': 'string'}], returns=[{'name': 'echo', 'type': 'string'}, {'name': 'timestamp', 'type': 'string'}], handler_code=None, prompt_template=None)], calls=[], files=[], llm=None, tools=[], memory=None, prompt_template=None, observability=None, temporal=False, workflows=[])",
           "errors": []
         },
         "generate": {
-          "fixture": "dotnet_minimal.pw",
+          "fixture": "dotnet_minimal.al",
           "generated": true,
           "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-dotnet-agent_server.py",
           "errors": []
         },
         "test": {
-          "fixture": "dotnet_minimal.pw",
+          "fixture": "dotnet_minimal.al",
           "agent_name": "minimal-dotnet-agent",
           "port": 5002,
           "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-dotnet-agent_server.py",
@@ -1363,22 +1363,22 @@
       "passed": true
     },
     {
-      "fixture": "rust_with_tools.pw",
+      "fixture": "rust_with_tools.al",
       "stages": {
         "parse": {
-          "fixture": "rust_with_tools.pw",
+          "fixture": "rust_with_tools.al",
           "parsed": true,
           "agent": "AgentDefinition(name='tool-rust-agent', lang='rust', port=9091, exposes=[ExposeBlock(verb='fetch.data@v1', params=[{'name': 'url', 'type': 'string'}], returns=[{'name': 'status', 'type': 'int'}, {'name': 'data', 'type': 'string'}, {'name': 'cached', 'type': 'bool'}], handler_code=None, prompt_template=None), ExposeBlock(verb='process.data@v1', params=[{'name': 'input', 'type': 'string'}, {'name': 'transform', 'type': 'string'}], returns=[{'name': 'output', 'type': 'string'}, {'name': 'success', 'type': 'bool'}], handler_code=None, prompt_template=None)], calls=[], files=[], llm=None, tools=['http'], memory=None, prompt_template=None, observability=None, temporal=False, workflows=[])",
           "errors": []
         },
         "generate": {
-          "fixture": "rust_with_tools.pw",
+          "fixture": "rust_with_tools.al",
           "generated": true,
           "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/tool-rust-agent_server.py",
           "errors": []
         },
         "test": {
-          "fixture": "rust_with_tools.pw",
+          "fixture": "rust_with_tools.al",
           "agent_name": "tool-rust-agent",
           "port": 9091,
           "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/tool-rust-agent_server.py",
@@ -1535,22 +1535,22 @@
       "passed": true
     },
     {
-      "fixture": "rust_minimal.pw",
+      "fixture": "rust_minimal.al",
       "stages": {
         "parse": {
-          "fixture": "rust_minimal.pw",
+          "fixture": "rust_minimal.al",
           "parsed": true,
           "agent": "AgentDefinition(name='minimal-rust-agent', lang='rust', port=9090, exposes=[ExposeBlock(verb='health.check@v1', params=[], returns=[{'name': 'status', 'type': 'string'}, {'name': 'uptime', 'type': 'int'}], handler_code=None, prompt_template=None), ExposeBlock(verb='echo.message@v1', params=[{'name': 'message', 'type': 'string'}], returns=[{'name': 'echo', 'type': 'string'}, {'name': 'timestamp', 'type': 'string'}], handler_code=None, prompt_template=None)], calls=[], files=[], llm=None, tools=[], memory=None, prompt_template=None, observability=None, temporal=False, workflows=[])",
           "errors": []
         },
         "generate": {
-          "fixture": "rust_minimal.pw",
+          "fixture": "rust_minimal.al",
           "generated": true,
           "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-rust-agent_server.py",
           "errors": []
         },
         "test": {
-          "fixture": "rust_minimal.pw",
+          "fixture": "rust_minimal.al",
           "agent_name": "minimal-rust-agent",
           "port": 9090,
           "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-rust-agent_server.py",
@@ -1677,22 +1677,22 @@
       "passed": true
     },
     {
-      "fixture": "go_with_tools.pw",
+      "fixture": "go_with_tools.al",
       "stages": {
         "parse": {
-          "fixture": "go_with_tools.pw",
+          "fixture": "go_with_tools.al",
           "parsed": true,
           "agent": "AgentDefinition(name='go-http-agent', lang='go', port=8081, exposes=[ExposeBlock(verb='fetch.data@v1', params=[{'name': 'url', 'type': 'string'}, {'name': 'method', 'type': 'string'}], returns=[{'name': 'status', 'type': 'int'}, {'name': 'body', 'type': 'string'}, {'name': 'headers', 'type': 'object'}], handler_code=None, prompt_template=None)], calls=[], files=[], llm=None, tools=['http'], memory=None, prompt_template=None, observability=None, temporal=False, workflows=[])",
           "errors": []
         },
         "generate": {
-          "fixture": "go_with_tools.pw",
+          "fixture": "go_with_tools.al",
           "generated": true,
           "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/go-http-agent_server.py",
           "errors": []
         },
         "test": {
-          "fixture": "go_with_tools.pw",
+          "fixture": "go_with_tools.al",
           "agent_name": "go-http-agent",
           "port": 8081,
           "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/go-http-agent_server.py",

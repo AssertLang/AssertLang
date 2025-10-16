@@ -1,6 +1,6 @@
-# Promptware Installation Guide
+# AssertLang Installation Guide
 
-Complete guide to installing and configuring Promptware.
+Complete guide to installing and configuring AssertLang.
 
 ## Quick Install
 
@@ -17,7 +17,7 @@ pip install -e .
 
 ### Option 1: Add bin/ to PATH (Recommended)
 
-Add Promptware's bin directory to your PATH for single-word `promptware` command:
+Add AssertLang's bin directory to your PATH for single-word `promptware` command:
 
 ```bash
 # Add to ~/.bashrc or ~/.zshrc
@@ -32,7 +32,7 @@ Now you can use `promptware` from anywhere:
 ```bash
 promptware --version
 promptware list-tools
-promptware generate agent.pw --lang python
+promptware generate agent.al --lang python
 ```
 
 ### Option 2: Symlink to /usr/local/bin
@@ -50,7 +50,7 @@ If you prefer not to modify PATH:
 
 ```bash
 python3 -m promptware.cli --version
-python3 -m promptware.cli generate agent.pw --lang python
+python3 -m promptware.cli generate agent.al --lang python
 ```
 
 ## System Requirements
@@ -186,13 +186,13 @@ promptware list-tools
 promptware init test --template basic
 
 # Validate
-promptware validate test.pw
+promptware validate test.al
 
 # Generate server
-promptware generate test.pw --lang python
+promptware generate test.al --lang python
 
 # Clean up
-rm test.pw
+rm test.al
 rm -rf generated/
 ```
 
@@ -332,7 +332,7 @@ rustup update
 
 ## Uninstall
 
-To completely remove Promptware:
+To completely remove AssertLang:
 
 ```bash
 # Uninstall pip package

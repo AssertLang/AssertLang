@@ -14,7 +14,7 @@ Successfully enhanced three V2 parsers (Go, Rust, .NET) to handle language-speci
 
 ## Go Parser Improvements
 
-**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/go_parser_v2.py`
+**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/go_parser_v2.py`
 
 ### Patterns Added
 
@@ -62,7 +62,7 @@ Successfully enhanced three V2 parsers (Go, Rust, .NET) to handle language-speci
 
 ## Rust Parser Improvements
 
-**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/rust_parser_v2.py`
+**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/rust_parser_v2.py`
 
 ### Patterns Added
 
@@ -113,7 +113,7 @@ Successfully enhanced three V2 parsers (Go, Rust, .NET) to handle language-speci
 
 ## .NET Parser Improvements
 
-**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/dotnet_parser_v2.py`
+**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/dotnet_parser_v2.py`
 
 ### Patterns Added
 
@@ -243,7 +243,7 @@ All parsers use **regex-based pattern matching** (no external dependencies):
 
 ## Testing
 
-**Test File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_parser_fixes.py`
+**Test File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_parser_fixes.py`
 
 ### Test Cases
 - Go: Slice/map/struct literals, range loops
@@ -311,15 +311,15 @@ new List<int> { 1, 2, 3 }  → IRArray(elements=[1, 2, 3])
 
 ## Files Modified
 
-1. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/go_parser_v2.py`
+1. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/go_parser_v2.py`
    - Lines 559-696: Enhanced `_parse_expression()`
    - Lines 493-519: Enhanced `_parse_for_statement()`
 
-2. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/rust_parser_v2.py`
+2. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/rust_parser_v2.py`
    - Lines 618-736: Enhanced `_parse_expression()`
    - Lines 375-425: Enhanced `_parse_function_body()`
 
-3. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/dotnet_parser_v2.py`
+3. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/dotnet_parser_v2.py`
    - Lines 30-54: Added imports (IRArray, IRMap)
    - Lines 680-819: Enhanced `_parse_expression()`
    - Lines 498-513: Fixed `_parse_variable_declaration()`
@@ -362,6 +362,6 @@ new List<int> { 1, 2, 3 }  → IRArray(elements=[1, 2, 3])
 
 ## Conclusion
 
-All three parsers (Go, Rust, .NET) now handle the most common language-specific patterns that were missing. The improvements bring them to Python-level quality for typical business logic code, enabling accurate cross-language translation via the Promptware IR.
+All three parsers (Go, Rust, .NET) now handle the most common language-specific patterns that were missing. The improvements bring them to Python-level quality for typical business logic code, enabling accurate cross-language translation via the AssertLang IR.
 
 **Status**: ✅ Production Ready for 80% of use cases

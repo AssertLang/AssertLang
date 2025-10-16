@@ -1,6 +1,6 @@
 # How to Write Your First Contract
 
-**Create and validate your first Promptware contract in 10 minutes.**
+**Create and validate your first AssertLang contract in 10 minutes.**
 
 ---
 
@@ -11,7 +11,7 @@
 - Generate Python code with contracts
 - Test the generated code
 
-**Prerequisites**: Promptware installed (`pip install promptware`)
+**Prerequisites**: AssertLang installed (`pip install promptware`)
 
 **Time**: 10 minutes
 
@@ -21,9 +21,9 @@
 
 ## Step 1: Create Your Contract File
 
-Create a file called `calculator.pw`:
+Create a file called `calculator.al`:
 
-```pw
+```al
 function add(x: int, y: int) -> int {
     @requires x_positive: x > 0
     @requires y_positive: y > 0
@@ -55,7 +55,7 @@ function subtract(x: int, y: int) -> int {
 Check syntax and structure:
 
 ```bash
-promptware validate calculator.pw
+promptware validate calculator.al
 ```
 
 **Expected output**:
@@ -76,12 +76,12 @@ promptware validate calculator.pw
 Compile to Python:
 
 ```bash
-promptware build calculator.pw -o calculator.py
+asl build calculator.al -o calculator.py
 ```
 
 **Expected output**:
 ```
-✓ Compiled calculator.pw → calculator.py
+✓ Compiled calculator.al → calculator.py
 ```
 
 **View generated code**:
@@ -232,7 +232,7 @@ Contract Violation: Precondition
 
 ✅ **Write contracts** - Use `@requires` and `@ensures`
 ✅ **Validate syntax** - Use `promptware validate`
-✅ **Generate code** - Use `promptware build`
+✅ **Generate code** - Use `asl build`
 ✅ **Test contracts** - Verify violations are caught
 
 ---
@@ -240,7 +240,7 @@ Contract Violation: Precondition
 ## Next Steps
 
 **Add more contracts**:
-```pw
+```al
 function multiply(x: int, y: int) -> int {
     @requires x_positive: x > 0
     @requires y_positive: y > 0
@@ -254,13 +254,13 @@ function multiply(x: int, y: int) -> int {
 **Try other languages**:
 ```bash
 # JavaScript
-promptware build calculator.pw --lang javascript -o calculator.js
+asl build calculator.al --lang javascript -o calculator.js
 
 # Go
-promptware build calculator.pw --lang go -o calculator.go
+asl build calculator.al --lang go -o calculator.go
 
 # Rust
-promptware build calculator.pw --lang rust -o calculator.rs
+asl build calculator.al --lang rust -o calculator.rs
 ```
 
 **Learn more patterns**:
@@ -274,7 +274,7 @@ promptware build calculator.pw --lang rust -o calculator.rs
 
 **Problem**: `promptware: command not found`
 
-**Fix**: Install Promptware
+**Fix**: Install AssertLang
 ```bash
 pip install promptware
 ```

@@ -20,39 +20,39 @@
 
 ### ✅ Successfully Compiling Examples (6/15)
 
-#### 1. array_and_map_basics.pw
+#### 1. array_and_map_basics.al
 - **Status**: ✅ Compiles to all 5 languages
 - **Languages**: Python ✅ | Go ✅ | Rust ✅ | TypeScript ✅ | C# ✅
 - **Features**: Arrays, maps, `.length` property, safe map access
 - **Bug Fixes Demonstrated**: Bug #7 (safe map indexing), Bug #8 (.length property)
 
-#### 2. calculator_cli.pw
+#### 2. calculator_cli.al
 - **Status**: ✅ Compiles to all 5 languages
 - **Languages**: Python ✅ | Go ✅ | Rust ✅ | TypeScript ✅ | C# ✅
 - **Features**: Classes, constructors, methods, arrays, state management
 - **Lines**: ~3,676 characters
 - **Bug Fix Demonstrated**: Bug #1 (class compilation)
 
-#### 3. calculator.pw
+#### 3. calculator.al
 - **Status**: ✅ Compiles to all 5 languages
 - **Languages**: Python ✅ | Go ✅ | Rust ✅ | TypeScript ✅ | C# ✅
 - **Features**: 19 functions, arithmetic, conditionals, composition
 - **Lines**: ~150 lines
 
-#### 4. error_handling.pw
+#### 4. error_handling.al
 - **Status**: ✅ Compiles to all 5 languages
 - **Languages**: Python ✅ | Go ✅ | Rust ✅ | TypeScript ✅ | C# ✅
 - **Features**: Try/catch/finally, throw, nested error handling
 - **Lines**: ~60 lines (4 functions)
 - **Bug Fix Demonstrated**: Bug #3 (try/catch syntax)
 
-#### 5. simple_web_api.pw
+#### 5. simple_web_api.al
 - **Status**: ✅ Compiles to all 5 languages
 - **Languages**: Python ✅ | Go ✅ | Rust ✅ | TypeScript ✅ | C# ✅
 - **Features**: Multiple classes, HTTP patterns, CRUD operations
 - **Lines**: ~7,535 characters
 
-#### 6. todo_list_manager.pw
+#### 6. todo_list_manager.al
 - **Status**: ✅ Compiles to all 5 languages
 - **Languages**: Python ✅ | Go ✅ | Rust ✅ | TypeScript ✅ | C# ✅
 - **Features**: Multiple classes, CRUD, arrays, maps
@@ -64,55 +64,55 @@
 
 These examples use the old YAML/MCP syntax format, which is deprecated in v2.0+. They need to be rewritten in PW native syntax.
 
-#### 1. ai_code_reviewer.pw
+#### 1. ai_code_reviewer.al
 - **Status**: ❌ Fails on all languages
 - **Error**: `Unexpected character: '@'` (line 17)
 - **Reason**: Uses old MCP `@` syntax for tool definitions
 - **Action Needed**: Rewrite in PW native syntax
 
-#### 2. demo_agent.pw
+#### 2. demo_agent.al
 - **Status**: ❌ Fails on all languages
 - **Error**: `Unexpected character: '@'` (line 5)
 - **Reason**: Uses old MCP tool syntax
 - **Action Needed**: Rewrite in PW native syntax
 
-#### 3. demo.pw
+#### 3. demo.al
 - **Status**: ❌ Fails on all languages
 - **Error**: `Expected declaration, got IDENTIFIER` (line 4)
 - **Reason**: Uses old YAML-style syntax
 - **Action Needed**: Rewrite in PW native syntax
 
-#### 4. deployment_workflow.pw
+#### 4. deployment_workflow.al
 - **Status**: ❌ Fails on all languages
 - **Error**: `Unexpected character: '@'` (line 6)
 - **Reason**: Uses old MCP tool syntax
 - **Action Needed**: Rewrite in PW native syntax
 
-#### 5. hello-node.pw
+#### 5. hello-node.al
 - **Status**: ❌ Fails on all languages
 - **Error**: `Expected declaration, got IDENTIFIER` (line 1)
 - **Reason**: Uses old YAML-style syntax
 - **Action Needed**: Rewrite in PW native syntax
 
-#### 6. hello-world.pw
+#### 6. hello-world.al
 - **Status**: ❌ Fails on all languages
 - **Error**: `Expected declaration, got IDENTIFIER` (line 1)
 - **Reason**: Uses old YAML-style syntax
 - **Action Needed**: Rewrite in PW native syntax
 
-#### 7. observable_agent.pw
+#### 7. observable_agent.al
 - **Status**: ❌ Fails on all languages
 - **Error**: `Unexpected character: '@'` (line 11)
 - **Reason**: Uses old MCP tool syntax
 - **Action Needed**: Rewrite in PW native syntax
 
-#### 8. orchestrator_agent.pw
+#### 8. orchestrator_agent.al
 - **Status**: ❌ Fails on all languages
 - **Error**: `Unexpected character: '@'` (line 5)
 - **Reason**: Uses old MCP tool syntax
 - **Action Needed**: Rewrite in PW native syntax
 
-#### 9. test_tool_integration.pw
+#### 9. test_tool_integration.al
 - **Status**: ❌ Fails on all languages
 - **Error**: `Unexpected character: '@'` (line 8)
 - **Reason**: Uses old MCP tool syntax
@@ -223,19 +223,19 @@ These work (verified in test files) but aren't in main examples:
 
 ```bash
 # Test compilation to Python
-promptware build <file.pw> --lang python -o /tmp/test_compilation.python
+asl build <file.al> --lang python -o /tmp/test_compilation.python
 
 # Test compilation to Go
-promptware build <file.pw> --lang go -o /tmp/test_compilation.go
+asl build <file.al> --lang go -o /tmp/test_compilation.go
 
 # Test compilation to Rust
-promptware build <file.pw> --lang rust -o /tmp/test_compilation.rust
+asl build <file.al> --lang rust -o /tmp/test_compilation.rust
 
 # Test compilation to TypeScript
-promptware build <file.pw> --lang typescript -o /tmp/test_compilation.typescript
+asl build <file.al> --lang typescript -o /tmp/test_compilation.typescript
 
 # Test compilation to C#
-promptware build <file.pw> --lang csharp -o /tmp/test_compilation.csharp
+asl build <file.al> --lang csharp -o /tmp/test_compilation.csharp
 ```
 
 ---

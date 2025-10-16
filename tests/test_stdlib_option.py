@@ -205,12 +205,12 @@ function describe_option(opt: Option<int>) -> string:
 
 
 class TestOptionFullStdlib:
-    """Test complete stdlib/core.pw file parses."""
+    """Test complete stdlib/core.al file parses."""
 
     def test_full_option_stdlib(self):
-        """Test that full Option implementation from stdlib/core.pw parses."""
+        """Test that full Option implementation from stdlib/core.al parses."""
         # Read the actual stdlib file
-        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/core.pw") as f:
+        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/core.al") as f:
             pw_code = f.read()
 
         # Should parse without errors
@@ -225,7 +225,7 @@ class TestOptionFullStdlib:
 
     def test_option_functions_present(self):
         """Test that all required Option functions are present."""
-        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/core.pw") as f:
+        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/core.al") as f:
             pw_code = f.read()
 
         ir = parse_pw(pw_code)
@@ -331,7 +331,7 @@ class TestOptionDocumentation:
 
     def test_functions_have_docstrings(self):
         """Test that Option functions have docstrings."""
-        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/core.pw") as f:
+        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/core.al") as f:
             content = f.read()
 
         # Check for docstrings in key functions
@@ -345,7 +345,7 @@ class TestOptionCompleteness:
 
     def test_option_api_completeness(self):
         """Test that all required API methods are implemented."""
-        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/core.pw") as f:
+        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/core.al") as f:
             pw_code = f.read()
 
         ir = parse_pw(pw_code)

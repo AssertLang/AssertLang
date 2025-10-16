@@ -205,4 +205,4 @@ Simple heuristics provide **significant value** without requiring complex infras
 - Easier debugging
 - Better IDE support
 
-This proves the concept: **type inference is practical and valuable** for the Promptware universal translation system.
+This proves the concept: **type inference is practical and valuable** for the AssertLang universal translation system.

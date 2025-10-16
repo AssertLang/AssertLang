@@ -377,7 +377,7 @@ Total: 2/2 passed (100%)
 
 ## Implementation Details
 
-The parser uses regex-based extraction (like other Promptware parsers):
+The parser uses regex-based extraction (like other AssertLang parsers):
 
 1. **Framework Detection**: Looks for `using Microsoft.AspNetCore`
 2. **Handler Extraction**: Matches `HandleVerbNameV1` method signatures

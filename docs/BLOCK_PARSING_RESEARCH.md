@@ -3,8 +3,8 @@
 **Date**: 2025-10-06
 **Context**: P1-3 Bug Fix - Method Body Parsing in Go/Rust Parsers
 **Related Files**:
-- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/go_parser_v2.py` (line 683-685)
-- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/rust_parser_v2.py` (similar issue)
+- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/go_parser_v2.py` (line 683-685)
+- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/rust_parser_v2.py` (similar issue)
 
 ---
 
@@ -41,7 +41,7 @@ We already have **three working implementations** of brace-balanced block extrac
 
 ### 1. Node.js Parser - `_extract_block_body()` ✅
 
-**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/nodejs_parser_v2.py:1004-1030`
+**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/nodejs_parser_v2.py:1004-1030`
 
 ```python
 def _extract_block_body(self, source: str, start_index: int) -> str:
@@ -84,7 +84,7 @@ then_body_str = self._extract_block_body(source, body_start)
 
 ### 2. C# Parser - `_extract_block()` ✅
 
-**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/dotnet_parser_v2.py:1187-1213`
+**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/dotnet_parser_v2.py:1187-1213`
 
 ```python
 def _extract_block(self, source: str, start_idx: int) -> str:
@@ -127,7 +127,7 @@ class_body = self._extract_block(source, class_start - 1)
 
 ### 3. Rust Parser - `_extract_function_body()` ✅
 
-**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/rust_parser_v2.py:970-984`
+**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/rust_parser_v2.py:970-984`
 
 ```python
 def _extract_function_body(self, source: str, brace_start: int) -> str:
@@ -566,16 +566,16 @@ Before deploying block extraction:
 ## Related Files
 
 **Parsers with Block Extraction**:
-- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/nodejs_parser_v2.py:1004-1030` (Node.js - working ✅)
-- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/dotnet_parser_v2.py:1187-1213` (C# - working ✅)
-- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/rust_parser_v2.py:970-984` (Rust - working ✅)
+- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/nodejs_parser_v2.py:1004-1030` (Node.js - working ✅)
+- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/dotnet_parser_v2.py:1187-1213` (C# - working ✅)
+- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/rust_parser_v2.py:970-984` (Rust - working ✅)
 
 **Parsers Needing Block Extraction**:
-- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/go_parser_v2.py:683-685` (Go - TODO ⚠️)
-- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/rust_parser_v2.py` (Rust impl blocks - partial ⚠️)
+- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/go_parser_v2.py:683-685` (Go - TODO ⚠️)
+- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/rust_parser_v2.py` (Rust impl blocks - partial ⚠️)
 
 **Documentation**:
-- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/docs/GO_PARSER_V2.md:608-612` (Known limitation documented)
+- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/docs/GO_PARSER_V2.md:608-612` (Known limitation documented)
 
 ---
 

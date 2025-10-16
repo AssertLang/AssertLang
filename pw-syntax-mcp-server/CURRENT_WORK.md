@@ -31,7 +31,7 @@ PW is no longer just an MCP-based intermediate format. It's now a **TRUE native 
 
 **1. Human Developers**
 ```
-Write calculator.pw → Compile to Python/Go/Rust → Run it
+Write calculator.al → Compile to Python/Go/Rust → Run it
 ```
 **No JSON in sight!** MCP JSON is internal to the compiler.
 
@@ -120,12 +120,12 @@ This compiles to:
 ### CLI Commands (High Priority)
 ```bash
 # Direct compilation (no JSON visible)
-pw build calculator.pw --lang python -o calculator.py
-pw build calculator.pw --lang go -o calculator.go
-pw run calculator.pw
+pw build calculator.al --lang python -o calculator.py
+pw build calculator.al --lang go -o calculator.go
+pw run calculator.al
 
 # Advanced (MCP JSON exposed for agents)
-pw compile calculator.pw -o calculator.pw.json
+pw compile calculator.al -o calculator.pw.json
 pw unfold calculator.pw.json --lang rust -o calculator.rs
 ```
 
@@ -153,7 +153,7 @@ pw unfold calculator.pw.json --lang rust -o calculator.rs
   - Fixed blank line handling
 
 - `docs/PW_NATIVE_SYNTAX.md`:
-  - Updated CLI examples to emphasize direct `.pw → language` compilation
+  - Updated CLI examples to emphasize direct `.al → language` compilation
   - Clarified that MCP JSON is internal/agent-facing
   - Updated status to show working features
 
@@ -170,7 +170,7 @@ The MCP server serves **two audiences**:
 ### 1. Humans (Via CLI)
 ```bash
 # User never sees MCP JSON
-pw build app.pw --lang python
+pw build app.al --lang python
 ```
 Internally uses MCP JSON, but user only sees `.pw` → `.py`.
 
@@ -236,10 +236,10 @@ function calculate(a: int, b: int, operation: string) -> int {
 
 ### 3. Universal Code Sharing
 ```
-Developer A writes:    calculator.pw
-Developer B compiles:  pw build calculator.pw --lang python
-Developer C compiles:  pw build calculator.pw --lang rust
-Developer D compiles:  pw build calculator.pw --lang go
+Developer A writes:    calculator.al
+Developer B compiles:  pw build calculator.al --lang python
+Developer C compiles:  pw build calculator.al --lang rust
+Developer D compiles:  pw build calculator.al --lang go
 ```
 Everyone gets working code in their preferred language!
 
@@ -254,7 +254,7 @@ Everyone gets working code in their preferred language!
 
 ### README.md
 ```markdown
-# PW (Promptware) - Universal Programming Language
+# PW (AssertLang) - Universal Programming Language
 
 Write code once in PW, compile to Python, Go, Rust, TypeScript, or C#.
 
@@ -269,9 +269,9 @@ function greet(name: string) -> string {
 
 **Compile to any language:**
 ```bash
-pw build greet.pw --lang python   # → greet.py
-pw build greet.pw --lang go       # → greet.go
-pw build greet.pw --lang rust     # → greet.rs
+pw build greet.al --lang python   # → greet.py
+pw build greet.al --lang go       # → greet.go
+pw build greet.al --lang rust     # → greet.rs
 ```
 
 **That's it!** No JSON, no intermediate files, just working code.
@@ -372,7 +372,7 @@ git push origin pw-native-language
 
 ### Create PR
 ```bash
-gh pr create --repo Promptware-dev/promptware \
+gh pr create --repo AssertLang/AssertLang \
   --base main --head pw-native-language \
   --title "feat: PW Native Language with C-Style Syntax" \
   --body "See pw-syntax-mcp-server/CURRENT_WORK.md for full details"

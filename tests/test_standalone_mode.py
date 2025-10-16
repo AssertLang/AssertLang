@@ -46,7 +46,7 @@ def test_standalone_mode_single_call():
 
     # Use code-reviewer agent which has AI prompts configured
     # Minimal code to review to keep token usage low
-    agent_path = "examples/devops_suite/code_reviewer_agent.pw"
+    agent_path = "examples/devops_suite/code_reviewer_agent.al"
 
     requests = [
         {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}},

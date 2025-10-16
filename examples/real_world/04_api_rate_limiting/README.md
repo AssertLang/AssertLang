@@ -443,4 +443,4 @@ def check_quota_warnings(user):
 - **[Example 2: Multi-Agent Research](../02_multi_agent_research/)** - Agent coordination  
 - **[Example 3: Data Processing](../03_data_processing_workflow/)** - Pipeline validation
 - **[Example 5: State Machines](../05_state_machine_patterns/)** - State validation
-- **[Promptware Documentation](../../../docs/)** - Complete guide
+- **[AssertLang Documentation](../../../docs/)** - Complete guide

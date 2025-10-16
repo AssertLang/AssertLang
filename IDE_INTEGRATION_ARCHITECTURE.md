@@ -222,12 +222,12 @@ Alice
 
 #### Mode 2: Watch Mode (Auto-recompile)
 ```bash
-$ pwenv watch app.pw --target python
-Watching app.pw for changes...
+$ pwenv watch app.al --target python
+Watching app.al for changes...
 Change detected → Recompiling...
 ✓ Compiled to app.py (23ms)
 ✓ Running app.py...
-Hello from Promptware!
+Hello from AssertLang!
 ```
 
 **File**: `cli/watch.py` (NEW)
@@ -333,7 +333,7 @@ let users = http.get_json("https://api.example.com/users")
    - Display inline results
 
 2. **Watch mode** (1 hour)
-   - File watcher for .pw files
+   - File watcher for .al files
    - Auto-recompile on change
    - Display compilation errors
 
@@ -373,7 +373,7 @@ function fetch_weather(city: string) {
 ### Scenario 2: Converting Python to PW
 
 ```bash
-$ pwenv convert weather_api.py --to pw --output weather_api.pw
+$ pwenv convert weather_api.py --to pw --output weather_api.al
 
 Analyzing Python code...
 Detected operations:
@@ -381,19 +381,19 @@ Detected operations:
   response.json() → Inline (http.get_json() recommended)
   json.dumps() → json.stringify()
 
-Generated weather_api.pw
+Generated weather_api.al
 ```
 
 ### Scenario 3: Live Development
 
 **Terminal 1** (Watch mode):
 ```bash
-$ pwenv watch app.pw --target python --execute
+$ pwenv watch app.al --target python --execute
 [12:34:56] Watching app.pw...
 [12:34:58] Changed detected → Recompiling...
 [12:34:58] ✓ Compiled (18ms)
 [12:34:58] ✓ Running...
-Hello from Promptware!
+Hello from AssertLang!
 [12:34:58] Watching...
 ```
 

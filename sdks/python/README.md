@@ -1,6 +1,6 @@
-# Promptware SDK (Python)
+# AssertLang SDK (Python)
 
-Host SDK for integrating with Promptware daemon via MCP (Model Context Protocol).
+Host SDK for integrating with AssertLang daemon via MCP (Model Context Protocol).
 
 ## Installation
 
@@ -54,7 +54,7 @@ See [docs/sdk/](../../docs/sdk/) for:
 ## Requirements
 
 - Python 3.10+
-- Promptware daemon 0.1.0+
+- AssertLang daemon 0.1.0+
 
 ## Development
 

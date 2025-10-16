@@ -10,7 +10,7 @@ from dsl.pw_parser import parse_pw
 from language.python_generator_v2 import generate_python
 
 def main():
-    pw_file = Path("test_sentient_maze_from_go_fixed.pw")
+    pw_file = Path("test_sentient_maze_from_go_fixed.al")
     output_file = Path("test_sentient_maze_final.py")
 
     print(f"📥 Reading: {pw_file}")

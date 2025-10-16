@@ -1,4 +1,4 @@
-# How to Create Demo GIF for Promptware
+# How to Create Demo GIF for AssertLang
 
 ## Tools Needed
 
@@ -22,7 +22,7 @@ This script creates a ~30 second demo showing the full workflow.
 ### Recording with Terminalizer
 
 ```bash
-cd /Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware
+cd /Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang
 
 # Start recording
 terminalizer record demo --skip-sharing
@@ -37,7 +37,7 @@ terminalizer record demo --skip-sharing
 promptware --version
 
 # Create a simple PW file
-cat > calculator.pw << 'EOF'
+cat > calculator.al << 'EOF'
 // Universal calculator in PW
 function add(x: int, y: int) -> int {
     return x + y;
@@ -54,22 +54,22 @@ function calculate_tax(price: float, rate: float) -> float {
 EOF
 
 # Show the PW file
-cat calculator.pw
+cat calculator.al
 
 # Compile to Python
-promptware build calculator.pw --lang python -o calculator.py
+asl build calculator.al --lang python -o calculator.py
 
 # Show Python output (first 10 lines)
 head -20 calculator.py
 
 # Compile to Go
-promptware build calculator.pw --lang go -o calculator.go
+asl build calculator.al --lang go -o calculator.go
 
 # Show Go output (first 10 lines)
 head -20 calculator.go
 
 # Compile to Rust
-promptware build calculator.pw --lang rust -o calculator.rs
+asl build calculator.al --lang rust -o calculator.rs
 
 # Show file sizes
 ls -lh calculator.*
@@ -156,6 +156,6 @@ Save as:
 Then use in README like:
 
 ```markdown
-![Promptware in VSCode](docs/images/vscode-syntax.png)
+![AssertLang in VSCode](docs/images/vscode-syntax.png)
 ![Compilation Success](docs/images/terminal-compile.png)
 ```

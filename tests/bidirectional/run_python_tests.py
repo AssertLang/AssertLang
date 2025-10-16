@@ -3,7 +3,7 @@
 Bidirectional Testing System - Python Test Runner
 
 Orchestrates the complete test flow:
-1. Parse .pw fixtures
+1. Parse .al fixtures
 2. Generate Python servers
 3. Validate and test servers
 4. Collect results
@@ -32,7 +32,7 @@ class PythonTestRunner:
         Initialize test runner.
 
         Args:
-            fixtures_dir: Directory containing .pw test fixtures
+            fixtures_dir: Directory containing .al test fixtures
             output_dir: Directory for generated servers
         """
         self.fixtures_dir = fixtures_dir
@@ -42,10 +42,10 @@ class PythonTestRunner:
 
     def parse_fixture(self, fixture_path: Path) -> Dict[str, Any]:
         """
-        Parse a .pw fixture file.
+        Parse a .al fixture file.
 
         Args:
-            fixture_path: Path to .pw file
+            fixture_path: Path to .al file
 
         Returns:
             Dict with parsing results
@@ -189,11 +189,11 @@ class PythonTestRunner:
             "errors": []
         }
 
-        # Find all .pw fixtures
-        fixtures = list(self.fixtures_dir.glob("*.pw"))
+        # Find all .al fixtures
+        fixtures = list(self.fixtures_dir.glob("*.al"))
         if not fixtures:
             summary["errors"].append(
-                f"No .pw fixtures found in {self.fixtures_dir}"
+                f"No .al fixtures found in {self.fixtures_dir}"
             )
             return summary
 

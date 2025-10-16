@@ -8,7 +8,7 @@ This directory contains complete, working programs written in the PW programming
 
 ## Available Examples
 
-### 1. Calculator CLI (`calculator_cli.pw`)
+### 1. Calculator CLI (`calculator_cli.al`)
 
 **Size**: 3,676 characters
 **Complexity**: Medium
@@ -25,16 +25,16 @@ A command-line calculator with operation history tracking.
 
 **Run**:
 ```bash
-promptware run examples/calculator_cli.pw
+promptware run examples/calculator_cli.al
 ```
 
 **Compile to Python**:
 ```bash
-promptware build examples/calculator_cli.pw --lang python -o calculator.py
+asl build examples/calculator_cli.al --lang python -o calculator.py
 python3 calculator.py
 ```
 
-### 2. Todo List Manager (`todo_list_manager.pw`)
+### 2. Todo List Manager (`todo_list_manager.al`)
 
 **Size**: 5,350 characters
 **Complexity**: High
@@ -56,10 +56,10 @@ A complete todo list management system with priorities and status tracking.
 
 **Run**:
 ```bash
-promptware run examples/todo_list_manager.pw
+promptware run examples/todo_list_manager.al
 ```
 
-### 3. Simple Web API (`simple_web_api.pw`)
+### 3. Simple Web API (`simple_web_api.al`)
 
 **Size**: 7,535 characters
 **Complexity**: High
@@ -86,7 +86,7 @@ A simple REST API server with user management endpoints.
 
 **Run**:
 ```bash
-promptware run examples/simple_web_api.pw
+promptware run examples/simple_web_api.al
 ```
 
 ## Total Example Code
@@ -98,17 +98,17 @@ promptware run examples/simple_web_api.pw
 ### To Python
 
 ```bash
-promptware build examples/calculator_cli.pw --lang python -o calculator.py
-promptware build examples/todo_list_manager.pw --lang python -o todo.py
-promptware build examples/simple_web_api.pw --lang python -o api.py
+asl build examples/calculator_cli.al --lang python -o calculator.py
+asl build examples/todo_list_manager.al --lang python -o todo.py
+asl build examples/simple_web_api.al --lang python -o api.py
 ```
 
 ### To Go
 
 ```bash
-promptware build examples/calculator_cli.pw --lang go -o calculator.go
-promptware build examples/todo_list_manager.pw --lang go -o todo.go
-promptware build examples/simple_web_api.pw --lang go -o api.go
+asl build examples/calculator_cli.al --lang go -o calculator.go
+asl build examples/todo_list_manager.al --lang go -o todo.go
+asl build examples/simple_web_api.al --lang go -o api.go
 ```
 
 ### To Other Languages
@@ -116,7 +116,7 @@ promptware build examples/simple_web_api.pw --lang go -o api.go
 Supported targets: `python`, `go`, `rust`, `typescript`, `csharp`
 
 ```bash
-promptware build <file.pw> --lang <target> -o <output>
+asl build <file.al> --lang <target> -o <output>
 ```
 
 ## Running Examples
@@ -124,7 +124,7 @@ promptware build <file.pw> --lang <target> -o <output>
 ### Direct Execution
 
 ```bash
-promptware run examples/calculator_cli.pw
+promptware run examples/calculator_cli.al
 ```
 
 Compiles to Python and executes immediately.
@@ -133,15 +133,15 @@ Compiles to Python and executes immediately.
 
 ```bash
 # Python
-promptware build examples/calculator_cli.pw --lang python -o calc.py
+asl build examples/calculator_cli.al --lang python -o calc.py
 python3 calc.py
 
 # Go
-promptware build examples/calculator_cli.pw --lang go -o calc.go
+asl build examples/calculator_cli.al --lang go -o calc.go
 go run calc.go
 
 # Rust
-promptware build examples/calculator_cli.pw --lang rust -o calc.rs
+asl build examples/calculator_cli.al --lang rust -o calc.rs
 rustc calc.rs && ./calc
 ```
 
@@ -162,7 +162,7 @@ This verifies:
 ## Creating Your Own Examples
 
 1. **Write PW code**:
-```pw
+```al
 function hello(name: string) -> string {
     return "Hello, " + name;
 }
@@ -170,12 +170,12 @@ function hello(name: string) -> string {
 
 2. **Test parsing**:
 ```bash
-promptware compile myexample.pw -o myexample.json
+asl compile myexample.al -o myexample.json
 ```
 
 3. **Compile to target language**:
 ```bash
-promptware build myexample.pw --lang python -o myexample.py
+asl build myexample.al --lang python -o myexample.py
 ```
 
 4. **Run**:

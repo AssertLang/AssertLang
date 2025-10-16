@@ -26,7 +26,7 @@ from language.mcp_server_generator import generate_mcp_server_from_pw
 
 
 def test_generate_server_with_tools():
-    """Test generating an HTTP server from .pw file with tools."""
+    """Test generating an HTTP server from .al file with tools."""
     pw_code = """
 lang python
 agent test-http-agent

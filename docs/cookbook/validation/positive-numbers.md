@@ -20,7 +20,7 @@ Common scenarios: prices, quantities, ages, counts, durations.
 
 ## Solution
 
-```pw
+```al
 function calculate_discount(
     original_price: float,
     discount_percent: float
@@ -81,31 +81,31 @@ def calculate_discount(original_price: float, discount_percent: float) -> float:
 ## Variations
 
 ### Non-Negative (Allows Zero)
-```pw
+```al
 @requires non_negative: amount >= 0.0
 // Allows 0.0 (useful for optional amounts)
 ```
 
 ### Strict Positive (Excludes Zero)
-```pw
+```al
 @requires strictly_positive: amount > 0.0
 // Rejects 0.0
 ```
 
 ### Integer Positive
-```pw
+```al
 @requires positive_int: quantity > 0
 // For counts, quantities
 ```
 
 ### Range Validation
-```pw
+```al
 @requires in_range: value > 0.0 && value <= 1000.0
 // Between 0 and 1000
 ```
 
 ### Multiple Values
-```pw
+```al
 @requires all_positive: price > 0.0 && quantity > 0 && tax_rate >= 0.0
 // Validate multiple parameters
 ```
@@ -115,7 +115,7 @@ def calculate_discount(original_price: float, discount_percent: float) -> float:
 ## Common Pitfalls
 
 ### ❌ Using `>=` instead of `>`
-```pw
+```al
 @requires positive: amount >= 0.0
 // Allows 0.0 (may cause division by zero)
 ```
@@ -127,7 +127,7 @@ def calculate_discount(original_price: float, discount_percent: float) -> float:
 ---
 
 ### ❌ No range upper bound
-```pw
+```al
 @requires positive: price > 0.0
 // Allows unrealistic values like 999999999
 ```
@@ -135,20 +135,20 @@ def calculate_discount(original_price: float, discount_percent: float) -> float:
 **Problem**: No sanity check on maximum.
 
 **Fix**: Add reasonable upper bound.
-```pw
+```al
 @requires reasonable_price: price > 0.0 && price <= 1000000.0
 ```
 
 ---
 
 ### ❌ Integer/float mismatch
-```pw
+```al
 function process(count: int) -> int {
     @requires positive: count > 0.0  // ❌ Comparing int to float
 ```
 
 **Fix**: Use integer literal.
-```pw
+```al
 @requires positive: count > 0  // ✓ Integer comparison
 ```
 
@@ -157,7 +157,7 @@ function process(count: int) -> int {
 ## Real-World Example
 
 **E-commerce order calculation:**
-```pw
+```al
 function calculate_order_total(
     item_price: float,
     quantity: int,

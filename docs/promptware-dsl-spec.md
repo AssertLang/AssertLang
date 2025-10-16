@@ -1,8 +1,8 @@
-# Promptware DSL Specification (Draft)
+# AssertLang DSL Specification (Draft)
 
 ## 1. Grammar
 
-The Promptware DSL is a line-oriented, indentation-sensitive language. Directives begin in column 0 and block bodies are indented by two spaces per level. Comments (`# …`) run to the end of the line.
+The AssertLang DSL is a line-oriented, indentation-sensitive language. Directives begin in column 0 and block bodies are indented by two spaces per level. Comments (`# …`) run to the end of the line.
 
 ```
 program        ::= statement*

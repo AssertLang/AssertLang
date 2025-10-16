@@ -11,7 +11,7 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
-from promptware import call_verb
+from assertlang import call_verb
 
 
 def main():

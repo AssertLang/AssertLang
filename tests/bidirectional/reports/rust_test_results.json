@@ -7,22 +7,22 @@
   "fixtures_failed": 0,
   "test_results": [
     {
-      "fixture": "rust_with_tools.pw",
+      "fixture": "rust_with_tools.al",
       "stages": {
         "parse": {
-          "fixture": "rust_with_tools.pw",
+          "fixture": "rust_with_tools.al",
           "parsed": true,
           "agent": "AgentDefinition(name='tool-rust-agent', lang='rust', port=9091, exposes=[ExposeBlock(verb='fetch.data@v1', params=[{'name': 'url', 'type': 'string'}], returns=[{'name': 'status', 'type': 'int'}, {'name': 'data', 'type': 'string'}, {'name': 'cached', 'type': 'bool'}], handler_code=None, prompt_template=None), ExposeBlock(verb='process.data@v1', params=[{'name': 'input', 'type': 'string'}, {'name': 'transform', 'type': 'string'}], returns=[{'name': 'output', 'type': 'string'}, {'name': 'success', 'type': 'bool'}], handler_code=None, prompt_template=None)], calls=[], files=[], llm=None, tools=['http'], memory=None, prompt_template=None, observability=None, temporal=False, workflows=[])",
           "errors": []
         },
         "generate": {
-          "fixture": "rust_with_tools.pw",
+          "fixture": "rust_with_tools.al",
           "generated": true,
           "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/rust/tool_rust_agent",
           "errors": []
         },
         "test": {
-          "fixture": "rust_with_tools.pw",
+          "fixture": "rust_with_tools.al",
           "agent_name": "tool-rust-agent",
           "port": 9091,
           "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/rust/tool_rust_agent",
@@ -172,22 +172,22 @@
       "passed": true
     },
     {
-      "fixture": "rust_minimal.pw",
+      "fixture": "rust_minimal.al",
       "stages": {
         "parse": {
-          "fixture": "rust_minimal.pw",
+          "fixture": "rust_minimal.al",
           "parsed": true,
           "agent": "AgentDefinition(name='minimal-rust-agent', lang='rust', port=9090, exposes=[ExposeBlock(verb='health.check@v1', params=[], returns=[{'name': 'status', 'type': 'string'}, {'name': 'uptime', 'type': 'int'}], handler_code=None, prompt_template=None), ExposeBlock(verb='echo.message@v1', params=[{'name': 'message', 'type': 'string'}], returns=[{'name': 'echo', 'type': 'string'}, {'name': 'timestamp', 'type': 'string'}], handler_code=None, prompt_template=None)], calls=[], files=[], llm=None, tools=[], memory=None, prompt_template=None, observability=None, temporal=False, workflows=[])",
           "errors": []
         },
         "generate": {
-          "fixture": "rust_minimal.pw",
+          "fixture": "rust_minimal.al",
           "generated": true,
           "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/rust/minimal_rust_agent",
           "errors": []
         },
         "test": {
-          "fixture": "rust_minimal.pw",
+          "fixture": "rust_minimal.al",
           "agent_name": "minimal-rust-agent",
           "port": 9090,
           "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/rust/minimal_rust_agent",

@@ -3,14 +3,14 @@ requires = ["setuptools>=61", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "promptware-sdk"
+name = "assertlang-sdk"
 version = "0.1.0"
-description = "Host SDK for Promptware MCP integration"
+description = "Host SDK for AssertLang MCP integration"
 requires-python = ">=3.10"
 readme = "README.md"
-authors = [{ name = "Promptware Team" }]
+authors = [{ name = "AssertLang Team" }]
 license = { text = "MIT" }
-keywords = ["promptware", "mcp", "dsl", "orchestration"]
+keywords = ["assertlang", "mcp", "dsl", "orchestration"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
@@ -38,10 +38,10 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/promptware/promptware"
-Documentation = "https://docs.promptware.dev"
-Repository = "https://github.com/promptware/promptware"
-Issues = "https://github.com/promptware/promptware/issues"
+Homepage = "https://github.com/AssertLang/AssertLang"
+Documentation = "https://docs.assertlang.dev"
+Repository = "https://github.com/AssertLang/AssertLang"
+Issues = "https://github.com/AssertLang/AssertLang/issues"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

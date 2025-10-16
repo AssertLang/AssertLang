@@ -23,7 +23,7 @@ Write once in PW, compile to Python, Go, Rust, TypeScript, or C#.
 
 ## What is PW?
 
-**PW (Promptware)** is a universal programming language that compiles to multiple target languages. Write your code once in PW, then compile it to:
+**PW (AssertLang)** is a universal programming language that compiles to multiple target languages. Write your code once in PW, then compile it to:
 
 - **Python** - For data science, scripting, web apps
 - **Go** - For microservices, CLI tools, performance
@@ -35,7 +35,7 @@ Write once in PW, compile to Python, Go, Rust, TypeScript, or C#.
 
 **1. Human Developers** - Write `.pw` files, compile directly to your target language
 ```bash
-pw build calculator.pw --lang python -o calculator.py
+pw build calculator.al --lang python -o calculator.py
 ```
 
 **2. AI Agents** - Compose PW via MCP tools, share code between agents
@@ -58,7 +58,7 @@ pw_tree = pw_function(name="add", params=[...], body=[...])
 
 ```bash
 # Clone the repository
-git clone https://github.com/Promptware-dev/promptware.git
+git clone https://github.com/AssertLang/AssertLang.git
 cd promptware
 
 # Install dependencies
@@ -72,9 +72,9 @@ pw --version
 
 **Option 1: Automatic (Workspace)**
 
-The extension is included in `.vscode/extensions/pw-language/` and loads automatically when you open the Promptware workspace.
+The extension is included in `.vscode/extensions/pw-language/` and loads automatically when you open the AssertLang workspace.
 
-1. Open the Promptware folder in VS Code
+1. Open the AssertLang folder in VS Code
 2. Press `Cmd+Shift+P` → `Developer: Reload Window`
 3. Open any `.pw` file - syntax highlighting should work!
 
@@ -103,7 +103,7 @@ Search for "PW Language Support" in the VS Code Extensions marketplace.
 Create `hello.pw`:
 
 ```pw
-// hello.pw - Your first PW program
+// hello.al - Your first PW program
 function greet(name: string) -> string {
     return "Hello, " + name + "!";
 }
@@ -117,25 +117,25 @@ function main() {
 ### Compile to Python
 
 ```bash
-pw build hello.pw --lang python -o hello.py
+pw build hello.al --lang python -o hello.py
 python hello.py
 ```
 
 ### Compile to Go
 
 ```bash
-pw build hello.pw --lang go -o hello.go
+pw build hello.al --lang go -o hello.go
 go run hello.go
 ```
 
 ### Compile to All Languages
 
 ```bash
-pw build hello.pw --lang python -o hello.py
-pw build hello.pw --lang go -o hello.go
-pw build hello.pw --lang rust -o hello.rs
-pw build hello.pw --lang typescript -o hello.ts
-pw build hello.pw --lang csharp -o hello.cs
+pw build hello.al --lang python -o hello.py
+pw build hello.al --lang go -o hello.go
+pw build hello.al --lang rust -o hello.rs
+pw build hello.al --lang typescript -o hello.ts
+pw build hello.al --lang csharp -o hello.cs
 ```
 
 ---
@@ -498,10 +498,10 @@ function multiply(x: int, y: int) -> int {
 
 ```bash
 # Compile to Python
-pw build calculator.pw --lang python -o calculator.py
+pw build calculator.al --lang python -o calculator.py
 
 # Compile to Go
-pw build calculator.pw --lang go -o calculator.go
+pw build calculator.al --lang go -o calculator.go
 ```
 
 **3. Run the Generated Code**
@@ -547,15 +547,15 @@ PW automatically generates safe code patterns. See [`docs/SAFE_PATTERNS.md`](SAF
 ```
 my-project/
 ├── src/
-│   ├── calculator.pw       # PW source files
-│   ├── user_service.pw
-│   └── utils.pw
+│   ├── calculator.al       # PW source files
+│   ├── user_service.al
+│   └── utils.al
 ├── build/
 │   ├── python/             # Compiled Python
 │   ├── go/                 # Compiled Go
 │   └── rust/               # Compiled Rust
 ├── tests/
-│   └── test_calculator.pw  # PW test files
+│   └── test_calculator.al  # PW test files
 └── README.md
 ```
 
@@ -564,8 +564,8 @@ my-project/
 **On GitHub:**
 
 ```bash
-# Share your .pw files
-git add src/*.pw
+# Share your .al files
+git add src/*.al
 git commit -m "Add calculator in PW"
 git push
 ```
@@ -574,7 +574,7 @@ git push
 
 ```bash
 git clone your-repo
-pw build src/calculator.pw --lang rust -o calculator.rs
+pw build src/calculator.al --lang rust -o calculator.rs
 ```
 
 ---
@@ -710,7 +710,7 @@ The PW VS Code extension provides:
 
 **Automatic (Workspace):**
 
-1. Open Promptware folder in VS Code
+1. Open AssertLang folder in VS Code
 2. Press `Cmd+Shift+P` → `Developer: Reload Window`
 3. Open `examples/calculator.pw`
 4. See syntax highlighting!
@@ -738,7 +738,7 @@ The PW VS Code extension provides:
 
 **Current Status: Private (Workspace Only)**
 
-The extension is currently included in the Promptware repository at:
+The extension is currently included in the AssertLang repository at:
 ```
 .vscode/extensions/pw-language/
 ```
@@ -771,7 +771,7 @@ Download/access from GitHub:
 
 ```bash
 # Clone the repository
-git clone https://github.com/Promptware-dev/promptware.git
+git clone https://github.com/AssertLang/AssertLang.git
 cd promptware/.vscode/extensions/pw-language/
 
 # Files included:
@@ -819,7 +819,7 @@ function divide(num: int, denom: int) -> float {
 **Compile:**
 
 ```bash
-pw build examples/calculator.pw --lang python -o calculator.py
+pw build examples/calculator.al --lang python -o calculator.py
 ```
 
 ### Example 2: User Validation
@@ -894,11 +894,11 @@ function apply_discount(price: float, discount_percent: float) -> float {
 Compile PW to target language (most common command).
 
 ```bash
-pw build <input.pw> --lang <language> -o <output>
+pw build <input.al> --lang <language> -o <output>
 ```
 
 **Arguments:**
-- `<input.pw>` - Path to PW source file
+- `<input.al>` - Path to PW source file
 - `--lang` - Target language: `python`, `go`, `rust`, `typescript`, `csharp`
 - `-o` - Output file path
 
@@ -906,19 +906,19 @@ pw build <input.pw> --lang <language> -o <output>
 
 ```bash
 # Python
-pw build calculator.pw --lang python -o calculator.py
+pw build calculator.al --lang python -o calculator.py
 
 # Go
-pw build calculator.pw --lang go -o calculator.go
+pw build calculator.al --lang go -o calculator.go
 
 # Rust
-pw build calculator.pw --lang rust -o calculator.rs
+pw build calculator.al --lang rust -o calculator.rs
 
 # TypeScript
-pw build calculator.pw --lang typescript -o calculator.ts
+pw build calculator.al --lang typescript -o calculator.ts
 
 # C#
-pw build calculator.pw --lang csharp -o Calculator.cs
+pw build calculator.al --lang csharp -o Calculator.cs
 ```
 
 ### `pw compile`
@@ -926,13 +926,13 @@ pw build calculator.pw --lang csharp -o Calculator.cs
 Compile PW to MCP JSON (for AI agents/advanced use).
 
 ```bash
-pw compile <input.pw> -o <output.pw.json>
+pw compile <input.al> -o <output.pw.json>
 ```
 
 **Example:**
 
 ```bash
-pw compile calculator.pw -o calculator.pw.json
+pw compile calculator.al -o calculator.pw.json
 ```
 
 ### `pw unfold`
@@ -954,7 +954,7 @@ pw unfold calculator.pw.json --lang go -o calculator.go
 Execute PW code directly (coming soon).
 
 ```bash
-pw run <input.pw>
+pw run <input.al>
 ```
 
 ### `pw --version`
@@ -1015,7 +1015,7 @@ A: Yes, but they should compose PW programmatically using MCP tools, not generat
 
 **Q: Is PW open source?**
 
-A: Yes! MIT licensed. Contribute at: https://github.com/Promptware-dev/promptware
+A: Yes! MIT licensed. Contribute at: https://github.com/AssertLang/AssertLang
 
 ### VS Code Extension Questions
 
@@ -1086,7 +1086,7 @@ A: Check your syntax matches the examples. Some features (loops, classes) aren't
 
 **Q: Generated code doesn't compile**
 
-A: Report an issue! Include your `.pw` file and target language: https://github.com/Promptware-dev/promptware/issues
+A: Report an issue! Include your `.pw` file and target language: https://github.com/AssertLang/AssertLang/issues
 
 ---
 
@@ -1100,8 +1100,8 @@ A: Report an issue! Include your `.pw` file and target language: https://github.
 
 ### Community
 
-- **GitHub Issues:** https://github.com/Promptware-dev/promptware/issues
-- **Discussions:** https://github.com/Promptware-dev/promptware/discussions
+- **GitHub Issues:** https://github.com/AssertLang/AssertLang/issues
+- **Discussions:** https://github.com/AssertLang/AssertLang/discussions
 - **Discord:** (Coming soon!)
 
 ### Contributing
@@ -1123,7 +1123,7 @@ See `CONTRIBUTING.md` for guidelines.
 PW is open source under the MIT License.
 
 ```
-Copyright (c) 2024 Promptware Contributors
+Copyright (c) 2024 AssertLang Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -1136,7 +1136,7 @@ See `LICENSE` for full text.
 
 ## Credits
 
-**Created by:** Promptware Contributors
+**Created by:** AssertLang Contributors
 
 **Powered by:**
 - Python (compiler implementation)

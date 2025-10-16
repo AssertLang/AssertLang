@@ -1,4 +1,4 @@
-# Promptware Universal Operations Library
+# AssertLang Universal Operations Library
 ## Complete MCP Tool List for Bidirectional Translation
 
 **Purpose:** Define every fundamental coding operation that exists across all languages.

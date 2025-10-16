@@ -1,7 +1,7 @@
 # Node.js Generator Class Method Fix
 
 **Date**: 2025-10-05
-**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/nodejs_generator_v2.py`
+**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/nodejs_generator_v2.py`
 **Status**: ✅ Complete
 
 ## Problem
@@ -188,7 +188,7 @@ Detects property assignments by checking for `.` in target:
 
 ## Files Modified
 
-- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/nodejs_generator_v2.py`
+- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/nodejs_generator_v2.py`
 
 ## Related Issues
 

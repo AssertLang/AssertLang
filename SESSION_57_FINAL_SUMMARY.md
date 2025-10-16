@@ -168,7 +168,7 @@ user = User
 
 ### 1. MCP vs IR Generation Paths
 
-**Problem:** Promptware has TWO code generation paths:
+**Problem:** AssertLang has TWO code generation paths:
 - **IR-based:** Direct IR → language (used by JS, Go, Rust)
 - **MCP-based:** IR → MCP → language (used by Python, TypeScript, C#)
 

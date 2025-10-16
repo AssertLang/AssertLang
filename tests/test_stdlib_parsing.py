@@ -13,8 +13,8 @@ STDLIB_DIR = Path(__file__).parent.parent / "stdlib"
 
 
 def test_parse_stdlib_core_pw():
-    """Test that stdlib/core.pw parses without errors."""
-    core_file = STDLIB_DIR / "core.pw"
+    """Test that stdlib/core.al parses without errors."""
+    core_file = STDLIB_DIR / "core.al"
     with open(core_file, "r") as f:
         code = f.read()
 
@@ -38,8 +38,8 @@ def test_parse_stdlib_core_pw():
 
 
 def test_parse_stdlib_types_pw():
-    """Test that stdlib/types.pw parses without errors."""
-    types_file = STDLIB_DIR / "types.pw"
+    """Test that stdlib/types.al parses without errors."""
+    types_file = STDLIB_DIR / "types.al"
     with open(types_file, "r") as f:
         code = f.read()
 
@@ -66,7 +66,7 @@ def test_parse_stdlib_types_pw():
 
 def test_option_methods_parse():
     """Test that all Option<T> methods parse correctly."""
-    core_file = STDLIB_DIR / "core.pw"
+    core_file = STDLIB_DIR / "core.al"
     with open(core_file, "r") as f:
         code = f.read()
 
@@ -94,7 +94,7 @@ def test_option_methods_parse():
 
 def test_result_methods_parse():
     """Test that all Result<T,E> methods parse correctly."""
-    core_file = STDLIB_DIR / "core.pw"
+    core_file = STDLIB_DIR / "core.al"
     with open(core_file, "r") as f:
         code = f.read()
 
@@ -123,7 +123,7 @@ def test_result_methods_parse():
 
 def test_collection_methods_parse():
     """Test that List/Map/Set methods parse correctly."""
-    types_file = STDLIB_DIR / "types.pw"
+    types_file = STDLIB_DIR / "types.al"
     with open(types_file, "r") as f:
         code = f.read()
 
@@ -148,8 +148,8 @@ def test_collection_methods_parse():
 def test_stdlib_files_syntax_valid():
     """Test that all stdlib files have valid syntax (no parse errors)."""
     stdlib_files = [
-        STDLIB_DIR / "core.pw",
-        STDLIB_DIR / "types.pw",
+        STDLIB_DIR / "core.al",
+        STDLIB_DIR / "types.al",
     ]
 
     for stdlib_file in stdlib_files:

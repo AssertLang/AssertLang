@@ -16,7 +16,7 @@ We take security vulnerabilities seriously. If you discover a security issue, pl
 
 ### How to Report
 
-1. **Email:** Send details to `security@promptware.dev` or `hello@promptware.dev`
+1. **Email:** Send details to `security@assertlang.dev` or `hello@assertlang.dev`
 2. **Include:**
    - Description of the vulnerability
    - Steps to reproduce
@@ -34,14 +34,14 @@ We take security vulnerabilities seriously. If you discover a security issue, pl
 
 ## Security Best Practices
 
-When using Promptware:
+When using AssertLang:
 
-- **API Keys:** Never commit API keys or credentials to .pw files
+- **API Keys:** Never commit API keys or credentials to .al files
 - **Environment Variables:** Use environment variables for sensitive data
 - **Tool Security:** Review generated code before deploying to production
 - **Network:** Run generated servers behind firewalls in production
 - **Rate Limiting:** Use built-in rate limiting features
-- **Updates:** Keep Promptware updated to the latest version
+- **Updates:** Keep AssertLang updated to the latest version
 
 ## Known Security Considerations
 
@@ -60,7 +60,7 @@ Security fixes will be released as patch versions and announced in:
 ## Scope
 
 This policy applies to:
-- The Promptware framework and CLI
+- The AssertLang framework and CLI
 - Generated server code
 - Official tool adapters
 - Documentation examples
@@ -72,10 +72,10 @@ This policy applies to:
 
 ## Contact
 
-- **Security issues:** security@promptware.dev or hello@promptware.dev
-- **General questions:** hello@promptware.dev
-- **GitHub Discussions:** https://github.com/Promptware-dev/promptware/discussions
+- **Security issues:** security@assertlang.dev or hello@assertlang.dev
+- **General questions:** hello@assertlang.dev
+- **GitHub Discussions:** https://github.com/AssertLang/AssertLang/discussions
 
 ---
 
-Thank you for helping keep Promptware and its users safe!
+Thank you for helping keep AssertLang and its users safe!

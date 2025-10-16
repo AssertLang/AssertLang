@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-**Mission**: Generate Python code from PW DSL file `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_sentient_maze_from_go.pw` (reverse-parsed from Go).
+**Mission**: Generate Python code from PW DSL file `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_sentient_maze_from_go.pw` (reverse-parsed from Go).
 
 **Result**:
 - ✅ **PW DSL → Python translation system is FULLY FUNCTIONAL**

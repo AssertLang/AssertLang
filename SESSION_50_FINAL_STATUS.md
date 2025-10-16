@@ -75,10 +75,10 @@ pw version           # Show version info
 
 ### 1. String Operations
 ```pw
-let text = "Hello, Promptware!";
+let text = "Hello, AssertLang!";
 print("Uppercase:", str.upper(text));  // HELLO, PROMPTWARE!
 let words = str.split(text, ", ");
-let joined = str.join(" + ", words);   // Hello + Promptware!
+let joined = str.join(" + ", words);   // Hello + AssertLang!
 ```
 
 ### 2. Math Operations

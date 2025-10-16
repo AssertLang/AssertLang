@@ -12,12 +12,12 @@ import pytest
 from pathlib import Path
 import tempfile
 
-from promptware.cli.validate_contract import (
+from assertlang.cli.validate_contract import (
     validate_contract,
     ContractValidator,
     ValidationResult
 )
-from promptware.testing.contracts import (
+from assertlang.testing.contracts import (
     assert_precondition_passes,
     assert_precondition_fails,
     assert_postcondition_holds,
@@ -25,7 +25,7 @@ from promptware.testing.contracts import (
     reset_coverage,
     generate_coverage_report,
 )
-from promptware.runtime.contracts import (
+from assertlang.runtime.contracts import (
     ContractViolationError,
     ValidationMode,
     set_validation_mode,
@@ -66,7 +66,7 @@ function add(a: int, b: int) -> int {
 }
 '''
         # Create temp file
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.pw', delete=False) as f:
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.al', delete=False) as f:
             f.write(code)
             temp_path = f.name
 
@@ -94,7 +94,7 @@ function test(x: int) -> int {
     return x
 }
 '''
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.pw', delete=False) as f:
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.al', delete=False) as f:
             f.write(code)
             temp_path = f.name
 
@@ -113,7 +113,7 @@ function test(x: int) -> int {
     return x
 }
 '''
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.pw', delete=False) as f:
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.al', delete=False) as f:
             f.write(code)
             temp_path = f.name
 
@@ -137,7 +137,7 @@ function complexFunction(a: int, b: int, c: int) -> int {
     return a
 }
 '''
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.pw', delete=False) as f:
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.al', delete=False) as f:
             f.write(code)
             temp_path = f.name
 
@@ -273,7 +273,7 @@ function add(a: int, b: int) -> int {
         assert result == 8
 
         # Check coverage
-        from promptware.runtime.contracts import get_coverage as get_runtime_coverage
+        from assertlang.runtime.contracts import get_coverage as get_runtime_coverage
         coverage = get_runtime_coverage()
 
         assert len(coverage) > 0
@@ -297,7 +297,7 @@ function increment(x: int) -> int {
         assert result == 6
 
         # Check coverage
-        from promptware.runtime.contracts import get_coverage as get_runtime_coverage
+        from assertlang.runtime.contracts import get_coverage as get_runtime_coverage
         coverage = get_runtime_coverage()
 
         assert len(coverage) > 0
@@ -322,7 +322,7 @@ function add(a: int, b: int) -> int {
         execute_generated(python_code, "add", 1, 1)
 
         # Check coverage
-        from promptware.runtime.contracts import get_coverage as get_runtime_coverage
+        from assertlang.runtime.contracts import get_coverage as get_runtime_coverage
         coverage = get_runtime_coverage()
 
         # Find the precondition key
@@ -346,7 +346,7 @@ function test(x: int) -> int {
         execute_generated(python_code, "test", 5)
 
         # Generate report
-        from promptware.runtime.contracts import get_coverage as get_runtime_coverage
+        from assertlang.runtime.contracts import get_coverage as get_runtime_coverage
         coverage_data = get_runtime_coverage()
 
         # Should have both precondition and postcondition
@@ -418,7 +418,7 @@ function simple(x: int) -> int {
     return x * 2
 }
 '''
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.pw', delete=False) as f:
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.al', delete=False) as f:
             f.write(code)
             temp_path = f.name
 
@@ -442,7 +442,7 @@ function add(a: int, b: int) -> int {
 }
 '''
 
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.pw', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.al', delete=False) as f:
         f.write(code)
         temp_path = f.name
 

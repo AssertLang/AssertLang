@@ -318,7 +318,7 @@ Started with: 70% quality, undefined function errors, manual fixes required
 
 Ended with: ~75% quality, auto-generated helpers, near-compilable output
 
-**The Promptware V2 system is production-capable for its intended use cases**:
+**The AssertLang V2 system is production-capable for its intended use cases**:
 - ✅ MCP server translation (original goal): 95%+ quality
 - ✅ Simple function translation: 80%+ quality
 - ⚠️ Complex nested logic: 70-75% quality (improving)

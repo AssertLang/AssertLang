@@ -1,6 +1,6 @@
 # Reverse Parsing Summary: Go → IR → PW DSL
 
-**Agent**: Promptware Translation Agent (Specialized)
+**Agent**: AssertLang Translation Agent (Specialized)
 **Task**: Reverse-parse Go file back into PW DSL format
 **Date**: 2025-10-05
 **Status**: ✅ **COMPLETED SUCCESSFULLY**
@@ -541,7 +541,7 @@ cat test_sentient_maze_from_go.pw
 8. ✅ Recommendations: 3 immediate fixes (2 hours)
 
 **Key Achievement**:
-Demonstrated **bidirectional translation capability** - the Promptware V2 system can now translate code in both directions (forward and reverse) through the universal IR.
+Demonstrated **bidirectional translation capability** - the AssertLang V2 system can now translate code in both directions (forward and reverse) through the universal IR.
 
 **Quality**: 40% (limited by malformed input, can reach 90% with 7 hours of fixes)
 

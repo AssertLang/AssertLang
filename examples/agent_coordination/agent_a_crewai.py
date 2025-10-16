@@ -1,6 +1,6 @@
 """
 Agent A: CrewAI Implementation
-Generated from: user_service_contract.pw
+Generated from: user_service_contract.al
 Framework: CrewAI (Python)
 
 This agent implements the EXACT contract defined in PW.

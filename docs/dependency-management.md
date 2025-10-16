@@ -1,6 +1,6 @@
 # Dependency Management Overview
 
-Promptware prepares language-specific environments immediately before `run.start@v1` hands control to a runner. Plans (and registry defaults) describe their dependency needs in a `deps` block, the daemon enforces repository allowlists, and each runtime receives isolated caches under `.mcpd/<task>/env/` so host tooling remains untouched.
+AssertLang prepares language-specific environments immediately before `run.start@v1` hands control to a runner. Plans (and registry defaults) describe their dependency needs in a `deps` block, the daemon enforces repository allowlists, and each runtime receives isolated caches under `.mcpd/<task>/env/` so host tooling remains untouched.
 
 ## Goals
 - Deterministic environment prep per task, independent of the developer host.
@@ -35,7 +35,7 @@ Promptware prepares language-specific environments immediately before `run.start
 
 ### .NET
 - Create `.mcpd/<task>/env/dotnet` for generated project files; NuGet packages are cached in `.mcpd/cache/dotnet/<hash>/nuget` where `<hash>` reflects the requested packages.
-- Render `deps/PromptwareDeps.csproj` containing `<PackageReference>` entries for each allowlisted package (version optional).
+- Render `deps/AssertLangDeps.csproj` containing `<PackageReference>` entries for each allowlisted package (version optional).
 - Execute `dotnet restore` with `NUGET_PACKAGES` pointed at the shared cache. When the allowlist declares private feeds, the daemon renders a `NuGet.Config` (and passes `--configfile`) so restores respect those sources.
 - Return `NUGET_PACKAGES` and `DOTNET_ROOT` so the runner can reuse the hydrated cache.
 - Expose `PROMPTWARE_DOTNET_CACHE_TTL_DAYS` when the allowlist includes `cache_ttl_days`, enabling downstream tooling to prune shared caches.

@@ -1,4 +1,4 @@
-# Production Readiness - Promptware v2.1.0b3
+# Production Readiness - AssertLang v2.1.0b3
 
 **Status**: ✅ READY FOR PRODUCTION
 **Date**: 2025-10-08
@@ -107,7 +107,7 @@
 - **Package Name**: `promptware-dev`
 - **Version**: 2.1.0b3
 - **Status**: Ready to publish
-- **Command**: `pip install promptware-dev==2.1.0b3`
+- **Command**: `pip install assertlang==2.1.0b3`
 
 ### GitHub Release
 - **Tag**: v2.1.0b3
@@ -197,7 +197,7 @@
 
 ## ✨ Final Verdict
 
-**Promptware v2.1.0b3 is production-ready.**
+**AssertLang v2.1.0b3 is production-ready.**
 
 This release represents:
 - 8 weeks of systematic bug fixing

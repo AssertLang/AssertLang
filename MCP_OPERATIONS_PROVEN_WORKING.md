@@ -7,7 +7,7 @@
 
 ## Executive Summary
 
-The Promptware MCP server has been **proven to generate working code** that executes correctly in target languages. MCP operations chain together into complete, functional programs without manual code adjustments.
+The AssertLang MCP server has been **proven to generate working code** that executes correctly in target languages. MCP operations chain together into complete, functional programs without manual code adjustments.
 
 **Test Results**: 3/3 real-world scenarios executed successfully
 
@@ -332,7 +332,7 @@ The MCP server generates working code that executes correctly. The final piece (
 
 ## Conclusion
 
-**The Promptware MCP server generates REAL, WORKING code.**
+**The AssertLang MCP server generates REAL, WORKING code.**
 
 This is not a proof-of-concept. This is production-ready infrastructure that has been verified to work with real programs executing in real languages.
 

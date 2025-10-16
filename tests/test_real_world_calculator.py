@@ -24,7 +24,7 @@ def test_calculator_parses():
     print(f"{'='*60}")
 
     # Read the calculator program
-    calc_file = Path(__file__).parent.parent / "examples" / "calculator_cli.pw"
+    calc_file = Path(__file__).parent.parent / "examples" / "calculator_cli.al"
 
     try:
         with open(calc_file) as f:

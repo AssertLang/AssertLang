@@ -92,7 +92,7 @@ def generate_cline_config(agents: List[MCPServerConfig], output_path: Optional[P
 
 def scan_agents_in_directory(directory: Path) -> List[tuple[Path, str, int]]:
     """
-    Scan directory for .pw agent files.
+    Scan directory for .al agent files.
 
     Returns: List of (pw_file_path, agent_name, port)
     """
@@ -100,7 +100,7 @@ def scan_agents_in_directory(directory: Path) -> List[tuple[Path, str, int]]:
 
     agents = []
 
-    for pw_file in directory.rglob("*.pw"):
+    for pw_file in directory.rglob("*.al"):
         try:
             pw_code = pw_file.read_text()
             agent = parse_agent_pw(pw_code)
@@ -121,7 +121,7 @@ def generate_agent_mcp_config(
     Generate MCP config for a single agent.
 
     Args:
-        pw_file: Path to .pw file
+        pw_file: Path to .al file
         agent_name: Name of the agent
         port: Port the agent runs on
         use_python: If True, use Python server. Otherwise use generated server.
@@ -157,7 +157,7 @@ def generate_agent_mcp_config(
             # Fallback to promptware command
             return MCPServerConfig(
                 name=agent_name,
-                command="promptware",
+                command="assertlang",
                 args=["run", str(pw_file.absolute())]
             )
     else:
@@ -179,7 +179,7 @@ def generate_configs_for_project(
     Generate MCP configs for all agents in a project.
 
     Args:
-        project_dir: Directory containing .pw files
+        project_dir: Directory containing .al files
         editor: Editor type (cursor, windsurf, cline)
         output_dir: Where to write config (defaults to project_dir/.cursor or similar)
 
@@ -190,7 +190,7 @@ def generate_configs_for_project(
     agent_files = scan_agents_in_directory(project_dir)
 
     if not agent_files:
-        raise ValueError(f"No .pw files found in {project_dir}")
+        raise ValueError(f"No .al files found in {project_dir}")
 
     # Generate configs
     mcp_configs = []

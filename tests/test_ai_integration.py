@@ -25,7 +25,7 @@ def test_ai_code_reviewer_generation():
         print("⚠️  Skipping: ANTHROPIC_API_KEY not set")
         return
 
-    pw_file = Path("examples/devops_suite/code_reviewer_agent.pw")
+    pw_file = Path("examples/devops_suite/code_reviewer_agent.al")
     assert pw_file.exists()
 
     # Generate server
@@ -55,7 +55,7 @@ def test_ai_code_reviewer_generation():
 def test_ai_agent_runtime():
     """Test running AI agent server and making real API calls."""
 
-    pw_file = Path("examples/devops_suite/code_reviewer_agent.pw")
+    pw_file = Path("examples/devops_suite/code_reviewer_agent.al")
     output_file = Path("/tmp/test_ai_server_runtime.py")
 
     # Generate server
@@ -162,7 +162,7 @@ def test_ai_prompt_templates():
         print("⚠️  Skipping: ANTHROPIC_API_KEY not set")
         return
 
-    pw_file = Path("examples/devops_suite/code_reviewer_agent.pw")
+    pw_file = Path("examples/devops_suite/code_reviewer_agent.al")
     output_file = Path("/tmp/test_prompt_templates.py")
 
     # Generate server
@@ -192,7 +192,7 @@ def test_observability_with_ai():
         print("⚠️  Skipping: ANTHROPIC_API_KEY not set")
         return
 
-    pw_file = Path("examples/devops_suite/code_reviewer_agent.pw")
+    pw_file = Path("examples/devops_suite/code_reviewer_agent.al")
     output_file = Path("/tmp/test_observability_ai.py")
 
     subprocess.run(

@@ -66,7 +66,7 @@ class ObservabilityConfig:
 
 @dataclass
 class AgentDefinition:
-    """Represents a complete agent definition from .pw file."""
+    """Represents a complete agent definition from .al file."""
     name: str
     lang: str
     port: int = 23456
@@ -107,7 +107,7 @@ class AgentDefinition:
 
 def parse_agent_pw(text: str) -> AgentDefinition:
     """
-    Parse a .pw file that defines an agent.
+    Parse a .al file that defines an agent.
 
     Example:
         lang python
@@ -387,7 +387,7 @@ def parse_agent_pw(text: str) -> AgentDefinition:
                 })
 
         elif head == "file" and stripped.endswith(":"):
-            # File block (same as regular .pw)
+            # File block (same as regular .al)
             path = stripped[5:-1].strip()
             if not path:
                 raise ValueError(f"Missing path for file on line {i+1}")
@@ -451,7 +451,7 @@ def _tokenize(line: str) -> List[str]:
 
 
 def _decode_value(value: str) -> Any:
-    """Decode a value from .pw syntax."""
+    """Decode a value from .al syntax."""
     value = value.strip()
 
     # Remove quotes

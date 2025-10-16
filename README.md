@@ -1,11 +1,11 @@
-# 🤖 Promptware
+# 🤖 AssertLang
 
-[![PyPI](https://img.shields.io/pypi/v/promptware-dev?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/promptware-dev/)
-[![Tests](https://img.shields.io/badge/tests-134/134%20(100%25)-success?style=flat-square)](https://github.com/Promptware-dev/promptware)
+[![PyPI](https://img.shields.io/pypi/v/assertlang?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/assertlang/)
+[![Tests](https://img.shields.io/badge/tests-134/134%20(100%25)-success?style=flat-square)](https://github.com/AssertLang/AssertLang)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg?style=flat-square&logo=python&logoColor=white)](https://www.python.org/downloads/)
 
-> **Executable contracts for multi-agent systems.** Define agent behavior once in PW, agents from different frameworks (CrewAI, LangGraph, AutoGen) execute identical logic. **Deterministic coordination guaranteed.**
+> **Executable contracts for multi-agent systems.** Define agent behavior once in AL, agents from different frameworks (CrewAI, LangGraph, AutoGen) execute identical logic. **Deterministic coordination guaranteed.**
 
 ---
 
@@ -43,12 +43,12 @@ function createUser(name, email) {
 
 ---
 
-## The Solution: PW Contracts
+## The Solution: AssertLang Contracts
 
 **Define behavior once, execute everywhere:**
 
-```pw
-// user_service.pw - Contract defines EXACT behavior
+```al
+// user_service.al - Contract defines EXACT behavior
 function createUser(name: string, email: string) -> User {
     // Deterministic validation (not just types!)
     if (str.length(name) < 1) {
@@ -68,12 +68,12 @@ function createUser(name: string, email: string) -> User {
 
 **Transpile to Agent A (Python/CrewAI):**
 ```bash
-promptware build user_service.pw --lang python -o agent_a.py
+asl build user_service.al --lang python -o agent_a.py
 ```
 
 **Transpile to Agent B (JavaScript/LangGraph):**
 ```bash
-promptware build user_service.pw --lang javascript -o agent_b.js
+asl build user_service.al --lang javascript -o agent_b.js
 ```
 
 **Result:** ✅ Both agents execute IDENTICAL logic
@@ -103,13 +103,13 @@ promptware build user_service.pw --lang javascript -o agent_b.js
 ### 1. Install
 
 ```bash
-pip install promptware-dev
+pip install assertlang
 ```
 
 ### 2. Write a contract
 
 ```bash
-cat > hello_contract.pw << 'EOF'
+cat > hello_contract.al << 'EOF'
 function greet(name: string) -> string {
     if (str.length(name) < 1) {
         return "Hello, Guest!";
@@ -123,13 +123,13 @@ EOF
 
 ```bash
 # For CrewAI (Python)
-promptware build hello_contract.pw --lang python -o crewai_agent.py
+asl build hello_contract.al --lang python -o crewai_agent.py
 
 # For LangGraph (JavaScript)
-promptware build hello_contract.pw --lang javascript -o langgraph_agent.js
+asl build hello_contract.al --lang javascript -o langgraph_agent.js
 
 # For AutoGen (Python)
-promptware build hello_contract.pw --lang python -o autogen_agent.py
+asl build hello_contract.al --lang python -o autogen_agent.py
 ```
 
 ### 4. Use in your agent framework
@@ -137,12 +137,12 @@ promptware build hello_contract.pw --lang python -o autogen_agent.py
 **CrewAI example:**
 ```python
 from crewai import Agent
-from crewai_agent import greet  # Uses PW contract
+from crewai_agent import greet  # Uses AL contract
 
 agent = Agent(
     role='Greeter',
     goal='Greet users consistently',
-    backstory='I implement the PW greeting contract'
+    backstory='I implement the AL greeting contract'
 )
 
 # Guaranteed to match other agents implementing same contract
@@ -152,7 +152,7 @@ result = greet("Alice")  # "Hello, Alice!"
 **LangGraph example:**
 ```javascript
 import { StateGraph } from "@langchain/langgraph";
-import { greet } from './langgraph_agent.js';  // Uses PW contract
+import { greet } from './langgraph_agent.js';  // Uses AL contract
 
 const greetNode = async (state) => {
     // Guaranteed to match CrewAI agent behavior
@@ -164,7 +164,7 @@ const greetNode = async (state) => {
 
 ## Why This Matters
 
-### Without PW Contracts
+### Without AssertLang Contracts
 
 **Scenario:** Two agents need to validate user input
 
@@ -187,10 +187,10 @@ if (name.length === 0 || name.length > 50) {  // Different limit!
 - ❌ System unreliable
 - ❌ Debugging nightmare
 
-### With PW Contracts
+### With AssertLang Contracts
 
 **Both agents implement:**
-```pw
+```al
 if (str.length(name) < 1 || str.length(name) > 100) {
     return ValidationError("name", "Name must be 1-100 characters");
 }
@@ -213,10 +213,10 @@ if (str.length(name) < 1 || str.length(name) > 100) {
 **Solution:**
 ```bash
 # Define contract
-cat > task_contract.pw
+cat > task_contract.al
 # Both agents transpile from same contract
-promptware build task_contract.pw --lang python
-promptware build task_contract.pw --lang javascript
+asl build task_contract.al --lang python
+asl build task_contract.al --lang javascript
 # Guaranteed coordination
 ```
 
@@ -225,7 +225,7 @@ promptware build task_contract.pw --lang javascript
 **Challenge:** Migrating from CrewAI to LangGraph without breaking behavior
 
 **Solution:**
-- Extract CrewAI logic to PW contract
+- Extract CrewAI logic to AL contract
 - Transpile to LangGraph
 - Verify identical behavior
 - Migrate incrementally
@@ -234,7 +234,7 @@ promptware build task_contract.pw --lang javascript
 
 **Challenge:** Python team and JavaScript team can't share specifications
 
-**Solution:** PW contracts as shared source of truth
+**Solution:** AL contracts as shared source of truth
 - One contract file
 - Each team generates their language
 - Behavior guaranteed identical
@@ -243,7 +243,7 @@ promptware build task_contract.pw --lang javascript
 
 **Challenge:** 10+ agents in different languages need consistent business logic
 
-**Solution:** PW contracts enforce consistency across all agents
+**Solution:** AL contracts enforce consistency across all agents
 
 ---
 
@@ -261,7 +261,7 @@ promptware build task_contract.pw --lang javascript
 
 ## Language Support
 
-PW contracts transpile to:
+AL contracts transpile to:
 
 | Language | Status | Use For |
 |----------|--------|---------|
@@ -282,12 +282,12 @@ PW contracts transpile to:
 
 ```
 ┌─────────────────────────────────────────────────┐
-│           PW Contract (Source of Truth)         │
+│           AL Contract (Source of Truth)         │
 │   function createUser(name, email) -> User     │
 └─────────────────┬───────────────────────────────┘
                   │
          ┌────────┴────────┐
-         │  Promptware     │
+         │  AssertLang     │
          │  Transpiler     │
          └────────┬────────┘
                   │
@@ -303,7 +303,7 @@ All execute IDENTICAL logic
 ```
 
 **Under the hood:**
-1. Parse PW contract
+1. Parse AL contract
 2. Extract semantic requirements
 3. Generate idiomatic code for each language
 4. Guarantee behavioral equivalence
@@ -313,19 +313,19 @@ All execute IDENTICAL logic
 ## Contract Features
 
 ### ✅ Deterministic Validation
-```pw
+```al
 if (str.length(name) < 1) {
     return ValidationError("name", "Required");
 }
 ```
 
 ### ✅ Type Safety
-```pw
+```al
 function process(data: list<string>) -> map<string, int>
 ```
 
 ### ✅ Error Handling
-```pw
+```al
 try {
     let result = risky_operation();
     return result;
@@ -335,7 +335,7 @@ try {
 ```
 
 ### ✅ Business Logic
-```pw
+```al
 let discount = price * 0.1;
 if (is_premium_user) {
     discount = discount * 2;
@@ -352,7 +352,7 @@ if (is_premium_user) {
 | **JSON Schema** | ⚠️ Types only | ✅ | ✅ | ⚠️ Partial |
 | **MCP** | ❌ | ⚠️ MCP only | ✅ | ❌ |
 | **LLM Interpretation** | ❌ | ✅ | ✅ | ❌ |
-| **PW Contracts** | ✅ | ✅ | ✅ | ✅ |
+| **AssertLang Contracts** | ✅ | ✅ | ✅ | ✅ |
 
 ---
 
@@ -379,10 +379,10 @@ node agent_b_langgraph.js      # Agent B output
 
 ## Technical Details
 
-### Contract Language (PW)
+### Contract Language (AL)
 
 **Simple C-style syntax:**
-```pw
+```al
 function name(param: type) -> return_type {
     // Logic here
 }
@@ -401,7 +401,7 @@ function name(param: type) -> return_type {
 
 **Command:**
 ```bash
-promptware build contract.pw --lang <target> -o output.file
+asl build contract.al --lang <target> -o output.file
 ```
 
 **Targets:**
@@ -424,10 +424,10 @@ promptware build contract.pw --lang <target> -o output.file
 **Contract testing:**
 ```bash
 # Run contract against test cases
-promptware test contract.pw
+asl test contract.al
 
 # Verify transpiled outputs match
-promptware verify contract.pw --langs python,javascript
+asl verify contract.al --langs python,javascript
 ```
 
 **Framework integration testing:**
@@ -444,7 +444,7 @@ npm test tests/integration/langgraph.test.js
 ## 📚 Documentation
 
 - **[Quick Start Guide](docs/quickstart.md)** - Get started in 5 minutes
-- **[Contract Syntax](docs/contract-syntax.md)** - PW language reference
+- **[Contract Syntax](docs/contract-syntax.md)** - AL language reference
 - **[Framework Integrations](docs/integrations/)** - CrewAI, LangGraph, AutoGen guides
 - **[Examples](examples/agent_coordination/)** - Real-world contracts
 - **[API Reference](docs/api.md)** - Complete API documentation
@@ -453,7 +453,7 @@ npm test tests/integration/langgraph.test.js
 
 ## 🤝 Contributing
 
-Promptware is MIT licensed and community-driven.
+AssertLang is MIT licensed and community-driven.
 
 **Ways to contribute:**
 - Add framework integrations (AutoGen, LangChain, etc.)
@@ -487,7 +487,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ---
 
-## 🌟 Why Promptware?
+## 🌟 Why AssertLang?
 
 **For Multi-Agent Developers:**
 - Agents coordinate reliably
@@ -521,7 +521,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## 📝 License
 
-MIT © Promptware Contributors
+MIT © AssertLang Contributors
 
 Built with ❤️ for the multi-agent AI community.
 
@@ -531,35 +531,35 @@ Built with ❤️ for the multi-agent AI community.
 
 ```bash
 # Install
-pip install promptware-dev
+pip install assertlang
 
 # Create a contract
-cat > my_contract.pw << 'EOF'
+cat > my_contract.al << 'EOF'
 function hello(name: string) -> string {
     return "Hello, " + name + "!";
 }
 EOF
 
 # Transpile for your framework
-promptware build my_contract.pw --lang python -o agent.py
+asl build my_contract.al --lang python -o agent.py
 
 # Run
 python agent.py
 ```
 
-**Questions?** [Open an issue](https://github.com/Promptware-dev/promptware/issues) • [Join discussions](https://github.com/Promptware-dev/promptware/discussions)
+**Questions?** [Open an issue](https://github.com/AssertLang/AssertLang/issues) • [Join discussions](https://github.com/AssertLang/AssertLang/discussions)
 
-**Love Promptware?** ⭐ Star us on GitHub!
+**Love AssertLang?** ⭐ Star us on GitHub!
 
 ---
 
 ## 🔗 Links
 
-- **GitHub:** [github.com/Promptware-dev/promptware](https://github.com/Promptware-dev/promptware)
-- **PyPI:** [pypi.org/project/promptware-dev](https://pypi.org/project/promptware-dev/)
+- **GitHub:** [github.com/AssertLang/AssertLang](https://github.com/AssertLang/AssertLang)
+- **PyPI:** [pypi.org/project/assertlang](https://pypi.org/project/assertlang/)
 - **Documentation:** [docs/](docs/)
 - **Examples:** [examples/agent_coordination/](examples/agent_coordination/)
 
 ---
 
-**Note:** Promptware is under active development. The multi-agent contract system is production-ready, with additional framework integrations coming soon. Star the repo to follow progress!
+**Note:** AssertLang is under active development. The multi-agent contract system is production-ready, with additional framework integrations coming soon. Star the repo to follow progress!

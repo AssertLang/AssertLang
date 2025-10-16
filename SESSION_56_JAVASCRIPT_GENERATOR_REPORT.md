@@ -110,8 +110,8 @@ Contract Violation: Precondition
 
 **Usage:**
 ```bash
-promptware build file.pw --lang javascript -o output.js
-promptware build file.pw --lang js  # Shorthand
+asl build file.pw --lang javascript -o output.js
+asl build file.pw --lang js  # Shorthand
 ```
 
 ---
@@ -266,7 +266,7 @@ Test 5: increment(-1) with DISABLED mode
 | Error message format | ✅ | Identical to Python |
 | Clean code generation | ✅ | Idiomatic JavaScript |
 | JSDoc annotations | ✅ | Type hints included |
-| CLI integration | ✅ | `promptware build --lang javascript` |
+| CLI integration | ✅ | `asl build --lang javascript` |
 
 ---
 

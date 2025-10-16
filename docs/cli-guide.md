@@ -1,4 +1,4 @@
-# Promptware CLI Guide
+# AssertLang CLI Guide
 
 Complete guide to using the `promptware` command-line interface.
 
@@ -25,7 +25,7 @@ pip install promptware
 
 ```bash
 promptware --version
-# Output: Promptware 0.1.0
+# Output: AssertLang 0.1.0
 ```
 
 ## Quick Start
@@ -47,23 +47,23 @@ promptware init chatbot --template ai
 
 ```bash
 # Basic validation
-promptware validate my-agent.pw
+promptware validate my-agent.al
 
 # Detailed validation with verbose output
-promptware validate my-agent.pw --verbose
+promptware validate my-agent.al --verbose
 ```
 
 ### 3. Generate Server
 
 ```bash
 # Generate Python server
-promptware generate my-agent.pw --lang python
+promptware generate my-agent.al --lang python
 
 # Generate Go server
-promptware generate my-agent.pw --lang go
+promptware generate my-agent.al --lang go
 
 # Generate Node.js server with custom output
-promptware generate my-agent.pw --lang typescript --output ./servers/nodejs
+promptware generate my-agent.al --lang typescript --output ./servers/nodejs
 ```
 
 ### 4. Build & Run
@@ -84,19 +84,19 @@ node my-agent_server.js
 
 **Go:**
 ```bash
-python3 scripts/build_server.py my-agent.pw go
+python3 scripts/build_server.py my-agent.al go
 ./examples/demo/go/my-agent
 ```
 
 **C#:**
 ```bash
-python3 scripts/build_server.py my-agent.pw dotnet
+python3 scripts/build_server.py my-agent.al dotnet
 cd examples/demo/dotnet && dotnet run
 ```
 
 **Rust:**
 ```bash
-python3 scripts/build_server.py my-agent.pw rust
+python3 scripts/build_server.py my-agent.al rust
 ./examples/demo/rust/target/release/my-agent
 ```
 
@@ -106,27 +106,27 @@ Once your agent is running, test it with auto-generated tests:
 
 ```bash
 # Health check and verb discovery
-promptware test http://localhost:3000
+asl test http://localhost:3000
 
 # Run full integration test suite
-promptware test http://localhost:3000 --auto
+asl test http://localhost:3000 --auto
 
 # Load test critical verbs
-promptware test http://localhost:3000 --load --verb user.create@v1 --requests 500
+asl test http://localhost:3000 --load --verb user.create@v1 --requests 500
 
 # Generate coverage report
-promptware test http://localhost:3000 --auto --coverage
+asl test http://localhost:3000 --auto --coverage
 ```
 
 ## Commands Reference
 
-### `promptware test`
+### `asl test`
 
 Test a running MCP agent with auto-generated integration tests and load testing.
 
 **Usage:**
 ```bash
-promptware test <agent-url> [OPTIONS]
+asl test <agent-url> [OPTIONS]
 ```
 
 **Options:**
@@ -141,16 +141,16 @@ promptware test <agent-url> [OPTIONS]
 **Examples:**
 ```bash
 # Basic health check and verb discovery
-promptware test http://localhost:3000
+asl test http://localhost:3000
 
 # Run auto-generated integration tests
-promptware test http://localhost:3000 --auto
+asl test http://localhost:3000 --auto
 
 # Load test a specific verb
-promptware test http://localhost:3000 --load --verb user.create@v1 --requests 1000 --concurrency 50
+asl test http://localhost:3000 --load --verb user.create@v1 --requests 1000 --concurrency 50
 
 # Full test suite with coverage report
-promptware test http://localhost:3000 --auto --coverage
+asl test http://localhost:3000 --auto --coverage
 ```
 
 **What it does:**
@@ -200,11 +200,11 @@ Coverage: 100.0%
 
 ### `promptware generate`
 
-Generate MCP server from .pw file.
+Generate MCP server from .al file.
 
 **Usage:**
 ```bash
-promptware generate <file.pw> [OPTIONS]
+promptware generate <file.al> [OPTIONS]
 ```
 
 **Options:**
@@ -218,19 +218,19 @@ promptware generate <file.pw> [OPTIONS]
 **Examples:**
 ```bash
 # Python server (default)
-promptware generate agent.pw
+promptware generate agent.al
 
 # Preview without writing files
-promptware generate agent.pw --dry-run
+promptware generate agent.al --dry-run
 
 # Go server with build (skip confirmation)
-promptware generate agent.pw --lang go --build --yes
+promptware generate agent.al --lang go --build --yes
 
 # Quiet mode for CI/CD
-promptware generate agent.pw --quiet --yes
+promptware generate agent.al --quiet --yes
 
 # Rust server with custom output
-promptware generate agent.pw --lang rust --output ./production/rust-server
+promptware generate agent.al --lang rust --output ./production/rust-server
 ```
 
 **Safety Features:**
@@ -243,11 +243,11 @@ promptware generate agent.pw --lang rust --output ./production/rust-server
 
 ### `promptware validate`
 
-Validate .pw file syntax and structure.
+Validate .al file syntax and structure.
 
 **Usage:**
 ```bash
-promptware validate <file.pw> [OPTIONS]
+promptware validate <file.al> [OPTIONS]
 ```
 
 **Options:**
@@ -256,10 +256,10 @@ promptware validate <file.pw> [OPTIONS]
 **Examples:**
 ```bash
 # Basic validation
-promptware validate agent.pw
+promptware validate agent.al
 
 # Detailed output
-promptware validate agent.pw --verbose
+promptware validate agent.al --verbose
 ```
 
 **Output (verbose):**
@@ -278,7 +278,7 @@ promptware validate agent.pw --verbose
 
 ### `promptware list-tools`
 
-List all available tools that can be used in .pw agents.
+List all available tools that can be used in .al agents.
 
 **Usage:**
 ```bash
@@ -313,7 +313,7 @@ promptware list-tools --category "HTTP & APIs"
 
 **Output:**
 ```
-🛠️  Available Promptware Tools
+🛠️  Available AssertLang Tools
 
 📦 HTTP & APIs
   • http                     [python, nodejs, go, csharp, rust]
@@ -329,7 +329,7 @@ Total: 38 tools
 
 ### `promptware init`
 
-Create new .pw agent from template.
+Create new .al agent from template.
 
 **Usage:**
 ```bash
@@ -545,7 +545,7 @@ promptware --version
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `PROMPTWARE_HOME` | Promptware installation directory | Auto-detected |
+| `PROMPTWARE_HOME` | AssertLang installation directory | Auto-detected |
 | `XDG_CONFIG_HOME` | Base directory for config files | `~/.config` |
 | `NO_COLOR` | Disable colored output | Not set |
 | `ANTHROPIC_API_KEY` | API key for AI-powered agents | None |
@@ -564,16 +564,16 @@ promptware config set defaults.language python
 # 2. Create agent
 promptware init my-service --template api
 
-# 3. Edit my-service.pw (customize verbs, tools)
+# 3. Edit my-service.al (customize verbs, tools)
 
 # 4. Validate
-promptware validate my-service.pw --verbose
+promptware validate my-service.al --verbose
 
 # 5. Preview generation (dry-run)
-promptware generate my-service.pw --dry-run
+promptware generate my-service.al --dry-run
 
 # 6. Generate development server
-promptware generate my-service.pw
+promptware generate my-service.al
 
 # 7. Run and test
 cd generated/my-service
@@ -585,13 +585,13 @@ python my-service_server.py
 
 ```bash
 # 1. Validate agent
-promptware validate my-service.pw
+promptware validate my-service.al
 
 # 2. Generate production server (skip confirmation for CI)
-promptware generate my-service.pw --lang go --output ./production --yes --quiet
+promptware generate my-service.al --lang go --output ./production --yes --quiet
 
 # 3. Build
-python3 scripts/build_server.py my-service.pw go
+python3 scripts/build_server.py my-service.al go
 
 # 4. Deploy binary
 ./examples/demo/go/my-service
@@ -601,25 +601,25 @@ python3 scripts/build_server.py my-service.pw go
 
 ```bash
 # Use --yes and --quiet for automated pipelines
-promptware generate agent.pw --yes --quiet
+promptware generate agent.al --yes --quiet
 
 # Or set config for entire project
 promptware config set generate.auto_confirm true --project
 
 # Disable colored output
 export NO_COLOR=1
-promptware generate agent.pw --yes
+promptware generate agent.al --yes
 ```
 
 ### Multi-Language Workflow
 
 ```bash
 # Generate servers in all languages
-promptware generate agent.pw --lang python --output ./servers/python
-promptware generate agent.pw --lang typescript --output ./servers/nodejs
-promptware generate agent.pw --lang go --output ./servers/go
-promptware generate agent.pw --lang csharp --output ./servers/csharp
-promptware generate agent.pw --lang rust --output ./servers/rust
+promptware generate agent.al --lang python --output ./servers/python
+promptware generate agent.al --lang typescript --output ./servers/nodejs
+promptware generate agent.al --lang go --output ./servers/go
+promptware generate agent.al --lang csharp --output ./servers/csharp
+promptware generate agent.al --lang rust --output ./servers/rust
 ```
 
 ## Troubleshooting
@@ -659,7 +659,7 @@ dotnet --version
 cargo --version
 
 # Use build script directly
-python3 scripts/build_server.py agent.pw go
+python3 scripts/build_server.py agent.al go
 ```
 
 ## Shell Completion
@@ -687,7 +687,7 @@ _PROMPTWARE_COMPLETE=fish_source promptware | source
 
 ## Next Steps
 
-- [Writing .pw Agents](./promptware-dsl-spec.md)
+- [Writing .al Agents](./promptware-dsl-spec.md)
 - [Production Deployment](./production-hardening.md)
 - [Tool Development](./tool-development.md)
 - [API Reference](./api-reference.md)

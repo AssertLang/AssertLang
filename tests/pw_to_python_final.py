@@ -9,7 +9,7 @@ Translation Chain:
 3. Go → IR → PW DSL (Agent 3) ✅
 4. PW DSL → IR → Python (Agent 4) ← YOU ARE HERE
 
-Input: test_sentient_maze_from_go.pw (40% quality, malformed)
+Input: test_sentient_maze_from_go.al (40% quality, malformed)
 Output: test_sentient_maze_final.py (best effort Python)
 """
 
@@ -28,7 +28,7 @@ def main():
     print("=" * 80)
 
     # Input/output paths
-    pw_file = Path("test_sentient_maze_from_go.pw")
+    pw_file = Path("test_sentient_maze_from_go.al")
     output_file = Path("test_sentient_maze_final.py")
 
     print(f"\n📥 Reading PW DSL: {pw_file}")

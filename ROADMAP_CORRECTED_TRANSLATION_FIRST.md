@@ -1,14 +1,14 @@
-# Roadmap CORRECTED: Promptware as Universal Translator Bridge
+# Roadmap CORRECTED: AssertLang as Universal Translator Bridge
 
 **Date:** 2025-10-12
-**Core Mission:** Promptware is a UNIVERSAL TRANSLATOR BRIDGE between programming languages
+**Core Mission:** AssertLang is a UNIVERSAL TRANSLATOR BRIDGE between programming languages
 **Status:** Refocused on core value proposition
 
 ---
 
 ## The Fundamental Truth
 
-**Promptware's WHOLE POINT:**
+**AssertLang's WHOLE POINT:**
 - Write code ONCE in PW
 - Generate NATIVE code in Python, Rust, Go, TypeScript, C#
 - Bridge between languages
@@ -116,7 +116,7 @@
 
 **Example:**
 ```pw
-// test.pw
+// test.al
 function fibonacci(n: int) -> int {
     if n <= 1 { return n; }
     return fibonacci(n-1) + fibonacci(n-2);
@@ -128,7 +128,7 @@ let result = fibonacci(10);
 
 **Test harness:**
 ```bash
-pwenv test test.pw --all-targets
+pwenv test test.al --all-targets
 # Generates: test.py, test.rs, test.go, test.ts, test.cs
 # Runs: python test.py, cargo run, go run, node test.ts, dotnet run
 # Compares: All must output "55"
@@ -145,8 +145,8 @@ pwenv test test.pw --all-targets
 #### 1.4 Stdlib Translation (Months 5-6)
 
 **Already Have (Session 43):**
-- ✅ stdlib/core.pw (Option<T>, Result<T,E>)
-- ✅ stdlib/types.pw (List<T>, Map<K,V>, Set<T>)
+- ✅ stdlib/core.al (Option<T>, Result<T,E>)
+- ✅ stdlib/types.al (List<T>, Map<K,V>, Set<T>)
 
 **Need:**
 - [ ] **Generate stdlib for ALL targets**
@@ -247,7 +247,7 @@ pwenv build --all-targets
 **Scenario:** Write PW code that uses Python ML libraries + Rust performance
 
 ```pw
-// ml_service.pw - Universal bridge code
+// ml_service.al - Universal bridge code
 
 // Import Python library
 @ffi(lang="python", module="tensorflow")
@@ -280,19 +280,19 @@ function classify_image(path: string) -> Result<string, string> {
 
 **Option 1: Generate Python (calls Rust via PyO3)**
 ```bash
-pwenv build ml_service.pw --lang python --ffi rust
+pwenv build ml_service.al --lang python --ffi rust
 # Generates: ml_service.py + Rust extension module
 ```
 
 **Option 2: Generate Rust (calls Python via PyO3)**
 ```bash
-pwenv build ml_service.pw --lang rust --ffi python
+pwenv build ml_service.al --lang rust --ffi python
 # Generates: ml_service.rs + Python binding
 ```
 
 **Option 3: Generate TypeScript (orchestrates both)**
 ```bash
-pwenv build ml_service.pw --lang typescript --ffi python,rust
+pwenv build ml_service.al --lang typescript --ffi python,rust
 # Generates: ml_service.ts + child_process calls to Python/Rust
 ```
 
@@ -414,7 +414,7 @@ function factorial(n: int) -> int {
 **Generate docs for ALL targets:**
 
 ```bash
-pwenv doc my_library.pw --all-targets
+pwenv doc my_library.al --all-targets
 # Generates:
 # - docs/python/index.html
 # - docs/rust/index.html
@@ -569,7 +569,7 @@ pwenv doc my_library.pw --all-targets
 **Deliverables:**
 - 10-20 common libraries
 - All available in 5 languages
-- Package registry (promptware.dev/packages)
+- Package registry (assertlang.dev/packages)
 
 **Estimated Effort:** 8 weeks (2 months)
 
@@ -585,7 +585,7 @@ pwenv doc my_library.pw --all-targets
 **Community goals:**
 - 50+ contributors
 - 100+ third-party libraries
-- 10+ production companies using Promptware
+- 10+ production companies using AssertLang
 - Active Discord/forum
 
 **Deliverables:**
@@ -600,7 +600,7 @@ pwenv doc my_library.pw --all-targets
 - ✅ 100+ libraries in registry
 - ✅ Active community (50+ contributors)
 - ✅ 10+ companies using in production
-- ✅ Promptware recognized as universal translator
+- ✅ AssertLang recognized as universal translator
 
 **Phase 5 Total:** 6 months
 
@@ -736,13 +736,13 @@ Phase 5: Ecosystem 🟢
 
 ## The Core Value Proposition
 
-**Promptware is:**
+**AssertLang is:**
 - ✅ A universal translator bridge (PRIMARY)
 - ✅ Write once, deploy to 5 languages (CORE)
 - ✅ Bridge between Python/Rust/Go/TypeScript/C# (VALUE)
 - ✅ Polyglot project enabler (UNIQUE)
 
-**Promptware is NOT:**
+**AssertLang is NOT:**
 - ❌ Another programming language
 - ❌ Competing with Python
 - ❌ Primarily a runtime language

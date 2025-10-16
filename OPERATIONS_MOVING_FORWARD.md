@@ -1,4 +1,4 @@
-# Operations Moving Forward - Promptware CharCNN System
+# Operations Moving Forward - AssertLang CharCNN System
 
 **Date**: 2025-10-13
 **Current Status**: Phase 3 Complete (CharCNN 100% accuracy)
@@ -83,7 +83,7 @@ Category Breakdown:
 ## Next Steps: Phase 4 - Compiler Integration
 
 ### Objectives
-Integrate CharCNN + MCP into Promptware compiler for end-to-end compilation:
+Integrate CharCNN + MCP into AssertLang compiler for end-to-end compilation:
 ```
 PW source → Parse → CharCNN lookup → MCP query → Target code
 ```

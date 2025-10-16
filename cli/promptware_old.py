@@ -18,7 +18,7 @@ from tools import run_tool
 
 def _load_prompt(arg: str) -> str:
     p = Path(arg)
-    if p.suffix == ".pw" and p.exists():
+    if p.suffix == ".al" and p.exists():
         prog = parse_pw(p.read_text(encoding="utf-8"))
         return prog.prompt
     return arg
@@ -34,7 +34,7 @@ def main() -> None:
 @click.option("--hold", is_flag=True, help="Keep gateway alive after success until Ctrl+C")
 def run(source: str, hold: bool) -> None:
     p = Path(source)
-    if p.suffix == ".pw" and p.exists():
+    if p.suffix == ".al" and p.exists():
         res = execute_pw_file(str(p))
         if res.get("mode") == "interpreter":
             ok = bool(res.get("ok"))
@@ -201,7 +201,7 @@ def dsl() -> None:
 def dsl_format(paths: tuple[str, ...], check: bool) -> None:
     files = collect_pw_files(paths)
     if not files:
-        click.echo("No .pw files found", err=True)
+        click.echo("No .al files found", err=True)
         sys.exit(1)
     changed = False
     for path in files:
@@ -223,7 +223,7 @@ def dsl_format(paths: tuple[str, ...], check: bool) -> None:
 def dsl_lint(paths: tuple[str, ...]) -> None:
     files = collect_pw_files(paths)
     if not files:
-        click.echo("No .pw files found", err=True)
+        click.echo("No .al files found", err=True)
         sys.exit(1)
     warnings: list[str] = []
     for path in files:

@@ -1,6 +1,6 @@
 # Editor Integration Guide
 
-Promptware agents can be used directly in editors like Cursor, Windsurf, and Cline through their built-in MCP support. **No API keys needed** - use your editor's AI features!
+AssertLang agents can be used directly in editors like Cursor, Windsurf, and Cline through their built-in MCP support. **No API keys needed** - use your editor's AI features!
 
 ## Quick Start
 
@@ -16,7 +16,7 @@ promptware mcp-config --directory examples/devops_suite --editor windsurf
 # For Cline (VSCode extension)
 promptware mcp-config --directory examples/devops_suite --editor cline
 
-# For current directory (auto-scans for .pw files)
+# For current directory (auto-scans for .al files)
 promptware mcp-config
 ```
 
@@ -42,7 +42,7 @@ This creates `.cursor/mcp.json` in your project directory. Cursor automatically 
 
 **Using Agents:**
 - Open Cursor chat
-- Your Promptware agents appear in the MCP menu
+- Your AssertLang agents appear in the MCP menu
 - Use them like: "@code-reviewer analyze this function"
 
 ### Windsurf
@@ -83,7 +83,7 @@ This creates `.vscode/mcp.json` for the Cline extension.
 The `mcp-config` command:
 
 1. **Scans** your project for `.pw` agent files
-2. **Generates** MCP server configs pointing to `promptware run <agent.pw>`
+2. **Generates** MCP server configs pointing to `promptware run <agent.al>`
 3. **Creates** editor-specific config files (`.cursor/mcp.json`, etc.)
 4. **No API keys** needed - uses your editor's AI features
 
@@ -115,11 +115,11 @@ Generated config looks like:
   "mcpServers": {
     "code-reviewer": {
       "command": "promptware",
-      "args": ["run", "/path/to/code_reviewer_agent.pw"]
+      "args": ["run", "/path/to/code_reviewer_agent.al"]
     },
     "test-runner": {
       "command": "promptware",
-      "args": ["run", "/path/to/test_runner_agent.pw"]
+      "args": ["run", "/path/to/test_runner_agent.al"]
     }
   }
 }
@@ -142,7 +142,7 @@ promptware mcp-config --directory examples --output ~/.config/cursor
 ### Single Agent
 
 ```bash
-promptware mcp-config --agent-file my_agent.pw --editor cursor
+promptware mcp-config --agent-file my_agent.al --editor cursor
 ```
 
 ### Project-Wide Setup
@@ -192,7 +192,7 @@ pip install -e .
 ```
 
 **Agent fails to start:**
-- Check `.pw` file syntax: `promptware test your_agent.pw`
+- Check `.pw` file syntax: `asl test your_agent.pw`
 - Check dependencies installed: `pip install -r requirements.txt`
 - Check port not in use: `lsof -i :23450`
 
@@ -203,7 +203,7 @@ Edit the generated config to add env vars:
   "mcpServers": {
     "code-reviewer": {
       "command": "promptware",
-      "args": ["run", "/path/to/agent.pw"],
+      "args": ["run", "/path/to/agent.al"],
       "env": {
         "ANTHROPIC_API_KEY": "sk-..."
       }

@@ -1,6 +1,6 @@
 {
   "name": "PW",
-  "scopeName": "source.pw",
+  "scopeName": "source.al",
   "fileTypes": ["pw"],
   "patterns": [
     { "include": "#comments" },
@@ -16,11 +16,11 @@
     "comments": {
       "patterns": [
         {
-          "name": "comment.line.double-slash.pw",
+          "name": "comment.line.double-slash.al",
           "match": "//.*$"
         },
         {
-          "name": "comment.block.pw",
+          "name": "comment.block.al",
           "begin": "/\\*",
           "end": "\\*/"
         }
@@ -29,15 +29,15 @@
     "keywords": {
       "patterns": [
         {
-          "name": "keyword.control.pw",
+          "name": "keyword.control.al",
           "match": "\\b(if|else|for|while|return|break|continue|switch|case|default|try|catch|finally|throw)\\b"
         },
         {
-          "name": "keyword.other.pw",
+          "name": "keyword.other.al",
           "match": "\\b(function|class|type|enum|let|const|import|from|export|async|await)\\b"
         },
         {
-          "name": "storage.modifier.pw",
+          "name": "storage.modifier.al",
           "match": "\\b(public|private|static)\\b"
         }
       ]
@@ -45,23 +45,23 @@
     "strings": {
       "patterns": [
         {
-          "name": "string.quoted.double.pw",
+          "name": "string.quoted.double.al",
           "begin": "\"",
           "end": "\"",
           "patterns": [
             {
-              "name": "constant.character.escape.pw",
+              "name": "constant.character.escape.al",
               "match": "\\\\."
             }
           ]
         },
         {
-          "name": "string.quoted.single.pw",
+          "name": "string.quoted.single.al",
           "begin": "'",
           "end": "'",
           "patterns": [
             {
-              "name": "constant.character.escape.pw",
+              "name": "constant.character.escape.al",
               "match": "\\\\."
             }
           ]
@@ -71,19 +71,19 @@
     "numbers": {
       "patterns": [
         {
-          "name": "constant.numeric.float.pw",
+          "name": "constant.numeric.float.al",
           "match": "\\b\\d+\\.\\d+\\b"
         },
         {
-          "name": "constant.numeric.integer.pw",
+          "name": "constant.numeric.integer.al",
           "match": "\\b\\d+\\b"
         },
         {
-          "name": "constant.language.boolean.pw",
+          "name": "constant.language.boolean.al",
           "match": "\\b(true|false)\\b"
         },
         {
-          "name": "constant.language.null.pw",
+          "name": "constant.language.null.al",
           "match": "\\bnull\\b"
         }
       ]
@@ -91,11 +91,11 @@
     "types": {
       "patterns": [
         {
-          "name": "support.type.primitive.pw",
+          "name": "support.type.primitive.al",
           "match": "\\b(int|float|string|bool|void|any)\\b"
         },
         {
-          "name": "support.type.collection.pw",
+          "name": "support.type.collection.al",
           "match": "\\b(array|map|set)\\b"
         }
       ]
@@ -103,15 +103,15 @@
     "functions": {
       "patterns": [
         {
-          "name": "entity.name.function.pw",
+          "name": "entity.name.function.al",
           "match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*(?=\\()"
         },
         {
-          "name": "meta.function.pw",
+          "name": "meta.function.al",
           "begin": "\\b(function)\\s+([a-zA-Z_][a-zA-Z0-9_]*)",
           "beginCaptures": {
-            "1": { "name": "keyword.other.pw" },
-            "2": { "name": "entity.name.function.pw" }
+            "1": { "name": "keyword.other.al" },
+            "2": { "name": "entity.name.function.al" }
           },
           "end": "(?<=\\})",
           "patterns": [
@@ -123,23 +123,23 @@
     "operators": {
       "patterns": [
         {
-          "name": "keyword.operator.arithmetic.pw",
+          "name": "keyword.operator.arithmetic.al",
           "match": "\\+|\\-|\\*|\\/|\\%"
         },
         {
-          "name": "keyword.operator.comparison.pw",
+          "name": "keyword.operator.comparison.al",
           "match": "==|!=|<|>|<=|>="
         },
         {
-          "name": "keyword.operator.logical.pw",
+          "name": "keyword.operator.logical.al",
           "match": "\\b(and|or|not)\\b|&&|\\|\\||!"
         },
         {
-          "name": "keyword.operator.assignment.pw",
+          "name": "keyword.operator.assignment.al",
           "match": "=|\\+=|\\-=|\\*=|\\/="
         },
         {
-          "name": "keyword.operator.arrow.pw",
+          "name": "keyword.operator.arrow.al",
           "match": "->"
         }
       ]
@@ -147,7 +147,7 @@
     "variables": {
       "patterns": [
         {
-          "name": "variable.other.pw",
+          "name": "variable.other.al",
           "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b"
         }
       ]

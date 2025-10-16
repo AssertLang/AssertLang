@@ -310,7 +310,7 @@ MIT
 
 ## 🙏 Acknowledgments
 
-Built on the Promptware universal translation IR system.
+Built on the AssertLang universal translation IR system.
 
 Inspired by:
 - CrossTL (universal IR)

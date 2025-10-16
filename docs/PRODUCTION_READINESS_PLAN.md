@@ -501,7 +501,7 @@ impl User {
 
 **Program 1: Calculator CLI**
 ```pw
-// examples/real_world/calculator_cli.pw
+// examples/real_world/calculator_cli.al
 function main() {
     print("Simple Calculator");
     print("1. Add");
@@ -531,7 +531,7 @@ function main() {
 
 **Program 2: HTTP Server** (simple API)
 ```pw
-// examples/real_world/api_server.pw
+// examples/real_world/api_server.al
 import http_server;
 
 class TodoItem {
@@ -574,7 +574,7 @@ function main() {
 
 **Program 3: Data Processor**
 ```pw
-// examples/real_world/csv_processor.pw
+// examples/real_world/csv_processor.al
 import csv;
 import math;
 
@@ -688,21 +688,21 @@ def test_python_roundtrip():
 **Commands**:
 ```bash
 # Compile PW → target language
-pw build calculator.pw --lang python -o calculator.py
-pw build api.pw --lang go -o api.go
-pw build processor.pw --lang rust -o processor.rs
+pw build calculator.al --lang python -o calculator.py
+pw build api.al --lang go -o api.go
+pw build processor.al --lang rust -o processor.rs
 
 # Compile PW → MCP JSON (intermediate)
-pw compile calculator.pw -o calculator.pw.json
+pw compile calculator.al -o calculator.pw.json
 
 # Run PW directly (interpret or compile + run)
-pw run calculator.pw
+pw run calculator.al
 
 # Format PW code
-pw format calculator.pw
+pw format calculator.al
 
 # Lint PW code
-pw lint calculator.pw
+pw lint calculator.al
 
 # REPL
 pw repl

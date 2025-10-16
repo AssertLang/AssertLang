@@ -1,7 +1,7 @@
 # Reverse Parsing Analysis: Go → PW DSL
 
 **Date**: 2025-10-05
-**Analyzer**: Promptware Translation Agent
+**Analyzer**: AssertLang Translation Agent
 **Purpose**: Detailed construct-by-construct analysis of reverse parsing accuracy
 
 ---

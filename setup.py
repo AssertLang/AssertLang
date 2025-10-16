@@ -1,5 +1,5 @@
 """
-Promptware setup configuration.
+AssertLang setup configuration.
 """
 
 from setuptools import find_packages, setup
@@ -8,19 +8,19 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="promptware-dev",
+    name="assertlang",
     version="2.1.0b4",
-    author="Promptware Contributors",
-    author_email="hello@promptware.dev",
-    description="Production-ready MCP agent framework with multi-language support",
+    author="AssertLang Contributors",
+    author_email="hello@assertlang.dev",
+    description="Executable contracts for multi-agent systems - deterministic coordination across frameworks and languages",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/promptware-dev/promptware",
+    url="https://github.com/AssertLang/AssertLang",
     project_urls={
-        "Documentation": "https://github.com/promptware-dev/promptware/tree/main/docs",
-        "Source": "https://github.com/promptware-dev/promptware",
-        "Issues": "https://github.com/promptware-dev/promptware/issues",
-        "Website": "https://promptware.dev",
+        "Documentation": "https://github.com/AssertLang/AssertLang/tree/main/docs",
+        "Source": "https://github.com/AssertLang/AssertLang",
+        "Issues": "https://github.com/AssertLang/AssertLang/issues",
+        "Website": "https://assertlang.dev",
     },
     packages=find_packages(exclude=["tests", "tests.*", "examples", "examples.*"]),
     classifiers=[
@@ -135,12 +135,12 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "promptware=promptware.cli:main",
+            "asl=assertlang.cli:main",
         ],
     },
     include_package_data=True,
     package_data={
-        "promptware": ["py.typed"],
+        "assertlang": ["py.typed"],
     },
     zip_safe=False,
 )

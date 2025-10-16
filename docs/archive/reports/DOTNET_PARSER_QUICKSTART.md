@@ -2,7 +2,7 @@
 
 ## TL;DR
 
-Extract Promptware DSL from ASP.NET Core C# servers with **100% accuracy** and **90%+ confidence**.
+Extract AssertLang DSL from ASP.NET Core C# servers with **100% accuracy** and **90%+ confidence**.
 
 ```bash
 # Parse C# file to PW DSL
@@ -44,7 +44,7 @@ var port = "5002";
 app.Run($"http://127.0.0.1:{port}");
 ```
 
-**Output**: Promptware DSL
+**Output**: AssertLang DSL
 ```pw
 lang dotnet
 agent minimal-dotnet-agent

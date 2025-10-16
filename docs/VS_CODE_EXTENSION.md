@@ -1,6 +1,6 @@
 # PW VS Code Extension
 
-**Syntax highlighting and file icons for PW (Promptware) language**
+**Syntax highlighting and file icons for PW (AssertLang) language**
 
 ---
 
@@ -8,7 +8,7 @@
 
 **Current: Private/Workspace Extension** 🔒
 
-The PW VS Code extension is currently included in the Promptware repository and loads automatically when you open the workspace. It is **not yet published** to the VS Code Marketplace.
+The PW VS Code extension is currently included in the AssertLang repository and loads automatically when you open the workspace. It is **not yet published** to the VS Code Marketplace.
 
 **Future: Public Marketplace Extension** 🌐
 
@@ -20,11 +20,11 @@ We plan to publish to the VS Code Marketplace so anyone can install with one cli
 
 ### Option 1: Workspace (Automatic) ✅ Recommended
 
-**For developers working in the Promptware repository:**
+**For developers working in the AssertLang repository:**
 
-1. Clone the Promptware repository:
+1. Clone the AssertLang repository:
    ```bash
-   git clone https://github.com/Promptware-dev/promptware.git
+   git clone https://github.com/AssertLang/AssertLang.git
    cd promptware
    ```
 
@@ -133,7 +133,7 @@ Purple "PW" icon next to `.pw` files in the file explorer.
 **Clone from GitHub:**
 
 ```bash
-git clone https://github.com/Promptware-dev/promptware.git
+git clone https://github.com/AssertLang/AssertLang.git
 cd promptware/.vscode/extensions/pw-language/
 ```
 
@@ -204,14 +204,14 @@ The extension uses standard TextMate scopes, so colors are controlled by your VS
   "editor.tokenColorCustomizations": {
     "textMateRules": [
       {
-        "scope": "keyword.control.pw",
+        "scope": "keyword.control.al",
         "settings": {
           "foreground": "#C678DD",
           "fontStyle": "bold"
         }
       },
       {
-        "scope": "support.type.primitive.pw",
+        "scope": "support.type.primitive.al",
         "settings": {
           "foreground": "#56B6C2"
         }
@@ -305,16 +305,16 @@ Team members clone the repo and get the extension automatically.
 ### Extension not found
 
 **Solution: Check workspace**
-- Make sure you're opening the Promptware folder in VS Code
+- Make sure you're opening the AssertLang folder in VS Code
 - The extension only loads from `.vscode/extensions/` in the workspace
 
-### Syntax errors in .pw files
+### Syntax errors in .al files
 
 **Not a VS Code issue!**
 - The extension only provides highlighting, not validation
 - Use the PW compiler to check syntax:
   ```bash
-  pw build file.pw --lang python
+  pw build file.al --lang python
   ```
 
 ---
@@ -353,7 +353,7 @@ Edit `syntaxes/pw.tmLanguage.json`:
   "keywords": {
     "patterns": [
       {
-        "name": "keyword.control.pw",
+        "name": "keyword.control.al",
         "match": "\\b(if|else|for|while|your-new-keyword)\\b"
       }
     ]
@@ -404,12 +404,12 @@ See `CONTRIBUTING.md` for guidelines.
 
 - **Setup issues:** See `SETUP.md`
 - **Language questions:** See `PW_LANGUAGE_GUIDE.md`
-- **Bug reports:** https://github.com/Promptware-dev/promptware/issues
-- **Feature requests:** https://github.com/Promptware-dev/promptware/discussions
+- **Bug reports:** https://github.com/AssertLang/AssertLang/issues
+- **Feature requests:** https://github.com/AssertLang/AssertLang/discussions
 
 ### Contact
 
-- **GitHub:** https://github.com/Promptware-dev/promptware
+- **GitHub:** https://github.com/AssertLang/AssertLang
 - **Discord:** (Coming soon!)
 - **Email:** (Coming soon!)
 
@@ -425,7 +425,7 @@ See `LICENSE` for full text.
 
 ## Credits
 
-**Created by:** Promptware Contributors
+**Created by:** AssertLang Contributors
 
 **Built with:**
 - TextMate grammars

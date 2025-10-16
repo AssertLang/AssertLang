@@ -3,7 +3,7 @@
 Bidirectional Testing System - Rust Test Runner
 
 Orchestrates the complete test flow:
-1. Parse .pw fixtures
+1. Parse .al fixtures
 2. Generate Rust servers
 3. Validate and test servers
 4. Collect results
@@ -31,7 +31,7 @@ class RustTestRunner:
         Initialize test runner.
 
         Args:
-            fixtures_dir: Directory containing .pw test fixtures
+            fixtures_dir: Directory containing .al test fixtures
             output_dir: Directory for generated servers
         """
         self.fixtures_dir = fixtures_dir
@@ -42,10 +42,10 @@ class RustTestRunner:
 
     def parse_fixture(self, fixture_path: Path) -> Dict[str, Any]:
         """
-        Parse a .pw fixture file.
+        Parse a .al fixture file.
 
         Args:
-            fixture_path: Path to .pw file
+            fixture_path: Path to .al file
 
         Returns:
             Dict with parsing results
@@ -217,11 +217,11 @@ chrono = "0.4"
             "errors": [],
         }
 
-        # Find all Rust .pw fixtures
-        fixtures = list(self.fixtures_dir.glob("rust_*.pw"))
+        # Find all Rust .al fixtures
+        fixtures = list(self.fixtures_dir.glob("rust_*.al"))
         if not fixtures:
             summary["errors"].append(
-                f"No rust_*.pw fixtures found in {self.fixtures_dir}"
+                f"No rust_*.al fixtures found in {self.fixtures_dir}"
             )
             return summary
 

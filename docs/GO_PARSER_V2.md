@@ -8,7 +8,7 @@
 
 ## Overview
 
-The Go Parser V2 is a critical component of Promptware's universal code translation system. It parses **arbitrary Go code** (not just MCP servers) and converts it to Promptware's Intermediate Representation (IR).
+The Go Parser V2 is a critical component of AssertLang's universal code translation system. It parses **arbitrary Go code** (not just MCP servers) and converts it to AssertLang's Intermediate Representation (IR).
 
 ### Key Capabilities
 
@@ -42,7 +42,7 @@ The Go Parser V2 is a critical component of Promptware's universal code translat
                │
                ▼
 ┌─────────────────────────────────────────┐
-│    Promptware IR (Universal)            │
+│    AssertLang IR (Universal)            │
 │  • IRModule, IRFunction, IRClass        │
 │  • Type-safe representation             │
 │  • Language-agnostic                    │
@@ -370,7 +370,7 @@ Categories:
 pytest tests/test_go_parser_v2.py -v
 
 # Without pytest
-PYTHONPATH=/path/to/Promptware python3 tests/run_go_parser_v2_tests.py
+PYTHONPATH=/path/to/AssertLang python3 tests/run_go_parser_v2_tests.py
 ```
 
 ### Example Test
@@ -430,7 +430,7 @@ func GetUser(id string) *User {
 
 ## Integration with Type System
 
-The parser uses Promptware's universal type system (`dsl/type_system.py`) for type mapping:
+The parser uses AssertLang's universal type system (`dsl/type_system.py`) for type mapping:
 
 ```python
 from dsl.type_system import TypeSystem
@@ -637,7 +637,7 @@ To extend the parser:
 ## References
 
 - [Go Language Spec](https://go.dev/ref/spec)
-- [Promptware IR Specification](./IR_SPECIFICATION.md)
+- [AssertLang IR Specification](./IR_SPECIFICATION.md)
 - [Universal Type System](./TYPE_SYSTEM.md)
 - [V1 Go Parser (MCP only)](../reverse_parsers/go_parser.py)
 

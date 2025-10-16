@@ -98,6 +98,7 @@ class PythonGeneratorV2:
         self.function_return_types: Dict[str, IRType] = {}  # Track function return types
         self.method_return_types: Dict[str, Dict[str, IRType]] = {}  # Track method return types by class
         self.current_class: Optional[str] = None  # Track current class being generated (for 'self' type inference)
+        self.capturing_returns = False  # Track if we should capture return values for postconditions
 
     # ========================================================================
     # Indentation Management
@@ -289,9 +290,9 @@ class PythonGeneratorV2:
             # Check if function has contracts - add contract imports if needed
             if func.requires or func.ensures:
                 if func.requires:
-                    self.required_imports.add("from promptware.runtime.contracts import check_precondition")
+                    self.required_imports.add("from assertlang.runtime.contracts import check_precondition")
                 if func.ensures:
-                    self.required_imports.add("from promptware.runtime.contracts import check_postcondition")
+                    self.required_imports.add("from assertlang.runtime.contracts import check_postcondition")
 
         # Collect types from classes
         for cls in module.classes:
@@ -308,13 +309,13 @@ class PythonGeneratorV2:
                 # Check if method has contracts
                 if method.requires or method.ensures:
                     if method.requires:
-                        self.required_imports.add("from promptware.runtime.contracts import check_precondition")
+                        self.required_imports.add("from assertlang.runtime.contracts import check_precondition")
                     if method.ensures:
-                        self.required_imports.add("from promptware.runtime.contracts import check_postcondition")
+                        self.required_imports.add("from assertlang.runtime.contracts import check_postcondition")
 
             # Check if class has invariants
             if cls.invariants:
-                self.required_imports.add("from promptware.runtime.contracts import check_invariant")
+                self.required_imports.add("from assertlang.runtime.contracts import check_invariant")
 
         # Collect types from type definitions
         for type_def in module.types:
@@ -626,8 +627,11 @@ class PythonGeneratorV2:
 
         # Body
         if constructor.body:
-            for stmt in constructor.body:
-                lines.append(self.generate_statement(stmt))
+            for i, stmt in enumerate(constructor.body):
+                next_stmt = constructor.body[i + 1] if i + 1 < len(constructor.body) else None
+                stmt_code = self.generate_statement(stmt, next_stmt)
+                if stmt_code is not None:  # Skip None (IRMap workaround)
+                    lines.append(stmt_code)
         else:
             lines.append(f"{self.indent()}pass")
 
@@ -679,8 +683,11 @@ class PythonGeneratorV2:
 
         # Body
         if method.body:
-            for stmt in method.body:
-                lines.append(self.generate_statement(stmt))
+            for i, stmt in enumerate(method.body):
+                next_stmt = method.body[i + 1] if i + 1 < len(method.body) else None
+                stmt_code = self.generate_statement(stmt, next_stmt)
+                if stmt_code is not None:  # Skip None (IRMap workaround)
+                    lines.append(stmt_code)
         else:
             lines.append(f"{self.indent()}pass")
 
@@ -753,19 +760,21 @@ class PythonGeneratorV2:
                 lines.append(f"{self.indent()}try:")
                 self.increase_indent()
 
+                # Enable return capturing mode
+                self.capturing_returns = True
+
                 # Body
                 if func.body:
-                    # Capture return values as __result
-                    for stmt in func.body:
-                        stmt_code = self.generate_statement(stmt)
-                        # Replace 'return X' with '__result = X; return __result'
-                        if stmt_code.strip().startswith("return "):
-                            return_val = stmt_code.strip()[7:]  # Remove 'return '
-                            lines.append(f"{self.indent()}__result = {return_val}")
-                        else:
+                    for i, stmt in enumerate(func.body):
+                        next_stmt = func.body[i + 1] if i + 1 < len(func.body) else None
+                        stmt_code = self.generate_statement(stmt, next_stmt)
+                        if stmt_code is not None:  # Skip None (IRMap workaround)
                             lines.append(stmt_code)
                 else:
                     lines.append(f"{self.indent()}pass")
+
+                # Disable return capturing mode
+                self.capturing_returns = False
 
                 self.decrease_indent()
                 lines.append(f"{self.indent()}finally:")
@@ -782,15 +791,21 @@ class PythonGeneratorV2:
             else:
                 # No postconditions, just body
                 if func.body:
-                    for stmt in func.body:
-                        lines.append(self.generate_statement(stmt))
+                    for i, stmt in enumerate(func.body):
+                        next_stmt = func.body[i + 1] if i + 1 < len(func.body) else None
+                        stmt_code = self.generate_statement(stmt, next_stmt)
+                        if stmt_code is not None:  # Skip None (IRMap workaround)
+                            lines.append(stmt_code)
                 else:
                     lines.append(f"{self.indent()}pass")
         else:
             # No contracts, just regular body
             if func.body:
-                for stmt in func.body:
-                    lines.append(self.generate_statement(stmt))
+                for i, stmt in enumerate(func.body):
+                    next_stmt = func.body[i + 1] if i + 1 < len(func.body) else None
+                    stmt_code = self.generate_statement(stmt, next_stmt)
+                    if stmt_code is not None:  # Skip None (IRMap workaround)
+                        lines.append(stmt_code)
             else:
                 lines.append(f"{self.indent()}pass")
 
@@ -813,10 +828,10 @@ class PythonGeneratorV2:
     # Statement Generation
     # ========================================================================
 
-    def generate_statement(self, stmt: IRStatement) -> str:
+    def generate_statement(self, stmt: IRStatement, next_stmt: IRStatement = None) -> str:
         """Generate Python statement from IR."""
         if isinstance(stmt, IRAssignment):
-            return self.generate_assignment(stmt)
+            return self.generate_assignment(stmt, next_stmt)
         elif isinstance(stmt, IRIf):
             return self.generate_if(stmt)
         elif isinstance(stmt, IRForCStyle):
@@ -842,11 +857,32 @@ class PythonGeneratorV2:
         elif isinstance(stmt, IRCall):
             # Expression statement
             return f"{self.indent()}{self.generate_expression(stmt)}"
+        elif isinstance(stmt, IRMap):
+            # IRMap as statement is a parser bug workaround marker - skip it
+            return None  # Signal to skip this statement
         else:
             return f"{self.indent()}# Unknown statement: {type(stmt).__name__}"
 
-    def generate_assignment(self, stmt: IRAssignment) -> str:
+    def generate_assignment(self, stmt: IRAssignment, next_stmt: IRStatement = None) -> str:
         """Generate assignment statement."""
+        # Check if next statement is IRMap (parser bug workaround for class initialization)
+        if next_stmt and isinstance(next_stmt, IRMap) and isinstance(stmt.value, IRIdentifier):
+            # This is: let x = ClassName { field: value, ... }
+            # Generate as: x = ClassName(field=value, ...)
+            class_name = stmt.value.name
+            kwargs = []
+            for key, val_expr in next_stmt.entries.items():
+                val = self.generate_expression(val_expr)
+                kwargs.append(f"{key}={val}")
+
+            target = stmt.target if isinstance(stmt.target, str) else self.generate_expression(stmt.target)
+
+            if stmt.is_declaration and stmt.var_type and isinstance(stmt.target, str):
+                type_hint = self.generate_type(stmt.var_type)
+                return f"{self.indent()}{target}: {type_hint} = {class_name}({', '.join(kwargs)})"
+            else:
+                return f"{self.indent()}{target} = {class_name}({', '.join(kwargs)})"
+
         value = self.generate_expression(stmt.value)
 
         # Infer and track variable types for local assignments
@@ -917,8 +953,11 @@ class PythonGeneratorV2:
             lines.append(f"{self.indent()}{var_name} = {var_value}")
 
         if stmt.then_body:
-            for s in stmt.then_body:
-                lines.append(self.generate_statement(s))
+            for i, s in enumerate(stmt.then_body):
+                next_stmt = stmt.then_body[i + 1] if i + 1 < len(stmt.then_body) else None
+                stmt_code = self.generate_statement(s, next_stmt)
+                if stmt_code is not None:
+                    lines.append(stmt_code)
         else:
             if not bindings:
                 lines.append(f"{self.indent()}pass")
@@ -929,8 +968,11 @@ class PythonGeneratorV2:
         if stmt.else_body:
             lines.append(f"{self.indent()}else:")
             self.increase_indent()
-            for s in stmt.else_body:
-                lines.append(self.generate_statement(s))
+            for i, s in enumerate(stmt.else_body):
+                next_stmt = stmt.else_body[i + 1] if i + 1 < len(stmt.else_body) else None
+                stmt_code = self.generate_statement(s, next_stmt)
+                if stmt_code is not None:
+                    lines.append(stmt_code)
             self.decrease_indent()
 
         return "\n".join(lines)
@@ -949,8 +991,11 @@ class PythonGeneratorV2:
         # For now, we don't track iterator types, but this is where we would
 
         if stmt.body:
-            for s in stmt.body:
-                lines.append(self.generate_statement(s))
+            for i, s in enumerate(stmt.body):
+                next_stmt = stmt.body[i + 1] if i + 1 < len(stmt.body) else None
+                stmt_code = self.generate_statement(s, next_stmt)
+                if stmt_code is not None:
+                    lines.append(stmt_code)
         else:
             lines.append(f"{self.indent()}pass")
         self.decrease_indent()
@@ -981,8 +1026,11 @@ class PythonGeneratorV2:
         # Generate body with increment at the end
         self.increase_indent()
         if stmt.body:
-            for s in stmt.body:
-                lines.append(self.generate_statement(s))
+            for i, s in enumerate(stmt.body):
+                next_stmt = stmt.body[i + 1] if i + 1 < len(stmt.body) else None
+                stmt_code = self.generate_statement(s, next_stmt)
+                if stmt_code is not None:
+                    lines.append(stmt_code)
 
         # Add increment at end of loop body
         increment_line = self.generate_statement(stmt.increment)
@@ -1004,8 +1052,11 @@ class PythonGeneratorV2:
 
         self.increase_indent()
         if stmt.body:
-            for s in stmt.body:
-                lines.append(self.generate_statement(s))
+            for i, s in enumerate(stmt.body):
+                next_stmt = stmt.body[i + 1] if i + 1 < len(stmt.body) else None
+                stmt_code = self.generate_statement(s, next_stmt)
+                if stmt_code is not None:
+                    lines.append(stmt_code)
         else:
             lines.append(f"{self.indent()}pass")
         self.decrease_indent()
@@ -1071,8 +1122,11 @@ class PythonGeneratorV2:
         # Body
         self.increase_indent()
         if stmt.body:
-            for s in stmt.body:
-                lines.append(self.generate_statement(s))
+            for i, s in enumerate(stmt.body):
+                next_stmt = stmt.body[i + 1] if i + 1 < len(stmt.body) else None
+                stmt_code = self.generate_statement(s, next_stmt)
+                if stmt_code is not None:
+                    lines.append(stmt_code)
         else:
             lines.append(f"{self.indent()}pass")
         self.decrease_indent()
@@ -1080,12 +1134,25 @@ class PythonGeneratorV2:
         return "\n".join(lines)
 
     def generate_return(self, stmt: IRReturn) -> str:
-        """Generate return statement."""
-        if stmt.value:
-            value = self.generate_expression(stmt.value)
-            return f"{self.indent()}return {value}"
+        """Generate return statement, capturing value if in postcondition mode."""
+        if self.capturing_returns:
+            # We're in a function with postconditions - capture return value
+            if stmt.value:
+                value = self.generate_expression(stmt.value)
+                # Generate two lines: capture and return
+                capture_line = f"{self.indent()}__result = {value}"
+                return_line = f"{self.indent()}return __result"
+                return f"{capture_line}\n{return_line}"
+            else:
+                # Return None
+                return f"{self.indent()}__result = None\n{self.indent()}return __result"
         else:
-            return f"{self.indent()}return"
+            # Normal return generation
+            if stmt.value:
+                value = self.generate_expression(stmt.value)
+                return f"{self.indent()}return {value}"
+            else:
+                return f"{self.indent()}return"
 
     def generate_raise(self, stmt: IRThrow) -> str:
         """Generate raise statement."""
@@ -1458,6 +1525,24 @@ class PythonGeneratorV2:
 
     def generate_call(self, expr: IRCall) -> str:
         """Generate function call."""
+        # STDLIB TRANSLATION: Translate stdlib calls to Python equivalents
+        if isinstance(expr.function, IRPropertyAccess):
+            obj = expr.function.object
+            method = expr.function.property
+
+            # str.length(x) → len(x)
+            if isinstance(obj, IRIdentifier) and obj.name == "str" and method == "length":
+                if len(expr.args) == 1:
+                    arg = self.generate_expression(expr.args[0])
+                    return f"len({arg})"
+
+            # str.contains(s, substr) → substr in s
+            if isinstance(obj, IRIdentifier) and obj.name == "str" and method == "contains":
+                if len(expr.args) == 2:
+                    string_arg = self.generate_expression(expr.args[0])
+                    substr_arg = self.generate_expression(expr.args[1])
+                    return f"({substr_arg} in {string_arg})"
+
         # Check if this is an enum variant constructor
         is_enum_variant = False
         if isinstance(expr.function, IRIdentifier):
@@ -1687,7 +1772,7 @@ class PythonGeneratorV2:
 
         # Generate precondition checks
         if func.requires:
-            self.required_imports.add("from promptware.runtime.contracts import check_precondition")
+            self.required_imports.add("from assertlang.runtime.contracts import check_precondition")
 
             for clause in func.requires:
                 condition_expr = self.generate_expression(clause.expression)
@@ -1715,7 +1800,7 @@ class PythonGeneratorV2:
 
         # Generate postcondition checking code
         if func.ensures:
-            self.required_imports.add("from promptware.runtime.contracts import check_postcondition")
+            self.required_imports.add("from assertlang.runtime.contracts import check_postcondition")
 
             # Find all 'old' expressions that need capturing
             old_exprs = self._find_old_expressions(func.ensures)

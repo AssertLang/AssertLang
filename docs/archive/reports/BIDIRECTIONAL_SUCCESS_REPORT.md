@@ -361,7 +361,7 @@ func GetActiveUsers(users []interface{}) interface{} {
 
 **Bidirectional collection operation translation is COMPLETE and PRODUCTION-READY.**
 
-This represents a **major achievement** in the Promptware project:
+This represents a **major achievement** in the AssertLang project:
 - **First fully bidirectional feature** across all languages
 - **100% test pass rate** (35/35 tests)
 - **Perfect semantic preservation** in round-trips

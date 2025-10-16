@@ -1,0 +1,27 @@
+class User {
+    id: int;
+    name: string;
+}
+
+class ValidationError {
+    field: string;
+    message: string;
+}
+
+function createUser(name: string) -> User {
+    @requires name_not_empty: str.length(name) >= 1
+
+    if (str.length(name) < 1) {
+        let error = ValidationError {
+            field: "name",
+            message: "Empty"
+        };
+        return error;  // This should fail type checking
+    }
+
+    let user = User {
+        id: 1,
+        name: name
+    };
+    return user;
+}

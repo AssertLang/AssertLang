@@ -1,7 +1,7 @@
 """
 MCP Server Generator for Rust.
 
-Generates Rust HTTP servers from .pw agent definitions.
+Generates Rust HTTP servers from .al agent definitions.
 Rust uses compile-time tool imports (no dynamic loading).
 """
 
@@ -559,10 +559,10 @@ async fn main() {{
 
 def generate_rust_server_from_pw(pw_code: str) -> str:
     """
-    Convenience function: parse .pw code and generate Rust MCP server.
+    Convenience function: parse .al code and generate Rust MCP server.
 
     Args:
-        pw_code: .pw file content
+        pw_code: .al file content
 
     Returns:
         Rust code for MCP server

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://promptware.dev/schemas/httpcheck.assert.v1.json",
+  "$id": "https://assertlang.dev/schemas/httpcheck.assert.v1.json",
   "type": "object",
   "required": ["probes"],
   "properties": {

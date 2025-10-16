@@ -355,4 +355,4 @@ can_transition_to_stage("ingest", "export", True)  # Returns False
 - **[Example 2: Multi-Agent Research](../02_multi_agent_research/)** - Agent coordination
 - **[Example 4: API Rate Limiting](../04_api_rate_limiting/)** - Rate limit validation
 - **[Example 5: State Machine Patterns](../05_state_machine_patterns/)** - Generic state machines
-- **[Promptware Documentation](../../../docs/)** - Complete language guide
+- **[AssertLang Documentation](../../../docs/)** - Complete language guide

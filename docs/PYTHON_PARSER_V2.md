@@ -8,7 +8,7 @@
 
 ## Overview
 
-The Python Parser V2 converts arbitrary Python code (not just MCP patterns) into the universal Intermediate Representation (IR). This enables bidirectional translation between Python and any other supported language in the Promptware ecosystem.
+The Python Parser V2 converts arbitrary Python code (not just MCP patterns) into the universal Intermediate Representation (IR). This enables bidirectional translation between Python and any other supported language in the AssertLang ecosystem.
 
 ### Key Capabilities
 
@@ -738,8 +738,8 @@ A: Not supported. Code must be statically analyzable.
 ## References
 
 - [Python AST Documentation](https://docs.python.org/3/library/ast.html)
-- [Promptware IR Specification](/docs/IR_SPECIFICATION.md)
-- [Promptware Type System](/docs/TYPE_SYSTEM.md)
+- [AssertLang IR Specification](/docs/IR_SPECIFICATION.md)
+- [AssertLang Type System](/docs/TYPE_SYSTEM.md)
 - [CrossTL Paper](https://arxiv.org/abs/2508.21256) - Universal IR research
 
 ---

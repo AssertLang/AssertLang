@@ -18,9 +18,9 @@ Last Updated: 2025-10-08 (v2.1.0b3)
 
 ## Quick Start Examples
 
-### hello-world.pw
+### hello-world.al
 
-**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/examples/hello-world.pw`
+**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/examples/hello-world.pw`
 
 **Purpose**: Minimal working example
 
@@ -35,9 +35,9 @@ Last Updated: 2025-10-08 (v2.1.0b3)
 
 ---
 
-### calculator.pw
+### calculator.al
 
-**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/examples/calculator.pw`
+**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/examples/calculator.pw`
 
 **Purpose**: Basic arithmetic operations
 
@@ -62,9 +62,9 @@ Last Updated: 2025-10-08 (v2.1.0b3)
 
 ## Language Feature Examples
 
-### error_handling.pw ✅ NEW
+### error_handling.al ✅ NEW
 
-**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/examples/error_handling.pw`
+**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/examples/error_handling.pw`
 
 **Purpose**: Demonstrate try/catch patterns
 
@@ -89,9 +89,9 @@ Last Updated: 2025-10-08 (v2.1.0b3)
 
 ---
 
-### array_and_map_basics.pw ✅ NEW
+### array_and_map_basics.al ✅ NEW
 
-**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/examples/array_and_map_basics.pw`
+**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/examples/array_and_map_basics.pw`
 
 **Purpose**: Demonstrate safe collection operations
 
@@ -123,9 +123,9 @@ Last Updated: 2025-10-08 (v2.1.0b3)
 
 ## Production Examples
 
-### calculator_cli.pw
+### calculator_cli.al
 
-**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/examples/calculator_cli.pw`
+**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/examples/calculator_cli.pw`
 
 **Purpose**: Interactive calculator application
 
@@ -150,9 +150,9 @@ Last Updated: 2025-10-08 (v2.1.0b3)
 
 ---
 
-### todo_list_manager.pw
+### todo_list_manager.al
 
-**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/examples/todo_list_manager.pw`
+**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/examples/todo_list_manager.pw`
 
 **Purpose**: Task management system
 
@@ -178,9 +178,9 @@ Last Updated: 2025-10-08 (v2.1.0b3)
 
 ---
 
-### simple_web_api.pw
+### simple_web_api.al
 
-**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/examples/simple_web_api.pw`
+**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/examples/simple_web_api.pw`
 
 **Purpose**: REST API patterns
 
@@ -275,19 +275,19 @@ All examples compile to all 5 target languages:
 
 ```bash
 # Python
-promptware build examples/calculator.pw --lang python -o calculator.py
+asl build examples/calculator.al --lang python -o calculator.py
 
 # Go
-promptware build examples/calculator.pw --lang go -o calculator.go
+asl build examples/calculator.al --lang go -o calculator.go
 
 # Rust
-promptware build examples/calculator.pw --lang rust -o calculator.rs
+asl build examples/calculator.al --lang rust -o calculator.rs
 
 # TypeScript
-promptware build examples/calculator.pw --lang typescript -o calculator.ts
+asl build examples/calculator.al --lang typescript -o calculator.ts
 
 # C#
-promptware build examples/calculator.pw --lang csharp -o Calculator.cs
+asl build examples/calculator.al --lang csharp -o Calculator.cs
 ```
 
 ### Compile All Examples
@@ -296,11 +296,11 @@ promptware build examples/calculator.pw --lang csharp -o Calculator.cs
 # Test compilation of all examples
 for example in examples/*.pw; do
     echo "Testing: $example"
-    promptware build "$example" --lang python -o /tmp/test.py
-    promptware build "$example" --lang go -o /tmp/test.go
-    promptware build "$example" --lang rust -o /tmp/test.rs
-    promptware build "$example" --lang typescript -o /tmp/test.ts
-    promptware build "$example" --lang csharp -o /tmp/test.cs
+    asl build "$example" --lang python -o /tmp/test.py
+    asl build "$example" --lang go -o /tmp/test.go
+    asl build "$example" --lang rust -o /tmp/test.rs
+    asl build "$example" --lang typescript -o /tmp/test.ts
+    asl build "$example" --lang csharp -o /tmp/test.cs
 done
 ```
 
@@ -350,11 +350,11 @@ done
 
 ```bash
 # Test single example
-promptware build examples/calculator.pw --lang python -o /tmp/test.py && echo "✅ Python OK" || echo "❌ Python FAILED"
+asl build examples/calculator.al --lang python -o /tmp/test.py && echo "✅ Python OK" || echo "❌ Python FAILED"
 
 # Test all languages for one example
 for lang in python go rust typescript csharp; do
-    promptware build examples/calculator.pw --lang $lang -o /tmp/test.$lang && echo "✅ $lang OK" || echo "❌ $lang FAILED"
+    asl build examples/calculator.al --lang $lang -o /tmp/test.$lang && echo "✅ $lang OK" || echo "❌ $lang FAILED"
 done
 ```
 
@@ -405,7 +405,7 @@ dotnet build /tmp/test.cs
 - [`docs/QUICK_REFERENCE.md`](QUICK_REFERENCE.md) - Quick syntax reference
 
 ### Example Files
-All examples are in: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/examples/`
+All examples are in: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/examples/`
 
 ### Running Examples
 See the [PW Language Guide](PW_LANGUAGE_GUIDE.md#examples) for detailed instructions on compiling and running examples.

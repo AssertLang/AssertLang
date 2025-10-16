@@ -1,6 +1,6 @@
 # Policy Hooks Documentation
 
-This document defines the policy hook system for Promptware runners, specifying how network, filesystem, and secrets policies are declared in tool specs and enforced during execution.
+This document defines the policy hook system for AssertLang runners, specifying how network, filesystem, and secrets policies are declared in tool specs and enforced during execution.
 
 ---
 

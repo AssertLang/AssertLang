@@ -2,7 +2,7 @@
 
 ## Mission Accomplished ✅
 
-Successfully built a **production-ready Rust reverse parser** that extracts Promptware DSL from Rust Warp/Actix servers with **100% accuracy** on generated code.
+Successfully built a **production-ready Rust reverse parser** that extracts AssertLang DSL from Rust Warp/Actix servers with **100% accuracy** on generated code.
 
 ---
 

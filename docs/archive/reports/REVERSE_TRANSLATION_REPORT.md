@@ -6,21 +6,21 @@
 
 ## Objective
 
-Translate 4 generated code files (JavaScript, Go, Rust, C#) back to Python using the Promptware V2 translation system to validate bidirectional translation capabilities.
+Translate 4 generated code files (JavaScript, Go, Rust, C#) back to Python using the AssertLang V2 translation system to validate bidirectional translation capabilities.
 
 ## Files Processed
 
 ### Input Files (Generated Code)
-1. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_code_from_python.js` (JavaScript)
-2. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_code_from_python.go` (Go)
-3. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_code_from_python.rs` (Rust)
-4. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_code_from_python.cs` (C#)
+1. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_code_from_python.js` (JavaScript)
+2. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_code_from_python.go` (Go)
+3. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_code_from_python.rs` (Rust)
+4. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_code_from_python.cs` (C#)
 
 ### Output Files (Reverse Translated Python)
-1. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/roundtrip_from_js.py`
-2. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/roundtrip_from_go.py`
-3. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/roundtrip_from_rust.py`
-4. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/roundtrip_from_csharp.py`
+1. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/roundtrip_from_js.py`
+2. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/roundtrip_from_go.py`
+3. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/roundtrip_from_rust.py`
+4. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/roundtrip_from_csharp.py`
 
 ## Translation Pipeline Used
 
@@ -232,7 +232,7 @@ All 4 output files created successfully:
 
 **Overall Status**: ✅ **SUCCESSFUL** (with caveats)
 
-The reverse translation test demonstrates that the Promptware V2 system can:
+The reverse translation test demonstrates that the AssertLang V2 system can:
 - ✅ Parse generated code from 4 different languages
 - ✅ Extract function structures and signatures
 - ✅ Generate valid Python syntax (even if incomplete)
@@ -256,4 +256,4 @@ This test validates the V2 architecture's viability while highlighting specific 
 
 **Generated**: 2025-10-05
 **Test Script**: `run_reverse_translation.py`
-**Output Directory**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/`
+**Output Directory**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/`

@@ -1,0 +1,60 @@
+// Data structures
+class User {
+    id: int;
+    name: string;
+    email: string;
+    created_at: string;
+}
+
+class ValidationError {
+    field: string;
+    message: string;
+}
+
+// Contract: Create User
+function createUser(name: string, email: string) -> User {
+    @requires name_not_empty: str.length(name) >= 1
+    @requires name_length_valid: str.length(name) <= 100
+    @requires email_has_at: str.contains(email, "@")
+
+    // Validation (deterministic rules)
+    if (str.length(name) < 1) {
+        let error = ValidationError {
+            field: "name",
+            message: "Name cannot be empty"
+        };
+        return error;  // Error case
+    }
+
+    if (str.length(name) > 100) {
+        let error = ValidationError {
+            field: "name",
+            message: "Name too long (max 100 chars)"
+        };
+        return error;
+    }
+
+    if (!str.contains(email, "@")) {
+        let error = ValidationError {
+            field: "email",
+            message: "Invalid email format"
+        };
+        return error;
+    }
+
+    // Generate deterministic ID (for demo - normally from DB)
+    let id = str.length(name) + str.length(email);
+
+    // Get current timestamp
+    let timestamp = "2025-01-15T10:30:00Z";  // Simplified for demo
+
+    // Create user object
+    let user = User {
+        id: id,
+        name: name,
+        email: email,
+        created_at: timestamp
+    };
+
+    return user;
+}

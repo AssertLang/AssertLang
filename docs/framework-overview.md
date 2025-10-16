@@ -1,4 +1,4 @@
-# Promptware Framework Overview
+# AssertLang Framework Overview
 
 ## Lifecycle Verbs
 Every program is structured around five verbs:
@@ -20,7 +20,7 @@ All programs use the `.pw` extension.
 
 ## Port Standard
 Default: `23456`  
-Reserved for Promptware agents.  
+Reserved for AssertLang agents.  
 Secondary ephemeral sockets spun up per run.  
 Sandbox fallback: if 23456 cannot be bound (e.g., CI seatbelts), the daemon exposes direct host/port access and reports it via CLI + report verbs.
 

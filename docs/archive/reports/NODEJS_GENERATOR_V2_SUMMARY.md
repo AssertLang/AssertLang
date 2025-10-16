@@ -9,7 +9,7 @@
 
 ## Mission Accomplished
 
-Successfully built a production-grade IR → JavaScript/TypeScript code generator as part of Phase 4 (Generators V2) of the Promptware universal code translation system.
+Successfully built a production-grade IR → JavaScript/TypeScript code generator as part of Phase 4 (Generators V2) of the AssertLang universal code translation system.
 
 ---
 
@@ -17,7 +17,7 @@ Successfully built a production-grade IR → JavaScript/TypeScript code generato
 
 ### 1. Generator Implementation ✅
 
-**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/nodejs_generator_v2.py`
+**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/nodejs_generator_v2.py`
 **Lines**: 968
 **Dependencies**: Zero external dependencies (stdlib only)
 
@@ -45,9 +45,9 @@ Successfully built a production-grade IR → JavaScript/TypeScript code generato
 
 ### 2. Test Suite ✅
 
-**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/test_nodejs_generator_v2.py`
+**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/test_nodejs_generator_v2.py`
 **Lines**: 773
-**Test File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/run_nodejs_generator_tests.py`
+**Test File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/run_nodejs_generator_tests.py`
 **Lines**: 550
 
 **Results**: 17/17 tests passing (100%)
@@ -103,7 +103,7 @@ Test Results: 17/17 passed
 
 ### 3. Documentation ✅
 
-**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/docs/NODEJS_GENERATOR_V2.md`
+**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/docs/NODEJS_GENERATOR_V2.md`
 **Lines**: 1,027
 
 **Contents**:
@@ -436,24 +436,24 @@ ts_code = generate_nodejs(ir_module, typescript=True)
 
 ## Files Created
 
-1. **`/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/nodejs_generator_v2.py`** (968 lines)
+1. **`/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/nodejs_generator_v2.py`** (968 lines)
    - Main generator implementation
    - NodeJSGeneratorV2 class
    - generate_nodejs() public API
 
-2. **`/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/test_nodejs_generator_v2.py`** (773 lines)
+2. **`/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/test_nodejs_generator_v2.py`** (773 lines)
    - Comprehensive test suite with pytest
    - 17+ test cases covering all features
 
-3. **`/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/run_nodejs_generator_tests.py`** (550 lines)
+3. **`/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/run_nodejs_generator_tests.py`** (550 lines)
    - Standalone test runner (no pytest dependency)
    - Detailed test output and summary
 
-4. **`/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/docs/NODEJS_GENERATOR_V2.md`** (1,027 lines)
+4. **`/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/docs/NODEJS_GENERATOR_V2.md`** (1,027 lines)
    - Complete documentation
    - Architecture, examples, API reference
 
-5. **`/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/NODEJS_GENERATOR_V2_SUMMARY.md`** (this file)
+5. **`/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/NODEJS_GENERATOR_V2_SUMMARY.md`** (this file)
    - Executive summary
    - Statistics and results
 
@@ -472,7 +472,7 @@ ts_code = generate_nodejs(ir_module, typescript=True)
 
 ---
 
-## Integration with Promptware Ecosystem
+## Integration with AssertLang Ecosystem
 
 ### Phase 3: Parsers ✅ (Complete)
 - Python Parser V2 ✅

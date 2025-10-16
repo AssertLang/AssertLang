@@ -2,7 +2,7 @@
 """
 Bidirectional Go Testing Runner
 
-Generates Go servers from .pw fixtures and runs comprehensive tests.
+Generates Go servers from .al fixtures and runs comprehensive tests.
 """
 
 import json
@@ -31,7 +31,7 @@ def main():
 
     # Find all Go fixtures
     fixtures_dir = Path(__file__).parent / "fixtures"
-    fixtures = list(fixtures_dir.glob("go_*.pw"))
+    fixtures = list(fixtures_dir.glob("go_*.al"))
 
     if not fixtures:
         print("ERROR: No Go fixtures found in", fixtures_dir)
@@ -50,7 +50,7 @@ def main():
         print("-" * 80)
 
         try:
-            # Parse .pw file
+            # Parse .al file
             print(f"  1. Parsing {fixture.name}...")
             pw_code = fixture.read_text()
             agent = parse_agent_pw(pw_code)

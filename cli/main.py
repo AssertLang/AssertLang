@@ -16,10 +16,10 @@ Use 'promptware' command instead (automatically uses promptware.cli via setup.py
 OLD Promptware CLI - Command-line interface for agent generation and management.
 
 Usage:
-    promptware generate <agent.pw>              Generate MCP server
-    promptware generate <agent.pw> --lang go    Generate for specific language
-    promptware run <agent.pw>                   Generate and run server
-    promptware test <agent.pw>                  Test agent definition
+    promptware generate <agent.al>              Generate MCP server
+    promptware generate <agent.al> --lang go    Generate for specific language
+    promptware run <agent.al>                   Generate and run server
+    asl test <agent.al>                  Test agent definition
     promptware version                          Show version
 """
 
@@ -73,7 +73,7 @@ def get_output_extension(lang: str) -> str:
 
 
 def command_generate(args):
-    """Generate MCP server from .pw file."""
+    """Generate MCP server from .al file."""
     pw_file = Path(args.agent_file)
 
     if not pw_file.exists():
@@ -253,13 +253,13 @@ def command_mcp_config(args):
         print(f"❌ Error: Directory not found: {project_dir}")
         sys.exit(1)
 
-    print(f"🔍 Scanning for .pw agent files in {project_dir}...")
+    print(f"🔍 Scanning for .al agent files in {project_dir}...")
 
     # Scan for agents
     agent_files = scan_agents_in_directory(project_dir)
 
     if not agent_files:
-        print(f"❌ No .pw files found in {project_dir}")
+        print(f"❌ No .al files found in {project_dir}")
         sys.exit(1)
 
     print(f"   Found {len(agent_files)} agent(s):")
@@ -319,16 +319,16 @@ def command_version(args):
 def main():
     """Main CLI entry point."""
     parser = argparse.ArgumentParser(
-        prog="promptware",
-        description="Generate MCP servers from .pw agent definitions",
+        prog="assertlang",
+        description="Generate MCP servers from .al agent definitions",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  promptware generate my_agent.pw
-  promptware generate my_agent.pw --lang nodejs
-  promptware generate my_agent.pw -o custom_server.py
-  promptware run my_agent.pw
-  promptware test my_agent.pw
+  promptware generate my_agent.al
+  promptware generate my_agent.al --lang nodejs
+  promptware generate my_agent.al -o custom_server.py
+  promptware run my_agent.al
+  asl test my_agent.al
   promptware version
 
 For more info: https://github.com/3CH0xyz/promptware
@@ -339,21 +339,21 @@ For more info: https://github.com/3CH0xyz/promptware
 
     # Generate command
     generate_parser = subparsers.add_parser("generate", help="Generate MCP server")
-    generate_parser.add_argument("agent_file", help=".pw agent definition file")
+    generate_parser.add_argument("agent_file", help=".al agent definition file")
     generate_parser.add_argument("--lang", "-l", help="Target language (python, nodejs, go)")
     generate_parser.add_argument("--output", "-o", help="Output file path")
     generate_parser.set_defaults(func=command_generate)
 
     # Run command
     run_parser = subparsers.add_parser("run", help="Generate and run server")
-    run_parser.add_argument("agent_file", help=".pw agent definition file")
+    run_parser.add_argument("agent_file", help=".al agent definition file")
     run_parser.add_argument("--lang", "-l", help="Target language (python, nodejs, go)")
     run_parser.add_argument("--output", "-o", help="Output file path")
     run_parser.set_defaults(func=command_run)
 
     # Test command
     test_parser = subparsers.add_parser("test", help="Test agent definition")
-    test_parser.add_argument("agent_file", help=".pw agent definition file")
+    test_parser.add_argument("agent_file", help=".al agent definition file")
     test_parser.set_defaults(func=command_test)
 
     # MCP Config command
@@ -366,10 +366,10 @@ For more info: https://github.com/3CH0xyz/promptware
         help="Target editor (default: cursor)",
     )
     mcp_parser.add_argument(
-        "--directory", "-d", help="Directory to scan for .pw files (default: current)"
+        "--directory", "-d", help="Directory to scan for .al files (default: current)"
     )
     mcp_parser.add_argument(
-        "--agent-file", "-a", help="Single .pw file (alternative to --directory)"
+        "--agent-file", "-a", help="Single .al file (alternative to --directory)"
     )
     mcp_parser.add_argument("--output", "-o", help="Output directory for config file")
     mcp_parser.set_defaults(func=command_mcp_config)

@@ -1,4 +1,4 @@
-# Promptware SDKs
+# AssertLang SDKs
 
 This directory will house the language-specific SDK guides that accompany Wave 2.
 

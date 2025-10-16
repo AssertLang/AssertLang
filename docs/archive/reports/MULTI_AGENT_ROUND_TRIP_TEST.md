@@ -114,7 +114,7 @@ expose add.game@v1:
 ## Step 2: Generate Python from PW
 
 **Input**: `/tmp/clean_extracted.pw` (72 lines)
-**Tool**: Promptware Python generator
+**Tool**: AssertLang Python generator
 **Output**: `/tmp/step2_generated.py` (645 lines)
 
 **Generation Results**:
@@ -223,7 +223,7 @@ app = FastAPI(title="Board", version="v1")
 ```python
 app = FastAPI(
     title=agent.name,  # "Board Game Collection Manager"
-    description="Promptware MCP Agent",
+    description="AssertLang MCP Agent",
     version="v1"
 )
 ```

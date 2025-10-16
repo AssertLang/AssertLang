@@ -1,4 +1,4 @@
-# Promptware v2.1.0b11 Release Notes
+# AssertLang v2.1.0b11 Release Notes
 
 **Release Date:** 2025-10-09
 

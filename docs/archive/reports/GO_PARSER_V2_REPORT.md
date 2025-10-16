@@ -9,7 +9,7 @@
 
 ## Mission Accomplished
 
-Successfully built **Go Parser V2** - a production-ready parser that converts **arbitrary Go code** into Promptware's Intermediate Representation (IR).
+Successfully built **Go Parser V2** - a production-ready parser that converts **arbitrary Go code** into AssertLang's Intermediate Representation (IR).
 
 ---
 
@@ -141,7 +141,7 @@ func GetUser(id string) (*User, error)
 ### All Tests Pass
 
 ```bash
-$ PYTHONPATH=/path/to/Promptware python3 tests/run_go_parser_v2_tests.py
+$ PYTHONPATH=/path/to/AssertLang python3 tests/run_go_parser_v2_tests.py
 
 Running Go Parser V2 Tests...
 
@@ -232,7 +232,7 @@ func GetUser(id string) *User {
 
 ---
 
-## Integration with Promptware V2
+## Integration with AssertLang V2
 
 ### Uses IR System
 
@@ -336,7 +336,7 @@ These are **acceptable** for MVP and will be addressed in future iterations.
 
 **Cause**: PYTHONPATH not set
 
-**Resolution**: Run tests with `PYTHONPATH=/path/to/Promptware`
+**Resolution**: Run tests with `PYTHONPATH=/path/to/AssertLang`
 
 **Result**: Tests run successfully
 
@@ -396,7 +396,7 @@ These are **acceptable** for MVP and will be addressed in future iterations.
 
 **Mission: COMPLETE ✅**
 
-The Go Parser V2 is **production-ready** and successfully converts arbitrary Go code into Promptware's universal IR. With 100% test coverage and comprehensive documentation, it's ready for integration into the universal code translation pipeline.
+The Go Parser V2 is **production-ready** and successfully converts arbitrary Go code into AssertLang's universal IR. With 100% test coverage and comprehensive documentation, it's ready for integration into the universal code translation pipeline.
 
 **Next**: Other language parsers (Python, Node.js, Rust, .NET) should follow this same pattern.
 

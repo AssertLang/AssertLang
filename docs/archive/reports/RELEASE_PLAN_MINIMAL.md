@@ -31,7 +31,7 @@ git push upstream CC45
 ```bash
 # On GitHub: Releases → Draft a new release
 # Tag: v1.0.0
-# Title: "Promptware 1.0 - World's First Bidirectional Code Translator"
+# Title: "AssertLang 1.0 - World's First Bidirectional Code Translator"
 # Copy release notes from below
 # Click "Publish Release"
 ```
@@ -41,7 +41,7 @@ git push upstream CC45
 ## 📝 Release Notes (Copy-Paste Ready)
 
 ```markdown
-# Promptware 1.0 - Universal Cross-Language Translation
+# AssertLang 1.0 - Universal Cross-Language Translation
 
 The world's first bidirectional code translator across 5 languages.
 
@@ -73,7 +73,7 @@ The world's first bidirectional code translator across 5 languages.
 
 ```bash
 # Install
-git clone https://github.com/Promptware-dev/promptware.git
+git clone https://github.com/AssertLang/AssertLang.git
 cd promptware && pip install -e .
 
 # Parse existing code to PW
@@ -94,7 +94,7 @@ Built by one developer to solve a real problem. Now yours to use and extend.
 
 ---
 
-**Full docs:** https://github.com/Promptware-dev/promptware
+**Full docs:** https://github.com/AssertLang/AssertLang
 ```
 
 ---
@@ -115,7 +115,7 @@ Built by one developer to solve a real problem. Now yours to use and extend.
 ### Option 2: Low-Effort (+30 mins)
 1. Do Option 1
 2. Post **once** on:
-   - Hacker News "Show HN: Promptware - Bidirectional code translator across 5 languages"
+   - Hacker News "Show HN: AssertLang - Bidirectional code translator across 5 languages"
    - Reddit r/programming (if you use Reddit)
    - Dev.to (write-once blog post)
 
@@ -208,7 +208,7 @@ I maintain open source projects on a best-effort basis:
 - 🙏 Patience appreciated, contributions welcome
 - 📧 No guaranteed support - this is free software
 
-Projects: Promptware (universal code translator)
+Projects: AssertLang (universal code translator)
 ```
 
 This sets expectations that you're not a full-time maintainer.

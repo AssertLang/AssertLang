@@ -1,6 +1,6 @@
-# Promptware DevOps Suite
+# AssertLang DevOps Suite
 
-Complete end-to-end demonstration of Promptware's enterprise features: AI agents, observability, workflows, and agent communication.
+Complete end-to-end demonstration of AssertLang's enterprise features: AI agents, observability, workflows, and agent communication.
 
 ## Architecture
 
@@ -107,15 +107,15 @@ python3 demo_devops_pipeline.py
 
 ## Generated Code
 
-All agents are generated from `.pw` files:
+All agents are generated from `.al` files:
 
 ```
-code_reviewer_agent.pw → code_reviewer_agent_server.py (350 lines)
-test_runner_agent.pw → test_runner_agent_server.py (280 lines)
-deployment_orchestrator.pw → deployment_orchestrator_server.py (550 lines)
+code_reviewer_agent.al → code_reviewer_agent_server.py (350 lines)
+test_runner_agent.al → test_runner_agent_server.py (280 lines)
+deployment_orchestrator.al → deployment_orchestrator_server.py (550 lines)
 ```
 
-**Total**: ~1200 lines of production-ready Python generated from ~100 lines of .pw DSL.
+**Total**: ~1200 lines of production-ready Python generated from ~100 lines of .al DSL.
 
 ## Example: AI Code Review
 
@@ -238,11 +238,11 @@ spec:
 
 ```
 devops_suite/
-├── code_reviewer_agent.pw              # AI code review agent definition
+├── code_reviewer_agent.al              # AI code review agent definition
 ├── code_reviewer_agent_server.py       # Generated MCP server (350 lines)
-├── test_runner_agent.pw                # Test execution agent definition
+├── test_runner_agent.al                # Test execution agent definition
 ├── test_runner_agent_server.py         # Generated MCP server (280 lines)
-├── deployment_orchestrator.pw          # Temporal workflow definition
+├── deployment_orchestrator.al          # Temporal workflow definition
 ├── deployment_orchestrator_server.py   # Generated MCP server (550 lines)
 ├── demo_devops_pipeline.py             # End-to-end demo script
 └── README.md                           # This file
@@ -250,7 +250,7 @@ devops_suite/
 
 ## Next Steps
 
-1. **Customize agents**: Edit `.pw` files and regenerate
+1. **Customize agents**: Edit `.al` files and regenerate
 2. **Add more verbs**: Extend agent capabilities
 3. **Deploy to cloud**: Use Docker/K8s configs above
 4. **Monitor**: Export telemetry to Jaeger/Grafana
@@ -258,7 +258,7 @@ devops_suite/
 
 ## Learning More
 
-- See `../../docs/` for full Promptware documentation
+- See `../../docs/` for full AssertLang documentation
 - Read `../../INTEGRATION_PLAN.md` for enterprise feature details
 - Check `../../tests/` for comprehensive test examples
 

@@ -22,7 +22,7 @@
 
 ### Step 1: Copy Block Extractor Method
 
-- [ ] Open `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/go_parser_v2.py`
+- [ ] Open `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/go_parser_v2.py`
 - [ ] Find a good location (after `_parse_expression()` method, around line 650)
 - [ ] Copy `_extract_block_body()` from `nodejs_parser_v2.py:1004-1030`
 - [ ] Paste into `go_parser_v2.py`
@@ -274,13 +274,13 @@ func Sum(items []int) int {
 
 ### Step 6: Test Implementation
 
-- [ ] Run unit tests: `PYTHONPATH=/path/to/Promptware python3 tests/test_go_parser_v2.py`
+- [ ] Run unit tests: `PYTHONPATH=/path/to/AssertLang python3 tests/test_go_parser_v2.py`
 - [ ] Test with real Go code sample
 - [ ] Verify no regression in existing tests
 
 **Test command**:
 ```bash
-cd /Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware
+cd /Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang
 PYTHONPATH=. python3 tests/test_go_parser_v2.py
 ```
 

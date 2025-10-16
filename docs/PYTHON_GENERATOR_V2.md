@@ -6,7 +6,7 @@
 
 ## Overview
 
-The Python Generator V2 converts Promptware's universal Intermediate Representation (IR) into production-quality, idiomatic Python code. It generates type-annotated, PEP 8 compliant Python with proper imports and modern Python 3.10+ features.
+The Python Generator V2 converts AssertLang's universal Intermediate Representation (IR) into production-quality, idiomatic Python code. It generates type-annotated, PEP 8 compliant Python with proper imports and modern Python 3.10+ features.
 
 ## Architecture
 

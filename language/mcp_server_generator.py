@@ -1,7 +1,7 @@
 """
 MCP Server Generator for Promptware agents.
 
-Generates FastAPI-based MCP servers from .pw agent definitions.
+Generates FastAPI-based MCP servers from .al agent definitions.
 """
 
 from __future__ import annotations
@@ -929,7 +929,7 @@ def _parse_timeout(timeout_str: str) -> str:
 
 
 def _map_pw_type_to_python(pw_type: str) -> str:
-    """Map .pw types to Python type hints."""
+    """Map .al types to Python type hints."""
     type_map = {
         "string": "str",
         "int": "int",
@@ -959,10 +959,10 @@ def _generate_server_startup(agent: AgentDefinition) -> str:
 
 def generate_mcp_server_from_pw(pw_code: str) -> str:
     """
-    Convenience function: parse .pw code and generate MCP server.
+    Convenience function: parse .al code and generate MCP server.
 
     Args:
-        pw_code: .pw file content
+        pw_code: .al file content
 
     Returns:
         Python code for MCP server

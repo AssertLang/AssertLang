@@ -8,7 +8,7 @@
 
 ## Overview
 
-The .NET Generator V2 converts Promptware IR (Intermediate Representation) into production-quality, idiomatic C# code. It serves as the reverse operation of the .NET Parser V2, enabling bidirectional translation between C# and the universal IR.
+The .NET Generator V2 converts AssertLang IR (Intermediate Representation) into production-quality, idiomatic C# code. It serves as the reverse operation of the .NET Parser V2, enabling bidirectional translation between C# and the universal IR.
 
 ### Purpose
 
@@ -957,6 +957,6 @@ def generate_csharp(module: IRModule, namespace: str = "Generated") -> str:
 
 ---
 
-**Author**: Promptware Development Team
+**Author**: AssertLang Development Team
 **License**: MIT
-**Repository**: https://github.com/Promptware-dev/promptware
+**Repository**: https://github.com/AssertLang/AssertLang

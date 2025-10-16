@@ -1,7 +1,7 @@
 # Tool Generator Specification
 
 ## Purpose
-Design a single "tool generator" node that can author new Promptware tools from a declarative spec. The generator should become the canonical way to produce and evolve the 36 core tools (and marketplace extensions) while keeping MCP envelopes, schemas, adapters, and tests in sync.
+Design a single "tool generator" node that can author new AssertLang tools from a declarative spec. The generator should become the canonical way to produce and evolve the 36 core tools (and marketplace extensions) while keeping MCP envelopes, schemas, adapters, and tests in sync.
 
 ## Inputs (Generator Specification)
 A generator run consumes a `toolgen.yaml` (or JSON) manifest with these sections:

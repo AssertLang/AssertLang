@@ -1,4 +1,4 @@
-# Promptware Tool Specifications
+# AssertLang Tool Specifications
 
 ## 2-Tool Category: Input/Output
 1. **Input Tool** — Read files, streams, user input.
