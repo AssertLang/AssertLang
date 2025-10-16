@@ -1,0 +1,89 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  lint:
+    name: Lint & Format Check
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Install linting tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install black flake8 mypy isort
+        pip install -e .
+
+    - name: Check code formatting with Black
+      run: |
+        black --check --diff assertlang/ tests/
+      continue-on-error: true
+
+    - name: Check import sorting with isort
+      run: |
+        isort --check-only --diff assertlang/ tests/
+      continue-on-error: true
+
+    - name: Lint with flake8
+      run: |
+        flake8 assertlang/ tests/ \
+          --max-line-length=100 \
+          --extend-ignore=E203,W503 \
+          --exclude=__pycache__,.venv,build,dist
+      continue-on-error: true
+
+    - name: Type check with mypy
+      run: |
+        mypy assertlang/ \
+          --ignore-missing-imports \
+          --no-strict-optional \
+          --warn-unused-ignores
+      continue-on-error: true
+
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install security tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install safety bandit
+
+    - name: Check dependencies for known vulnerabilities
+      run: |
+        pip install -e .
+        safety check --json || true
+      continue-on-error: true
+
+    - name: Run Bandit security linter
+      run: |
+        bandit -r assertlang/ -f json -o bandit-report.json || true
+      continue-on-error: true
+
+    - name: Upload security reports
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: security-reports
+        path: |
+          bandit-report.json

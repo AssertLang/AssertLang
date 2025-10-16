@@ -1,9 +1,12 @@
 # 🤖 AssertLang
 
 [![PyPI](https://img.shields.io/pypi/v/assertlang?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/assertlang/)
-[![Tests](https://img.shields.io/badge/tests-134/134%20(100%25)-success?style=flat-square)](https://github.com/AssertLang/AssertLang)
+[![Tests](https://github.com/AssertLang/AssertLang/actions/workflows/test.yml/badge.svg)](https://github.com/AssertLang/AssertLang/actions/workflows/test.yml)
+[![Code Quality](https://github.com/AssertLang/AssertLang/actions/workflows/lint.yml/badge.svg)](https://github.com/AssertLang/AssertLang/actions/workflows/lint.yml)
+[![Build](https://github.com/AssertLang/AssertLang/actions/workflows/build.yml/badge.svg)](https://github.com/AssertLang/AssertLang/actions/workflows/build.yml)
+[![codecov](https://codecov.io/gh/AssertLang/AssertLang/branch/main/graph/badge.svg)](https://codecov.io/gh/AssertLang/AssertLang)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg?style=flat-square&logo=python&logoColor=white)](https://www.python.org/downloads/)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg?style=flat-square&logo=python&logoColor=white)](https://www.python.org/downloads/)
 
 > **Executable contracts for multi-agent systems.** Define agent behavior once in AL, agents from different frameworks (CrewAI, LangGraph, AutoGen) execute identical logic. **Deterministic coordination guaranteed.**
 
