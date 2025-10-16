@@ -1,7 +1,7 @@
 # Blind Test Plan: Real-World Code Translation
 
 ## Objective
-Test the entire Promptware translation system end-to-end with complex, real-world code using independent agents who don't know the expected results.
+Test the entire AssertLang translation system end-to-end with complex, real-world code using independent agents who don't know the expected results.
 
 ## Test Strategy
 
@@ -14,13 +14,13 @@ Test the entire Promptware translation system end-to-end with complex, real-worl
   - Multiple functions
   - Control flow (if/for/while)
   - Type annotations
-- **Constraint**: Agent doesn't know about Promptware or translation requirements
+- **Constraint**: Agent doesn't know about AssertLang or translation requirements
 - **Output**: `test_code.py`
 
 ### Phase 2: Python → All Languages (Forward Translation)
 **Agents**: 5 independent translation agents (Python/JS/Go/Rust/C#)
 - Each agent gets ONLY the Python code
-- Task: Use Promptware to translate Python → their assigned language
+- Task: Use AssertLang to translate Python → their assigned language
 - **They don't know**: What other agents are doing or expected results
 - **Output**:
   - `test_code.js`
@@ -31,7 +31,7 @@ Test the entire Promptware translation system end-to-end with complex, real-worl
 ### Phase 3: All Languages → Python (Reverse Translation)
 **Agent**: Python Reverse Translator (independent)
 - Gets the 4 generated files (JS, Go, Rust, C#)
-- Task: Translate each back to Python using Promptware
+- Task: Translate each back to Python using AssertLang
 - **They don't know**: Original Python code
 - **Output**:
   - `from_js.py`

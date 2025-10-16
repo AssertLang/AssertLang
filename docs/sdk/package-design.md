@@ -1,6 +1,6 @@
-# Promptware SDK Package Design
+# AssertLang SDK Package Design
 
-This document defines the package naming, versioning, and structure for Promptware host SDKs.
+This document defines the package naming, versioning, and structure for AssertLang host SDKs.
 
 ---
 
@@ -19,7 +19,7 @@ This document defines the package naming, versioning, and structure for Promptwa
 ```python
 from promptware_sdk import mcp
 from promptware_sdk.timeline import TimelineReader
-from promptware_sdk.errors import PromptwareError, E_RUNTIME
+from promptware_sdk.errors import AssertLangError, E_RUNTIME
 ```
 
 **PyPI registration**:
@@ -121,14 +121,14 @@ promptware_sdk/
 ```python
 from .mcp import mcp
 from .timeline import TimelineReader
-from .errors import PromptwareError, E_RUNTIME, E_POLICY, E_TIMEOUT
+from .errors import AssertLangError, E_RUNTIME, E_POLICY, E_TIMEOUT
 from .types import ToolRequest, ToolResponse, TimelineEvent
 from .version import __version__
 
 __all__ = [
     'mcp',
     'TimelineReader',
-    'PromptwareError',
+    'AssertLangError',
     'E_RUNTIME',
     'E_POLICY',
     'E_TIMEOUT',
@@ -175,7 +175,7 @@ packages/sdk/
 ```typescript
 export { mcp } from './mcp';
 export { TimelineReader } from './timeline';
-export { PromptwareError, E_RUNTIME, E_POLICY, E_TIMEOUT } from './errors';
+export { AssertLangError, E_RUNTIME, E_POLICY, E_TIMEOUT } from './errors';
 export type { ToolRequest, ToolResponse, TimelineEvent } from './types';
 export { version } from './version';
 ```
@@ -280,7 +280,7 @@ class TimelineReader {
 
 **Python** (`promptware_sdk/errors.py`):
 ```python
-class PromptwareError(Exception):
+class AssertLangError(Exception):
     """Base exception for all SDK errors."""
     def __init__(self, code: str, message: str):
         self.code = code
@@ -297,10 +297,10 @@ E_JSON = "E_JSON"
 
 **Node.js** (`src/errors.ts`):
 ```typescript
-export class PromptwareError extends Error {
+export class AssertLangError extends Error {
   constructor(public code: string, message: string) {
     super(`${code}: ${message}`);
-    this.name = 'PromptwareError';
+    this.name = 'AssertLangError';
   }
 }
 
@@ -328,10 +328,10 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "promptware-sdk"
 version = "0.1.0"
-description = "Host SDK for Promptware MCP integration"
+description = "Host SDK for AssertLang MCP integration"
 requires-python = ">=3.10"
 readme = "README.md"
-authors = [{ name = "Promptware Team" }]
+authors = [{ name = "AssertLang Team" }]
 dependencies = [
   "requests>=2.31",
   "websocket-client>=1.7",
@@ -368,7 +368,7 @@ twine upload dist/*
 {
   "name": "@promptware/sdk",
   "version": "0.1.0",
-  "description": "Host SDK for Promptware MCP integration",
+  "description": "Host SDK for AssertLang MCP integration",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
@@ -477,7 +477,7 @@ npm link
 
 ```
 promptware/
-├── cli/                  # Promptware CLI/daemon (existing)
+├── cli/                  # AssertLang CLI/daemon (existing)
 ├── language/             # DSL parser/interpreter (existing)
 ├── runners/              # Multi-language runners (existing)
 ├── tools/                # Tool adapters (existing)

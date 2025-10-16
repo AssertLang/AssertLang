@@ -1,6 +1,6 @@
 # PW Syntax MCP Tools - Complete Catalog
 
-**Extracted from**: `dsl/ir.py` (Promptware IR)
+**Extracted from**: `dsl/ir.py` (AssertLang IR)
 **Total Tools**: 76 atomic syntax tools
 **Source**: Actual implemented IR nodes in this codebase
 
@@ -8,7 +8,7 @@
 
 ## 📋 Tool Categories
 
-This catalog represents **every syntax pattern** currently supported by the Promptware IR system, which has been battle-tested translating between Python, Go, Rust, .NET, and Node.js.
+This catalog represents **every syntax pattern** currently supported by the AssertLang IR system, which has been battle-tested translating between Python, Go, Rust, .NET, and Node.js.
 
 ---
 

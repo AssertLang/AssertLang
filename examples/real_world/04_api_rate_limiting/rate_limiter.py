@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from promptware.runtime.contracts import check_postcondition
-from promptware.runtime.contracts import check_precondition
+from assertlang.runtime.contracts import check_postcondition
+from assertlang.runtime.contracts import check_precondition
 
 def validate_rate_limit_config(requests_per_window: int, window_seconds: int, burst_size: int) -> bool:
     check_precondition(

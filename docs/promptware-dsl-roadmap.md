@@ -1,6 +1,6 @@
-# Promptware DSL Roadmap
+# AssertLang DSL Roadmap
 
-This living outline captures the steps required to turn Promptware into a full programming language that orchestrates the 36 tools across heterogeneous runtimes.
+This living outline captures the steps required to turn AssertLang into a full programming language that orchestrates the 36 tools across heterogeneous runtimes.
 
 ## Phase A — Grammar & Authoring Experience
 - Define a minimal DSL grammar: program metadata, sequential tool invocations, dataflow wiring (`alias`, `input.from`, fan-in/out), error/retry clauses.

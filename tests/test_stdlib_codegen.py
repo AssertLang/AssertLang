@@ -17,10 +17,10 @@ from language.python_generator_v2 import PythonGeneratorV2
 
 
 def test_parse_and_generate_core_option():
-    """Test that Option<T> from stdlib/core.pw generates valid Python."""
+    """Test that Option<T> from stdlib/core.al generates valid Python."""
     generator = PythonGeneratorV2()
 
-    # Parse stdlib/core.pw (or at least the Option<T> enum)
+    # Parse stdlib/core.al (or at least the Option<T> enum)
     code = """
 enum Option<T>:
     - Some(T)
@@ -61,7 +61,7 @@ enum Option<T>:
 
 
 def test_parse_and_generate_core_result():
-    """Test that Result<T, E> from stdlib/core.pw generates valid Python."""
+    """Test that Result<T, E> from stdlib/core.al generates valid Python."""
     generator = PythonGeneratorV2()
 
     code = """
@@ -146,13 +146,13 @@ function option_some<T>(value: T) -> Option<T>:
 
 
 def test_full_stdlib_core_file():
-    """Test parsing and generating the full stdlib/core.pw file."""
+    """Test parsing and generating the full stdlib/core.al file."""
     generator = PythonGeneratorV2()
 
-    stdlib_path = Path(__file__).parent.parent / "stdlib" / "core.pw"
+    stdlib_path = Path(__file__).parent.parent / "stdlib" / "core.al"
 
     if not stdlib_path.exists():
-        pytest.skip(f"stdlib/core.pw not found at {stdlib_path}")
+        pytest.skip(f"stdlib/core.al not found at {stdlib_path}")
 
     try:
         with open(stdlib_path) as f:

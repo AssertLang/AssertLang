@@ -1,6 +1,6 @@
 # Python to JavaScript Translation Summary
 
-**Translation System**: Promptware V2 Universal Code Translation
+**Translation System**: AssertLang V2 Universal Code Translation
 **Translation Path**: Python → IR → JavaScript
 **Date**: 2025-10-05
 **Status**: ✅ SUCCESSFUL
@@ -10,12 +10,12 @@
 ## Translation Details
 
 ### Input File
-- **Path**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_code_original.py`
+- **Path**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_code_original.py`
 - **Type**: Python 3 source code (Galactic ASCII Art Generator)
 - **Lines**: 79 lines
 
 ### Output File
-- **Path**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_code_from_python.js`
+- **Path**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_code_from_python.js`
 - **Type**: JavaScript (ES6+)
 - **Lines**: 68 lines
 
@@ -452,7 +452,7 @@ catch (error) {
 
 ## Conclusion
 
-The Promptware V2 translation system successfully translated **3 functions** with **complex logic** from Python to JavaScript. The core translation engine works well for:
+The AssertLang V2 translation system successfully translated **3 functions** with **complex logic** from Python to JavaScript. The core translation engine works well for:
 
 - Function signatures and bodies
 - Control flow structures (if/for/while/try)

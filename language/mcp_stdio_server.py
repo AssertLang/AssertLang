@@ -37,7 +37,7 @@ def generate_tool_description(verb_name: str, expose) -> str:
 
 
 def load_agent_definition(agent_file: str) -> Dict[str, Any]:
-    """Parse .pw file to extract agent info."""
+    """Parse .al file to extract agent info."""
     try:
         # Add project root to path to import parser
         project_root = Path(__file__).parent.parent
@@ -487,7 +487,7 @@ def main():
             "jsonrpc": "2.0",
             "error": {
                 "code": -32000,
-                "message": "Usage: mcp_stdio_server.py <agent_file.pw>"
+                "message": "Usage: mcp_stdio_server.py <agent_file.al>"
             }
         }), file=sys.stderr)
         sys.exit(1)

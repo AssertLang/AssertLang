@@ -38,8 +38,8 @@ tools/
 - Manual validation (until automated tests land):
 ```
 dotnet script <<'CSX'
-#r "./.promptware/tmp/PromptwareAdapters.dll"
-Console.WriteLine(Promptware.ApiAuth.Adapter.Handle(new()
+#r "./.promptware/tmp/AssertLangAdapters.dll"
+Console.WriteLine(AssertLang.ApiAuth.Adapter.Handle(new()
 {
   ["type"] = "apiKey",
   ["token"] = "t"

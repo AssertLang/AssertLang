@@ -8,7 +8,7 @@
   "reports": [
     {
       "agent_name": "dotnet_with_tools",
-      "fixture_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/fixtures/dotnet_with_tools.pw",
+      "fixture_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/fixtures/dotnet_with_tools.al",
       "generated_code_path": "/var/folders/hc/x09q151943x6fxtpjbtr0hrm0000gn/T/tmpnmbymodk/generated",
       "syntax_valid": true,
       "compilation": {
@@ -33,7 +33,7 @@
     },
     {
       "agent_name": "dotnet_minimal",
-      "fixture_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/fixtures/dotnet_minimal.pw",
+      "fixture_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/fixtures/dotnet_minimal.al",
       "generated_code_path": "/var/folders/hc/x09q151943x6fxtpjbtr0hrm0000gn/T/tmphagzctf0/generated",
       "syntax_valid": true,
       "compilation": {

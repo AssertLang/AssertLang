@@ -1,7 +1,7 @@
 # JavaScript/TypeScript Parser Bug Fixes
 
 **Date:** 2025-10-05
-**Parser:** `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/nodejs_parser_v2.py`
+**Parser:** `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/nodejs_parser_v2.py`
 **Status:** ✅ All Issues Resolved
 
 ---
@@ -212,7 +212,7 @@ Body: 3 statements
 
 ## Files Modified
 
-- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/nodejs_parser_v2.py`
+- `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/nodejs_parser_v2.py`
   - Added imports: `IRThrow`, `IRUnaryOp`, `UnaryOperator`
   - Modified `_parse_statements()`: Added throw handler, fixed return multiline handling
   - Modified `_parse_if_statement()`: Fixed regex for leading whitespace

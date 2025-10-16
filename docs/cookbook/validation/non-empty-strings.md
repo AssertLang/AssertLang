@@ -19,7 +19,7 @@ Functions that process text often assume non-empty input. Empty strings cause:
 
 ## Solution
 
-```pw
+```al
 function process_text(text: string) -> string {
     @requires non_empty: len(text) > 0
     @requires not_whitespace: len(text.strip()) > 0
@@ -69,25 +69,25 @@ def process_text(text: str) -> str:
 ## Variations
 
 ### Minimum Length
-```pw
+```al
 @requires min_length: len(text) >= 3
 // Requires at least 3 characters
 ```
 
 ### Maximum Length
-```pw
+```al
 @requires max_length: len(text) <= 280
 // Twitter-style character limit
 ```
 
 ### Combined Min/Max
-```pw
+```al
 @requires valid_length: len(text) >= 3 && len(text) <= 280
 // Between 3 and 280 characters
 ```
 
 ### Pattern Matching
-```pw
+```al
 @requires valid_format: text.matches("^[A-Za-z0-9]+$")
 // Alphanumeric only
 ```
@@ -97,7 +97,7 @@ def process_text(text: str) -> str:
 ## Common Pitfalls
 
 ### ❌ Only checking `len(text) > 0`
-```pw
+```al
 @requires non_empty: len(text) > 0
 // Allows "   " (whitespace-only)
 ```
@@ -109,7 +109,7 @@ def process_text(text: str) -> str:
 ---
 
 ### ❌ Stripping in precondition
-```pw
+```al
 @requires non_empty: len(text.strip()) > 0
 let processed = text.strip()  // Strips again!
 ```
@@ -121,7 +121,7 @@ let processed = text.strip()  // Strips again!
 ---
 
 ### ❌ No postcondition
-```pw
+```al
 function process_text(text: string) -> string {
     @requires non_empty: len(text) > 0
     // No postcondition!
@@ -140,7 +140,7 @@ function process_text(text: string) -> string {
 ## Real-World Example
 
 **User registration validation:**
-```pw
+```al
 function validate_username(username: string) -> bool {
     @requires non_empty: len(username) > 0
     @requires not_whitespace: len(username.strip()) > 0

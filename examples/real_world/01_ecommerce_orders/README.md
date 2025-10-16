@@ -34,7 +34,7 @@ E-commerce order systems need to enforce complex business rules:
 
 ```bash
 # Generate Python code from contracts
-promptware build orders.pw -o orders.py
+asl build orders.al -o orders.py
 
 # Run tests
 pytest test_orders.py -v
@@ -46,11 +46,11 @@ pytest test_orders.py -v
 
 ## The Contract File
 
-**File:** `orders.pw` (187 lines)
+**File:** `orders.al` (187 lines)
 
 ### Structure
 
-```pw
+```al
 // 1. Input validation functions
 function validate_order_inputs(...) -> bool {
     @requires valid_order_id: len(order_id) > 0
@@ -80,7 +80,7 @@ function can_transition_status(...) -> bool {
 
 ### Pattern 1: Input Validation with Preconditions
 
-```pw
+```al
 function validate_payment(
     payment_method: string,
     transaction_id: string,
@@ -117,7 +117,7 @@ validate_payment("", "TXN-12345", 99.99)  # Empty payment method
 
 ### Pattern 2: Business Rules with Postconditions
 
-```pw
+```al
 function apply_discount(
     original_price: float,
     discount_percent: float
@@ -152,7 +152,7 @@ result = apply_discount(100.0, 20.0)  # Should be 80.0
 
 ### Pattern 3: State Machine Validation
 
-```pw
+```al
 function can_transition_status(
     current_status: string,
     new_status: string
@@ -249,10 +249,10 @@ def test_refund_exceeds_original_rejected(self):
 
 ```bash
 # Generate Python
-promptware build orders.pw -o orders.py
+asl build orders.al -o orders.py
 
 # Generate JavaScript (coming soon)
-promptware build orders.pw --lang javascript -o orders.js
+asl build orders.al --lang javascript -o orders.js
 ```
 
 ### Step 2: Run Tests
@@ -304,7 +304,7 @@ result = apply_discount(100, 20)  # Returns 20, not 80 😱
 ```
 
 **With contracts:**
-```pw
+```al
 @ensures discounted_price: result >= 0.0 && result <= original_price
 
 # Postcondition fails immediately during testing:
@@ -378,7 +378,7 @@ This example demonstrates patterns for:
 
 ### Pitfall 1: Off-by-One Errors
 
-```pw
+```al
 @requires valid_discount: discount_percent >= 0.0 && discount_percent <= 100.0
 ```
 
@@ -386,7 +386,7 @@ Catches: `discount_percent = 101.0` ✅
 
 ### Pitfall 2: Negative Values
 
-```pw
+```al
 @requires positive_amount: total_amount > 0.0
 ```
 
@@ -394,7 +394,7 @@ Catches: `total_amount = -10.0` ✅
 
 ### Pitfall 3: Empty Strings
 
-```pw
+```al
 @requires valid_order_id: len(order_id) > 0
 ```
 
@@ -402,7 +402,7 @@ Catches: `order_id = ""` ✅
 
 ### Pitfall 4: Invalid State Transitions
 
-```pw
+```al
 @ensures transition_decided: result == true || result == false
 ```
 
@@ -440,7 +440,7 @@ Logic must return boolean. Catches type errors ✅
 
 ```
 01_ecommerce_orders/
-├── orders.pw              # Contract definitions (187 lines)
+├── orders.al              # Contract definitions (187 lines)
 ├── orders.py              # Generated Python code (357 lines)
 ├── test_orders.py         # Test suite (48 tests)
 ├── README.md              # This file
@@ -471,10 +471,10 @@ Logic must return boolean. Catches type errors ✅
 
 ## Learn More
 
-- [Contract Syntax Guide](https://docs.promptware.dev/guides/contracts)
-- [Preconditions Deep Dive](https://docs.promptware.dev/guides/preconditions)
-- [State Machine Patterns](https://docs.promptware.dev/cookbook/state-machines)
-- [Testing with Contracts](https://docs.promptware.dev/guides/testing)
+- [Contract Syntax Guide](https://docs.assertlang.dev/guides/contracts)
+- [Preconditions Deep Dive](https://docs.assertlang.dev/guides/preconditions)
+- [State Machine Patterns](https://docs.assertlang.dev/cookbook/state-machines)
+- [Testing with Contracts](https://docs.assertlang.dev/guides/testing)
 
 ---
 

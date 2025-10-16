@@ -1,0 +1,21 @@
+function main() -> int {
+    print("=== PROMPTWARE RUNTIME WORKING ===");
+    
+    // Math
+    let x = math.sqrt(25);
+    print("Square root of 25:", x);
+    
+    // Strings
+    let greeting = str.join(" ", ["Hello", "from", "PW"]);
+    print(greeting);
+    
+    // User functions
+    let sum = add(10, 32);
+    print("10 + 32 =", sum);
+    
+    return 0;
+}
+
+function add(a: int, b: int) -> int {
+    return a + b;
+}

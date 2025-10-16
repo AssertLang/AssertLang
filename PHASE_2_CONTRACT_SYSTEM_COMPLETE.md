@@ -9,7 +9,7 @@
 
 ## Overview
 
-Promptware now has world-class Design-by-Contract support for multi-agent coordination. The contract system enables deterministic validation of agent interactions through:
+AssertLang now has world-class Design-by-Contract support for multi-agent coordination. The contract system enables deterministic validation of agent interactions through:
 
 - **Preconditions** (@requires) - Input validation at function entry
 - **Postconditions** (@ensures) - Output validation at function exit
@@ -112,7 +112,7 @@ service UserService {
 ### 2. Validation Command
 
 ```bash
-promptware validate contract.pw
+promptware validate contract.al
 ```
 
 **Output:**
@@ -337,7 +337,7 @@ Contract Violation: Precondition 'name_not_empty' failed
 
 **Phase 2: Contract System** is **COMPLETE** and **PRODUCTION READY**.
 
-Promptware now supports world-class Design-by-Contract for deterministic multi-agent coordination. The system is:
+AssertLang now supports world-class Design-by-Contract for deterministic multi-agent coordination. The system is:
 
 - ✅ Fully implemented (parser + runtime + testing)
 - ✅ Thoroughly tested (45/45 tests passing)

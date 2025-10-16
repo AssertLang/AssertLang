@@ -1,19 +1,19 @@
 # Agent Communication Guide
 
-**Promptware Agent-to-Agent Communication**
+**AssertLang Agent-to-Agent Communication**
 
-This guide explains how to build autonomous agents that coordinate via MCP verbs using Promptware's `.pw` language.
+This guide explains how to build autonomous agents that coordinate via MCP verbs using AssertLang's `.pw` language.
 
 ---
 
 ## Overview
 
-Promptware enables agents written in different languages to communicate via a shared protocol based on MCP (Model Context Protocol). Agents:
+AssertLang enables agents written in different languages to communicate via a shared protocol based on MCP (Model Context Protocol). Agents:
 
 1. **Expose MCP verbs** - define capabilities other agents can call
 2. **Call other agents' verbs** - coordinate with peers
 3. **Run on standard port** - 23456 for discovery
-4. **Speak .pw protocol** - language-agnostic coordination
+4. **Speak .al protocol** - language-agnostic coordination
 
 ---
 
@@ -21,7 +21,7 @@ Promptware enables agents written in different languages to communicate via a sh
 
 ### 1. Define an Agent (`.pw` file)
 
-```pw
+```al
 lang python
 agent code-reviewer
 port 23456
@@ -91,7 +91,7 @@ if response.is_success():
 
 ### Basic Structure
 
-```pw
+```al
 lang <language>        # python, node, go, rust, etc.
 agent <name>           # agent identifier
 port <number>          # MCP server port (default: 23456)
@@ -113,7 +113,7 @@ expose <verb>:         # MCP verb definition
 
 ### Example: Multi-Verb Agent
 
-```pw
+```al
 lang python
 agent task-executor
 port 23456
@@ -340,7 +340,7 @@ response = call_any("code-review", "review.submit@v1", {...})
 
 ### Agent A: Orchestrator
 
-```pw
+```al
 lang python
 agent orchestrator
 port 23457
@@ -355,7 +355,7 @@ expose workflow.execute@v1:
 
 ### Agent B: Code Reviewer
 
-```pw
+```al
 lang python
 agent code-reviewer
 port 23456
@@ -461,7 +461,7 @@ This demonstrates:
 
 Always include `@v1`, `@v2`, etc. for compatibility:
 
-```pw
+```al
 expose review.submit@v1:  # Initial version
 expose review.submit@v2:  # New version with more params
 ```
@@ -480,7 +480,7 @@ def handle_verb(params):
 
 ### 4. Use Standard Port (23456)
 
-All Promptware agents should use port 23456 unless there's a conflict.
+All AssertLang agents should use port 23456 unless there's a conflict.
 
 ### 5. Handle Errors Gracefully
 

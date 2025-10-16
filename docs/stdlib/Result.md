@@ -25,7 +25,7 @@ result = divide(10, 0)  # Crash!
 **Solution**: `Result<T,E>` makes errors explicit and forces you to handle them:
 
 ```pw
-# Promptware - compiler enforces error handling
+# AssertLang - compiler enforces error handling
 function divide(a: int, b: int) -> Result<int, string>:
     if b == 0:
         return result_err("division by zero")

@@ -283,7 +283,7 @@ function createUser(name: string, email: string) -> User | ValidationError {
 @contract(
     version="1.0.0",
     description="User management service for multi-agent coordination",
-    author="Promptware Contributors"
+    author="AssertLang Contributors"
 )
 service UserService {
     // Service-level invariants
@@ -461,7 +461,7 @@ Maximum validation:
 ### Validate Contract
 
 ```bash
-promptware validate contract.pw
+promptware validate contract.al
 
 # Output:
 ✓ Syntax valid
@@ -475,7 +475,7 @@ promptware validate contract.pw
 ### Test Contract
 
 ```bash
-promptware test contract.pw --mode=development
+asl test contract.al --mode=development
 
 # Output:
 Testing UserService.createUser
@@ -490,7 +490,7 @@ Coverage: 5/5 clauses tested (100%)
 ### Generate Documentation
 
 ```bash
-promptware docs contract.pw -o docs/
+promptware docs contract.al -o docs/
 
 # Generates:
 # docs/UserService.md - Full API documentation
@@ -529,7 +529,7 @@ promptware docs contract.pw -o docs/
 **Tasks:**
 1. Build contract testing framework
 2. Implement `promptware validate` command
-3. Implement `promptware test` command
+3. Implement `asl test` command
 4. Track coverage of contract clauses
 5. Generate test reports
 
@@ -587,7 +587,7 @@ function createUser(name: string) -> User {
 5. ✅ Effects are declared and tracked
 6. ✅ Error messages include clause names
 7. ✅ `promptware validate` command works
-8. ✅ `promptware test` command works
+8. ✅ `asl test` command works
 9. ✅ Documentation generator works
 10. ✅ All tests pass (100% coverage)
 

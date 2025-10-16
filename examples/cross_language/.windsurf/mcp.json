@@ -4,14 +4,14 @@
       "command": "promptware",
       "args": [
         "run",
-        "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/examples/cross_language/data_processor.pw"
+        "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/examples/cross_language/data_processor.al"
       ]
     },
     "cache-service": {
       "command": "promptware",
       "args": [
         "run",
-        "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/examples/cross_language/cache_service.pw"
+        "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/examples/cross_language/cache_service.al"
       ]
     }
   }

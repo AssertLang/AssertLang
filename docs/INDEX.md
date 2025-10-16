@@ -1,6 +1,6 @@
 # PW Documentation Index
 
-**Complete guide to all PW (Promptware) documentation**
+**Complete guide to all PW (AssertLang) documentation**
 
 ---
 
@@ -85,7 +85,7 @@
 ### Code Examples
 
 💻 **Working Examples:**
-- [`examples/calculator.pw`](../examples/calculator.pw) - Basic arithmetic functions
+- [`examples/calculator.pw`](../examples/calculator.al) - Basic arithmetic functions
 - [`/tmp/examples.pw`](../examples/) - Comprehensive syntax examples
 - [`/tmp/user_service.pw`](../examples/) - User validation service
 
@@ -106,7 +106,7 @@ Each example includes generated code:
 
 ```bash
 # Clone repository
-git clone https://github.com/Promptware-dev/promptware.git
+git clone https://github.com/AssertLang/AssertLang.git
 cd promptware
 
 # Install dependencies
@@ -121,7 +121,7 @@ pw --version
 ### Install VS Code Extension
 
 **Automatic (Workspace):**
-1. Open Promptware folder in VS Code
+1. Open AssertLang folder in VS Code
 2. `Cmd+Shift+P` → `Developer: Reload Window`
 3. Extension loads automatically!
 
@@ -162,9 +162,9 @@ code --install-extension pw-language-0.1.0.vsix
 
 ### External Links
 
-- **GitHub:** https://github.com/Promptware-dev/promptware
-- **Issues:** https://github.com/Promptware-dev/promptware/issues
-- **Discussions:** https://github.com/Promptware-dev/promptware/discussions
+- **GitHub:** https://github.com/AssertLang/AssertLang
+- **Issues:** https://github.com/AssertLang/AssertLang/issues
+- **Discussions:** https://github.com/AssertLang/AssertLang/discussions
 
 ---
 
@@ -185,7 +185,7 @@ code --install-extension pw-language-0.1.0.vsix
 → Get it from `.vscode/extensions/pw-language/icons/pw-icon.svg`
 
 **Compile PW to Python/Go/Rust**
-→ Use `pw build file.pw --lang <language>`
+→ Use `pw build file.al --lang <language>`
 
 **Use PW as an AI agent**
 → Read [MCP Server Docs](../pw-syntax-mcp-server/CURRENT_WORK.md)
@@ -197,7 +197,7 @@ code --install-extension pw-language-0.1.0.vsix
 → See `CONTRIBUTING.md`
 
 **Report a bug**
-→ Open issue: https://github.com/Promptware-dev/promptware/issues
+→ Open issue: https://github.com/AssertLang/AssertLang/issues
 
 ---
 
@@ -276,7 +276,7 @@ code --install-extension pw-language-0.1.0.vsix
 **Location:** `.vscode/extensions/pw-language/`
 
 **Installation:**
-- Automatic: Open Promptware workspace in VS Code
+- Automatic: Open AssertLang workspace in VS Code
 - Manual: Package as `.vsix` and install globally
 
 **Features:**
@@ -286,7 +286,7 @@ code --install-extension pw-language-0.1.0.vsix
 - ✅ Comment toggling
 
 **Download:**
-- Clone repository: `git clone https://github.com/Promptware-dev/promptware.git`
+- Clone repository: `git clone https://github.com/AssertLang/AssertLang.git`
 - Extension folder: `.vscode/extensions/pw-language/`
 - Logo file: `.vscode/extensions/pw-language/icons/pw-icon.svg`
 
@@ -329,8 +329,8 @@ We plan to publish to the marketplace for one-click installation!
 - Check [Troubleshooting](PW_LANGUAGE_GUIDE.md#troubleshooting)
 
 **Issues?**
-- Report bugs: https://github.com/Promptware-dev/promptware/issues
-- Request features: https://github.com/Promptware-dev/promptware/discussions
+- Report bugs: https://github.com/AssertLang/AssertLang/issues
+- Request features: https://github.com/AssertLang/AssertLang/discussions
 
 **Community:**
 - Discord: (Coming soon!)
@@ -348,7 +348,7 @@ Free to use, modify, and distribute.
 
 ## Credits
 
-**Documentation by:** Promptware Contributors
+**Documentation by:** AssertLang Contributors
 
 **Last Updated:** 2025-10-07
 
@@ -361,4 +361,4 @@ Free to use, modify, and distribute.
 
 **Start here:** [PW Language Guide](PW_LANGUAGE_GUIDE.md) 🚀
 
-**Questions?** Open an issue: https://github.com/Promptware-dev/promptware/issues
+**Questions?** Open an issue: https://github.com/AssertLang/AssertLang/issues

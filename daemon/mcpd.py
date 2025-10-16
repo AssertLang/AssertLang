@@ -186,7 +186,7 @@ class MCPDaemon:
 
     # Verb: plan.create@v1
     def plan_create_v1(self, prompt: str, lang: str = "python") -> dict:
-        """Parse .pw DSL input into execution plan."""
+        """Parse .al DSL input into execution plan."""
         if parse_pw is None:
             return {
                 "ok": False,
@@ -201,7 +201,7 @@ class MCPDaemon:
             return {
                 "ok": False,
                 "version": "v1",
-                "error": {"code": "E_PARSE", "message": f"Failed to parse .pw input: {str(e)}"},
+                "error": {"code": "E_PARSE", "message": f"Failed to parse .al input: {str(e)}"},
             }
 
         # Check if valid DSL was found
@@ -220,7 +220,7 @@ class MCPDaemon:
                 "version": "v1",
                 "error": {
                     "code": "E_SYNTAX",
-                    "message": f"Invalid .pw syntax. Expected DSL format, got: {error_preview}",
+                    "message": f"Invalid .al syntax. Expected DSL format, got: {error_preview}",
                 },
             }
 

@@ -1,6 +1,6 @@
 # Translation Quality Report
 **Generated**: 2025-10-05
-**System**: Promptware Universal Code Translation V2
+**System**: AssertLang Universal Code Translation V2
 **Test Suite**: Comprehensive Quality Assessment
 
 ---
@@ -380,7 +380,7 @@ Weighted Average:  60/100 (FAIR)
 
 ## Conclusion
 
-The Promptware V2 system shows **excellent foundation** but has **critical gaps** for real-world use.
+The AssertLang V2 system shows **excellent foundation** but has **critical gaps** for real-world use.
 
 ### What Works (Exceeds Expectations)
 - Basic function translation: Perfect

@@ -1,0 +1,7 @@
+function createUser(name: string, email: string) -> int {
+    @requires name_not_empty: str.length(name) >= 1
+    @requires name_length_valid: str.length(name) <= 100
+    @requires email_has_at: str.contains(email, "@")
+
+    return 42;
+}

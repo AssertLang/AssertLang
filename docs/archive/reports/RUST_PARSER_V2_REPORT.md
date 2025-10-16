@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-Successfully implemented the **Rust Parser V2** that converts arbitrary Rust code into Promptware's intermediate representation (IR), enabling universal code translation between Rust and all supported languages (Python, Node.js, Go, .NET).
+Successfully implemented the **Rust Parser V2** that converts arbitrary Rust code into AssertLang's intermediate representation (IR), enabling universal code translation between Rust and all supported languages (Python, Node.js, Go, .NET).
 
 ### Key Achievement
 - **13/13 tests passing (100% success rate)**
@@ -22,7 +22,7 @@ Successfully implemented the **Rust Parser V2** that converts arbitrary Rust cod
 ## Deliverables
 
 ### 1. Core Parser Implementation ✅
-**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/rust_parser_v2.py`
+**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/rust_parser_v2.py`
 - **Lines of Code**: ~800
 - **Key Features**:
   - Regex-based parsing (no external dependencies)
@@ -36,8 +36,8 @@ Successfully implemented the **Rust Parser V2** that converts arbitrary Rust cod
   - Ownership metadata extraction
 
 ### 2. Comprehensive Test Suite ✅
-**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/test_rust_parser_v2.py`
-**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_rust_v2_simple.py`
+**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/test_rust_parser_v2.py`
+**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_rust_v2_simple.py`
 - **Test Coverage**: 13 comprehensive tests
 - **Test Results**: 13/13 passing (100%)
 - **Categories**:
@@ -51,7 +51,7 @@ Successfully implemented the **Rust Parser V2** that converts arbitrary Rust cod
   - Real-world adapter parsing
 
 ### 3. Documentation ✅
-**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/docs/RUST_PARSER_V2.md`
+**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/docs/RUST_PARSER_V2.md`
 - **Sections**:
   - Overview and features
   - Usage examples
@@ -65,7 +65,7 @@ Successfully implemented the **Rust Parser V2** that converts arbitrary Rust cod
   - Troubleshooting
 
 ### 4. Demo Application ✅
-**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/demo_rust_parser_v2.py`
+**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/demo_rust_parser_v2.py`
 - 4 comprehensive demos
 - Real-world adapter parsing
 - Type mapping showcase
@@ -341,7 +341,7 @@ common = rust_api & go_api
 
 ## Conclusion
 
-The Rust Parser V2 successfully achieves its goal of parsing arbitrary Rust code into Promptware IR. With **100% test success rate** and comprehensive feature coverage, it's production-ready for cross-language translation workflows.
+The Rust Parser V2 successfully achieves its goal of parsing arbitrary Rust code into AssertLang IR. With **100% test success rate** and comprehensive feature coverage, it's production-ready for cross-language translation workflows.
 
 **Key Strengths**:
 - Zero external dependencies

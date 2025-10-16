@@ -1,4 +1,4 @@
-# Agent Team Architecture - Promptware V2 Development
+# Agent Team Architecture - AssertLang V2 Development
 
 **Last Updated**: 2025-10-04
 **Purpose**: Professional multi-agent development team for building universal code translation system
@@ -477,7 +477,7 @@
 Task:
   subagent_type: general-purpose
   description: "Build IR data structures"
-  prompt: "You are the IR Architect Agent for Promptware V2.
+  prompt: "You are the IR Architect Agent for AssertLang V2.
 
   Your mission: Design and implement the intermediate representation (IR)
   for the universal code translation system.

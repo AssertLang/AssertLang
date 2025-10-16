@@ -1,7 +1,7 @@
-# Promptware DSL Design (Draft)
+# AssertLang DSL Design (Draft)
 
 ## 1. Goals
-- Provide a concise, agent-friendly orchestration language across the Promptware verbs (`plan`, `apply`, `run`, `validate`, `report`).
+- Provide a concise, agent-friendly orchestration language across the AssertLang verbs (`plan`, `apply`, `run`, `validate`, `report`).
 - Keep dataflow explicit so agents can reason about intermediate state, retries, and fan-in/out without bespoke glue code.
 - Ship tooling parity: parser, formatter, linter, interpreter, and timeline telemetry must behave consistently across macOS/Linux hosts.
 - Support incremental evolution toward a natural-language compiler while remaining production-worthy today.

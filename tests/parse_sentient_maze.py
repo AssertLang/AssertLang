@@ -18,7 +18,7 @@ from dsl.pw_generator import PWGenerator
 def main():
     # Input and output paths
     input_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_sentient_maze_original.py"
-    output_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_sentient_maze.pw"
+    output_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_sentient_maze.al"
 
     print(f"Parsing Python file: {input_file}")
 

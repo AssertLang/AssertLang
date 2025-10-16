@@ -18,7 +18,7 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
-from promptware import call_verb
+from assertlang import call_verb
 
 
 def test_python_to_nodejs():
@@ -102,7 +102,7 @@ def main():
         print("✓ Python client → Node.js server: PASSED")
         print(f"{'✓' if nodejs_success else '✗'} Node.js client → Python server: {'PASSED' if nodejs_success else 'FAILED'}")
         print("\nKey achievements:")
-        print("  ✓ Single .pw definition generates both Python and Node.js servers")
+        print("  ✓ Single .al definition generates both Python and Node.js servers")
         print("  ✓ MCP protocol works seamlessly across languages")
         print("  ✓ Both client libraries can call both server types")
         print("  ✓ True polyglot service architecture")

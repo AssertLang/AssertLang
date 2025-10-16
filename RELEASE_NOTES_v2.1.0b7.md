@@ -1,4 +1,4 @@
-# Release Notes: Promptware v2.1.0b7
+# Release Notes: AssertLang v2.1.0b7
 
 **Release Date:** 2025-10-09
 **Type:** Bug Fix Release
@@ -122,7 +122,7 @@ def parse_multiplication(self) -> IRExpression:
 
 ```bash
 # Install from PyPI
-pip install promptware-dev==2.1.0b7
+pip install assertlang==2.1.0b7
 
 # Or upgrade existing installation
 pip install --upgrade promptware-dev
@@ -148,5 +148,5 @@ None related to this release.
 ---
 
 **Full Changelog:** v2.1.0b6...v2.1.0b7
-**PyPI:** https://pypi.org/project/promptware-dev/2.1.0b7/
-**GitHub Release:** https://github.com/Promptware-dev/promptware/releases/tag/v2.1.0b7
+**PyPI:** https://pypi.org/project/assertlang/2.1.0b7/
+**GitHub Release:** https://github.com/AssertLang/AssertLang/releases/tag/v2.1.0b7

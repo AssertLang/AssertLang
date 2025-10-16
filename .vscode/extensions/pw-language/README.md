@@ -1,6 +1,6 @@
 # PW Language Support for VS Code
 
-Syntax highlighting and file icons for PW (Promptware) - the universal programming language.
+Syntax highlighting and file icons for PW (AssertLang) - the universal programming language.
 
 ## Features
 
@@ -10,7 +10,7 @@ Syntax highlighting and file icons for PW (Promptware) - the universal programmi
   - Comments: `//` and `/* */`
   - Strings, numbers, operators
 
-- **File Icons**: Purple "PW" icon for `.pw` files in file explorer
+- **File Icons**: Purple "PW" icon for `.al` files in file explorer
 
 - **Auto-Closing**: Automatic closing of brackets, braces, quotes
 
@@ -36,11 +36,11 @@ code --install-extension pw-language-0.1.0.vsix
 
 ## Usage
 
-Just open any `.pw` file and enjoy syntax highlighting!
+Just open any `.al` file and enjoy syntax highlighting!
 
 ## Example
 
-```pw
+```al
 // PW code with syntax highlighting
 function greet(name: string) -> string {
     return "Hello, " + name + "!";
@@ -66,4 +66,4 @@ function calculate(x: int, y: int) -> int {
 
 ## Support
 
-For issues or feature requests, visit: https://github.com/Promptware-dev/promptware
+For issues or feature requests, visit: https://github.com/AssertLang/AssertLang

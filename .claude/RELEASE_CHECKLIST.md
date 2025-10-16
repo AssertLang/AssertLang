@@ -1,4 +1,4 @@
-# Release Checklist - Promptware
+# Release Checklist - AssertLang
 
 **IMPORTANT**: Use this checklist for every production release to ensure version sync.
 
@@ -65,7 +65,7 @@ ls -lh dist/
 twine upload dist/*
 ```
 
-**Verify URL**: https://pypi.org/project/promptware-dev/X.Y.Zb#/
+**Verify URL**: https://pypi.org/project/assertlang/X.Y.Zb#/
 
 ### Step 4: Create Git Tag
 
@@ -84,13 +84,13 @@ git push upstream vX.Y.Zb#
 
 ```bash
 gh release create vX.Y.Zb# \
-  --repo Promptware-dev/promptware \
+  --repo AssertLang/AssertLang \
   --title "vX.Y.Zb# - Release Title" \
   --notes "$(cat RELEASE_NOTES.md)" \
   --prerelease  # Only for beta/alpha
 ```
 
-**Verify URL**: https://github.com/Promptware-dev/promptware/releases/tag/vX.Y.Zb#
+**Verify URL**: https://github.com/AssertLang/AssertLang/releases/tag/vX.Y.Zb#
 
 ---
 
@@ -108,8 +108,8 @@ grep '__version__' promptware/__init__.py
 git tag --list | tail -1
 
 # Check remote
-# - GitHub: https://github.com/Promptware-dev/promptware/releases
-# - PyPI: https://pypi.org/project/promptware-dev/
+# - GitHub: https://github.com/AssertLang/AssertLang/releases
+# - PyPI: https://pypi.org/project/assertlang/
 ```
 
 **All should show**: `X.Y.Zb#`
@@ -121,9 +121,9 @@ Add release sync status section:
 ```markdown
 ## 📦 Release Sync Status
 
-**GitHub Release**: [vX.Y.Zb#](https://github.com/Promptware-dev/promptware/releases/tag/vX.Y.Zb#)
-**PyPI Package**: [X.Y.Zb#](https://pypi.org/project/promptware-dev/X.Y.Zb#/)
-**Installation**: `pip install promptware-dev==X.Y.Zb#`
+**GitHub Release**: [vX.Y.Zb#](https://github.com/AssertLang/AssertLang/releases/tag/vX.Y.Zb#)
+**PyPI Package**: [X.Y.Zb#](https://pypi.org/project/assertlang/X.Y.Zb#/)
+**Installation**: `pip install assertlang==X.Y.Zb#`
 
 ✅ All versions in sync across:
 - `pyproject.toml` - version = "X.Y.Zb#"
@@ -143,7 +143,7 @@ python -m venv /tmp/test-install
 source /tmp/test-install/bin/activate
 
 # Install from PyPI
-pip install promptware-dev==X.Y.Zb#
+pip install assertlang==X.Y.Zb#
 
 # Verify version
 python -c "import promptware; print(promptware.__version__)"
@@ -201,7 +201,7 @@ twine yank promptware-dev X.Y.Zb#
 
 ### 2. Delete GitHub Release
 ```bash
-gh release delete vX.Y.Zb# --repo Promptware-dev/promptware --yes
+gh release delete vX.Y.Zb# --repo AssertLang/AssertLang --yes
 ```
 
 ### 3. Delete Git Tag

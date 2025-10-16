@@ -44,13 +44,13 @@ def start_test_server(pw_file: Path, output_file: Path, port: int) -> subprocess
 
 def MANUAL_test_python_server_throughput():
     """Benchmark Python server request throughput."""
-    pw_file = Path("examples/cross_language/data_processor.pw")
+    pw_file = Path("examples/cross_language/data_processor.al")
 
     # Modify to use Python
     pw_content = pw_file.read_text()
     pw_content = pw_content.replace("lang nodejs", "lang python")
 
-    temp_pw = Path("/tmp/perf_test_python.pw")
+    temp_pw = Path("/tmp/perf_test_python.al")
     temp_py = Path("/tmp/perf_test_python_server.py")
 
     temp_pw.write_text(pw_content)
@@ -101,11 +101,11 @@ def MANUAL_test_python_server_throughput():
 
 def MANUAL_test_concurrent_requests():
     """Test handling concurrent requests."""
-    pw_file = Path("examples/cross_language/data_processor.pw")
+    pw_file = Path("examples/cross_language/data_processor.al")
     pw_content = pw_file.read_text()
     pw_content = pw_content.replace("lang nodejs", "lang python")
 
-    temp_pw = Path("/tmp/perf_test_concurrent.pw")
+    temp_pw = Path("/tmp/perf_test_concurrent.al")
     temp_py = Path("/tmp/perf_test_concurrent_server.py")
     temp_pw.write_text(pw_content)
 
@@ -167,7 +167,7 @@ def MANUAL_test_concurrent_requests():
 
 def test_code_generation_speed():
     """Benchmark code generation performance."""
-    pw_file = Path("examples/cross_language/data_processor.pw")
+    pw_file = Path("examples/cross_language/data_processor.al")
 
     times = []
 
@@ -212,7 +212,7 @@ def test_parser_performance():
     from language.agent_parser import parse_agent_pw
 
     # Use the most complex agent
-    pw_file = Path("examples/devops_suite/deployment_orchestrator.pw")
+    pw_file = Path("examples/devops_suite/deployment_orchestrator.al")
     pw_code = pw_file.read_text()
 
     num_iterations = 100
@@ -236,11 +236,11 @@ def test_parser_performance():
 
 def MANUAL_test_memory_usage():
     """Rough check that servers don't leak memory."""
-    pw_file = Path("examples/cross_language/data_processor.pw")
+    pw_file = Path("examples/cross_language/data_processor.al")
     pw_content = pw_file.read_text()
     pw_content = pw_content.replace("lang nodejs", "lang python")
 
-    temp_pw = Path("/tmp/perf_test_memory.pw")
+    temp_pw = Path("/tmp/perf_test_memory.al")
     temp_py = Path("/tmp/perf_test_memory_server.py")
     temp_pw.write_text(pw_content)
 

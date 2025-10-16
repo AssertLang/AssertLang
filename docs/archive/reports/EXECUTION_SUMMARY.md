@@ -19,7 +19,7 @@ Type system exists (`dsl/type_system.py`) but parsers weren't using it to infer 
 ## Solution Implemented
 
 ### File Modified
-`/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/python_parser_v2.py`
+`/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/python_parser_v2.py`
 
 ### Changes Made
 

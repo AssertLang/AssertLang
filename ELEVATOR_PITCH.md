@@ -1,4 +1,4 @@
-# Promptware Elevator Pitch
+# AssertLang Elevator Pitch
 
 **Last Updated:** 2025-10-14
 **Target Audience:** Multi-agent AI developers, framework integrators, VCs
@@ -7,7 +7,7 @@
 
 ## The 30-Second Pitch
 
-**Promptware provides executable contracts for multi-agent systems.**
+**AssertLang provides executable contracts for multi-agent systems.**
 
 Write contracts once in PW. Agents from different frameworks (CrewAI, LangGraph, AutoGen) execute identical logic. Deterministic coordination across languages and frameworks—guaranteed.
 
@@ -27,7 +27,7 @@ Existing solutions like MCP, A2A, and ACP handle messaging—but NOT semantic co
 
 **The Solution:**
 
-Promptware solves this with executable contracts. Write your contract once in PW—define validation rules, business logic, error handling. Transpile to Python, JavaScript, Rust, Go, C#.
+AssertLang solves this with executable contracts. Write your contract once in PW—define validation rules, business logic, error handling. Transpile to Python, JavaScript, Rust, Go, C#.
 
 Agents from different frameworks execute IDENTICAL logic. Same input → same output. Always. Across languages, across frameworks, across execution environments.
 
@@ -101,12 +101,12 @@ function createUser(name: string, email: string) -> User {
 
 **Transpile to Python:**
 ```bash
-promptware build contract.pw --lang python -o agent_a.py
+asl build contract.al --lang python -o agent_a.py
 ```
 
 **Transpile to JavaScript:**
 ```bash
-promptware build contract.pw --lang javascript -o agent_b.js
+asl build contract.al --lang javascript -o agent_b.js
 ```
 
 **Result:** Both agents execute IDENTICAL logic. Deterministic coordination.
@@ -231,7 +231,7 @@ A: The transpiler is production-ready (134/134 tests passing). Framework integra
 A: MIT. Completely open source. Use it anywhere, modify it, integrate it. No restrictions.
 
 **Q: How do I get started?**
-A: `pip install promptware-dev`, write a contract, transpile to your language, use in your agent. Full guide in 5 minutes.
+A: `pip install assertlang`, write a contract, transpile to your language, use in your agent. Full guide in 5 minutes.
 
 ---
 
@@ -239,13 +239,13 @@ A: `pip install promptware-dev`, write a contract, transpile to your language, u
 
 **For Developers:**
 ```bash
-pip install promptware-dev
-cat > my_contract.pw << 'EOF'
+pip install assertlang
+cat > my_contract.al << 'EOF'
 function greet(name: string) -> string {
     return "Hello, " + name + "!";
 }
 EOF
-promptware build my_contract.pw --lang python -o agent.py
+asl build my_contract.al --lang python -o agent.py
 ```
 
 **For Framework Authors:**
@@ -255,16 +255,16 @@ promptware build my_contract.pw --lang python -o agent.py
 "Use PW contracts in your multi-agent system. See examples/agent_coordination/"
 
 **For Everyone:**
-⭐ **Star us on GitHub**: [github.com/Promptware-dev/promptware](https://github.com/Promptware-dev/promptware)
+⭐ **Star us on GitHub**: [github.com/AssertLang/AssertLang](https://github.com/AssertLang/AssertLang)
 
 ---
 
 ## Contact
 
-- **GitHub**: [github.com/Promptware-dev/promptware](https://github.com/Promptware-dev/promptware)
-- **PyPI**: [pypi.org/project/promptware-dev](https://pypi.org/project/promptware-dev/)
-- **Issues**: [github.com/Promptware-dev/promptware/issues](https://github.com/Promptware-dev/promptware/issues)
-- **Discussions**: [github.com/Promptware-dev/promptware/discussions](https://github.com/Promptware-dev/promptware/discussions)
+- **GitHub**: [github.com/AssertLang/AssertLang](https://github.com/AssertLang/AssertLang)
+- **PyPI**: [pypi.org/project/assertlang](https://pypi.org/project/assertlang/)
+- **Issues**: [github.com/AssertLang/AssertLang/issues](https://github.com/AssertLang/AssertLang/issues)
+- **Discussions**: [github.com/AssertLang/AssertLang/discussions](https://github.com/AssertLang/AssertLang/discussions)
 
 ---
 

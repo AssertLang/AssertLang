@@ -9,7 +9,7 @@
 
 ## Objective
 
-Integrate the trained CharCNN model into the Promptware compiler to enable:
+Integrate the trained CharCNN model into the AssertLang compiler to enable:
 ```
 PW source code → CharCNN operation lookup → MCP query → Target language code
 ```
@@ -138,7 +138,7 @@ def compile_pw_to_target(pw_code: str, target_language: str) -> str:
 1. **Hello World** (`examples/hello.pw`):
    ```pw
    function main() {
-       print("Hello, Promptware!")
+       print("Hello, AssertLang!")
    }
    ```
 
@@ -296,9 +296,9 @@ Add 1 hour buffer for debugging → **4.5 hours total**
 
 **Expected Result**:
 ```bash
-$ pwenv compile examples/hello.pw --target python
+$ pwenv compile examples/hello.al --target python
 $ python examples/hello.py
-Hello, Promptware!
+Hello, AssertLang!
 ```
 
 ---
@@ -308,7 +308,7 @@ Hello, Promptware!
 ```
 ┌─────────────────┐
 │   PW Source     │
-│   Code (.pw)    │
+│   Code (.al)    │
 └────────┬────────┘
          │
          ▼
@@ -348,7 +348,7 @@ Hello, Promptware!
 
 **Phase 4 is the final integration step.**
 
-After Phase 4, Promptware will have:
+After Phase 4, AssertLang will have:
 - ✅ Universal operation syntax (PW)
 - ✅ Semantic operation lookup (CharCNN)
 - ✅ Multi-language implementations (MCP)

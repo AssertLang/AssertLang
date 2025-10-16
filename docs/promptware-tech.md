@@ -1,12 +1,12 @@
-# Promptware Tech Spec Pack (UDS First, Dynamic Port Fallback)
+# AssertLang Tech Spec Pack (UDS First, Dynamic Port Fallback)
 
-This pack contains **everything a coding agent (and human devs) need** to implement Promptware cleanly: contracts, schemas, runner interfaces, CLI, security, routing, testing, and error models.
+This pack contains **everything a coding agent (and human devs) need** to implement AssertLang cleanly: contracts, schemas, runner interfaces, CLI, security, routing, testing, and error models.
 
 ---
 
 ## 0) Quick Reference
 
-* **Brand**: Promptware
+* **Brand**: AssertLang
 * **Gateway**: `http://127.0.0.1:23456/` (falls back to an ephemeral port when 23456 is unavailable)
 * **Transport (local)**: Unix domain sockets (UDS) at `/run/mcpd/sock/<task_id>.sock` (fallback `/tmp/mcpd/...`), Windows named pipes `\\.\pipe\mcpd\<task_id>`
 * **Direct access**: When the gateway cannot bind, clients connect directly to `127.0.0.1:<leased_port>` announced by the CLI and report APIs.
@@ -46,7 +46,7 @@ This pack contains **everything a coding agent (and human devs) need** to implem
 ```json
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://promptware.dev/schemas/plan.create.v1.json",
+  "$id": "https://assertlang.dev/schemas/plan.create.v1.json",
   "type": "object",
   "required": ["prompt"],
   "properties": {
@@ -88,7 +88,7 @@ This pack contains **everything a coding agent (and human devs) need** to implem
 ```json
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://promptware.dev/schemas/fs.apply.v1.json",
+  "$id": "https://assertlang.dev/schemas/fs.apply.v1.json",
   "type": "object",
   "properties": {
     "writes": {"type": "array", "items": {"type": "object", "required":["path","content"], "properties": {"path": {"type": "string"}, "content": {"type": "string"}, "mode": {"type": "integer"}}}},
@@ -109,7 +109,7 @@ This pack contains **everything a coding agent (and human devs) need** to implem
 ```json
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://promptware.dev/schemas/run.start.v1.json",
+  "$id": "https://assertlang.dev/schemas/run.start.v1.json",
   "type": "object",
   "required": ["cmd"],
   "properties": {
@@ -151,7 +151,7 @@ This pack contains **everything a coding agent (and human devs) need** to implem
 ```json
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://promptware.dev/schemas/httpcheck.assert.v1.json",
+  "$id": "https://assertlang.dev/schemas/httpcheck.assert.v1.json",
   "type": "object",
   "required": ["probes"],
   "properties": {
@@ -185,7 +185,7 @@ This pack contains **everything a coding agent (and human devs) need** to implem
 ```json
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://promptware.dev/schemas/report.finish.v1.json",
+  "$id": "https://assertlang.dev/schemas/report.finish.v1.json",
   "type": "object",
   "properties": {
     "include": {"type": "array", "items": {"type": "string"}},
@@ -386,7 +386,7 @@ Artifacts:
 
 ## 12) Naming & Identity
 
-* **Framework**: Promptware
+* **Framework**: AssertLang
 * **Port**: 23456
 * **Slogans**: "One port, five verbs, infinite software." / "Prompted, not programmed."
 

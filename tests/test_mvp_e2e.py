@@ -7,8 +7,8 @@ from cli.mcp import main as mcp_main
 
 
 def test_run_hello_world():
-    """Test running a simple .pw DSL file"""
-    # Create a simple .pw file for testing
+    """Test running a simple .al DSL file"""
+    # Create a simple .al file for testing
     pw_content = """lang python
 start python app.py
 

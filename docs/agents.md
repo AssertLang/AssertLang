@@ -1,12 +1,12 @@
 # Agent Handoff Guide
 
-This document defines expectations for agents (AI or human) picking up Promptware development work mid-stream.
+This document defines expectations for agents (AI or human) picking up AssertLang development work mid-stream.
 
 ---
 
 ## Context Discovery
 
-When starting work on Promptware:
+When starting work on AssertLang:
 
 1. **Read execution-plan.md first** — Understand current Wave status, completed milestones, and pending tasks.
 2. **Check the test suite** — Run `python3 -m pytest tests/ -q` to validate your local environment.

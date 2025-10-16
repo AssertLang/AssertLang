@@ -1,6 +1,6 @@
 # How to Generate Code for Multiple Languages
 
-**Compile Promptware contracts to Python, JavaScript, Go, Rust, and TypeScript.**
+**Compile AssertLang contracts to Python, JavaScript, Go, Rust, and TypeScript.**
 
 ---
 
@@ -11,7 +11,7 @@
 - Use generated code in each language
 - Compare contract implementations
 
-**Prerequisites**: Promptware installed
+**Prerequisites**: AssertLang installed
 
 **Time**: 15 minutes
 
@@ -21,7 +21,7 @@
 
 ## Overview
 
-Promptware compiles a single `.pw` contract to multiple target languages:
+AssertLang compiles a single `.al` contract to multiple target languages:
 
 | Language | Command | Output | Status |
 |----------|---------|--------|--------|
@@ -35,9 +35,9 @@ Promptware compiles a single `.pw` contract to multiple target languages:
 
 ## Step 1: Create a Contract
 
-Create `user.pw`:
+Create `user.al`:
 
-```pw
+```al
 function validate_email(email: string) -> bool {
     @requires non_empty: len(email) > 0
     @requires has_at: "@" in email
@@ -66,7 +66,7 @@ function create_user(name: string, email: string, age: int) -> bool {
 ## Step 2: Generate Python
 
 ```bash
-promptware build user.pw --lang python -o user.py
+asl build user.al --lang python -o user.py
 ```
 
 **Output** (`user.py`):
@@ -125,7 +125,7 @@ create_user("Alice", "alice@example.com", 15)    # ✗ age_valid failed (< 18)
 ## Step 3: Generate JavaScript
 
 ```bash
-promptware build user.pw --lang javascript -o user.js
+asl build user.al --lang javascript -o user.js
 ```
 
 **Output** (`user.js`):
@@ -187,7 +187,7 @@ create_user("Alice", "invalid-email", 25);       // ✗ ContractViolationError
 ## Step 4: Generate Go
 
 ```bash
-promptware build user.pw --lang go -o user.go
+asl build user.al --lang go -o user.go
 ```
 
 **Output** (`user.go`):
@@ -261,7 +261,7 @@ func main() {
 ## Step 5: Generate Rust
 
 ```bash
-promptware build user.pw --lang rust -o user.rs
+asl build user.al --lang rust -o user.rs
 ```
 
 **Output** (`user.rs`):
@@ -328,7 +328,7 @@ fn main() {
 ## Step 6: Generate TypeScript
 
 ```bash
-promptware build user.pw --lang typescript -o user.ts
+asl build user.al --lang typescript -o user.ts
 ```
 
 **Output** (`user.ts`):
@@ -395,7 +395,7 @@ export { validate_email, create_user };
 ```bash
 # Generate all at once
 for lang in python javascript go rust typescript; do
-    promptware build user.pw --lang $lang -o "user_$lang"
+    asl build user.al --lang $lang -o "user_$lang"
 done
 ```
 
@@ -414,12 +414,12 @@ user_typescript.ts
 
 **Python with Pydantic**:
 ```bash
-promptware build user.pw --lang python --format pydantic -o models.py
+asl build user.al --lang python --format pydantic -o models.py
 ```
 
 **Python with TypedDict**:
 ```bash
-promptware build user.pw --lang python --format typeddict -o types.py
+asl build user.al --lang python --format typeddict -o types.py
 ```
 
 ---
@@ -428,8 +428,8 @@ promptware build user.pw --lang python --format typeddict -o types.py
 
 ```bash
 # Always validate first
-promptware validate user.pw && \
-    promptware build user.pw --lang python -o user.py
+promptware validate user.al && \
+    asl build user.al --lang python -o user.py
 ```
 
 ---

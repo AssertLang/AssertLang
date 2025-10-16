@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from promptware.runtime.contracts import check_postcondition
-from promptware.runtime.contracts import check_precondition
+from assertlang.runtime.contracts import check_postcondition
+from assertlang.runtime.contracts import check_precondition
 
 def validate_ingestion_input(source_url: str, format: str, max_size_mb: int) -> bool:
     check_precondition(

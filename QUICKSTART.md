@@ -70,7 +70,7 @@ function calculate_total(
 ## Step 3: Generate Python Code (1 minute)
 
 ```bash
-promptware build order.pw -o order.py
+asl build order.al -o order.py
 ```
 
 ✓ **Success**: Creates `order.py` with contract validation embedded
@@ -129,7 +129,7 @@ python test_order.py
 ## What Just Happened?
 
 1. **You wrote contracts** - Declarative rules about valid inputs/outputs
-2. **Promptware generated code** - Contract checks embedded in Python
+2. **AssertLang generated code** - Contract checks embedded in Python
 3. **Runtime validation** - Invalid inputs caught with clear error messages
 
 **No manual validation code needed.** Contracts compile to runtime checks.
@@ -179,7 +179,7 @@ A: Yes! See [Multi-Agent Example](examples/real_world/02_multi_agent_research/) 
 
 ## Get Help
 
-- **[GitHub Issues](https://github.com/Promptware-dev/promptware/issues)** - Bug reports, feature requests
+- **[GitHub Issues](https://github.com/AssertLang/AssertLang/issues)** - Bug reports, feature requests
 - **[Examples](examples/real_world/)** - 5 production-ready examples with tests
 - **[Documentation](docs/)** - Complete guides and reference
 

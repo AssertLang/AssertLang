@@ -9,7 +9,7 @@
 
 ## Overview
 
-The Node.js Parser V2 is a comprehensive parser that transforms arbitrary JavaScript and TypeScript code into Promptware's Intermediate Representation (IR). This enables universal code translation between JavaScript/TypeScript and any other supported language (Python, Go, Rust, .NET).
+The Node.js Parser V2 is a comprehensive parser that transforms arbitrary JavaScript and TypeScript code into AssertLang's Intermediate Representation (IR). This enables universal code translation between JavaScript/TypeScript and any other supported language (Python, Go, Rust, .NET).
 
 **Key Capabilities**:
 - Parse both JavaScript and TypeScript
@@ -502,9 +502,9 @@ The parser is highly efficient due to:
 
 ---
 
-## Integration with Promptware V2
+## Integration with AssertLang V2
 
-The Node.js Parser V2 integrates seamlessly with the Promptware V2 architecture:
+The Node.js Parser V2 integrates seamlessly with the AssertLang V2 architecture:
 
 ```
 JavaScript/TypeScript Code

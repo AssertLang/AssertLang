@@ -15,8 +15,8 @@ def collect_pw_files(paths: Iterable[str] | None) -> List[Path]:
     for raw in paths:
         p = Path(raw)
         if p.is_dir():
-            files.extend(sorted(f for f in p.rglob("*.pw") if f.is_file()))
-        elif p.suffix == ".pw" and p.exists():
+            files.extend(sorted(f for f in p.rglob("*.al") if f.is_file()))
+        elif p.suffix == ".al" and p.exists():
             files.append(p)
     return files
 

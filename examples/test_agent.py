@@ -9,7 +9,7 @@ Demonstrates how to use the AgentTester class to:
 - Export reports
 """
 
-from promptware.testing import AgentTester, TestCase
+from assertlang.testing import AgentTester, TestCase
 
 # Configuration
 AGENT_URL = "http://localhost:3000"

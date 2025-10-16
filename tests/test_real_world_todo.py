@@ -23,7 +23,7 @@ def test_todo_manager_parses():
     print(f"{'='*60}")
 
     # Read the todo manager program
-    todo_file = Path(__file__).parent.parent / "examples" / "todo_list_manager.pw"
+    todo_file = Path(__file__).parent.parent / "examples" / "todo_list_manager.al"
 
     try:
         with open(todo_file) as f:

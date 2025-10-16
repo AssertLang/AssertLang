@@ -1,4 +1,4 @@
-# Promptware Cheatsheet
+# AssertLang Cheatsheet
 
 ## Verbs
 - `plan` → define

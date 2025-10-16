@@ -1,4 +1,4 @@
-# Promptware Cookbook
+# AssertLang Cookbook
 
 **Recipes for common contract patterns - copy, paste, adapt.**
 
@@ -112,23 +112,23 @@ Every recipe follows this structure:
 ## Quick Examples
 
 ### Need to validate non-empty strings?
-```pw
+```al
 @requires non_empty: len(text) > 0
 ```
 
 ### Need to ensure positive numbers?
-```pw
+```al
 @requires positive: amount > 0
 @ensures result_positive: result > 0
 ```
 
 ### Need to validate state transitions?
-```pw
+```al
 @requires valid_transition: current_state == "idle" && next_state == "active"
 ```
 
 ### Need to coordinate agents?
-```pw
+```al
 @requires researcher_done: researcher_status == "completed"
 @requires has_data: len(research_results) > 0
 ```
@@ -149,7 +149,7 @@ For complete, production-ready examples, see:
 
 ## Contributing Recipes
 
-Have a useful pattern? [Submit a recipe →](https://github.com/Promptware-dev/promptware/blob/main/CONTRIBUTING.md)
+Have a useful pattern? [Submit a recipe →](https://github.com/AssertLang/AssertLang/blob/main/CONTRIBUTING.md)
 
 **Good recipes are:**
 - Focused on one problem

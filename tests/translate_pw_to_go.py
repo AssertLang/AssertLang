@@ -23,7 +23,7 @@ from language.go_generator_v2 import generate_go
 
 def main():
     # Input: PW DSL file
-    pw_file = project_root / "test_sentient_maze.pw"
+    pw_file = project_root / "test_sentient_maze.al"
 
     # Output: Go file
     go_file = project_root / "test_sentient_maze.go"

@@ -149,7 +149,7 @@ Property type tracking system:
 ## 📦 Installation
 
 ```bash
-pip install promptware-dev==2.1.0b4
+pip install assertlang==2.1.0b4
 ```
 
 Or upgrade:
@@ -165,7 +165,7 @@ No breaking changes. Simply upgrade and rebuild:
 
 ```bash
 pip install --upgrade promptware-dev
-promptware build your_file.pw --lang python -o output.py
+asl build your_file.pw --lang python -o output.py
 ```
 
 All existing `.pw` files will compile with the new fixes automatically.
@@ -191,7 +191,7 @@ All existing `.pw` files will compile with the new fixes automatically.
 - [Quick Reference](docs/QUICK_REFERENCE.md)
 - [Safe Patterns Guide](docs/SAFE_PATTERNS.md)
 - [Bug Fix Summary](Bugs/V2.1.0b3/BUG_FIX_SUMMARY.md)
-- [GitHub Release](https://github.com/Promptware-dev/promptware/releases/tag/v2.1.0b4)
+- [GitHub Release](https://github.com/AssertLang/AssertLang/releases/tag/v2.1.0b4)
 
 ---
 

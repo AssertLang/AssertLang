@@ -202,7 +202,7 @@ Session 51 successfully delivered:
 
 **Standard Library Mission: ACCOMPLISHED**
 
-The Promptware standard library is now production-ready for Python execution, with world-class API design matching Rust's proven patterns. Ready for integration with runtime (TA2), LSP (TA3), and registry (TA4).
+The AssertLang standard library is now production-ready for Python execution, with world-class API design matching Rust's proven patterns. Ready for integration with runtime (TA2), LSP (TA3), and registry (TA4).
 
 ---
 

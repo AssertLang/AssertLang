@@ -23,7 +23,7 @@
 
 ## Overview
 
-The Rust Generator V2 is a production-grade IR → Rust code generator that converts Promptware intermediate representation (IR) into idiomatic, compilable Rust code.
+The Rust Generator V2 is a production-grade IR → Rust code generator that converts AssertLang intermediate representation (IR) into idiomatic, compilable Rust code.
 
 ### Key Features
 
@@ -944,8 +944,8 @@ Currently, the generator uses hardcoded settings:
 
 ## License
 
-Part of the Promptware project. See project LICENSE for details.
+Part of the AssertLang project. See project LICENSE for details.
 
 ---
 
-**Questions?** Open an issue or contact the Promptware team.
+**Questions?** Open an issue or contact the AssertLang team.

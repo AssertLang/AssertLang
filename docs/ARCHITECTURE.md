@@ -1,4 +1,4 @@
-# Promptware Architecture v2.1.0b3-beta
+# AssertLang Architecture v2.1.0b3-beta
 
 **Last Updated**: 2025-10-07
 **Version**: 2.1.0b3-beta
@@ -7,7 +7,7 @@
 
 ## Overview
 
-Promptware is a universal programming language compiler that translates PW source code into 5 target languages through a three-layer architecture with a universal intermediate representation (IR).
+AssertLang is a universal programming language compiler that translates PW source code into 5 target languages through a three-layer architecture with a universal intermediate representation (IR).
 
 ---
 
@@ -101,7 +101,7 @@ Promptware is a universal programming language compiler that translates PW sourc
 ```
 ┌────────────────┐
 │  PW Source     │  function add(x: int, y: int) -> int { return x + y; }
-│  (.pw file)    │
+│  (.al file)    │
 └────────┬───────┘
          │
          ▼
@@ -135,7 +135,7 @@ Promptware is a universal programming language compiler that translates PW sourc
 ### CLI Integration
 
 ```
-$ promptware build calculator.pw --lang python -o calculator.py
+$ asl build calculator.al --lang python -o calculator.py
 
 ┌─────────────────────────────────────────────┐
 │  CLI (promptware/cli.py)                    │
@@ -402,24 +402,24 @@ class PythonGeneratorV2:
 
 **Commands**:
 
-#### `promptware build`
+#### `asl build`
 ```bash
-promptware build file.pw --lang python -o output.py
+asl build file.al --lang python -o output.py
 
 # Implementation:
-1. Read file.pw
+1. Read file.al
 2. Call parse_pw(source) → IR
 3. Select generator based on --lang
 4. Call generator.generate(IR) → code
 5. Write to output.py (or stdout)
 ```
 
-#### `promptware compile`
+#### `asl compile`
 ```bash
-promptware compile file.pw -o output.json
+asl compile file.al -o output.json
 
 # Implementation:
-1. Read file.pw
+1. Read file.al
 2. Call parse_pw(source) → IR
 3. Convert IR to MCP JSON
 4. Write to output.json
@@ -427,10 +427,10 @@ promptware compile file.pw -o output.json
 
 #### `promptware run`
 ```bash
-promptware run file.pw
+promptware run file.al
 
 # Implementation:
-1. Read file.pw
+1. Read file.al
 2. Compile to Python (fastest)
 3. Execute with subprocess
 ```

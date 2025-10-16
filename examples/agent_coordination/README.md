@@ -1,4 +1,4 @@
-# Multi-Agent Coordination via PW Contracts
+# Multi-Agent Coordination via AssertLang Contracts
 
 **Quick Start:** Want to see it in action right now? Run `./run_demo.sh` or read [QUICKSTART.md](QUICKSTART.md)
 
@@ -34,9 +34,9 @@
 
 ### Step 1: Define Contract in PW
 
-**File:** `user_service_contract.pw`
+**File:** `user_service_contract.al`
 
-```pw
+```al
 // Executable contract - defines EXACT behavior
 function createUser(name: string, email: string) -> User {
     // Deterministic validation rules
@@ -59,7 +59,7 @@ function createUser(name: string, email: string) -> User {
 ### Step 2: Transpile to Agent A (Python/CrewAI)
 
 ```bash
-promptware build user_service_contract.pw --lang python -o agent_a_crewai.py
+asl build user_service_contract.al --lang python -o agent_a_crewai.py
 ```
 
 **Result:** Python code with IDENTICAL logic
@@ -79,7 +79,7 @@ def createUser(name: str, email: str) -> Union[User, ValidationError]:
 ### Step 3: Transpile to Agent B (TypeScript/LangGraph)
 
 ```bash
-promptware build user_service_contract.pw --lang typescript -o agent_b_langgraph.ts
+asl build user_service_contract.al --lang typescript -o agent_b_langgraph.ts
 ```
 
 **Result:** TypeScript code with IDENTICAL logic
@@ -157,7 +157,7 @@ Test 2: Invalid user (empty name)
 
 ## Why This Matters
 
-### Without PW Contracts (Current Reality):
+### Without AssertLang Contracts (Current Reality):
 
 **Agent A decides:**
 ```python
@@ -178,7 +178,7 @@ if (name === "") {
 
 ---
 
-### With PW Contracts:
+### With AssertLang Contracts:
 
 **Both agents implement SAME contract:**
 - Same validation rules
@@ -344,7 +344,7 @@ const result = await workflow.invoke({
 | **JSON Schema** | ⚠️ (types only) | ✅ | ✅ | ⚠️ (partial) |
 | **MCP** | ❌ | ⚠️ (MCP only) | ✅ | ❌ |
 | **LLM Interpretation** | ❌ | ✅ | ✅ | ❌ |
-| **PW Contracts** | ✅ | ✅ | ✅ | ✅ |
+| **AssertLang Contracts** | ✅ | ✅ | ✅ | ✅ |
 
 ---
 
@@ -387,13 +387,13 @@ const result = await workflow.invoke({
 ## Technical Details
 
 **Contract Definition:** Pure PW (no framework dependencies)
-**Transpilation:** `promptware build` command
+**Transpilation:** `asl build` command
 **Type Safety:** Full type checking in both Python and TypeScript
 **Error Handling:** Deterministic error codes and messages
 **Testing:** Identical test cases across all agents
 
 **Files:**
-- `user_service_contract.pw` - Source of truth (contract)
+- `user_service_contract.al` - Source of truth (contract)
 - `agent_a_crewai.py` - Python implementation (CrewAI)
 - `agent_b_langgraph.ts` - TypeScript implementation (LangGraph)
 - `README.md` - This file
@@ -402,7 +402,7 @@ const result = await workflow.invoke({
 
 ## The Bottom Line
 
-**PW Contracts provide what multi-agent systems desperately need:**
+**AssertLang Contracts provide what multi-agent systems desperately need:**
 
 ✅ Deterministic coordination
 ✅ Framework independence

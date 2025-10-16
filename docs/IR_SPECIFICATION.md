@@ -1,4 +1,4 @@
-# Promptware Intermediate Representation (IR) Specification
+# AssertLang Intermediate Representation (IR) Specification
 
 **Version**: 2.0.0-alpha
 **Last Updated**: 2025-10-04
@@ -25,7 +25,7 @@
 
 ## Overview
 
-The Promptware IR (Intermediate Representation) is a language-agnostic, type-safe representation of program structure. It serves as the universal bridge between all programming languages supported by Promptware.
+The AssertLang IR (Intermediate Representation) is a language-agnostic, type-safe representation of program structure. It serves as the universal bridge between all programming languages supported by AssertLang.
 
 ### Purpose
 
@@ -75,7 +75,7 @@ The IR enables:
 
 ## Design Principles
 
-The Promptware IR follows these core principles, inspired by LLVM and MLIR:
+The AssertLang IR follows these core principles, inspired by LLVM and MLIR:
 
 ### 1. Language Agnostic
 
@@ -864,7 +864,7 @@ The IR is designed to integrate with:
 1. **LLVM IR**: https://llvm.org/docs/LangRef.html
 2. **MLIR**: https://mlir.llvm.org/
 3. **CrossTL Paper**: https://arxiv.org/abs/2508.21256 (Universal IR for 8+ languages)
-4. **Promptware CLAUDE.md**: Complete V2 architecture and roadmap
+4. **AssertLang CLAUDE.md**: Complete V2 architecture and roadmap
 
 ---
 

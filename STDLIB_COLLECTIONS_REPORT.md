@@ -10,7 +10,7 @@ Implemented comprehensive standard library foundation including Option<T>, Resul
 
 ## Files Created
 
-### 1. stdlib/core.pw (442 lines)
+### 1. stdlib/core.al (442 lines)
 Complete implementation of Option and Result types:
 - **Option** enum with Some/None variants
 - 9 Option functions: option_some, option_none, option_map, option_and_then, option_unwrap_or, option_unwrap_or_else, option_is_some, option_is_none, option_match
@@ -18,7 +18,7 @@ Complete implementation of Option and Result types:
 - 9 Result functions: result_ok, result_err, result_map, result_map_err, result_and_then, result_unwrap_or, result_is_ok, result_is_err, result_match
 - Full docstrings with examples for every function
 
-### 2. stdlib/types.pw (585 lines)
+### 2. stdlib/types.al (585 lines)
 Complete implementation of collection types:
 - **List<T>** class with 10 functions: list_new, list_from, list_push, list_pop, list_get, list_len, list_is_empty, list_map, list_filter, list_fold
 - **Map<K,V>** class with 9 functions: map_new, map_insert, map_get, map_remove, map_contains_key, map_len, map_is_empty, map_keys, map_values
@@ -182,8 +182,8 @@ Ready for API documentation generation.
 
 ```
 stdlib/
-  core.pw              # 442 lines, Option + Result
-  types.pw             # 585 lines, List + Map + Set
+  core.al              # 442 lines, Option + Result
+  types.al             # 585 lines, List + Map + Set
 
 tests/
   test_stdlib_option.py     # 24 tests

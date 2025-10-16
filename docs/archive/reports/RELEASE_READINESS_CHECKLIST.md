@@ -263,7 +263,7 @@
 ## 📝 Release Notes Template
 
 ```markdown
-# Promptware v1.0.0 - Universal Cross-Language Communication
+# AssertLang v1.0.0 - Universal Cross-Language Communication
 
 **Release Date**: 2025-10-03
 

@@ -23,7 +23,7 @@ name = user.name  # ❌ Crashes if user is None
 **Solution**: `Option<T>` makes optionality explicit and forces you to handle both cases:
 
 ```pw
-# Promptware - compiler enforces handling
+# AssertLang - compiler enforces handling
 let user_opt = find_user(user_id)  // Returns Option<User>
 let name = option_match(
     user_opt,

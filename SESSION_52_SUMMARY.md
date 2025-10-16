@@ -8,7 +8,7 @@
 
 ## What We Discovered
 
-Through research and prototyping, we discovered that Promptware's real value isn't as a "universal transpiler" - it's as an **executable contract language for multi-agent systems**.
+Through research and prototyping, we discovered that AssertLang's real value isn't as a "universal transpiler" - it's as an **executable contract language for multi-agent systems**.
 
 ### The Problem We Solve
 
@@ -149,7 +149,7 @@ Marketing work: You handle directly
 
 3. **Create elevator pitch**
    ```
-   "Promptware provides executable contracts for multi-agent systems.
+   "AssertLang provides executable contracts for multi-agent systems.
    Write contracts once in PW, agents from different frameworks
    (CrewAI, LangGraph, AutoGen) execute identical logic.
    Deterministic coordination across frameworks and languages."

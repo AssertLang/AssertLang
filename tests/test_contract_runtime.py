@@ -11,7 +11,7 @@ Tests runtime enforcement of:
 import pytest
 from dsl.pw_parser import Lexer, Parser
 from language.python_generator_v2 import generate_python
-from promptware.runtime.contracts import (
+from assertlang.runtime.contracts import (
     ContractViolationError,
     ValidationMode,
     set_validation_mode,

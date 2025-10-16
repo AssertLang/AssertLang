@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-Successfully validated **cross-language translation** capability for Promptware. Any language can now translate to any other language through PW DSL as an intermediate representation.
+Successfully validated **cross-language translation** capability for AssertLang. Any language can now translate to any other language through PW DSL as an intermediate representation.
 
 **Proven Flow**:
 ```
@@ -321,7 +321,7 @@ Advanced framework features (decorators, filters, middleware chains) are not pre
 
 **Cross-language translation is PROVEN and PRODUCTION-READY.**
 
-Promptware can now:
+AssertLang can now:
 1. ✅ Read code in any of 5 languages
 2. ✅ Extract universal PW DSL representation
 3. ✅ Generate code in any of 5 languages

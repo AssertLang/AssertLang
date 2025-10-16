@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 PW Language Server
-LSP server for Promptware (.pw files) with CharCNN + MCP integration
+LSP server for Promptware (.al files) with CharCNN + MCP integration
 """
 
 import sys

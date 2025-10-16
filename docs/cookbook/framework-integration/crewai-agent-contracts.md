@@ -19,7 +19,7 @@ CrewAI agents pass data between each other. Without contracts:
 
 ## Solution
 
-```pw
+```al
 function validate_research_query(
     query: string,
     depth: int
@@ -115,7 +115,7 @@ def execute_research_with_contracts(topic: str, depth: int = 3):
 ## Variations
 
 ### Agent Coordination
-```pw
+```al
 function can_analyst_proceed(
     research_complete: bool,
     research_quality: float,
@@ -145,7 +145,7 @@ if can_analyst_proceed(True, quality, len(research_done) > 0):
 ---
 
 ### Tool Contract Validation
-```pw
+```al
 function validate_tool_call(
     tool_name: string,
     params_valid: bool,
@@ -164,7 +164,7 @@ function validate_tool_call(
 ---
 
 ### Pipeline Stage Validation
-```pw
+```al
 function validate_pipeline_stage(
     stage_name: string,
     prev_stage_complete: bool,
@@ -196,7 +196,7 @@ validate_results(result)  # Too late!
 ---
 
 ### ❌ Incomplete validation
-```pw
+```al
 @requires non_empty: len(query) > 0
 // Allows whitespace-only strings!
 ```
@@ -220,7 +220,7 @@ return result  # No quality check!
 
 **Complete Multi-Agent Research Pipeline:**
 
-```pw
+```al
 function execute_research_pipeline(
     topic: string,
     depth: int

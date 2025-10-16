@@ -1,6 +1,6 @@
-# Roadmap: Promptware to Rival Python
+# Roadmap: AssertLang to Rival Python
 
-**Goal:** Make Promptware a production-ready programming language competitive with Python
+**Goal:** Make AssertLang a production-ready programming language competitive with Python
 **Timeline:** 24-30 months (2-2.5 years)
 **Status:** Starting from working prototype interpreter (Session 44)
 
@@ -54,7 +54,7 @@
 - [x] IR design (dsl/ir.py)
 - [x] Parser with generic support (dsl/pw_parser.py)
 - [x] Tree-walking interpreter prototype (dsl/pw_runtime.py)
-- [x] Basic stdlib definitions (stdlib/core.pw, stdlib/types.pw)
+- [x] Basic stdlib definitions (stdlib/core.pw, stdlib/types.al)
 - [x] 17 runtime tests passing
 
 ### Remaining Work (2-4 weeks)
@@ -233,7 +233,7 @@
 - ✅ Generic types support
 
 **Complete:**
-- [ ] **Collections** (stdlib/collections.pw)
+- [ ] **Collections** (stdlib/collections.al)
   - List<T> (dynamic array)
   - Map<K,V> (hash table)
   - Set<T> (hash set)
@@ -241,7 +241,7 @@
   - Methods: push, pop, insert, remove, get, contains, len, is_empty
   - 100+ tests
 
-- [ ] **Iterators** (stdlib/iterators.pw)
+- [ ] **Iterators** (stdlib/iterators.al)
   - Iterator protocol
   - map, filter, fold, zip, enumerate
   - Lazy evaluation
@@ -256,14 +256,14 @@
 
 ### 2.2 String Handling (Month 10)
 
-- [ ] **String Operations** (stdlib/string.pw)
+- [ ] **String Operations** (stdlib/string.al)
   - split, join, replace, trim
   - upper, lower, capitalize
   - startswith, endswith, contains
   - Unicode support (UTF-8)
   - 40+ tests
 
-- [ ] **Regular Expressions** (stdlib/regex.pw)
+- [ ] **Regular Expressions** (stdlib/regex.al)
   - Pattern matching
   - Search, match, replace
   - Capture groups
@@ -278,14 +278,14 @@
 
 ### 2.3 File I/O (Month 11)
 
-- [ ] **File Operations** (stdlib/fs.pw)
+- [ ] **File Operations** (stdlib/fs.al)
   - open, close, read, write
   - readlines, writelines
   - File existence, permissions
   - Directory operations
   - 40+ tests
 
-- [ ] **Path Handling** (stdlib/path.pw)
+- [ ] **Path Handling** (stdlib/path.al)
   - join, split, basename, dirname
   - exists, isfile, isdir
   - Cross-platform paths
@@ -300,20 +300,20 @@
 
 ### 2.4 Networking (Months 12-13)
 
-- [ ] **HTTP Client** (stdlib/http.pw)
+- [ ] **HTTP Client** (stdlib/http.al)
   - GET, POST, PUT, DELETE requests
   - Headers, query parameters
   - JSON request/response
   - Timeouts, retries
   - 50+ tests
 
-- [ ] **JSON** (stdlib/json.pw)
+- [ ] **JSON** (stdlib/json.al)
   - Parse JSON to PW objects
   - Serialize PW objects to JSON
   - Pretty printing
   - 30+ tests
 
-- [ ] **Sockets** (stdlib/net.pw) - Optional
+- [ ] **Sockets** (stdlib/net.al) - Optional
   - TCP client/server
   - UDP sockets
   - 40+ tests
@@ -328,7 +328,7 @@
 
 ### 2.5 Date/Time (Month 14)
 
-- [ ] **Date/Time** (stdlib/datetime.pw)
+- [ ] **Date/Time** (stdlib/datetime.al)
   - Date, Time, DateTime types
   - Parsing and formatting
   - Timezone support
@@ -558,7 +558,7 @@
   - Bytecode reference
 
 - [ ] **Website**
-  - promptware.dev
+  - assertlang.dev
   - Interactive playground
   - Package search
 
@@ -593,7 +593,7 @@
   - DevOps automation tool
 
 - [ ] **Real-World Validation**
-  - Use Promptware for internal tools
+  - Use AssertLang for internal tools
   - Dogfooding (use PW to build PW tools)
 
 **Deliverables:**
@@ -606,7 +606,7 @@
 ### 5.2 Community Building (Months 26-30)
 
 - [ ] **Community Infrastructure**
-  - GitHub org (Promptware-dev)
+  - GitHub org (AssertLang-dev)
   - Discord server
   - Forum/discussions
   - Social media presence
@@ -798,7 +798,7 @@ Can parallel    Can parallel      Requires 1-3
 
 1. **Complete Parser** (4-6 hours)
    - Add "is" pattern matching syntax
-   - Test with stdlib/core.pw
+   - Test with stdlib/core.al
 
 2. **Design Bytecode Instruction Set** (2-3 days)
    - Research: Read Crafting Interpreters Ch. 14-15
@@ -831,7 +831,7 @@ Can parallel    Can parallel      Requires 1-3
 
 ## Conclusion
 
-### Can Promptware Rival Python?
+### Can AssertLang Rival Python?
 
 **Yes, with 24-30 months of focused development.**
 

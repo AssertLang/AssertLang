@@ -1,6 +1,6 @@
 # PW Quick Reference
 
-**Quick reference card for PW (Promptware) language**
+**Quick reference card for PW (AssertLang) language**
 
 ---
 
@@ -17,7 +17,7 @@ function add(x: int, y: int) -> int {
 ### 2. Compile
 
 ```bash
-pw build calculator.pw --lang python -o calculator.py
+pw build calculator.al --lang python -o calculator.py
 ```
 
 ### 3. Run
@@ -176,13 +176,13 @@ if (user["name"] != null) {
 ### Build (most common)
 
 ```bash
-pw build <file.pw> --lang <python|go|rust|typescript|csharp> -o <output>
+pw build <file.al> --lang <python|go|rust|typescript|csharp> -o <output>
 ```
 
 ### Compile to MCP JSON (agents)
 
 ```bash
-pw compile <file.pw> -o <file.pw.json>
+pw compile <file.al> -o <file.pw.json>
 ```
 
 ### Unfold MCP JSON (rarely needed)
@@ -197,7 +197,7 @@ pw unfold <file.pw.json> --lang <language> -o <output>
 
 ### Enable Syntax Highlighting
 
-1. Open Promptware folder in VS Code
+1. Open AssertLang folder in VS Code
 2. `Cmd+Shift+P` → `Developer: Reload Window`
 3. Open any `.pw` file
 
@@ -218,7 +218,7 @@ pw unfold <file.pw.json> --lang <language> -o <output>
 ```
 my-project/
 ├── src/
-│   └── calculator.pw       # PW source
+│   └── calculator.al       # PW source
 ├── build/
 │   ├── calculator.py       # Generated Python
 │   ├── calculator.go       # Generated Go
@@ -234,7 +234,7 @@ my-project/
 - **Language Spec:** `docs/PW_NATIVE_SYNTAX.md`
 - **VS Code Extension:** `docs/VS_CODE_EXTENSION.md`
 - **Examples:** `examples/calculator.pw`
-- **GitHub:** https://github.com/Promptware-dev/promptware
+- **GitHub:** https://github.com/AssertLang/AssertLang
 
 ---
 
@@ -272,14 +272,14 @@ See [`docs/SAFE_PATTERNS.md`](SAFE_PATTERNS.md) for patterns that work across al
 
 ```bash
 # 1. Clone repo
-git clone https://github.com/Promptware-dev/promptware.git
+git clone https://github.com/AssertLang/AssertLang.git
 cd promptware
 
 # 2. Write PW
-echo 'function add(x: int, y: int) -> int { return x + y; }' > hello.pw
+echo 'function add(x: int, y: int) -> int { return x + y; }' > hello.al
 
 # 3. Compile
-pw build hello.pw --lang python -o hello.py
+pw build hello.al --lang python -o hello.py
 
 # 4. Run
 python hello.py

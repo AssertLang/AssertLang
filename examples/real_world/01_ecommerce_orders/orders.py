@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from promptware.runtime.contracts import check_postcondition
-from promptware.runtime.contracts import check_precondition
+from assertlang.runtime.contracts import check_postcondition
+from assertlang.runtime.contracts import check_precondition
 
 def validate_order_inputs(order_id: str, customer_id: str, total_amount: float, item_count: int) -> bool:
     check_precondition(

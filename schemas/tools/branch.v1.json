@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://promptware.dev/schemas/tools/branch.v1.json",
+  "$id": "https://assertlang.dev/schemas/tools/branch.v1.json",
   "title": "Branch Tool",
   "type": "object",
   "properties": {

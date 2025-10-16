@@ -16,7 +16,7 @@ def timeout_handler(signum, frame):
                 print(f"  [{i}] {parser.tokens[parser.pos + i]}")
     sys.exit(1)
 
-code = open('stdlib/types.pw').read()
+code = open('stdlib/types.al').read()
 print(f'Lexing {len(code)} chars...')
 lexer = Lexer(code)
 tokens = lexer.tokenize()

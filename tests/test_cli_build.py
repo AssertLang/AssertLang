@@ -1,7 +1,7 @@
 """
 Test CLI build command
 
-Tests the `promptware build` command for compiling PW to target languages.
+Tests the `asl build` command for compiling PW to target languages.
 """
 
 import sys
@@ -26,7 +26,7 @@ def run_cli_command(args):
 def test_build_help():
     """Test that build command has help."""
     print(f"\n{'='*60}")
-    print("Testing: promptware build --help")
+    print("Testing: asl build --help")
     print(f"{'='*60}")
 
     returncode, stdout, stderr = run_cli_command(["build", "--help"])
@@ -35,7 +35,7 @@ def test_build_help():
 
     output = stdout + stderr
     assert "Compile PW" in output or "compile" in output.lower(), f"Missing compile text in help\n{output}"
-    assert ".pw" in output, f"Missing .pw reference in help\n{output}"
+    assert ".al" in output, f"Missing .al reference in help\n{output}"
 
     print("✅ Build help works")
     return True
@@ -44,11 +44,11 @@ def test_build_help():
 def test_build_python():
     """Test building PW to Python."""
     print(f"\n{'='*60}")
-    print("Testing: promptware build (Python)")
+    print("Testing: asl build (Python)")
     print(f"{'='*60}")
 
     # Create temporary PW file
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.pw', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.al', delete=False) as f:
         f.write("""
 function add(x: int, y: int) -> int {
     return x + y;
@@ -95,11 +95,11 @@ function main() -> int {
 def test_build_to_stdout():
     """Test building to stdout (no output file)."""
     print(f"\n{'='*60}")
-    print("Testing: promptware build (stdout)")
+    print("Testing: asl build (stdout)")
     print(f"{'='*60}")
 
     # Create temporary PW file
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.pw', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.al', delete=False) as f:
         f.write("""
 function hello() -> string {
     return "Hello";
@@ -126,10 +126,10 @@ function hello() -> string {
 def test_build_verbose():
     """Test build with verbose output."""
     print(f"\n{'='*60}")
-    print("Testing: promptware build --verbose")
+    print("Testing: asl build --verbose")
     print(f"{'='*60}")
 
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.pw', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.al', delete=False) as f:
         f.write("function test() -> int { return 42; }")
         temp_pw = f.name
 
@@ -155,11 +155,11 @@ def test_build_verbose():
 def test_build_nonexistent_file():
     """Test build with nonexistent file."""
     print(f"\n{'='*60}")
-    print("Testing: promptware build (nonexistent file)")
+    print("Testing: asl build (nonexistent file)")
     print(f"{'='*60}")
 
     returncode, stdout, stderr = run_cli_command([
-        "build", "/tmp/doesnotexist12345.pw", "--lang", "python"
+        "build", "/tmp/doesnotexist12345.al", "--lang", "python"
     ])
 
     assert returncode != 0, "Expected non-zero exit code for missing file"

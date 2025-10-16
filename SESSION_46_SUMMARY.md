@@ -173,7 +173,7 @@ Open kitchen approach:
 ### Scenario 1: Adding Redis Support
 
 **Traditional Approach**:
-1. Fork Promptware repo
+1. Fork AssertLang repo
 2. Edit `language/python_generator_v2.py` (add Redis methods)
 3. Edit `language/rust_generator_v2.py` (add Redis methods)
 4. Edit `language/go_generator_v2.py`, `language/js_generator_v2.py`, etc.
@@ -480,7 +480,7 @@ Final code has zero MCP overhead!
 4. We now have a revolutionary architecture path forward
 
 **What this means**:
-- Promptware could be the first language with MCP-backed operations
+- AssertLang could be the first language with MCP-backed operations
 - Operations as plugins (install Redis support in seconds)
 - Community-extensible without forking core
 - Companies can add proprietary operations privately

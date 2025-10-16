@@ -135,7 +135,7 @@ expose authorize.payment@v1:
 ## Step 2: Generate Python from PW
 
 **Input**: `/tmp/complex_step1.pw` (103 lines)
-**Tool**: Promptware Python generator
+**Tool**: AssertLang Python generator
 **Output**: `/tmp/complex_step2/E-Commerce Platform API_server.py` (768 lines)
 
 **Generation Results**:

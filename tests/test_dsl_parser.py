@@ -279,7 +279,7 @@ state shared:
     ids=lambda p: p.stem.replace(".plan", ""),
 )
 def test_parse_pw_golden_fixtures(fixture: Path) -> None:
-    source = fixture.with_name(fixture.name.replace(".plan.json", ".pw"))
+    source = fixture.with_name(fixture.name.replace(".plan.json", ".al"))
     expected = json.loads(fixture.read_text())
     prog = parse_pw(source.read_text())
     assert prog.plan is not None

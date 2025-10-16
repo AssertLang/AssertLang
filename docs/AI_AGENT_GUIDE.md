@@ -1,4 +1,4 @@
-# AI Agent Guide for Promptware
+# AI Agent Guide for AssertLang
 
 **Version**: 2.1.0b3-beta
 **Last Updated**: 2025-10-07
@@ -8,7 +8,7 @@
 
 ## 🎯 Quick Start (New Agent Session)
 
-When you join a Promptware development session, follow these steps:
+When you join a AssertLang development session, follow these steps:
 
 ### 1. Read Current Status
 
@@ -54,9 +54,9 @@ The `Current_Work.md` file always contains:
 
 ---
 
-## 📚 What is Promptware?
+## 📚 What is AssertLang?
 
-Promptware is a **universal programming language** that compiles to 5 target languages:
+AssertLang is a **universal programming language** that compiles to 5 target languages:
 
 ```
 PW Code → Compiler → Python | Go | Rust | TypeScript | C#
@@ -228,7 +228,7 @@ git push origin raw-code-parsing
 git push upstream raw-code-parsing
 
 # Create PR
-gh pr create --repo Promptware-dev/promptware \
+gh pr create --repo AssertLang/AssertLang \
   --base main --head raw-code-parsing \
   --title "Your title" \
   --body "Description"
@@ -481,9 +481,9 @@ function get_number() -> int {
 
 ```bash
 # Real-world examples
-examples/calculator_cli.pw          # 3,676 chars
-examples/todo_list_manager.pw       # 5,350 chars
-examples/simple_web_api.pw          # 7,535 chars
+examples/calculator_cli.al          # 3,676 chars
+examples/todo_list_manager.al       # 5,350 chars
+examples/simple_web_api.al          # 7,535 chars
 ```
 
 ### API Documentation
@@ -544,22 +544,22 @@ Compile PW to target language:
 
 ```bash
 # Python
-promptware build file.pw --lang python -o output.py
+asl build file.al --lang python -o output.py
 
 # Go
-promptware build file.pw --lang go -o output.go
+asl build file.al --lang go -o output.go
 
 # Rust
-promptware build file.pw --lang rust -o output.rs
+asl build file.al --lang rust -o output.rs
 
 # TypeScript
-promptware build file.pw --lang typescript -o output.ts
+asl build file.al --lang typescript -o output.ts
 
 # C#
-promptware build file.pw --lang csharp -o output.cs
+asl build file.al --lang csharp -o output.cs
 
 # Verbose mode
-promptware build file.pw --lang python --verbose
+asl build file.al --lang python --verbose
 ```
 
 ### Compile Command
@@ -568,10 +568,10 @@ Generate MCP JSON IR:
 
 ```bash
 # Compile to JSON
-promptware compile file.pw -o output.json
+asl compile file.al -o output.json
 
 # Output to stdout
-promptware compile file.pw
+asl compile file.al
 ```
 
 ### Run Command
@@ -580,10 +580,10 @@ Execute PW directly:
 
 ```bash
 # Run (compiles to Python and executes)
-promptware run file.pw
+promptware run file.al
 
 # With verbose output
-promptware run file.pw --verbose
+promptware run file.al --verbose
 ```
 
 ---
@@ -696,5 +696,5 @@ See `Current_Work.md` for:
 ---
 
 **Last Updated**: 2025-10-07
-**Maintained By**: Promptware Development Team
+**Maintained By**: AssertLang Development Team
 **License**: See LICENSE file

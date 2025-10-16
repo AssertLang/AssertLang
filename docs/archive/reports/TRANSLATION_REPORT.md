@@ -1,9 +1,9 @@
 # Python to Go Translation Report
 
 **Date**: 2025-10-05
-**Source**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_code_original.py`
-**Target**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_code_from_python.go`
-**Translation System**: Promptware V2 (Python Parser V2 → IR → Go Generator V2)
+**Source**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_code_original.py`
+**Target**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_code_from_python.go`
+**Translation System**: AssertLang V2 (Python Parser V2 → IR → Go Generator V2)
 
 ---
 
@@ -235,7 +235,7 @@ Additional errors expected if sys import is removed:
 
 ## Conclusion
 
-The Promptware V2 translation system successfully:
+The AssertLang V2 translation system successfully:
 - ✓ Parsed complex Python code into IR
 - ✓ Generated structurally valid Go code
 - ✓ Preserved overall program structure

@@ -18,7 +18,7 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
-from promptware import MCPClient
+from assertlang import MCPClient
 
 
 class ServiceManager:
@@ -262,7 +262,7 @@ def main():
             print("Demo Complete!")
             print("=" * 60)
             print("\nKey Takeaways:")
-            print("1. ✓ Generated HTTP servers from .pw files")
+            print("1. ✓ Generated HTTP servers from .al files")
             print("2. ✓ Services expose MCP protocol (initialize, tools/list, tools/call)")
             print("3. ✓ Tool integration works (storage, http)")
             print("4. ✓ Service-to-service calls work via MCP client")

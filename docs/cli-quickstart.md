@@ -1,6 +1,6 @@
-# Promptware CLI Quickstart
+# AssertLang CLI Quickstart
 
-Get started with Promptware in 5 minutes.
+Get started with AssertLang in 5 minutes.
 
 ## Installation
 
@@ -58,7 +58,7 @@ expose api.call@v1 (
 ### 3. Validate
 
 ```bash
-promptware validate hello-world.pw --verbose
+promptware validate hello-world.al --verbose
 ```
 
 Output:
@@ -77,7 +77,7 @@ Output:
 ### 4. Generate Server
 
 ```bash
-promptware generate hello-world.pw --lang python
+promptware generate hello-world.al --lang python
 ```
 
 Output:
@@ -154,7 +154,7 @@ curl -X POST http://localhost:3000/mcp \
 promptware init api-service --template api --port 8080
 
 # Generated agent includes http, auth, logger tools
-cat api-service.pw
+cat api-service.al
 ```
 
 ### AI-Powered Agent
@@ -167,7 +167,7 @@ promptware init chatbot --template ai
 export ANTHROPIC_API_KEY="your-key-here"
 
 # Generate and run
-promptware generate chatbot.pw --lang python
+promptware generate chatbot.al --lang python
 cd generated/chatbot
 pip install -r requirements.txt
 python chatbot_server.py
@@ -177,9 +177,9 @@ python chatbot_server.py
 
 ```bash
 # Generate same agent in multiple languages
-promptware generate my-agent.pw --lang python --output ./servers/python
-promptware generate my-agent.pw --lang nodejs --output ./servers/nodejs
-promptware generate my-agent.pw --lang go --output ./servers/go
+promptware generate my-agent.al --lang python --output ./servers/python
+promptware generate my-agent.al --lang nodejs --output ./servers/nodejs
+promptware generate my-agent.al --lang go --output ./servers/go
 
 # Each server is production-ready with:
 # - Error handling
@@ -196,13 +196,13 @@ promptware generate my-agent.pw --lang go --output ./servers/go
 promptware init <name> [--template basic|api|workflow|ai] [--port 3000]
 
 # Validate agent
-promptware validate <file.pw> [--verbose]
+promptware validate <file.al> [--verbose]
 
 # List available tools
 promptware list-tools [--lang python|nodejs|go|csharp|rust] [--category "HTTP & APIs"]
 
 # Generate server
-promptware generate <file.pw> [--lang python] [--output ./dir] [--build]
+promptware generate <file.al> [--lang python] [--output ./dir] [--build]
 
 # Get help
 promptware help [command]
@@ -282,6 +282,6 @@ expose chat.message@v1 (
 ## Next Steps
 
 - [Full CLI Reference](./cli-guide.md)
-- [Writing .pw Agents](./promptware-dsl-spec.md)
+- [Writing .al Agents](./promptware-dsl-spec.md)
 - [Production Deployment](./production-hardening.md)
 - [Tool Development](./tool-development.md)

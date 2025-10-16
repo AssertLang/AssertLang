@@ -6,7 +6,7 @@
 
 ## Overview
 
-The Go Generator V2 (`go_generator_v2.py`) converts Promptware's Intermediate Representation (IR) into production-quality, idiomatic Go code. Unlike V1 (which generated MCP servers), V2 generates arbitrary Go code with full language support.
+The Go Generator V2 (`go_generator_v2.py`) converts AssertLang's Intermediate Representation (IR) into production-quality, idiomatic Go code. Unlike V1 (which generated MCP servers), V2 generates arbitrary Go code with full language support.
 
 ### Key Features
 
@@ -779,16 +779,16 @@ pytest tests/test_go_generator_v2.py::TestRoundTrip -v
 
 ## License
 
-Same as Promptware project license.
+Same as AssertLang project license.
 
 ## Contact
 
 For issues, feature requests, or questions:
-- Open GitHub issue in Promptware repository
+- Open GitHub issue in AssertLang repository
 - Tag: `go-generator-v2`
 
 ---
 
 **Last Updated**: 2025-10-04
-**Maintained By**: Promptware Team
+**Maintained By**: AssertLang Team
 **Status**: Production Ready ✅

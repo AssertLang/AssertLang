@@ -2,7 +2,7 @@
 
 ## Summary
 
-Successfully implemented a .NET/C# reverse parser that extracts Promptware DSL from ASP.NET Core MCP servers with **100% test pass rate** and **90%+ confidence** for generated code.
+Successfully implemented a .NET/C# reverse parser that extracts AssertLang DSL from ASP.NET Core MCP servers with **100% test pass rate** and **90%+ confidence** for generated code.
 
 ## Files Created
 
@@ -10,7 +10,7 @@ Successfully implemented a .NET/C# reverse parser that extracts Promptware DSL f
 - **File**: `/reverse_parsers/dotnet_parser.py`
 - **Lines**: 509
 - **Class**: `DotNetReverseParser`
-- **Approach**: Regex-based extraction (consistent with other Promptware parsers)
+- **Approach**: Regex-based extraction (consistent with other AssertLang parsers)
 
 ### 2. Registry Update
 - **File**: `/reverse_parsers/__init__.py`

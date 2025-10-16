@@ -2,9 +2,9 @@
 
 **Date**: 2025-10-05
 **Task**: Reverse-parse Go file back into PW DSL format
-**Agent**: Promptware Translation Agent (Specialized)
-**Input**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_sentient_maze.go`
-**Output**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_sentient_maze_from_go.pw`
+**Agent**: AssertLang Translation Agent (Specialized)
+**Input**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_sentient_maze.go`
+**Output**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_sentient_maze_from_go.pw`
 
 ---
 
@@ -477,7 +477,7 @@ No existing files modified in this session.
 
 **Major Achievement**: Successfully demonstrated **reverse parsing capability** (Go → IR → PW DSL).
 
-The Promptware V2 architecture now supports **bidirectional translation**:
+The AssertLang V2 architecture now supports **bidirectional translation**:
 - ✅ Python → IR → PW DSL (forward)
 - ✅ PW DSL → IR → Go (forward)
 - ✅ Go → IR → PW DSL (reverse) **[NEW]**

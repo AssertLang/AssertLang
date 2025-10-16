@@ -6,7 +6,7 @@ Use the new unified generator system in language.mcp_server_generator_go.
 
 Go MCP Server Generator for Promptware agents.
 
-Generates Go HTTP server-based MCP servers from .pw agent definitions.
+Generates Go HTTP server-based MCP servers from .al agent definitions.
 """
 
 from __future__ import annotations
@@ -250,10 +250,10 @@ def _generate_main(agent: AgentDefinition) -> str:
 
 def generate_go_server_from_pw(pw_code: str) -> str:
     """
-    Convenience function: parse .pw code and generate Go MCP server.
+    Convenience function: parse .al code and generate Go MCP server.
 
     Args:
-        pw_code: .pw file content
+        pw_code: .al file content
 
     Returns:
         Go code for MCP server

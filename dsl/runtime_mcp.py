@@ -37,4 +37,4 @@ class PWRuntimeMCP:
 
 if __name__ == "__main__":
     import sys
-    PWRuntimeMCP().execute_file(sys.argv[1]) if len(sys.argv) > 1 else print("Usage: python3 dsl/runtime_mcp.py <file.pw>")
+    PWRuntimeMCP().execute_file(sys.argv[1]) if len(sys.argv) > 1 else print("Usage: python3 dsl/runtime_mcp.py <file.al>")

@@ -1,7 +1,7 @@
-# Promptware Architecture: Dual Mode - Runtime + Universal Translator
+# AssertLang Architecture: Dual Mode - Runtime + Universal Translator
 
 **Date:** 2025-10-12
-**Critical Clarification:** Preserving Promptware's core value proposition
+**Critical Clarification:** Preserving AssertLang's core value proposition
 
 ---
 
@@ -13,9 +13,9 @@
 
 ---
 
-## Promptware's Unique Value Proposition
+## AssertLang's Unique Value Proposition
 
-**Core Vision:** Promptware is a **universal translator** - a common language that bridges Python, Rust, Go, TypeScript, and C#.
+**Core Vision:** AssertLang is a **universal translator** - a common language that bridges Python, Rust, Go, TypeScript, and C#.
 
 **Key Capabilities:**
 1. **Write once in PW, run anywhere** (transpile to any target language)
@@ -43,7 +43,7 @@ IR (Intermediate Representation)
     └→ C# Generator        → C# code (.cs)
 ```
 
-**Status:** All 5 code generators exist and work. This is Promptware's current strength.
+**Status:** All 5 code generators exist and work. This is AssertLang's current strength.
 
 ---
 
@@ -83,7 +83,7 @@ IR (Intermediate Representation)
 
 **Example:**
 ```bash
-pwenv run script.pw  # Executes directly in PW runtime
+pwenv run script.al  # Executes directly in PW runtime
 ```
 
 ### Mode 2: Transpilation (Code Generators)
@@ -99,7 +99,7 @@ pwenv run script.pw  # Executes directly in PW runtime
 
 **Example:**
 ```bash
-pwenv build app.pw --lang rust -o app.rs  # Generates Rust code
+pwenv build app.al --lang rust -o app.rs  # Generates Rust code
 cargo build --release  # Compiles to native binary
 ```
 
@@ -107,7 +107,7 @@ cargo build --release  # Compiles to native binary
 
 ## The Enhanced Vision: Universal Translator 2.0
 
-### What Promptware Becomes
+### What AssertLang Becomes
 
 **Not just a transpiler** (old vision):
 ```
@@ -132,11 +132,11 @@ PW → C#
 
 ### Key Enhancement: FFI Layer (Phase 5)
 
-**The Big Idea:** Promptware as a **runtime bridge** between languages.
+**The Big Idea:** AssertLang as a **runtime bridge** between languages.
 
 **Example Scenario:**
 ```pw
-// app.pw - Single PW codebase
+// app.al - Single PW codebase
 
 // Call Python library
 @ffi(lang="python", module="requests")
@@ -180,7 +180,7 @@ function fetch_and_parse(url: string) -> Result<User, string> {
 
 **Example:**
 ```pw
-// stdlib/http.pw
+// stdlib/http.al
 function get(url: string) -> Result<string, string> {
     // Implementation for PW runtime
     @native
@@ -244,14 +244,14 @@ languages = ["python", "rust", "typescript"]
 **Commands:**
 ```bash
 # Mode 1: Direct execution
-pwenv run app.pw
+pwenv run app.al
 
 # Mode 2: Transpilation
-pwenv build app.pw --lang python -o output.py
-pwenv build app.pw --lang rust -o output.rs
+pwenv build app.al --lang python -o output.py
+pwenv build app.al --lang rust -o output.rs
 
 # Mode 3: Multi-target
-pwenv build app.pw --all-targets
+pwenv build app.al --all-targets
 # Generates: output.py, output.rs, output.go, output.ts, output.cs
 ```
 
@@ -271,7 +271,7 @@ pwenv build app.pw --all-targets
 **The Universal Bridge:**
 
 ```pw
-// bridge.pw - The killer feature
+// bridge.al - The killer feature
 
 // Define FFI interface
 @ffi(lang="python", module="tensorflow")
@@ -318,7 +318,7 @@ function classify_image(path: string) -> Result<string, string> {
 
 ---
 
-## Promptware's Unique Position
+## AssertLang's Unique Position
 
 ### What Makes This Special
 
@@ -327,7 +327,7 @@ function classify_image(path: string) -> Result<string, string> {
 - Rust: Compiles to native only
 - TypeScript: Transpiles to JavaScript only
 
-**Promptware:**
+**AssertLang:**
 - ✅ Runs directly (PW runtime)
 - ✅ Transpiles to 5 languages (Python, Rust, Go, TS, C#)
 - ✅ Calls libraries from any language (FFI)
@@ -440,7 +440,7 @@ function classify_image(path: string) -> Result<string, string> {
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                     Promptware (PW)                          │
+│                     AssertLang (PW)                          │
 │                  Universal Translation Layer                 │
 └─────────────────────────────────────────────────────────────┘
                               │
@@ -587,9 +587,9 @@ Parser → IR
 
 ### The Vision Enhanced
 
-**Promptware is not becoming "just another language."**
+**AssertLang is not becoming "just another language."**
 
-**Promptware is becoming:**
+**AssertLang is becoming:**
 - A universal translator (original vision) ✅
 - A runtime bridge (new capability) ✅
 - A development platform (enhanced productivity) ✅

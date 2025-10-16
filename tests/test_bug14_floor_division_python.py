@@ -19,7 +19,7 @@ import sys
 
 def compile_pw_to_python(pw_code: str) -> str:
     """Compile PW code to Python and return the generated code."""
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.pw', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.al', delete=False) as f:
         f.write(pw_code)
         pw_file = f.name
 

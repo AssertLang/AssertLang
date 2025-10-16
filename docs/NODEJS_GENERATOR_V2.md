@@ -25,7 +25,7 @@
 
 ## Overview
 
-The Node.js Generator V2 is a production-grade code generator that transforms Promptware IR (Intermediate Representation) into idiomatic JavaScript or TypeScript code. It's the reverse counterpart to the Node.js Parser V2, enabling bidirectional translation.
+The Node.js Generator V2 is a production-grade code generator that transforms AssertLang IR (Intermediate Representation) into idiomatic JavaScript or TypeScript code. It's the reverse counterpart to the Node.js Parser V2, enabling bidirectional translation.
 
 ### Key Features
 
@@ -1012,13 +1012,13 @@ python3 tests/run_nodejs_generator_tests.py
 
 ## License
 
-Part of the Promptware universal code translation system.
+Part of the AssertLang universal code translation system.
 
 ---
 
 ## Contact
 
-For issues, questions, or contributions, see the main Promptware repository.
+For issues, questions, or contributions, see the main AssertLang repository.
 
 ---
 

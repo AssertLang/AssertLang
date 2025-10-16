@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-Successfully demonstrated the **complete Promptware translation pipeline** from Python source code through to Go output:
+Successfully demonstrated the **complete AssertLang translation pipeline** from Python source code through to Go output:
 
 ```
 Python Source → IR → Go Code (134 lines)
@@ -379,7 +379,7 @@ go_code = generate_go(ir_module)
 
 ## Conclusion
 
-✅ **MISSION ACCOMPLISHED**: Successfully translated Python code to Go through Promptware's IR system.
+✅ **MISSION ACCOMPLISHED**: Successfully translated Python code to Go through AssertLang's IR system.
 
 **Key Achievements**:
 1. Fixed 2 critical generator bugs (array/map literals, `in` operator)

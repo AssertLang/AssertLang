@@ -224,7 +224,7 @@ chmod +x run_demo.sh
 - **Full explanation**: Read `README.md` in this directory
 - **Test results**: Read `PROOF_OF_DETERMINISM.md`
 - **How it works**: Read main project `README.md`
-- **Issues**: [github.com/Promptware-dev/promptware/issues](https://github.com/Promptware-dev/promptware/issues)
+- **Issues**: [github.com/AssertLang/AssertLang/issues](https://github.com/AssertLang/AssertLang/issues)
 
 ---
 

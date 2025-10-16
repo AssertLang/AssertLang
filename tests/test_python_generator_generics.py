@@ -445,7 +445,7 @@ class TestStdlibCodeGeneration:
 
     def test_option_type_generates_valid_python(self):
         """Test that Option<T> from stdlib generates valid Python."""
-        # This test would parse stdlib/core.pw and generate Python
+        # This test would parse stdlib/core.al and generate Python
         # For now, we verify the structure matches what we expect
         option_enum = IREnum(
             name="Option",

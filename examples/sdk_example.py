@@ -11,7 +11,7 @@ Demonstrates all SDK features:
 
 import logging
 
-from promptware.sdk import (
+from assertlang.sdk import (
     Agent,
     CircuitBreakerError,
     ConnectionError,
@@ -197,7 +197,7 @@ def convenience_function():
     """Using the convenience function for one-off calls."""
     print("\n=== Convenience Function ===\n")
 
-    from promptware.sdk import call_verb
+    from assertlang.sdk import call_verb
 
     # One-off verb call
     try:
@@ -214,7 +214,7 @@ def convenience_function():
 if __name__ == "__main__":
     print("Promptware SDK Examples\n")
     print("Make sure you have an agent running on http://localhost:3000")
-    print("Or use: promptware generate test.pw --lang python && cd generated/test && python test_server.py\n")
+    print("Or use: promptware generate test.al --lang python && cd generated/test && python test_server.py\n")
 
     try:
         basic_usage()

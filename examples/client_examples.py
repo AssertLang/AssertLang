@@ -3,8 +3,8 @@ Examples of using the Promptware MCP client library.
 
 Demonstrates both simple function calls and reusable client instances.
 """
-from promptware import MCPClient, call_verb
-from promptware.exceptions import ConnectionError, InvalidVerbError, TimeoutError
+from assertlang import MCPClient, call_verb
+from assertlang.exceptions import ConnectionError, InvalidVerbError, TimeoutError
 
 
 def example_simple_call():

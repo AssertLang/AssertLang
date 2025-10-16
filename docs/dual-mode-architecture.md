@@ -63,7 +63,7 @@ Agents need to work in two environments:
                       │
 ┌─────────────────────▼───────────────────────────────────────┐
 │ Verb Executor (NEW)                                          │
-│   1. Load agent definition (.pw file)                        │
+│   1. Load agent definition (.al file)                        │
 │   2. Execute referenced tools                                │
 │   3. Collect real data                                       │
 │   4. Decide execution mode                                   │
@@ -368,7 +368,7 @@ Analyze the above data and provide your response in the required format.
 
 ### Phase 3: Tool Discovery & Loading
 
-**Challenge:** Agent .pw files reference tools by name (e.g., `github_fetch_pr`), but we need to find and load the actual implementation.
+**Challenge:** Agent .al files reference tools by name (e.g., `github_fetch_pr`), but we need to find and load the actual implementation.
 
 **Solution:** Tool registry
 

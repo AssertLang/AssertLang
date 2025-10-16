@@ -10,7 +10,7 @@ This directory contains the bidirectional translation system that converts betwe
 
 ### Forward Generators (IR → Code)
 
-Generate target language code from PW IR:
+Generate target language code from AL IR:
 
 - **`python_generator_v2.py`** - Python 3.8+ code generation
 - **`nodejs_generator_v2.py`** - Node.js/JavaScript code generation

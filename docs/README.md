@@ -1,8 +1,8 @@
-Promptware
+AssertLang
 
 Write once, run anywhere.
 
-Promptware is a domain-specific language (`.pw`) for writing language-agnostic software. Write `.pw` code once, run it in Python, Node.js, Go, Rust, .NET, Java, C++, or Next.js — fast, reproducible, and portable. All applications are exposed at a single memorable port: 23456.
+AssertLang is a domain-specific language (`.al`) for writing language-agnostic software. Write `.al` code once, run it in Python, Node.js, Go, Rust, .NET, Java, C++, or Next.js — fast, reproducible, and portable. All applications are exposed at a single memorable port: 23456.
 
 ⸻
 
@@ -23,10 +23,10 @@ git clone <repo-url>
 cd promptware
 make install   # or `pip install -e .` once package is scaffolded
 
-Run a .pw file
+Run a .al file
 
-# Create hello.pw
-cat > hello.pw << 'EOF'
+# Create hello.al
+cat > hello.al << 'EOF'
 lang python
 start python app.py
 
@@ -44,7 +44,7 @@ file app.py:
 EOF
 
 # Run it
-promptware run hello.pw
+promptware run hello.al
 
 Output:
 
@@ -71,20 +71,20 @@ Artifacts in .mcpd/ab12cd/
 📚 Documentation
 
 See the /docs folder for:
-	•	Promptware Manifesto → vision & principles
+	•	AssertLang Manifesto → vision & principles
 	•	Tech Spec Pack → detailed JSON schemas, error codes, CLI spec
 	•	Networking Flow → UDS/TCP model, gateway on port 23456, and sandbox fallbacks
 	•	Runner Protocol → stdin/stdout envelopes, health checks, failure codes
 	•	Dependency Management → per-language setup (venv, npm install, go mod, etc.)
 	•	Toolgen Template Catalog → current tool specs and adapter templates
-	•	Promptware DSL Roadmap → grammar milestones, adapter rollout, orchestrator plan
+	•	AssertLang DSL Roadmap → grammar milestones, adapter rollout, orchestrator plan
 	•	Versioning Principles → what counts as breaking, @v1 policy
 	•	Run `python scripts/show_dependency_allowlist.py [--plan plan.json]` to inspect approved dependencies, env overrides, private registries, and plan-level requests
 
 ⸻
 
 🔑 Core Commands
-	•	promptware run <file.pw> → Full pipeline: .pw DSL → app → validation
+	•	promptware run <file.al> → Full pipeline: .al DSL → app → validation
 	•	promptware change <task_id> "<delta>" → Apply patch + restart
 	•	mcp list → Show tasks, status, URLs
 	•	mcp open <task_id> → Open artifacts and preview URL
@@ -92,13 +92,13 @@ See the /docs folder for:
 	•	mcp kill <task_id> → Stop and clean up
 	•	promptware deps check [--plan plan.json] → Inspect allowlists and merged plan dependencies
 	•	promptware deps trim-cache [--dry-run] → Prune dependency caches using allowlist TTL hints
-	•	promptware dsl format <path> [--check] → Canonicalise .pw files
+	•	promptware dsl format <path> [--check] → Canonicalise .al files
 	•	promptware dsl lint <path> → Surface DSL syntax/semantic issues
 
 ⸻
 
 ✅ MVP Acceptance Criteria
-	•	.pw DSL → File Plan → Files → Run → Validate → Report all automated.
+	•	.al DSL → File Plan → Files → Run → Validate → Report all automated.
 	•	First runner: Python (working).
 	•	Node.js and Go runners (working).
 	•	User sees working endpoint on Port 23456.

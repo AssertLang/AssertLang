@@ -123,7 +123,7 @@ def _schema_output(spec: ToolSpec) -> Dict[str, Any]:
     request.setdefault("additionalProperties", False)
     schema_doc = {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "$id": f"https://promptware.dev/schemas/tools/{spec.tool_id}.v1.json",
+        "$id": f"https://assertlang.dev/schemas/tools/{spec.tool_id}.v1.json",
         "title": spec.raw.get("tool", {}).get("name", spec.tool_id.capitalize()),
     }
     schema_doc.update(request)

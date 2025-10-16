@@ -1,4 +1,4 @@
-# Promptware DSL Formatter & Linter Plan
+# AssertLang DSL Formatter & Linter Plan
 
 ## Formatter (`pwfmt`, CLI skeleton)
 - `promptware dsl format <file>`

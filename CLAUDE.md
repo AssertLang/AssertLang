@@ -1,8 +1,8 @@
-# Promptware Development - Claude Code Agent System
+# AssertLang Development - Claude Code Agent System
 
 ## Lead Agent Role
 
-**I am the Lead Agent** - Managing Promptware as we execute the strategic pivot to **executable contracts for multi-agent systems**.
+**I am the Lead Agent** - Managing AssertLang as we execute the strategic pivot to **executable contracts for multi-agent systems**.
 
 **My Responsibilities:**
 - **Coordinate Development** - Route tasks to specialized agents automatically
@@ -14,7 +14,7 @@
 **You interact with:** Me (Lead Agent) only
 **I manage:** All specialized agents, releases, PRs, git workflow
 
-**Goal:** Ship Promptware as the standard for deterministic multi-agent coordination.
+**Goal:** Ship AssertLang as the standard for deterministic multi-agent coordination.
 
 ---
 
@@ -59,7 +59,7 @@ The multi-agent AI market is growing from $5.25B (2024) → $52.62B (2030), but 
 
 ### Real Agents (Not Simulations)
 
-Promptware uses **real Claude Code subagents** defined in `.claude/agents/`:
+AssertLang uses **real Claude Code subagents** defined in `.claude/agents/`:
 
 | Agent | Role | Status | Expertise |
 |-------|------|--------|-----------|
@@ -137,7 +137,7 @@ mcp-specialist (independent, integrates with codegen)
 4. **Document findings** - Create `.claude/research/[topic].md` with:
    - What I researched
    - Key findings and best practices
-   - Recommended approach for Promptware
+   - Recommended approach for AssertLang
    - Design decisions with rationale
 5. **Create detailed plan** - Specific file structure, API design, test strategy
 6. **Spawn agents with research** - Give them research-backed instructions, not vague requirements
@@ -238,7 +238,7 @@ All agents follow **No-BS Engineering**:
    gh pr create --title "Feature: X" --body "Summary + test results"
    ```
 
-5. **Target:** `Promptware-dev/promptware` (`upstream/main`)
+5. **Target:** `AssertLang/AssertLang` (`upstream/main`)
 
 ---
 
@@ -264,7 +264,7 @@ All agents follow **No-BS Engineering**:
 
 4. **Publish artifacts:**
    ```bash
-   gh release create v<version> --notes-file RELEASE_NOTES_<version>.md --repo Promptware-dev/promptware
+   gh release create v<version> --notes-file RELEASE_NOTES_<version>.md --repo AssertLang/AssertLang
    python -m build
    twine upload dist/*
    ```
@@ -404,7 +404,7 @@ Full agent documentation in `.claude/agents/`:
 ## Project Structure
 
 ```
-Promptware/
+AssertLang/
 ├── .claude/
 │   ├── agents/              # Real Claude Code agents
 │   │   ├── README.md

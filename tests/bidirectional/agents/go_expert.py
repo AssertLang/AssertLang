@@ -407,7 +407,7 @@ class GoExpertAgent:
         Run full bidirectional test on generated Go code.
 
         Args:
-            fixture_path: Path to .pw fixture file
+            fixture_path: Path to .al fixture file
             generated_code_path: Path to generated Go code
             port: Server port
 

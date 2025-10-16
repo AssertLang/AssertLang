@@ -4,7 +4,7 @@ CLI tool for reverse parsing: Code → PW DSL
 
 Usage:
     python3 reverse_parsers/cli.py <file>
-    python3 reverse_parsers/cli.py <file> --output file.pw
+    python3 reverse_parsers/cli.py <file> --output file.al
     python3 reverse_parsers/cli.py <file> --metadata
 """
 
@@ -64,7 +64,7 @@ Examples:
   python3 reverse_parsers/cli.py main.rs
 
   # Save to file
-  python3 reverse_parsers/cli.py server.py --output agent.pw
+  python3 reverse_parsers/cli.py server.py --output agent.al
 
   # Include extraction metadata
   python3 reverse_parsers/cli.py server.py --metadata

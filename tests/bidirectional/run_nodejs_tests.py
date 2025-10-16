@@ -3,7 +3,7 @@
 Node.js Bidirectional Test Runner.
 
 Runs comprehensive tests on Node.js code generation:
-1. Parse .pw fixtures
+1. Parse .al fixtures
 2. Generate Node.js servers
 3. Validate syntax
 4. Install dependencies
@@ -46,8 +46,8 @@ class NodeJSTestRunner:
         """Run all Node.js tests and return results."""
         fixtures_dir = Path(__file__).parent / "fixtures"
         fixtures = [
-            fixtures_dir / "nodejs_minimal.pw",
-            fixtures_dir / "nodejs_with_tools.pw",
+            fixtures_dir / "nodejs_minimal.al",
+            fixtures_dir / "nodejs_with_tools.al",
         ]
 
         for fixture in fixtures:
@@ -71,10 +71,10 @@ class NodeJSTestRunner:
 
     def test_fixture(self, fixture_path: Path) -> Dict[str, Any]:
         """
-        Test a single .pw fixture file.
+        Test a single .al fixture file.
 
         Args:
-            fixture_path: Path to .pw fixture
+            fixture_path: Path to .al fixture
 
         Returns:
             Dictionary with test results
@@ -226,7 +226,7 @@ class NodeJSTestRunner:
         return test_result
 
     def _extract_port(self, pw_content: str) -> int:
-        """Extract port number from .pw content."""
+        """Extract port number from .al content."""
         for line in pw_content.split("\n"):
             if line.strip().startswith("port "):
                 return int(line.split()[1])

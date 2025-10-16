@@ -407,8 +407,11 @@ class JavaScriptGenerator:
 
         # Body
         if constructor.body:
-            for stmt in constructor.body:
-                lines.append(self.generate_statement(stmt))
+            for i, stmt in enumerate(constructor.body):
+                next_stmt = constructor.body[i + 1] if i + 1 < len(constructor.body) else None
+                stmt_code = self.generate_statement(stmt, next_stmt)
+                if stmt_code is not None:  # Skip None (IRMap workaround)
+                    lines.append(stmt_code)
         else:
             lines.append(f"{self.indent()}// Empty constructor")
 
@@ -441,8 +444,11 @@ class JavaScriptGenerator:
 
         # Body
         if method.body:
-            for stmt in method.body:
-                lines.append(self.generate_statement(stmt))
+            for i, stmt in enumerate(method.body):
+                next_stmt = method.body[i + 1] if i + 1 < len(method.body) else None
+                stmt_code = self.generate_statement(stmt, next_stmt)
+                if stmt_code is not None:  # Skip None (IRMap workaround)
+                    lines.append(stmt_code)
         else:
             lines.append(f"{self.indent()}// Empty method")
 
@@ -502,14 +508,16 @@ class JavaScriptGenerator:
 
             # Body
             if func.body:
-                for stmt in func.body:
-                    stmt_code = self.generate_statement(stmt)
-                    # Replace 'return X' with '__result = X'
-                    if stmt_code.strip().startswith("return "):
-                        return_val = stmt_code.strip()[7:-1] if stmt_code.strip().endswith(';') else stmt_code.strip()[7:]
-                        lines.append(f"{self.indent()}__result = {return_val};")
-                    else:
-                        lines.append(stmt_code)
+                for i, stmt in enumerate(func.body):
+                    next_stmt = func.body[i + 1] if i + 1 < len(func.body) else None
+                    stmt_code = self.generate_statement(stmt, next_stmt)
+                    if stmt_code is not None:  # Skip None (IRMap workaround)
+                        # Replace 'return X' with '__result = X'
+                        if stmt_code.strip().startswith("return "):
+                            return_val = stmt_code.strip()[7:-1] if stmt_code.strip().endswith(';') else stmt_code.strip()[7:]
+                            lines.append(f"{self.indent()}__result = {return_val};")
+                        else:
+                            lines.append(stmt_code)
             else:
                 lines.append(f"{self.indent()}// Empty function")
 
@@ -529,8 +537,11 @@ class JavaScriptGenerator:
         else:
             # No postconditions, just body
             if func.body:
-                for stmt in func.body:
-                    lines.append(self.generate_statement(stmt))
+                for i, stmt in enumerate(func.body):
+                    next_stmt = func.body[i + 1] if i + 1 < len(func.body) else None
+                    stmt_code = self.generate_statement(stmt, next_stmt)
+                    if stmt_code is not None:  # Skip None (IRMap workaround)
+                        lines.append(stmt_code)
             else:
                 lines.append(f"{self.indent()}// Empty function")
 
@@ -700,10 +711,10 @@ class JavaScriptGenerator:
     # Statement Generation
     # ========================================================================
 
-    def generate_statement(self, stmt: IRStatement) -> str:
+    def generate_statement(self, stmt: IRStatement, next_stmt: IRStatement = None) -> str:
         """Generate JavaScript statement from IR."""
         if isinstance(stmt, IRAssignment):
-            return self.generate_assignment(stmt)
+            return self.generate_assignment(stmt, next_stmt)
         elif isinstance(stmt, IRIf):
             return self.generate_if(stmt)
         elif isinstance(stmt, IRFor):
@@ -726,11 +737,38 @@ class JavaScriptGenerator:
             return f"{self.indent()}// pass"
         elif isinstance(stmt, IRCall):
             return f"{self.indent()}{self.generate_expression(stmt)};"
+        elif isinstance(stmt, IRMap):
+            # IRMap as statement is a parser bug workaround marker - skip it
+            return None  # Signal to skip this statement
         else:
             return f"{self.indent()}// Unknown statement: {type(stmt).__name__}"
 
-    def generate_assignment(self, stmt: IRAssignment) -> str:
+    def generate_assignment(self, stmt: IRAssignment, next_stmt: IRStatement = None) -> str:
         """Generate assignment statement."""
+        # Check if next statement is IRMap (parser bug workaround for class initialization)
+        if next_stmt and isinstance(next_stmt, IRMap) and isinstance(stmt.value, IRIdentifier):
+            # For JavaScript, generate as object literal: const x = { field: value, ... }
+            target = stmt.target if isinstance(stmt.target, str) else self.generate_expression(stmt.target)
+
+            if next_stmt.entries:
+                entries = []
+                for key, val_expr in next_stmt.entries.items():
+                    val = self.generate_expression(val_expr)
+                    entries.append(f"{key}: {val}")
+                obj_literal = "{ " + ", ".join(entries) + " }"
+            else:
+                obj_literal = "{}"
+
+            # Track variable types
+            if isinstance(stmt.target, str) and stmt.var_type:
+                self.variable_types[stmt.target] = stmt.var_type
+
+            if stmt.is_declaration:
+                return f"{self.indent()}const {target} = {obj_literal};"
+            else:
+                return f"{self.indent()}{target} = {obj_literal};"
+
+        # Normal assignment (existing code)
         value = self.generate_expression(stmt.value)
         target = stmt.target if isinstance(stmt.target, str) else self.generate_expression(stmt.target)
 
@@ -753,8 +791,11 @@ class JavaScriptGenerator:
 
         self.increase_indent()
         if stmt.then_body:
-            for s in stmt.then_body:
-                lines.append(self.generate_statement(s))
+            for i, s in enumerate(stmt.then_body):
+                next_stmt = stmt.then_body[i + 1] if i + 1 < len(stmt.then_body) else None
+                stmt_code = self.generate_statement(s, next_stmt)
+                if stmt_code is not None:  # Skip None (IRMap workaround)
+                    lines.append(stmt_code)
         else:
             lines.append(f"{self.indent()}// Empty")
         self.decrease_indent()
@@ -762,8 +803,11 @@ class JavaScriptGenerator:
         if stmt.else_body:
             lines.append(f"{self.indent()}}} else {{")
             self.increase_indent()
-            for s in stmt.else_body:
-                lines.append(self.generate_statement(s))
+            for i, s in enumerate(stmt.else_body):
+                next_stmt = stmt.else_body[i + 1] if i + 1 < len(stmt.else_body) else None
+                stmt_code = self.generate_statement(s, next_stmt)
+                if stmt_code is not None:  # Skip None (IRMap workaround)
+                    lines.append(stmt_code)
             self.decrease_indent()
 
         lines.append(f"{self.indent()}}}")
@@ -779,8 +823,11 @@ class JavaScriptGenerator:
 
         self.increase_indent()
         if stmt.body:
-            for s in stmt.body:
-                lines.append(self.generate_statement(s))
+            for i, s in enumerate(stmt.body):
+                next_stmt = stmt.body[i + 1] if i + 1 < len(stmt.body) else None
+                stmt_code = self.generate_statement(s, next_stmt)
+                if stmt_code is not None:  # Skip None (IRMap workaround)
+                    lines.append(stmt_code)
         else:
             lines.append(f"{self.indent()}// Empty")
         self.decrease_indent()
@@ -801,8 +848,11 @@ class JavaScriptGenerator:
 
         self.increase_indent()
         if stmt.body:
-            for s in stmt.body:
-                lines.append(self.generate_statement(s))
+            for i, s in enumerate(stmt.body):
+                next_stmt = stmt.body[i + 1] if i + 1 < len(stmt.body) else None
+                stmt_code = self.generate_statement(s, next_stmt)
+                if stmt_code is not None:  # Skip None (IRMap workaround)
+                    lines.append(stmt_code)
         else:
             lines.append(f"{self.indent()}// Empty")
         self.decrease_indent()
@@ -820,8 +870,11 @@ class JavaScriptGenerator:
 
         self.increase_indent()
         if stmt.body:
-            for s in stmt.body:
-                lines.append(self.generate_statement(s))
+            for i, s in enumerate(stmt.body):
+                next_stmt = stmt.body[i + 1] if i + 1 < len(stmt.body) else None
+                stmt_code = self.generate_statement(s, next_stmt)
+                if stmt_code is not None:  # Skip None (IRMap workaround)
+                    lines.append(stmt_code)
         else:
             lines.append(f"{self.indent()}// Empty")
         self.decrease_indent()
@@ -837,8 +890,11 @@ class JavaScriptGenerator:
         lines.append(f"{self.indent()}try {{")
         self.increase_indent()
         if stmt.try_body:
-            for s in stmt.try_body:
-                lines.append(self.generate_statement(s))
+            for i, s in enumerate(stmt.try_body):
+                next_stmt = stmt.try_body[i + 1] if i + 1 < len(stmt.try_body) else None
+                stmt_code = self.generate_statement(s, next_stmt)
+                if stmt_code is not None:  # Skip None (IRMap workaround)
+                    lines.append(stmt_code)
         else:
             lines.append(f"{self.indent()}// Empty")
         self.decrease_indent()
@@ -851,8 +907,11 @@ class JavaScriptGenerator:
 
             self.increase_indent()
             if catch.body:
-                for s in catch.body:
-                    lines.append(self.generate_statement(s))
+                for i, s in enumerate(catch.body):
+                    next_stmt = catch.body[i + 1] if i + 1 < len(catch.body) else None
+                    stmt_code = self.generate_statement(s, next_stmt)
+                    if stmt_code is not None:  # Skip None (IRMap workaround)
+                        lines.append(stmt_code)
             else:
                 lines.append(f"{self.indent()}// Empty")
             self.decrease_indent()
@@ -860,8 +919,11 @@ class JavaScriptGenerator:
         if stmt.finally_body:
             lines.append(f"{self.indent()}}} finally {{")
             self.increase_indent()
-            for s in stmt.finally_body:
-                lines.append(self.generate_statement(s))
+            for i, s in enumerate(stmt.finally_body):
+                next_stmt = stmt.finally_body[i + 1] if i + 1 < len(stmt.finally_body) else None
+                stmt_code = self.generate_statement(s, next_stmt)
+                if stmt_code is not None:  # Skip None (IRMap workaround)
+                    lines.append(stmt_code)
             self.decrease_indent()
 
         lines.append(f"{self.indent()}}}")
@@ -982,6 +1044,24 @@ class JavaScriptGenerator:
 
     def generate_call(self, expr: IRCall) -> str:
         """Generate function call."""
+        # STDLIB TRANSLATION: Translate stdlib calls to JavaScript equivalents
+        if isinstance(expr.function, IRPropertyAccess):
+            obj = expr.function.object
+            method = expr.function.property
+
+            # str.length(x) → x.length
+            if isinstance(obj, IRIdentifier) and obj.name == "str" and method == "length":
+                if len(expr.args) == 1:
+                    arg = self.generate_expression(expr.args[0])
+                    return f"{arg}.length"
+
+            # str.contains(s, substr) → s.includes(substr)
+            if isinstance(obj, IRIdentifier) and obj.name == "str" and method == "contains":
+                if len(expr.args) == 2:
+                    string_arg = self.generate_expression(expr.args[0])
+                    substr_arg = self.generate_expression(expr.args[1])
+                    return f"{string_arg}.includes({substr_arg})"
+
         func = self.generate_expression(expr.function)
         args = [self.generate_expression(arg) for arg in expr.args]
         return f"{func}({', '.join(args)})"

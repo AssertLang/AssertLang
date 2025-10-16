@@ -738,4 +738,4 @@ class WorkflowInstance(models.Model):
 - **[Example 2: Multi-Agent Research](../02_multi_agent_research/)** - Agent coordination
 - **[Example 3: Data Processing Workflow](../03_data_processing_workflow/)** - Pipeline states
 - **[Example 4: API Rate Limiting](../04_api_rate_limiting/)** - Rate limit states
-- **[Promptware Documentation](../../../docs/)** - Complete guide
+- **[AssertLang Documentation](../../../docs/)** - Complete guide

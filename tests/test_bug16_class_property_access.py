@@ -22,7 +22,7 @@ import sys
 
 def compile_pw_to_python(pw_code: str) -> str:
     """Compile PW code to Python and return the generated code."""
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.pw', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.al', delete=False) as f:
         f.write(pw_code)
         pw_file = f.name
 
@@ -109,7 +109,7 @@ function get_host(config: Config) -> string {
 
     def test_rate_limiter_bug_reproduction(self):
         """
-        Test the exact pattern from pw_rate_limiter.pw that triggers Bug #16.
+        Test the exact pattern from pw_rate_limiter.al that triggers Bug #16.
 
         This is the core case from the bug report:
         function register_tier(tier: RateLimitTier) -> bool {

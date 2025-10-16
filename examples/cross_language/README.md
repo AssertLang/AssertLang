@@ -1,6 +1,6 @@
 # Cross-Language MCP Servers
 
-Promptware can generate MCP servers in multiple languages from the same `.pw` DSL.
+AssertLang can generate MCP servers in multiple languages from the same `.al` DSL.
 
 ## Supported Languages
 
@@ -14,7 +14,7 @@ Promptware can generate MCP servers in multiple languages from the same `.pw` DS
 
 ### Node.js Agent (data-processor)
 
-```pw
+```al
 lang nodejs
 agent data-processor
 port 23500
@@ -32,7 +32,7 @@ Generates: **data_processor_server.js** (141 lines)
 
 ### Go Agent (cache-service)
 
-```pw
+```al
 lang go
 agent cache-service
 port 23501
@@ -84,7 +84,7 @@ curl -X POST http://127.0.0.1:23500/mcp \
 
 ## Code Generation Comparison
 
-| Language | Input (.pw) | Output | Ratio |
+| Language | Input (.al) | Output | Ratio |
 |----------|-------------|--------|-------|
 | Python   | 48 lines    | 326 lines | 6.8x |
 | Node.js  | 36 lines    | 141 lines | 3.9x |

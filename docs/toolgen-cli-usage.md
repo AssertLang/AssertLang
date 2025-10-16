@@ -1,6 +1,6 @@
 # Toolgen CLI Usage
 
-The `toolgen` CLI generates Promptware tool artifacts (schemas, adapters, tests, docs) from YAML tool specifications.
+The `toolgen` CLI generates AssertLang tool artifacts (schemas, adapters, tests, docs) from YAML tool specifications.
 
 ---
 
@@ -513,9 +513,9 @@ Full custom template SDK is planned for Wave 4.
 
 ---
 
-## Integration with Promptware Daemon
+## Integration with AssertLang Daemon
 
-Generated adapters are consumed by the Promptware daemon during plan execution:
+Generated adapters are consumed by the AssertLang daemon during plan execution:
 
 1. User submits a `.pw` plan referencing a tool (e.g., `call http.request`).
 2. Daemon reads `data/tools_registry.json` to locate the tool's schema and adapters.

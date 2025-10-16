@@ -1,6 +1,6 @@
-# Contributing to Promptware
+# Contributing to AssertLang
 
-Thank you for your interest in contributing to Promptware! This document provides guidelines and instructions for contributing.
+Thank you for your interest in contributing to AssertLang! This document provides guidelines and instructions for contributing.
 
 ## Quick Start
 
@@ -17,7 +17,7 @@ Thank you for your interest in contributing to Promptware! This document provide
 
 ```bash
 # Clone the repository
-git clone https://github.com/Promptware-dev/promptware.git
+git clone https://github.com/AssertLang/AssertLang.git
 cd promptware
 
 # Install in development mode
@@ -115,9 +115,9 @@ To add a new language generator:
 
 ## Questions?
 
-- 💬 **Discussions:** https://github.com/Promptware-dev/promptware/discussions
-- 🐛 **Issues:** https://github.com/Promptware-dev/promptware/issues
-- 📧 **Email:** hello@promptware.dev
+- 💬 **Discussions:** https://github.com/AssertLang/AssertLang/discussions
+- 🐛 **Issues:** https://github.com/AssertLang/AssertLang/issues
+- 📧 **Email:** hello@assertlang.dev
 
 ## Code of Conduct
 
@@ -129,4 +129,4 @@ By contributing, you agree that your contributions will be licensed under the MI
 
 ---
 
-**Thank you for contributing to Promptware!** 🚀
+**Thank you for contributing to AssertLang!** 🚀

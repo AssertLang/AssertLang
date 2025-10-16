@@ -10,7 +10,7 @@
 
 ## Mission
 
-Transform Promptware from "working tool" to "delightful developer experience" through world-class documentation, real-world examples, and improved tooling.
+Transform AssertLang from "working tool" to "delightful developer experience" through world-class documentation, real-world examples, and improved tooling.
 
 ---
 
@@ -44,7 +44,7 @@ Transform Promptware from "working tool" to "delightful developer experience" th
 **Code Structure:**
 ```
 01_ecommerce_orders/
-├── orders.pw              # Contract definitions
+├── orders.al              # Contract definitions
 ├── orders.py              # Generated Python code
 ├── orders.js              # Generated JavaScript code
 ├── test_orders.py         # Test suite
@@ -75,7 +75,7 @@ Transform Promptware from "working tool" to "delightful developer experience" th
 **Code Structure:**
 ```
 02_multi_agent_research/
-├── pipeline.pw            # Contract definitions
+├── pipeline.al            # Contract definitions
 ├── agents.py              # Generated Python with CrewAI integration
 ├── test_pipeline.py       # Integration tests
 ├── README.md              # Step-by-step guide
@@ -105,7 +105,7 @@ Transform Promptware from "working tool" to "delightful developer experience" th
 **Code Structure:**
 ```
 03_data_processing/
-├── workflow.pw            # Contract definitions + state schema
+├── workflow.al            # Contract definitions + state schema
 ├── nodes.py               # Generated node functions
 ├── state.py               # Generated TypedDict state
 ├── workflow_graph.py      # LangGraph integration
@@ -137,7 +137,7 @@ Transform Promptware from "working tool" to "delightful developer experience" th
 **Code Structure:**
 ```
 04_api_rate_limiting/
-├── rate_limiter.pw        # Contract definitions
+├── rate_limiter.al        # Contract definitions
 ├── rate_limiter.py        # Generated Python
 ├── rate_limiter.js        # Generated JavaScript
 ├── rate_limiter.go        # Generated Go
@@ -171,7 +171,7 @@ Transform Promptware from "working tool" to "delightful developer experience" th
 **Code Structure:**
 ```
 05_state_machine/
-├── fsm.pw                 # Contract definitions
+├── fsm.al                 # Contract definitions
 ├── fsm.py                 # Generated Python
 ├── fsm.rs                 # Generated Rust
 ├── test_fsm.py            # Python tests
@@ -372,7 +372,7 @@ Suggestion:
     if sector:
         result = analyze_market(sector, depth)
 
-Learn more: https://docs.promptware.dev/guides/preconditions
+Learn more: https://docs.assertlang.dev/guides/preconditions
 ```
 
 **Implementation:**
@@ -394,7 +394,7 @@ Learn more: https://docs.promptware.dev/guides/preconditions
 ```bash
 $ promptware init
 
-Welcome to Promptware! Let's create your first contract.
+Welcome to AssertLang! Let's create your first contract.
 
 ? Choose a template:
   ❯ Basic Contract
@@ -414,17 +414,17 @@ Welcome to Promptware! Let's create your first contract.
 ? Add example tests? (Y/n) y
 
 Creating project structure...
-  ✓ Created contracts/main.pw
+  ✓ Created contracts/main.al
   ✓ Created tests/test_main.py
   ✓ Created README.md
   ✓ Created .promptware.toml
 
 Next steps:
-  1. Edit contracts/main.pw
-  2. Run: promptware build contracts/main.pw
+  1. Edit contracts/main.al
+  2. Run: asl build contracts/main.al
   3. Run tests: pytest tests/
 
-  Learn more: https://docs.promptware.dev/getting-started/quickstart
+  Learn more: https://docs.assertlang.dev/getting-started/quickstart
 ```
 
 **Implementation:**
@@ -443,7 +443,7 @@ Next steps:
 
 **Output:**
 ```bash
-$ promptware check contracts/orders.pw
+$ promptware check contracts/orders.al
 
 Checking contracts/orders.pw...
 
@@ -475,17 +475,17 @@ Checking contracts/orders.pw...
 $ promptware example multi-agent
 
 Creating multi-agent example...
-  ✓ Created examples/multi_agent/pipeline.pw
+  ✓ Created examples/multi_agent/pipeline.al
   ✓ Created examples/multi_agent/agents.py
   ✓ Created examples/multi_agent/test_pipeline.py
   ✓ Created examples/multi_agent/README.md
 
 Example ready! Run with:
   cd examples/multi_agent
-  promptware build pipeline.pw -o agents.py
+  asl build pipeline.al -o agents.py
   pytest test_pipeline.py
 
-Learn more: https://docs.promptware.dev/examples/multi-agent-research
+Learn more: https://docs.assertlang.dev/examples/multi-agent-research
 ```
 
 **Available Templates:**
@@ -511,7 +511,7 @@ Learn more: https://docs.promptware.dev/examples/multi-agent-research
 **Usage:**
 ```bash
 $ promptware docs preconditions
-# Opens https://docs.promptware.dev/guides/preconditions in browser
+# Opens https://docs.assertlang.dev/guides/preconditions in browser
 
 $ promptware docs --offline preconditions
 # Shows docs in terminal (formatted with rich)
@@ -645,7 +645,7 @@ User can select: Python | JavaScript | Go | Rust
 #### Enhancement 4.5: Example Browser
 
 **Features:**
-- Sidebar panel: "Promptware Examples"
+- Sidebar panel: "AssertLang Examples"
 - Browse all cookbook recipes
 - Search by problem/pattern
 - Preview and insert examples

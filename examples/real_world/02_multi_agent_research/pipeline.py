@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from promptware.runtime.contracts import check_postcondition
-from promptware.runtime.contracts import check_precondition
+from assertlang.runtime.contracts import check_postcondition
+from assertlang.runtime.contracts import check_precondition
 
 def validate_research_query(query: str, max_results: int, min_quality_score: float) -> bool:
     check_precondition(

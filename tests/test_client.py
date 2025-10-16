@@ -16,8 +16,8 @@ import pytest
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from promptware.client import MCPClient, call_verb
-from promptware.exceptions import (
+from assertlang.client import MCPClient, call_verb
+from assertlang.exceptions import (
     ConnectionError,
     InvalidParamsError,
     InvalidVerbError,
@@ -25,7 +25,7 @@ from promptware.exceptions import (
     ServiceUnavailableError,
     TimeoutError,
 )
-from promptware.transport import HTTPTransport
+from assertlang.transport import HTTPTransport
 
 
 def test_mcp_client_initialization():

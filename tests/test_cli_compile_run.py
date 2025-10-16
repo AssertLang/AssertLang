@@ -1,7 +1,7 @@
 """
 Test CLI compile and run commands
 
-Tests the `promptware compile` and `promptware run` commands.
+Tests the `asl compile` and `promptware run` commands.
 """
 
 import sys
@@ -27,11 +27,11 @@ def run_cli_command(args):
 def test_compile_to_json():
     """Test compiling PW to MCP JSON."""
     print(f"\n{'='*60}")
-    print("Testing: promptware compile")
+    print("Testing: asl compile")
     print(f"{'='*60}")
 
     # Create temporary PW file
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.pw', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.al', delete=False) as f:
         f.write("""
 function multiply(a: int, b: int) -> int {
     return a * b;
@@ -75,10 +75,10 @@ function multiply(a: int, b: int) -> int {
 def test_compile_default_output():
     """Test compile with default output name."""
     print(f"\n{'='*60}")
-    print("Testing: promptware compile (default output)")
+    print("Testing: asl compile (default output)")
     print(f"{'='*60}")
 
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.pw', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.al', delete=False) as f:
         f.write("function test() -> int { return 1; }")
         temp_pw = f.name
 
@@ -113,7 +113,7 @@ def test_run_executes():
     print(f"{'='*60}")
 
     # Create PW file that prints output
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.pw', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.al', delete=False) as f:
         # Note: This won't actually print since we don't have print() in PW yet
         # But it should at least execute without error
         f.write("""
@@ -152,7 +152,7 @@ def test_run_verbose():
     print("Testing: promptware run --verbose")
     print(f"{'='*60}")
 
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.pw', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.al', delete=False) as f:
         f.write("function main() -> int { return 0; }")
         temp_pw = f.name
 

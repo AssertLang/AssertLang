@@ -452,14 +452,14 @@ Readability: High (standard Go idiom)
 3. ✅ **Real-world validation** - tested on complex code
 4. ✅ **+3-5% quality improvement** - now at 83-88% total
 
-### Impact on Promptware V2
+### Impact on AssertLang V2
 
 - **Before**: Comprehensions generated verbose, confusing IIFEs
 - **After**: Comprehensions generate clean, idiomatic Go loops
 
 ### System Status
 
-**Promptware V2 translation quality**: **83-88%**
+**AssertLang V2 translation quality**: **83-88%**
 
 **Quality breakdown**:
 - MCP server patterns: 95%+ (V1 perfect)

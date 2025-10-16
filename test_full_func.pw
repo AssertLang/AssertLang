@@ -1,0 +1,20 @@
+class ValidationError {
+    field: string;
+    message: string;
+}
+
+function createUser(name: string, email: string) -> ValidationError {
+    @requires name_not_empty: str.length(name) >= 1
+    @requires name_length_valid: str.length(name) <= 100
+    @requires email_has_at: str.contains(email, "@")
+
+    if (str.length(name) < 1) {
+        let error = ValidationError {
+            field: "name",
+            message: "Name cannot be empty"
+        };
+        return error;
+    }
+
+    return ValidationError { field: "ok", message: "ok" };
+}

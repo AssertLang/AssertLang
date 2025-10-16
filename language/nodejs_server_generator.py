@@ -6,7 +6,7 @@ Use the new unified generator system in language.mcp_server_generator_nodejs.
 
 Node.js MCP Server Generator for Promptware agents.
 
-Generates Express-based MCP servers from .pw agent definitions.
+Generates Express-based MCP servers from .al agent definitions.
 """
 
 from __future__ import annotations
@@ -215,10 +215,10 @@ app.listen(PORT, () => {{
 
 def generate_nodejs_server_from_pw(pw_code: str) -> str:
     """
-    Convenience function: parse .pw code and generate Node.js MCP server.
+    Convenience function: parse .al code and generate Node.js MCP server.
 
     Args:
-        pw_code: .pw file content
+        pw_code: .al file content
 
     Returns:
         Node.js code for MCP server

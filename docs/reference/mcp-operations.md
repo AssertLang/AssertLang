@@ -1,16 +1,16 @@
 # MCP Operations Reference
 
-**Use Promptware via Model Context Protocol (MCP) server.**
+**Use AssertLang via Model Context Protocol (MCP) server.**
 
 ---
 
 ## Overview
 
-Promptware exposes an MCP server that allows AI assistants (like Claude) to parse contracts, generate code, and validate syntax directly.
+AssertLang exposes an MCP server that allows AI assistants (like Claude) to parse contracts, generate code, and validate syntax directly.
 
 **What is MCP?**
 - Model Context Protocol - standard for LLM tool integration
-- Enables Claude Desktop to call Promptware operations
+- Enables Claude Desktop to call AssertLang operations
 - AI-native architecture for contract validation
 
 **Status**:
@@ -51,7 +51,7 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
 ### Use in Claude
 
 ```
-User: Parse this Promptware contract and check for errors:
+User: Parse this AssertLang contract and check for errors:
 
 function add(x: int, y: int) -> int {
     @requires positive: x > 0
@@ -128,7 +128,7 @@ Suggestion: Add postcondition to validate result
 
 ### parse_pw_contract
 
-**Parse Promptware code into Intermediate Representation (IR).**
+**Parse AssertLang code into Intermediate Representation (IR).**
 
 **Request**:
 ```json

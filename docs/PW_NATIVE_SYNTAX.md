@@ -735,7 +735,7 @@ This compiles to Python, Go, Rust, TypeScript, and C# automatically!
 ```
 ┌─────────────────────────────────────────────────────────┐
 │  1. Write PW Text                                       │
-│     user_service.pw (human-readable)                    │
+│     user_service.al (human-readable)                    │
 └─────────────────┬───────────────────────────────────────┘
                   ↓
 ┌─────────────────────────────────────────────────────────┐
@@ -769,17 +769,17 @@ This compiles to Python, Go, Rust, TypeScript, and C# automatically!
 
 ```bash
 # Build PW directly to target language (most common)
-pw build user_service.pw --lang python -o user_service.py
-pw build user_service.pw --lang go -o user_service.go
-pw build user_service.pw --lang rust -o user_service.rs
-pw build user_service.pw --lang typescript -o user_service.ts
-pw build user_service.pw --lang csharp -o UserService.cs
+pw build user_service.al --lang python -o user_service.py
+pw build user_service.al --lang go -o user_service.go
+pw build user_service.al --lang rust -o user_service.rs
+pw build user_service.al --lang typescript -o user_service.ts
+pw build user_service.al --lang csharp -o UserService.cs
 
 # Run PW code directly
-pw run user_service.pw
+pw run user_service.al
 
 # Compile to MCP JSON (for AI agents/advanced use)
-pw compile user_service.pw -o user_service.pw.json
+pw compile user_service.al -o user_service.pw.json
 
 # Unfold MCP JSON to language (rarely needed)
 pw unfold user_service.pw.json --lang python -o user_service.py
@@ -797,7 +797,7 @@ pw unfold user_service.pw.json --lang python -o user_service.py
 ✅ **MCP Converters**: Complete (translators/ir_converter.py)
 ✅ **Language Generators**: Complete (5 languages - Python, Go, Rust, TypeScript, C#)
 ✅ **End-to-End Pipeline**: Tested - PW → IR → MCP → All 5 languages
-✅ **CLI**: Working - `promptware build`, `promptware compile`, `promptware run`
+✅ **CLI**: Working - `asl build`, `asl compile`, `promptware run`
 
 ### Working Features (v2.1.0b3)
 

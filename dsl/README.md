@@ -4,7 +4,7 @@ Core implementation of the PW programming language.
 
 ## Overview
 
-This directory contains the foundational components of the Promptware Domain-Specific Language (PW DSL), including the parser, intermediate representation, type system, and validation.
+This directory contains the foundational components of the AssertLang Domain-Specific Language (PW DSL), including the parser, intermediate representation, type system, and validation.
 
 ## Components
 

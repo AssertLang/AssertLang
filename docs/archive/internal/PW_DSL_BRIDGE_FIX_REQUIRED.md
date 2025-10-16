@@ -32,7 +32,7 @@ Python → IR → PW DSL (text) → IR → Go
 - ❌ **PW DSL tools unused** - Parser/generator exist but are bypassed
 - ❌ **Not scalable** - N² problem (need Python→Go, Python→Rust, etc.)
 
-### Correct System (Promptware Vision):
+### Correct System (AssertLang Vision):
 - ✅ **PW DSL is universal** - All languages → PW DSL → All languages
 - ✅ **Agents exchange PW** - Language-agnostic communication
 - ✅ **MCP integration** - Servers send/receive PW DSL
@@ -243,7 +243,7 @@ python3 translate_via_pw_dsl.py
 
 ## Conclusion
 
-**You were 100% correct** - we bypassed PW DSL entirely and built a direct Python→Go translator. While the quality is perfect (100%), it's not the scalable, universal system Promptware was designed to be.
+**You were 100% correct** - we bypassed PW DSL entirely and built a direct Python→Go translator. While the quality is perfect (100%), it's not the scalable, universal system AssertLang was designed to be.
 
 The fix is straightforward:
 1. Align PW DSL parser/generator syntax

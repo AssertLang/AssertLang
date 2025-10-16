@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-Fixed critical bugs in the Promptware V2 translation system that were causing 60-65% data loss in cross-language code translation. The system is now capable of ~70% quality translations with a clear path to 90%+.
+Fixed critical bugs in the AssertLang V2 translation system that were causing 60-65% data loss in cross-language code translation. The system is now capable of ~70% quality translations with a clear path to 90%+.
 
 **Before**: 35% end-to-end translation quality (unusable)
 **After**: ~70% end-to-end translation quality (functional, needs polish)
@@ -21,7 +21,7 @@ Fixed critical bugs in the Promptware V2 translation system that were causing 60
 
 ### Part 1: Multi-Agent Translation Chain Validation (1.5 hours)
 
-**Objective**: Test the Promptware V2 system with 4 independent agents
+**Objective**: Test the AssertLang V2 system with 4 independent agents
 
 **Test**: Translate complex Python code (Sentient Maze, 97 lines) through full chain:
 ```
@@ -480,7 +480,7 @@ Ended with: ~65% translation quality, no data loss, functional system with clear
 
 ---
 
-The Promptware V2 universal translation system is **no longer a proof-of-concept**. It's a **functional, improving system** with demonstrated cross-language translation capabilities.
+The AssertLang V2 universal translation system is **no longer a proof-of-concept**. It's a **functional, improving system** with demonstrated cross-language translation capabilities.
 
 **Ready for the next challenge**.
 

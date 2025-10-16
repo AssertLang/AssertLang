@@ -1,7 +1,7 @@
 """
 MCP Server Generator for .NET/C#.
 
-Generates C# ASP.NET Core servers from .pw agent definitions.
+Generates C# ASP.NET Core servers from .al agent definitions.
 C# uses compile-time tool imports (no dynamic loading like Python/Node.js).
 """
 
@@ -606,10 +606,10 @@ public class Program
 
 def generate_dotnet_server_from_pw(pw_code: str) -> str:
     """
-    Convenience function: parse .pw code and generate C# MCP server.
+    Convenience function: parse .al code and generate C# MCP server.
 
     Args:
-        pw_code: .pw file content
+        pw_code: .al file content
 
     Returns:
         C# code for MCP server

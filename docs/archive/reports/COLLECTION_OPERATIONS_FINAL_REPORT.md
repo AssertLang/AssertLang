@@ -307,7 +307,7 @@ This single feature brought the system from 83% to 95%+ accuracy - a massive lea
 
 **Collection operations are COMPLETE and PRODUCTION-READY for all 5 languages.**
 
-This feature represents a **major milestone** in the Promptware project:
+This feature represents a **major milestone** in the AssertLang project:
 - **First universal feature** across all 5 languages
 - **Highest test coverage** (25/25, 100%)
 - **Largest accuracy improvement** (+12%)

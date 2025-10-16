@@ -1,6 +1,6 @@
 # Two-Service Demo
 
-Demonstrates service-to-service communication using Promptware MCP over HTTP.
+Demonstrates service-to-service communication using AssertLang MCP over HTTP.
 
 ## Architecture
 
@@ -168,9 +168,9 @@ Every response includes metadata:
 
 ### 5. Code Generation
 
-Both services are generated from `.pw` files:
-- `user_service.pw` → `user_service_server.py`
-- `order_service.pw` → `order_service_server.py`
+Both services are generated from `.al` files:
+- `user_service.al` → `user_service_server.py`
+- `order_service.al` → `order_service_server.py`
 
 Generated code includes:
 - FastAPI application
@@ -183,8 +183,8 @@ Generated code includes:
 
 ```
 examples/demo/
-├── user_service.pw              # User service definition
-├── order_service.pw             # Order service definition
+├── user_service.al              # User service definition
+├── order_service.al             # Order service definition
 ├── user_service_server.py       # Generated HTTP server (273 lines)
 ├── order_service_server.py      # Generated HTTP server (366 lines)
 ├── demo_runner.py               # Automated demo script
@@ -193,7 +193,7 @@ examples/demo/
 
 ## Key Features Demonstrated
 
-✅ **Polyglot-Ready** - Same .pw definition works for any language
+✅ **Polyglot-Ready** - Same .al definition works for any language
 ✅ **MCP Protocol** - Standard JSON-RPC 2.0 communication
 ✅ **Tool Integration** - Real tool execution (storage, http)
 ✅ **Service Mesh** - Services discover and call each other
@@ -243,13 +243,13 @@ def handle_order_create_v1(params: Dict[str, Any]) -> Dict[str, Any]:
 
 ### Cross-Language Services
 
-The demo uses Python for both services, but Promptware supports:
+The demo uses Python for both services, but AssertLang supports:
 - Python ↔ Node.js
 - Python ↔ Go
 - Node.js ↔ Rust
 - Any combination!
 
-Same `.pw` definition, different runtime.
+Same `.al` definition, different runtime.
 
 ### Production Features
 

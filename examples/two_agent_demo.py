@@ -116,7 +116,7 @@ def demo_two_agent_coordination():
     print("6. Coordination Summary")
     print("   ✓ Orchestrator successfully called code-reviewer")
     print("   ✓ Bidirectional MCP communication working")
-    print("   ✓ Two agents coordinated via .pw protocol")
+    print("   ✓ Two agents coordinated via .al protocol")
     print()
 
     print("=" * 60)

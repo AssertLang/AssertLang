@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://promptware.dev/schemas/tools/marketplace-uploader.v1.json",
+  "$id": "https://assertlang.dev/schemas/tools/marketplace-uploader.v1.json",
   "title": "Marketplace Uploader Tool",
   "type": "object",
   "properties": {

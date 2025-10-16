@@ -1,6 +1,6 @@
 # PW MCP Quick Reference
 
-**PW (Promptware)** is a universal programming language for AI agents. Instead of writing Python/Go/Rust code, you **compose** code using PW MCP tool calls.
+**PW (AssertLang)** is a universal programming language for AI agents. Instead of writing Python/Go/Rust code, you **compose** code using PW MCP tool calls.
 
 ---
 

@@ -4,7 +4,7 @@
 **Status**: Production Ready
 **Last Updated**: 2025-10-12
 
-A concise syntax reference for the Promptware (PW) programming language.
+A concise syntax reference for the AssertLang (PW) programming language.
 
 ---
 

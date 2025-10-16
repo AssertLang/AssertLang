@@ -1,12 +1,12 @@
 # CLI Commands Reference
 
-**Complete reference for Promptware command-line tools.**
+**Complete reference for AssertLang command-line tools.**
 
 ---
 
 ## Overview
 
-Promptware provides a comprehensive CLI for working with contracts:
+AssertLang provides a comprehensive CLI for working with contracts:
 - **Build** - Compile PW → Python/Go/Rust/JavaScript
 - **Validate** - Check contract syntax and correctness
 - **Generate** - Create MCP servers from agents
@@ -21,7 +21,7 @@ pip install promptware
 **Verify**:
 ```bash
 promptware --version
-# Output: Promptware 2.2.0
+# Output: AssertLang 2.2.0
 ```
 
 ---
@@ -30,12 +30,12 @@ promptware --version
 
 | Command | Purpose | Example |
 |---------|---------|---------|
-| `build` | Compile PW to target language | `promptware build file.pw -o file.py` |
-| `compile` | Compile PW to MCP JSON | `promptware compile file.pw` |
+| `build` | Compile PW to target language | `asl build file.al -o file.py` |
+| `compile` | Compile PW to MCP JSON | `asl compile file.pw` |
 | `run` | Execute PW file | `promptware run file.pw` |
 | `validate` | Check contract syntax | `promptware validate file.pw` |
 | `generate` | Generate MCP server | `promptware generate agent.pw` |
-| `test` | Test MCP agent | `promptware test http://localhost:3000 --auto` |
+| `test` | Test MCP agent | `asl test http://localhost:3000 --auto` |
 | `list-tools` | Show available tools | `promptware list-tools` |
 | `init` | Create new project | `promptware init my-agent` |
 | `config` | Manage configuration | `promptware config set defaults.language go` |
@@ -45,11 +45,11 @@ promptware --version
 
 ## build
 
-**Compile Promptware contracts to target languages.**
+**Compile AssertLang contracts to target languages.**
 
 ### Syntax
 ```bash
-promptware build <file.pw> [OPTIONS]
+asl build <file.al> [OPTIONS]
 ```
 
 ### Options
@@ -65,61 +65,61 @@ promptware build <file.pw> [OPTIONS]
 
 **Basic compilation:**
 ```bash
-promptware build calculator.pw -o calculator.py
+asl build calculator.al -o calculator.py
 ```
 Output:
 ```
-✓ Compiled calculator.pw → calculator.py
+✓ Compiled calculator.al → calculator.py
 ```
 
 **Multiple languages:**
 ```bash
 # Python
-promptware build user.pw --lang python -o user.py
+asl build user.al --lang python -o user.py
 
 # Go
-promptware build user.pw --lang go -o user.go
+asl build user.al --lang go -o user.go
 
 # Rust
-promptware build user.pw --lang rust -o user.rs
+asl build user.al --lang rust -o user.rs
 
 # TypeScript
-promptware build user.pw --lang typescript -o user.ts
+asl build user.al --lang typescript -o user.ts
 
 # JavaScript
-promptware build user.pw --lang javascript -o user.js
+asl build user.al --lang javascript -o user.js
 ```
 
 **Python output formats:**
 ```bash
 # Standard code (functions/classes)
-promptware build model.pw --format standard -o model.py
+asl build model.al --format standard -o model.py
 
 # Pydantic models (validation)
-promptware build model.pw --format pydantic -o model.py
+asl build model.al --format pydantic -o model.py
 
 # TypedDict schemas (state types)
-promptware build model.pw --format typeddict -o model.py
+asl build model.al --format typeddict -o model.py
 ```
 
 **Verbose mode:**
 ```bash
-promptware build contract.pw -o contract.py --verbose
+asl build contract.al -o contract.py --verbose
 ```
 Output:
 ```
-ℹ Reading: contract.pw
+ℹ Reading: contract.al
 ℹ Parsing PW code...
 ✓ Parsed: 5 functions, 2 classes
 ℹ Converting to MCP...
 ℹ Generating python code...
 ℹ Written: contract.py (1547 chars)
-✓ Compiled contract.pw → contract.py
+✓ Compiled contract.al → contract.py
 ```
 
 **To stdout:**
 ```bash
-promptware build add.pw
+asl build add.al
 ```
 Output (Python code printed):
 ```python
@@ -180,7 +180,7 @@ class User(BaseModel):
 
 ### Syntax
 ```bash
-promptware compile <file.pw> [OPTIONS]
+asl compile <file.al> [OPTIONS]
 ```
 
 ### Options
@@ -194,29 +194,29 @@ promptware compile <file.pw> [OPTIONS]
 
 **Basic compilation:**
 ```bash
-promptware compile user.pw
+asl compile user.al
 ```
 Output:
 ```
-✓ Compiled user.pw → user.pw.json
+✓ Compiled user.al → user.pw.json
 ```
 
 **Custom output:**
 ```bash
-promptware compile contract.pw -o ir.json
+asl compile contract.al -o ir.json
 ```
 
 **Verbose:**
 ```bash
-promptware compile contract.pw --verbose
+asl compile contract.al --verbose
 ```
 Output:
 ```
-ℹ Reading: contract.pw
+ℹ Reading: contract.al
 ℹ Parsing PW code...
 ℹ Converting to MCP JSON...
 ℹ Written: contract.pw.json (3241 chars)
-✓ Compiled contract.pw → contract.pw.json
+✓ Compiled contract.al → contract.pw.json
 ```
 
 ### JSON Output Format
@@ -254,7 +254,7 @@ Output:
 
 ### Syntax
 ```bash
-promptware run <file.pw> [OPTIONS]
+promptware run <file.al> [OPTIONS]
 ```
 
 ### Options
@@ -267,21 +267,21 @@ promptware run <file.pw> [OPTIONS]
 
 **Basic execution:**
 ```bash
-promptware run calculator.pw
+promptware run calculator.al
 ```
 
 **With verbose:**
 ```bash
-promptware run program.pw --verbose
+promptware run program.al --verbose
 ```
 Output:
 ```
-ℹ Reading: program.pw
+ℹ Reading: program.al
 ℹ Parsing PW code...
 ℹ Generating Python code...
 ℹ Executing...
 ────────────────────────────────────────────────────────────
-Hello from Promptware!
+Hello from AssertLang!
 Result: 42
 ```
 
@@ -299,7 +299,7 @@ Result: 42
 
 ### Syntax
 ```bash
-promptware validate <file.pw> [OPTIONS]
+promptware validate <file.al> [OPTIONS]
 ```
 
 ### Options
@@ -312,7 +312,7 @@ promptware validate <file.pw> [OPTIONS]
 
 **Basic validation:**
 ```bash
-promptware validate order.pw
+promptware validate order.al
 ```
 Output:
 ```
@@ -322,7 +322,7 @@ Output:
 
 **Verbose validation:**
 ```bash
-promptware validate order.pw --verbose
+promptware validate order.al --verbose
 ```
 Output:
 ```
@@ -346,7 +346,7 @@ Output:
 
 **Validation errors:**
 ```bash
-promptware validate broken.pw
+promptware validate broken.al
 ```
 Output:
 ```
@@ -368,7 +368,7 @@ Suggestion: Add colon after clause name: @requires positive: x > 0
 
 ### Syntax
 ```bash
-promptware generate <agent.pw> [OPTIONS]
+promptware generate <agent.al> [OPTIONS]
 ```
 
 ### Options
@@ -386,7 +386,7 @@ promptware generate <agent.pw> [OPTIONS]
 
 **Python server:**
 ```bash
-promptware generate user-service.pw --lang python
+promptware generate user-service.al --lang python
 ```
 Output:
 ```
@@ -418,12 +418,12 @@ Proceed? [Y/n] y
 
 **Go server:**
 ```bash
-promptware generate api.pw --lang go --output ./build
+promptware generate api.al --lang go --output ./build
 ```
 
 **Dry-run mode:**
 ```bash
-promptware generate agent.pw --dry-run
+promptware generate agent.al --dry-run
 ```
 Output:
 ```
@@ -439,7 +439,7 @@ Would create in: /path/to/generated/my-agent
 
 **Auto-confirm:**
 ```bash
-promptware generate agent.pw --yes
+promptware generate agent.al --yes
 ```
 
 ---
@@ -450,7 +450,7 @@ promptware generate agent.pw --yes
 
 ### Syntax
 ```bash
-promptware test <agent-url> [OPTIONS]
+asl test <agent-url> [OPTIONS]
 ```
 
 ### Options
@@ -469,7 +469,7 @@ promptware test <agent-url> [OPTIONS]
 
 **Health check:**
 ```bash
-promptware test http://localhost:3000
+asl test http://localhost:3000
 ```
 Output:
 ```
@@ -483,7 +483,7 @@ Output:
 
 **Integration tests:**
 ```bash
-promptware test http://localhost:3000 --auto
+asl test http://localhost:3000 --auto
 ```
 Output:
 ```
@@ -509,7 +509,7 @@ Total time: 490ms
 
 **Load test:**
 ```bash
-promptware test http://localhost:3000 --load --verb user.create@v1 --requests 1000 --concurrency 50
+asl test http://localhost:3000 --load --verb user.create@v1 --requests 1000 --concurrency 50
 ```
 Output:
 ```
@@ -546,7 +546,7 @@ Results:
 
 **Coverage report:**
 ```bash
-promptware test http://localhost:3000 --auto --coverage
+asl test http://localhost:3000 --auto --coverage
 ```
 Output:
 ```
@@ -557,7 +557,7 @@ Output:
 
 ## list-tools
 
-**List available Promptware tools.**
+**List available AssertLang tools.**
 
 ### Syntax
 ```bash
@@ -579,7 +579,7 @@ promptware list-tools
 ```
 Output:
 ```
-🛠️  Available Promptware Tools
+🛠️  Available AssertLang Tools
 
 📦 HTTP & APIs
   • http                      [python, nodejs, go, csharp, rust]
@@ -626,7 +626,7 @@ Total: 3 tools
 
 ## init
 
-**Create new Promptware project from template.**
+**Create new AssertLang project from template.**
 
 ### Syntax
 ```bash
@@ -648,12 +648,12 @@ promptware init my-agent
 ```
 Output:
 ```
-✓ Created: my-agent.pw
+✓ Created: my-agent.al
 
 📝 Next steps:
-  1. Edit my-agent.pw to customize your agent
-  2. Validate: promptware validate my-agent.pw
-  3. Generate: promptware generate my-agent.pw --lang python
+  1. Edit my-agent.al to customize your agent
+  2. Validate: promptware validate my-agent.al
+  3. Generate: promptware generate my-agent.al --lang python
 ```
 
 Generated `my-agent.pw`:
@@ -720,7 +720,7 @@ promptware init workflow --template workflow
 
 ## config
 
-**Manage Promptware configuration.**
+**Manage AssertLang configuration.**
 
 ### Syntax
 ```bash
@@ -841,14 +841,14 @@ promptware ai-guide
 ```
 Output:
 ```markdown
-# Promptware AI Agent Guide
+# AssertLang AI Agent Guide
 
-This guide helps AI coding agents understand Promptware...
+This guide helps AI coding agents understand AssertLang...
 
 [Full guide content printed to stdout]
 
 ℹ Copy this entire output and paste it to any AI coding agent.
-ℹ They will understand how to help you build services with Promptware.
+ℹ They will understand how to help you build services with AssertLang.
 ```
 
 ---
@@ -884,18 +884,18 @@ promptware help test
 
 ```bash
 # 1. Write contract
-vim user.pw
+vim user.al
 
 # 2. Validate syntax
-promptware validate user.pw
+promptware validate user.al
 
 # 3. Test with different targets
-promptware build user.pw                          # Python (default)
-promptware build user.pw --lang go                # Go
-promptware build user.pw --lang rust              # Rust
+asl build user.al                          # Python (default)
+asl build user.al --lang go                # Go
+asl build user.al --lang rust              # Rust
 
 # 4. Generate final output
-promptware build user.pw -o user.py
+asl build user.al -o user.py
 
 # 5. Run it
 python user.py
@@ -908,13 +908,13 @@ python user.py
 promptware init my-service --template api
 
 # 2. Edit agent definition
-vim my-service.pw
+vim my-service.al
 
 # 3. Validate
-promptware validate my-service.pw
+promptware validate my-service.al
 
 # 4. Generate server
-promptware generate my-service.pw --lang python
+promptware generate my-service.al --lang python
 
 # 5. Run server
 cd generated/my-service
@@ -922,27 +922,27 @@ pip install -r requirements.txt
 python my-service_server.py
 
 # 6. Test (in another terminal)
-promptware test http://localhost:3000 --auto
+asl test http://localhost:3000 --auto
 ```
 
 ### Testing Workflow
 
 ```bash
 # 1. Health check
-promptware test http://localhost:3000
+asl test http://localhost:3000
 
 # 2. Integration tests
-promptware test http://localhost:3000 --auto
+asl test http://localhost:3000 --auto
 
 # 3. Load test specific verb
-promptware test http://localhost:3000 \
+asl test http://localhost:3000 \
     --load \
     --verb user.create@v1 \
     --requests 10000 \
     --concurrency 100
 
 # 4. Export coverage
-promptware test http://localhost:3000 --auto --coverage
+asl test http://localhost:3000 --auto --coverage
 ```
 
 ---
@@ -959,7 +959,7 @@ promptware test http://localhost:3000 --auto --coverage
 
 ```bash
 # Disable colors (for CI/scripts)
-NO_COLOR=1 promptware build contract.pw
+NO_COLOR=1 asl build contract.al
 
 # Use specific editor
 EDITOR=vim promptware config edit

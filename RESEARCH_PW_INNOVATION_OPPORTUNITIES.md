@@ -1,15 +1,15 @@
-# Promptware Innovation Research: From Transpiler to Transformative Platform
+# AssertLang Innovation Research: From Transpiler to Transformative Platform
 
 **Research Date:** 2025-10-12
 **Researcher:** Lead Agent
-**Scope:** Deep analysis of Promptware's unique position and killer feature identification
+**Scope:** Deep analysis of AssertLang's unique position and killer feature identification
 **Goal:** Identify transformative features that make PW irresistible, not just "another transpiler"
 
 ---
 
 ## Executive Summary
 
-**Current State:** Promptware is a well-executed multi-target transpiler with modern features (generics, Option<T>, Result<T,E>, dual syntax). It has solid engineering but lacks a compelling "must-have" differentiator.
+**Current State:** AssertLang is a well-executed multi-target transpiler with modern features (generics, Option<T>, Result<T,E>, dual syntax). It has solid engineering but lacks a compelling "must-have" differentiator.
 
 **Key Finding:** PW's unique position is NOT "write once, run anywhere" (solved problem) but rather **"universal cross-language orchestration"** - becoming the **glue language for polyglot systems** with first-class interop, automatic FFI, and semantic translation between incompatible paradigms.
 
@@ -486,7 +486,7 @@
 
 **How it works:**
 ```pw
-// pw_app.pw - Single PW file, multiple language libraries
+// pw_app.al - Single PW file, multiple language libraries
 
 // Import Python library (auto-FFI)
 @ffi(lang="python", module="pandas")
@@ -993,7 +993,7 @@ $ pw hot-reload --canary=5%  // Test on 5% traffic
 
 ### 4.1 What It Is
 
-**Core Concept:** Promptware becomes the universal **glue language** for polyglot systems. Write orchestration logic in PW, seamlessly call Python, Rust, Go, TypeScript, C# libraries with zero boilerplate.
+**Core Concept:** AssertLang becomes the universal **glue language** for polyglot systems. Write orchestration logic in PW, seamlessly call Python, Rust, Go, TypeScript, C# libraries with zero boilerplate.
 
 **Developer Experience:**
 ```pw
@@ -1631,7 +1631,7 @@ function deploy_ml_model(model_path: string) {
 6. **Feasible:** PW's architecture enables this (other languages can't pivot)
 
 **The pitch:**
-> "Promptware: The only language that speaks all languages. Use Python for ML, Rust for APIs, Go for services—PW handles the integration. Zero boilerplate, type-safe, fast."
+> "AssertLang: The only language that speaks all languages. Use Python for ML, Rust for APIs, Go for services—PW handles the integration. Zero boilerplate, type-safe, fast."
 
 **Next step:** Build FFI prototype (Python ↔ PW ↔ Rust) in 6 months. Demo at data engineering conference. Iterate based on feedback.
 

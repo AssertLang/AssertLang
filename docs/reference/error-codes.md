@@ -1,12 +1,12 @@
 # Error Codes Reference
 
-**Complete reference for Promptware errors and how to fix them.**
+**Complete reference for AssertLang errors and how to fix them.**
 
 ---
 
 ## Overview
 
-Promptware errors fall into 4 categories:
+AssertLang errors fall into 4 categories:
 1. **Contract Violations** - Runtime contract failures (precondition, postcondition, invariant)
 2. **Parse Errors** - Syntax errors in `.pw` files
 3. **Validation Errors** - Structural issues in contracts

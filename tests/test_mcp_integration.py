@@ -119,23 +119,23 @@ def agent_tool_execution(
 # Test configuration: (agent_path, tool_name, test_arguments)
 TEST_AGENTS = [
     (
-        "examples/test_tool_integration.pw",
+        "examples/test_tool_integration.al",
         "fetch.url@v1",
         {"url": "https://api.github.com/zen", "method": "GET"},
     ),
-    ("examples/ai_code_reviewer.pw", "review.analyze@v1", {"repo": "test/repo", "pr_number": 123}),
-    ("examples/deployment_workflow.pw", "workflow.execute@v1", {"environment": "staging"}),
-    ("examples/observable_agent.pw", "task.execute@v1", {"task_id": "test-123"}),
+    ("examples/ai_code_reviewer.al", "review.analyze@v1", {"repo": "test/repo", "pr_number": 123}),
+    ("examples/deployment_workflow.al", "workflow.execute@v1", {"environment": "staging"}),
+    ("examples/observable_agent.al", "task.execute@v1", {"task_id": "test-123"}),
     (
-        "examples/devops_suite/code_reviewer_agent.pw",
+        "examples/devops_suite/code_reviewer_agent.al",
         "review.approve@v1",
         {"review_id": "test", "approved": True, "comments": "LGTM"},
     ),
-    ("examples/orchestrator_agent.pw", "orchestrate.deploy@v1", {"service": "test-service"}),
-    ("examples/cross_language/data_processor.pw", "process.data@v1", {"input": "test"}),
-    ("examples/cross_language/cache_service.pw", "cache.get@v1", {"key": "test"}),
-    ("examples/devops_suite/deployment_orchestrator.pw", "deploy.service@v1", {"service": "test"}),
-    ("examples/devops_suite/test_runner_agent.pw", "test.run@v1", {"suite": "unit"}),
+    ("examples/orchestrator_agent.al", "orchestrate.deploy@v1", {"service": "test-service"}),
+    ("examples/cross_language/data_processor.al", "process.data@v1", {"input": "test"}),
+    ("examples/cross_language/cache_service.al", "cache.get@v1", {"key": "test"}),
+    ("examples/devops_suite/deployment_orchestrator.al", "deploy.service@v1", {"service": "test"}),
+    ("examples/devops_suite/test_runner_agent.al", "test.run@v1", {"suite": "unit"}),
 ]
 
 
@@ -154,7 +154,7 @@ def test_all_agents_initialize():
 
     # At least test-tool-agent should work
     assert (
-        results["examples/test_tool_integration.pw"]["status"] == "pass"
+        results["examples/test_tool_integration.al"]["status"] == "pass"
     ), "test-tool-agent failed to initialize"
 
     return results
@@ -185,7 +185,7 @@ def test_all_agents_execute_tools():
 
     # test-tool-agent should execute successfully
     assert (
-        results["examples/test_tool_integration.pw"]["status"] == "pass"
+        results["examples/test_tool_integration.al"]["status"] == "pass"
     ), "test-tool-agent failed to execute"
 
     return results
@@ -202,7 +202,7 @@ def test_tool_integration_end_to_end():
     4. Tool results present in response
     """
     result = agent_tool_execution(
-        "examples/test_tool_integration.pw",
+        "examples/test_tool_integration.al",
         "fetch.url@v1",
         {"url": "https://api.github.com/zen", "method": "GET"},
     )

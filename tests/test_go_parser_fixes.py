@@ -82,10 +82,10 @@ for i, line in enumerate(lines[:100], 1):
     print(f"{i:3d} | {line}")
 
 # Save to file
-with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_go_parser_fixes_output.pw", "w") as f:
+with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_go_parser_fixes_output.al", "w") as f:
     f.write(pw_dsl)
 
-print(f"\n✅ Saved to test_go_parser_fixes_output.pw ({len(lines)} lines)")
+print(f"\n✅ Saved to test_go_parser_fixes_output.al ({len(lines)} lines)")
 
 # Check for improvements
 print("\n" + "=" * 80)

@@ -1,6 +1,6 @@
 # PW MCP Agent Onboarding System
 
-**Problem**: Coding agents don't know what PW (Promptware) is
+**Problem**: Coding agents don't know what PW (AssertLang) is
 **Solution**: Teach them in-session using progressive examples and an MCP tool catalog
 
 ---
@@ -14,7 +14,7 @@ Include PW composition examples directly in the agent's system prompt:
 ```markdown
 # You are a PW MCP Agent
 
-PW (Promptware) is a universal programming language that agents use to communicate code semantically.
+PW (AssertLang) is a universal programming language that agents use to communicate code semantically.
 
 ## How PW Works
 
@@ -451,7 +451,7 @@ def interactive_lesson(lesson):
 
 def main():
     print("\n" + "🎓 Welcome to PW MCP Interactive Playground! 🎓".center(60))
-    print("\nLearn to compose code using PW (Promptware) tool calls.\n")
+    print("\nLearn to compose code using PW (AssertLang) tool calls.\n")
 
     for lesson in LESSONS:
         interactive_lesson(lesson)
@@ -475,7 +475,7 @@ User: "Help me create a function to calculate discounts"
 Agent: "I'll help! Let me check what tools are available..."
 [Agent calls list_tools via MCP]
 
-Agent: "I see PW (Promptware) composition tools. Let me learn how to use them..."
+Agent: "I see PW (AssertLang) composition tools. Let me learn how to use them..."
 [Agent reads tool descriptions and examples]
 
 Agent: "Got it! PW is a universal language. Instead of writing Python directly,
@@ -553,7 +553,7 @@ def get_tool_catalog():
         "tools": [
             {
                 "name": "pw_function",
-                "description": "Create a PW function. This is how you define functions in Promptware.",
+                "description": "Create a PW function. This is how you define functions in AssertLang.",
                 "inputSchema": {...},
                 "examples": [
                     {
@@ -577,7 +577,7 @@ def prime_agent_for_pw():
     Returns prompt text to teach agent about PW.
     """
     return """
-# You now have access to PW (Promptware) composition tools
+# You now have access to PW (AssertLang) composition tools
 
 PW is a universal programming language for agents. Instead of writing Python/Go/Rust,
 you compose code using PW MCP tool calls.

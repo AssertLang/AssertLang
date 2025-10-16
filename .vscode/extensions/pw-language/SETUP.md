@@ -31,7 +31,7 @@ If syntax highlighting still doesn't work:
 
 1. Open a `.pw` file
 2. Click the language indicator in bottom-right (might say "Plain Text")
-3. Type "PW" or "Promptware"
+3. Type "PW" or "AssertLang"
 4. Select "PW" from the list
 
 ### Step 4: Enable File Icons
@@ -63,7 +63,7 @@ PW syntax highlighting works with any VS Code theme, but looks especially good w
 
 ### Problem: Extension not found
 
-**Solution**: Make sure you're opening VS Code from the Promptware project root directory. The extension is workspace-specific.
+**Solution**: Make sure you're opening VS Code from the AssertLang project root directory. The extension is workspace-specific.
 
 ## What Gets Highlighted
 
@@ -80,4 +80,4 @@ Open `examples/calculator.pw` to see syntax highlighting in action!
 
 ---
 
-**Need help?** Open an issue at: https://github.com/Promptware-dev/promptware
+**Need help?** Open an issue at: https://github.com/AssertLang/AssertLang

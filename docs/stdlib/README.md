@@ -1,4 +1,4 @@
-# Promptware Standard Library
+# AssertLang Standard Library
 
 **Status**: BLOCKED - Awaiting parser generic type support
 **Version**: v0.1.0-alpha (Specification Complete)
@@ -8,7 +8,7 @@
 
 ## Overview
 
-The Promptware standard library provides foundational types and utilities for safe, explicit error handling inspired by Rust's best practices. The stdlib follows a "no null, no exceptions" philosophy, using Option<T> and Result<T,E> types instead.
+The AssertLang standard library provides foundational types and utilities for safe, explicit error handling inspired by Rust's best practices. The stdlib follows a "no null, no exceptions" philosophy, using Option<T> and Result<T,E> types instead.
 
 ## Philosophy
 
@@ -29,7 +29,7 @@ Represents an optional value - either `Some(value)` or `None`.
 - Replacing `null` or `undefined` with explicit typing
 
 **Example:**
-```pw
+```al
 import stdlib.core
 
 // Function that might not find a user
@@ -71,7 +71,7 @@ Represents success (`Ok(value)`) or failure (`Err(error)`) with typed errors.
 - Any operation that can fail with recoverable errors
 
 **Example:**
-```pw
+```al
 import stdlib.core
 
 // Function that can fail
@@ -111,7 +111,7 @@ See [Result.md](./Result.md) for complete API documentation.
 
 ### Implementation Complete
 ✅ **Specification**: Complete API design based on Rust best practices
-✅ **Reference Implementation**: `stdlib/core.pw` with all functions
+✅ **Reference Implementation**: `stdlib/core.al` with all functions
 ✅ **Test Suite**: 40+ comprehensive tests (24 Option, 26 Result)
 ✅ **Documentation**: API specifications, examples, usage patterns
 
@@ -170,7 +170,7 @@ Only documentation tests pass (checking for docstrings). All parse tests fail.
 
 Implement Option and Result without generic parameters:
 
-```pw
+```al
 // Non-generic enum (loses type safety)
 enum Option:
     - Some(value)  // value is 'any' type
@@ -196,7 +196,7 @@ function option_map(opt, fn) -> Option:
 
 Replace pattern matching with property checks:
 
-```pw
+```al
 enum Option:
     - Some(value)
     - None
@@ -238,7 +238,7 @@ function option_map(opt, fn) -> Option:
 
 | File | Status | Lines | Description |
 |------|--------|-------|-------------|
-| `stdlib/core.pw` | ✅ Complete | 442 | Option & Result implementation |
+| `stdlib/core.al` | ✅ Complete | 442 | Option & Result implementation |
 | `tests/test_stdlib_option.py` | ✅ Complete | 374 | 24 comprehensive tests |
 | `tests/test_stdlib_result.py` | ✅ Complete | 478 | 26 comprehensive tests |
 | `docs/stdlib/README.md` | ✅ Complete | (this file) | Stdlib overview |
@@ -263,7 +263,7 @@ function option_map(opt, fn) -> Option:
 
 ## Quick Start (Once Parser is Ready)
 
-```pw
+```al
 import stdlib.core
 
 // Option example

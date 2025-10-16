@@ -444,7 +444,7 @@ class DotNetExpertAgent:
         Run full bidirectional test on generated C# code.
 
         Args:
-            fixture_path: Path to .pw fixture file
+            fixture_path: Path to .al fixture file
             generated_code_path: Path to generated C# code directory
             port: Server port
 

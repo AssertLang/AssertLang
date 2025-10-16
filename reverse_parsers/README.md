@@ -35,7 +35,7 @@ The Python reverse parser converts Python FastAPI servers back to PW DSL, enabli
 python3 reverse_parsers/cli.py server.py
 
 # Save to file
-python3 reverse_parsers/cli.py server.py --output agent.pw
+python3 reverse_parsers/cli.py server.py --output agent.al
 
 # Include metadata
 python3 reverse_parsers/cli.py server.py --metadata
@@ -85,7 +85,7 @@ print(pw_dsl)
 **Input**: `complex-test-agent_server.py` (FastAPI server)
 
 **Output**:
-```pw
+```al
 lang python
 agent complex-test-agent
 port 23472
@@ -252,7 +252,7 @@ uvicorn.run(app, port=8000)
 ```
 
 **PW Output**:
-```pw
+```al
 lang python
 agent minimal-agent
 port 8000
@@ -280,7 +280,7 @@ def handle_fetch_data_v1(params):
 ```
 
 **PW Output**:
-```pw
+```al
 lang python
 agent http-agent
 port 8000

@@ -1,4 +1,4 @@
-# Promptware Universal Type System
+# AssertLang Universal Type System
 
 **Version**: 2.0.0-alpha
 **Last Updated**: 2025-10-04
@@ -22,7 +22,7 @@
 
 ## Overview
 
-The Promptware Universal Type System bridges the gap between dynamically-typed languages (Python, Node.js) and statically-typed languages (Go, Rust, .NET). It provides:
+The AssertLang Universal Type System bridges the gap between dynamically-typed languages (Python, Node.js) and statically-typed languages (Go, Rust, .NET). It provides:
 
 - **Cross-language type mapping** - Translate types between any pair of supported languages
 - **Type inference** - Infer static types from dynamic code patterns
@@ -171,7 +171,7 @@ map<string, int>
 
 **PW Code Examples**:
 
-```pw
+```al
 // Optional return type
 function find_user(id: int) -> map? {
     if (id < 0) {
@@ -985,5 +985,5 @@ def test_kotlin_mappings():
 **Version**: 2.0.0-alpha
 **Status**: Production Ready
 **Last Updated**: 2025-10-04
-**Maintained by**: Promptware Type System Agent
+**Maintained by**: AssertLang Type System Agent
 **License**: MIT

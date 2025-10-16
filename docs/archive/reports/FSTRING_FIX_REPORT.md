@@ -10,7 +10,7 @@
 
 ### Phase 1: Parser Fix ✅
 
-**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/python_parser_v2.py`
+**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/python_parser_v2.py`
 
 **Changes**:
 1. Added `IRFString` import
@@ -45,7 +45,7 @@ def _convert_fstring(self, node: ast.JoinedStr) -> Any:
 
 #### JavaScript/TypeScript Generator ✅
 
-**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/nodejs_generator_v2.py`
+**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/nodejs_generator_v2.py`
 
 **Changes**:
 1. Added `IRFString` import
@@ -79,7 +79,7 @@ def generate_fstring(self, expr: IRFString) -> str:
 
 #### Go Generator ✅
 
-**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/go_generator_v2.py`
+**File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/go_generator_v2.py`
 
 **Changes**:
 1. Added `IRFString` import
@@ -119,7 +119,7 @@ def _generate_fstring(self, expr: IRFString) -> str:
 
 ### Phase 3: Testing ✅
 
-**Test File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/test_fstring_fix.py`
+**Test File**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/test_fstring_fix.py`
 
 **Tests Created**:
 1. ✅ `test_simple_fstring_parsing` - Validates IRFString nodes are created
@@ -220,10 +220,10 @@ def generate_fstring(self, expr: IRFString) -> str:
 
 ## Files Modified
 
-1. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/python_parser_v2.py`
-2. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/nodejs_generator_v2.py`
-3. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/language/go_generator_v2.py`
-4. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/test_fstring_fix.py` (created)
+1. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/python_parser_v2.py`
+2. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/nodejs_generator_v2.py`
+3. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/language/go_generator_v2.py`
+4. `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/test_fstring_fix.py` (created)
 
 ## Impact
 

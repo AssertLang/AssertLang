@@ -17,7 +17,7 @@ import sys
 
 def compile_pw_to_python(pw_code: str) -> str:
     """Compile PW code to Python and return the generated code."""
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.pw', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.al', delete=False) as f:
         f.write(pw_code)
         pw_file = f.name
 
@@ -157,7 +157,7 @@ function test_mixed() -> bool {
 
     def test_jwt_auth_pattern(self):
         """
-        Test the exact pattern from pw_jwt_auth.pw that triggers the bug.
+        Test the exact pattern from pw_jwt_auth.al that triggers the bug.
 
         This is the core case from the bug report:
         let reg1 = auth.register(...);

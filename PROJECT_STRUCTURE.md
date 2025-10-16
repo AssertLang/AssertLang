@@ -1,4 +1,4 @@
-# Promptware Project Structure
+# AssertLang Project Structure
 
 **Version**: 2.1.0b3
 **Last Updated**: 2025-10-08
@@ -69,12 +69,12 @@ promptware/
 │   └── ...
 │
 ├── 📁 examples/                # PW Example Programs
-│   ├── calculator.pw           # Basic calculator
-│   ├── calculator_cli.pw       # CLI calculator (classes)
-│   ├── todo_list_manager.pw    # Todo app (CRUD)
-│   ├── simple_web_api.pw       # Web API example
-│   ├── error_handling.pw       # Try/catch patterns
-│   ├── array_and_map_basics.pw # Safe collections
+│   ├── calculator.al           # Basic calculator
+│   ├── calculator_cli.al       # CLI calculator (classes)
+│   ├── todo_list_manager.al    # Todo app (CRUD)
+│   ├── simple_web_api.al       # Web API example
+│   ├── error_handling.al       # Try/catch patterns
+│   ├── array_and_map_basics.al # Safe collections
 │   └── ...
 │
 ├── 📁 docs/                    # Documentation
@@ -134,7 +134,7 @@ promptware/
 4. Study `docs/ARCHITECTURE.md` - System design
 
 ### Want to write PW?
-1. Install: `pip install promptware-dev`
+1. Install: `pip install assertlang`
 2. Tutorial: `docs/PW_LANGUAGE_GUIDE.md`
 3. Examples: `examples/*.pw`
 4. Safe patterns: `docs/SAFE_PATTERNS.md`
@@ -159,11 +159,11 @@ promptware/
 - **Bug Status**: [BUGS.md](BUGS.md) ✅ 100% Complete
 - **Examples**: [docs/EXAMPLES_INDEX.md](docs/EXAMPLES_INDEX.md)
 - **Safe Patterns**: [docs/SAFE_PATTERNS.md](docs/SAFE_PATTERNS.md)
-- **GitHub**: https://github.com/Promptware-dev/promptware
-- **PyPI**: https://pypi.org/project/promptware-dev/
+- **GitHub**: https://github.com/AssertLang/AssertLang
+- **PyPI**: https://pypi.org/project/assertlang/
 
 ---
 
-**Maintained By**: Promptware Contributors
+**Maintained By**: AssertLang Contributors
 **License**: MIT
 **Status**: Production-Ready v2.1.0b3

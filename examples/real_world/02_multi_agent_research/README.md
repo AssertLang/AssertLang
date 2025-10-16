@@ -6,7 +6,7 @@
 
 ```bash
 # 1. Generate Python code from contracts
-promptware build pipeline.pw --lang python -o pipeline.py
+asl build pipeline.al --lang python -o pipeline.py
 
 # 2. Run comprehensive test suite (39 tests)
 python3 -m pytest test_pipeline.py -v
@@ -413,7 +413,7 @@ function validate_research_results(
 
 ### Research Agent Validation
 
-```pw
+```al
 // Validate research query inputs
 function validate_research_query(
     query: string,
@@ -501,7 +501,7 @@ def validate_research_query(query: str, max_results: int, min_quality_score: flo
 
 ### Analyzer Agent Validation
 
-```pw
+```al
 // Validate analysis input
 function validate_analysis_input(
     research_data_size: int,
@@ -553,7 +553,7 @@ function validate_analysis_output(
 
 ### Writer Agent Validation
 
-```pw
+```al
 // Validate report generation input
 function validate_report_input(
     analysis_size: int,
@@ -607,7 +607,7 @@ function validate_final_report(
 
 ### Agent Coordination
 
-```pw
+```al
 // Check if agent can proceed (coordination)
 function can_agent_proceed(
     agent_name: string,
@@ -639,7 +639,7 @@ function can_agent_proceed(
 
 ### Pipeline Stage Validation
 
-```pw
+```al
 // Validate pipeline execution order
 function validate_pipeline_stage(
     current_stage: string,
@@ -678,7 +678,7 @@ function validate_pipeline_stage(
 
 ### Task Assignment Validation
 
-```pw
+```al
 // Validate agent task assignment
 function validate_task_assignment(
     agent_role: string,
@@ -1142,7 +1142,7 @@ Start using contracts in your CrewAI/LangGraph workflows:
 
 ```bash
 # Generate Python code
-promptware build pipeline.pw --lang python -o my_contracts.py
+asl build pipeline.al --lang python -o my_contracts.py
 
 # Import in your agent code
 from my_contracts import (
@@ -1156,7 +1156,7 @@ from my_contracts import (
 
 Modify contracts for your specific use case:
 
-```pw
+```al
 // Custom validation for your domain
 function validate_medical_research_query(
     query: string,
@@ -1176,7 +1176,7 @@ function validate_medical_research_query(
 
 Extend with additional validation:
 
-```pw
+```al
 function validate_research_data_privacy(
     contains_pii: bool,
     anonymization_applied: bool
@@ -1223,7 +1223,7 @@ def check_precondition_with_metrics(condition, name, ...):
 
 ## Learn More
 
-- **[Promptware Documentation](../../../docs/)** - Complete language guide
+- **[AssertLang Documentation](../../../docs/)** - Complete language guide
 - **[Contract Tutorial](../../../docs/contracts.md)** - Design by Contract patterns
 - **[Multi-Language Codegen](../../../docs/codegen.md)** - Generate Rust, Go, JavaScript
 - **[CrewAI Documentation](https://docs.crewai.com/)** - Multi-agent framework

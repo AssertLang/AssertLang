@@ -451,7 +451,7 @@ None of the four translations (JavaScript, Go, Rust, C#) produced syntactically 
    ```csharp
    namespace testcodeoriginal  // ❌ Violates C# naming conventions
    ```
-   **Should be**: `TestCodeOriginal` or `Promptware.TestCode`
+   **Should be**: `TestCodeOriginal` or `AssertLang.TestCode`
 
 3. **Line 14: Undefined class**
    ```csharp

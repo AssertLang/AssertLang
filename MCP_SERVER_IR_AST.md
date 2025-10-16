@@ -4,11 +4,11 @@
 
 The PW Operations MCP Server now exposes **three levels of representation** for each of the 84 universal programming operations:
 
-1. **PW IR (Intermediate Representation)**: Language-agnostic representation using Promptware IR nodes
+1. **PW IR (Intermediate Representation)**: Language-agnostic representation using AssertLang IR nodes
 2. **Target Language AST**: Language-specific abstract syntax tree structure
 3. **Raw Code**: Executable code string ready to use
 
-This enables the Promptware compiler to:
+This enables the AssertLang compiler to:
 - Validate PW syntax against operations
 - Optimize code at the IR level
 - Generate idiomatic code per target language

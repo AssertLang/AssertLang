@@ -341,7 +341,7 @@ All test fixtures follow these principles:
 ### Prerequisites
 
 ```bash
-cd /Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware
+cd /Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang
 python3 --version  # Requires Python 3.10+
 ```
 
@@ -547,7 +547,7 @@ The integration test suite successfully validates the universal code translation
 ### Test File Locations
 
 ```
-Promptware/
+AssertLang/
 ├── tests/integration/
 │   ├── fixtures/
 │   │   ├── simple_service.py     (100 lines)

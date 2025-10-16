@@ -461,14 +461,14 @@ IDE support: Good (autocomplete, type hints work)
 3. ✅ **Real-world validation** - tested on complex code
 4. ✅ **+5-8% quality improvement** - now at 80-83% total
 
-### Impact on Promptware V2
+### Impact on AssertLang V2
 
 - **Before**: Generated Go code was verbose, hard to read, many `interface{}`
 - **After**: Generated Go code is idiomatic, readable, type-safe
 
 ### System Status
 
-**Promptware V2 translation quality**: **80-83%**
+**AssertLang V2 translation quality**: **80-83%**
 
 **Quality breakdown**:
 - MCP server patterns: 95%+ (V1 working perfectly)

@@ -1,12 +1,12 @@
 # How-To Guides
 
-**Practical, task-oriented guides for common Promptware workflows.**
+**Practical, task-oriented guides for common AssertLang workflows.**
 
 ---
 
 ## Overview
 
-How-To guides show you how to accomplish specific tasks with Promptware. Each guide is:
+How-To guides show you how to accomplish specific tasks with AssertLang. Each guide is:
 - **Task-focused** - Solves a specific problem
 - **Step-by-step** - Clear instructions from start to finish
 - **Practical** - Real-world examples you can use immediately
@@ -35,7 +35,7 @@ How-To guides show you how to accomplish specific tasks with Promptware. Each gu
 |-------|------|------------|-------------|
 | [Integrate with CrewAI](integration/crewai.md) | 30 min | Intermediate | Add contracts to CrewAI agents |
 | [Integrate with LangGraph](integration/langgraph.md) | 30 min | Intermediate | Validate LangGraph state transitions |
-| [Set Up MCP Server](integration/mcp-server.md) | 20 min | Intermediate | Expose Promptware via MCP for Claude |
+| [Set Up MCP Server](integration/mcp-server.md) | 20 min | Intermediate | Expose AssertLang via MCP for Claude |
 | [Use with Pydantic](integration/pydantic.md) | 25 min | Intermediate | Generate Pydantic models from contracts |
 
 ---

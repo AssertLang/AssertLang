@@ -65,7 +65,7 @@ def translate_python_to_go_via_pw(input_path: str, output_path: str, save_pw_dsl
 
     # Step 1.3: Save PW DSL (optional, for inspection)
     if save_pw_dsl:
-        pw_path = str(output_path).replace('.go', '.pw')
+        pw_path = str(output_path).replace('.go', '.al')
         with open(pw_path, 'w') as f:
             f.write(pw_dsl_text)
         print(f"  Step 1.3: Saved PW DSL → {pw_path}")

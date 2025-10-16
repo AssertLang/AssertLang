@@ -21,7 +21,7 @@ call fetch method=GET url="https://example.com" retry.max=2 retry.delay=1 expect
 
 
 def test_lint_text_prompt_only(tmp_path):
-    warnings = lint_text(Path("sample.pw"), "Just a prompt")
+    warnings = lint_text(Path("sample.al"), "Just a prompt")
     assert any("prompt only" in msg for msg in warnings)
 
 
@@ -70,7 +70,7 @@ fanout send:
 case:
 merge into summary send.case_0
 """
-    warnings = lint_text(Path("fanout.pw"), source)
+    warnings = lint_text(Path("fanout.al"), source)
     assert any("fanout case has no actions" in msg for msg in warnings)
 
 

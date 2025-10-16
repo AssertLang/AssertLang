@@ -9,7 +9,7 @@
 
 ## Overview
 
-The .NET Parser V2 converts arbitrary C# code into Promptware's Intermediate Representation (IR), enabling universal code translation across all supported languages.
+The .NET Parser V2 converts arbitrary C# code into AssertLang's Intermediate Representation (IR), enabling universal code translation across all supported languages.
 
 **Key Features**:
 - Parse arbitrary C# code (not just MCP servers)
@@ -652,7 +652,7 @@ print(module)
 
 ## References
 
-- **Promptware IR Specification**: `docs/IR_SPECIFICATION.md`
+- **AssertLang IR Specification**: `docs/IR_SPECIFICATION.md`
 - **Type System Documentation**: `docs/TYPE_SYSTEM.md`
 - **C# Language Reference**: https://docs.microsoft.com/en-us/dotnet/csharp/
 - **Roslyn API**: https://github.com/dotnet/roslyn
@@ -676,4 +676,4 @@ print(module)
 **Last Updated**: 2025-10-04
 **Status**: Production Ready
 **Author**: .NET Parser V2 Agent
-**License**: Same as Promptware project
+**License**: Same as AssertLang project

@@ -23,7 +23,7 @@ def test_cli_version():
 def test_cli_test_command():
     """Test the test command."""
     result = subprocess.run(
-        [sys.executable, "cli/main.py", "test", "examples/cross_language/data_processor.pw"],
+        [sys.executable, "cli/main.py", "test", "examples/cross_language/data_processor.al"],
         capture_output=True,
         text=True,
     )
@@ -46,7 +46,7 @@ def test_cli_generate_command():
                 sys.executable,
                 "cli/main.py",
                 "generate",
-                "examples/cross_language/data_processor.pw",
+                "examples/cross_language/data_processor.al",
                 "-o",
                 str(output_file),
             ],
@@ -80,7 +80,7 @@ def test_cli_generate_python():
                 sys.executable,
                 "cli/main.py",
                 "generate",
-                "examples/cross_language/data_processor.pw",
+                "examples/cross_language/data_processor.al",
                 "--lang",
                 "python",
                 "-o",
@@ -112,7 +112,7 @@ def test_cli_generate_go():
                 sys.executable,
                 "cli/main.py",
                 "generate",
-                "examples/cross_language/cache_service.pw",
+                "examples/cross_language/cache_service.al",
                 "-o",
                 str(output_file),
             ],
@@ -135,7 +135,7 @@ def test_cli_generate_go():
 def test_cli_invalid_file():
     """Test error handling for non-existent file."""
     result = subprocess.run(
-        [sys.executable, "cli/main.py", "test", "nonexistent.pw"], capture_output=True, text=True
+        [sys.executable, "cli/main.py", "test", "nonexistent.al"], capture_output=True, text=True
     )
 
     assert result.returncode != 0

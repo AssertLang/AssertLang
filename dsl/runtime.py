@@ -436,4 +436,4 @@ if __name__ == "__main__":
         runtime = PWRuntime()
         runtime.execute_file(sys.argv[1])
     else:
-        print("Usage: python3 dsl/runtime.py <file.pw>")
+        print("Usage: python3 dsl/runtime.py <file.al>")

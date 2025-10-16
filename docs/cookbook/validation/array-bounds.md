@@ -19,7 +19,7 @@ Array operations fail without bounds checking:
 
 ## Solution
 
-```pw
+```al
 function get_first_item(items: array<string>) -> string {
     @requires non_empty: len(items) > 0
 
@@ -111,31 +111,31 @@ def process_batch(items: list[str]) -> list[str]:
 ## Variations
 
 ### Exact Size
-```pw
+```al
 @requires exact_size: len(items) == 5
 // Array must have exactly 5 elements
 ```
 
 ### Minimum Size Only
-```pw
+```al
 @requires has_items: len(items) >= 1
 // At least one element
 ```
 
 ### Maximum Size Only
-```pw
+```al
 @requires reasonable_size: len(items) <= 10000
 // No more than 10K elements
 ```
 
 ### Range Check
-```pw
+```al
 @requires size_range: len(items) >= 10 && len(items) <= 100
 // Between 10 and 100 elements
 ```
 
 ### Multi-Dimensional Arrays
-```pw
+```al
 function process_matrix(matrix: array<array<int>>) -> int {
     @requires not_empty: len(matrix) > 0
     @requires rows_not_empty: len(matrix[0]) > 0
@@ -146,7 +146,7 @@ function process_matrix(matrix: array<array<int>>) -> int {
 ```
 
 ### Safe Slice
-```pw
+```al
 function get_slice(
     items: array<string>,
     start: int,
@@ -168,7 +168,7 @@ function get_slice(
 ## Common Pitfalls
 
 ### ❌ Only checking `len() > 0` before indexing
-```pw
+```al
 function get_third(items: array<string>) -> string {
     @requires non_empty: len(items) > 0
     return items[2];  // ❌ Crashes if len(items) < 3!
@@ -176,26 +176,26 @@ function get_third(items: array<string>) -> string {
 ```
 
 **Fix**: Check specific index.
-```pw
+```al
 @requires has_third: len(items) >= 3
 ```
 
 ---
 
 ### ❌ Forgetting zero-based indexing
-```pw
+```al
 @requires valid_index: index >= 1 && index <= len(items)  // ❌ Wrong!
 ```
 
 **Fix**: Use `0` to `len-1`.
-```pw
+```al
 @requires valid_index: index >= 0 && index < len(items)  // ✓
 ```
 
 ---
 
 ### ❌ No postcondition on transformed arrays
-```pw
+```al
 function double_elements(nums: array<int>) -> array<int> {
     @requires non_empty: len(nums) > 0
     // ❌ No postcondition!
@@ -206,7 +206,7 @@ function double_elements(nums: array<int>) -> array<int> {
 ```
 
 **Fix**: Add size postcondition.
-```pw
+```al
 @ensures same_size: len(result) == len(nums)
 ```
 
@@ -224,7 +224,7 @@ class Buffer:
 ```
 
 **Fix**: Add capacity invariant.
-```pw
+```al
 @invariant within_capacity: len(items) <= max_capacity
 ```
 
@@ -233,7 +233,7 @@ class Buffer:
 ## Real-World Example
 
 **Batch processing with pagination:**
-```pw
+```al
 function process_page(
     all_items: array<string>,
     page_num: int,
@@ -325,7 +325,7 @@ def test_batch_size_constraints():
 **Bounds checks are fast**: ~1µs overhead per check, negligible vs actual array operations.
 
 **For tight loops**, consider batch validation:
-```pw
+```al
 // Validate once before loop
 @requires all_indices_valid: max(indices) < len(items)
 

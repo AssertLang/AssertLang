@@ -8,7 +8,7 @@
   "reports": [
     {
       "agent_name": "go_minimal",
-      "fixture_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/fixtures/go_minimal.pw",
+      "fixture_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/fixtures/go_minimal.al",
       "generated_code_path": "/var/folders/hc/x09q151943x6fxtpjbtr0hrm0000gn/T/tmpeeaj2ntx/generated",
       "syntax_valid": true,
       "compilation": {
@@ -36,7 +36,7 @@
     },
     {
       "agent_name": "go_with_tools",
-      "fixture_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/fixtures/go_with_tools.pw",
+      "fixture_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/fixtures/go_with_tools.al",
       "generated_code_path": "/var/folders/hc/x09q151943x6fxtpjbtr0hrm0000gn/T/tmprfkrri3x/generated",
       "syntax_valid": true,
       "compilation": {

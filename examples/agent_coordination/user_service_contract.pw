@@ -18,13 +18,16 @@ class ValidationError {
 // Contract: Create User
 // This is executable - defines exact logic, not just types
 function createUser(name: string, email: string) -> User {
-    // Validation (deterministic rules)
+    @requires name_not_empty: str.length(name) >= 1
+    @requires name_length_valid: str.length(name) <= 100
+    @requires email_has_at: str.contains(email, "@")
+
     if (str.length(name) < 1) {
         let error = ValidationError {
             field: "name",
             message: "Name cannot be empty"
         };
-        return error;  // Error case
+        return error;
     }
 
     if (str.length(name) > 100) {
@@ -43,13 +46,9 @@ function createUser(name: string, email: string) -> User {
         return error;
     }
 
-    // Generate deterministic ID (for demo - normally from DB)
     let id = str.length(name) + str.length(email);
+    let timestamp = "2025-01-15T10:30:00Z";
 
-    // Get current timestamp
-    let timestamp = "2025-01-15T10:30:00Z";  // Simplified for demo
-
-    // Create user object
     let user = User {
         id: id,
         name: name,
@@ -62,7 +61,8 @@ function createUser(name: string, email: string) -> User {
 
 // Contract: Validate Email Format
 function isValidEmail(email: string) -> bool {
-    // Simple validation - must contain @ and .
+    @requires email_not_empty: str.length(email) >= 1
+
     if (!str.contains(email, "@")) {
         return false;
     }
@@ -74,6 +74,8 @@ function isValidEmail(email: string) -> bool {
 
 // Contract: Format User for Display
 function formatUser(user: User) -> string {
+    @requires valid_user_id: user.id > 0
+
     let formatted = "User #" + str.from_int(user.id) + ": " +
                     user.name + " <" + user.email + ">";
     return formatted;

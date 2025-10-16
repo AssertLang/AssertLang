@@ -1,5 +1,5 @@
 
-# Promptware Roadmap
+# AssertLang Roadmap
 
 ## Phase 1 (MVP) — 2–3 months
 - CLI + core verbs

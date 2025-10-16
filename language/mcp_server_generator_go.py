@@ -1,7 +1,7 @@
 """
 MCP Server Generator for Go/net/http.
 
-Generates Go HTTP servers from .pw agent definitions.
+Generates Go HTTP servers from .al agent definitions.
 Go uses compile-time tool imports (no dynamic loading like Python/Node.js).
 """
 
@@ -489,10 +489,10 @@ def _generate_main(agent: AgentDefinition) -> str:
 
 def generate_go_server_from_pw(pw_code: str) -> str:
     """
-    Convenience function: parse .pw code and generate Go MCP server.
+    Convenience function: parse .al code and generate Go MCP server.
 
     Args:
-        pw_code: .pw file content
+        pw_code: .al file content
 
     Returns:
         Go code for MCP server
