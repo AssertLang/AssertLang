@@ -1,6 +1,0 @@
-#lang python
-
-function main() -> int {
-    print("Testing MCP!");
-    return 0;
-}

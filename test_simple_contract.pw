@@ -1,4 +1,0 @@
-function increment(count: int) -> int {
-    @requires positive: count >= 0
-    return count + 1;
-}

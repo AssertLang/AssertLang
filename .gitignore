@@ -50,8 +50,8 @@ venv.bak/
 # Keep: CLAUDE.md (project instructions)
 # Keep: Current_Work.md (status tracking)
 
-# Archive (session docs, old files)
-.archive/
+# Archive (session docs, old files) - TRACKED in repo for history
+# .archive/ is intentionally committed
 
 # Testing
 .pytest_cache/
@@ -82,8 +82,7 @@ generated/
 *.pyc
 *.pyo
 node_modules/
-bin/
-**/bin/
+# bin/ is kept - contains CLI scripts
 **/obj/
 *.egg-info/
 
