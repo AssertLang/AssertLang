@@ -1,4 +1,10 @@
-# 🤖 AssertLang
+<p align="center">
+  <img src=".github/assets/logo2.svg" alt="AssertLang Logo" width="200" height="200">
+</p>
+
+<h1 align="center">AssertLang</h1>
+
+<p align="center">
 
 [![PyPI](https://img.shields.io/pypi/v/assertlang?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/assertlang/)
 [![Tests](https://github.com/AssertLang/AssertLang/actions/workflows/test.yml/badge.svg)](https://github.com/AssertLang/AssertLang/actions/workflows/test.yml)
@@ -8,7 +14,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg?style=flat-square&logo=python&logoColor=white)](https://www.python.org/downloads/)
 
-> **Executable contracts for multi-agent systems.** Define agent behavior once in AL, agents from different frameworks (CrewAI, LangGraph, AutoGen) execute identical logic. **Deterministic coordination guaranteed.**
+</p>
+
+<p align="center"><strong>Executable contracts for multi-agent systems.</strong> Define agent behavior once in AL, agents from different frameworks (CrewAI, LangGraph, AutoGen) execute identical logic. <strong>Deterministic coordination guaranteed.</strong></p>
 
 ---
 
