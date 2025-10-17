@@ -20,9 +20,9 @@ import yaml
 
 # Import DSL parser
 try:
-    from language.parser import parse_pw
+    from language.parser import parse_al
 except ImportError:
-    parse_pw = None  # Fallback if not available
+    parse_al = None  # Fallback if not available
 
 from .deps_utils import trim_cache
 
@@ -187,7 +187,7 @@ class MCPDaemon:
     # Verb: plan.create@v1
     def plan_create_v1(self, prompt: str, lang: str = "python") -> dict:
         """Parse .al DSL input into execution plan."""
-        if parse_pw is None:
+        if parse_al is None:
             return {
                 "ok": False,
                 "version": "v1",
@@ -196,7 +196,7 @@ class MCPDaemon:
 
         # Parse DSL input
         try:
-            parsed = parse_pw(prompt)
+            parsed = parse_al(prompt)
         except Exception as e:
             return {
                 "ok": False,

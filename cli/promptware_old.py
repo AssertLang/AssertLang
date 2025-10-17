@@ -8,7 +8,7 @@ from daemon.deps_utils import summarise_allowlist, trim_cache
 from daemon.mcpd import MCPDaemon
 from language.dsl_utils import collect_pw_files, format_text, lint_text
 from language.executor import execute_pw_file
-from language.parser import parse_pw
+from language.parser import parse_al
 from toolbuilder.codegen import generate as codegen_generate
 from toolbuilder.codegen import generate_all as codegen_generate_all
 from toolbuilder.queue import enqueue, list_jobs
@@ -19,7 +19,7 @@ from tools import run_tool
 def _load_prompt(arg: str) -> str:
     p = Path(arg)
     if p.suffix == ".al" and p.exists():
-        prog = parse_pw(p.read_text(encoding="utf-8"))
+        prog = parse_al(p.read_text(encoding="utf-8"))
         return prog.prompt
     return arg
 

@@ -5,7 +5,7 @@ import textwrap
 from pathlib import Path
 from typing import Iterable, List, Optional, Sequence
 
-from .parser import PWParseError, _parse_dsl, parse_pw
+from .parser import ALParseError, _parse_dsl, parse_al
 
 
 def collect_pw_files(paths: Iterable[str] | None) -> List[Path]:
@@ -23,8 +23,8 @@ def collect_pw_files(paths: Iterable[str] | None) -> List[Path]:
 
 def format_text(text: str) -> str:
     try:
-        prog = parse_pw(text)
-    except PWParseError:
+        prog = parse_al(text)
+    except ALParseError:
         return _ensure_trailing_newline(text)
     if prog.plan is None:
         return _ensure_trailing_newline(textwrap.dedent(text))
@@ -91,9 +91,9 @@ def lint_text(path: Path, text: str) -> List[str]:
     warnings: List[str] = []
     try:
         plan = _parse_dsl(text)
-    except PWParseError as exc:
+    except ALParseError as exc:
         message = str(exc)
-        prog = parse_pw(text)
+        prog = parse_al(text)
         if prog.plan is None and prog.prompt:
             warnings.append(f"{path}: file parses as prompt only (no plan)")
         else:

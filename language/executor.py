@@ -7,7 +7,7 @@ import yaml  # type: ignore
 
 from daemon.mcpd import MCPDaemon
 from language.interpreter import ActionExecutor
-from language.parser import PWProgram, parse_pw
+from language.parser import PWProgram, parse_al
 
 
 def load_pw(path: Path) -> Dict[str, Any] | None:
@@ -25,7 +25,7 @@ def execute_pw_file(path: str) -> Dict[str, Any]:
     p = Path(path)
     spec = load_pw(p)
     if not spec:
-        prog = parse_pw(p.read_text(encoding="utf-8"))
+        prog = parse_al(p.read_text(encoding="utf-8"))
         if prog.plan:
             plan_payload = prog.plan
             if plan_payload.get("actions") and not plan_payload.get("files"):

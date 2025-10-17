@@ -4,7 +4,7 @@ Tests parsing, IR structure, and code generation for all Set methods.
 """
 
 import pytest
-from dsl.pw_parser import parse_pw, PWParseError
+from dsl.al_parser import parse_al, ALParseError
 
 
 class TestSetBasicParsing:
@@ -16,7 +16,7 @@ class TestSetBasicParsing:
 class Set<T>:
     elements: set<T>
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.classes) == 1
         assert ir.classes[0].name == "Set"
 
@@ -26,7 +26,7 @@ class Set<T>:
 function set_new<T>() -> Set<T>:
     return Set { elements: set() }
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "set_new"
 
@@ -44,7 +44,7 @@ function set_insert<T>(s: Set<T>, value: T) -> bool:
         s.elements.add(value)
         return true
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_set_remove(self):
@@ -57,7 +57,7 @@ function set_remove<T>(s: Set<T>, value: T) -> bool:
     else:
         return false
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
 
@@ -70,7 +70,7 @@ class TestSetAccessMethods:
 function set_contains<T>(s: Set<T>, value: T) -> bool:
     return value in s.elements
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_set_len(self):
@@ -79,7 +79,7 @@ function set_contains<T>(s: Set<T>, value: T) -> bool:
 function set_len<T>(s: Set<T>) -> int:
     return len(s.elements)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_set_is_empty(self):
@@ -88,7 +88,7 @@ function set_len<T>(s: Set<T>) -> int:
 function set_is_empty<T>(s: Set<T>) -> bool:
     return len(s.elements) == 0
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
 
@@ -101,7 +101,7 @@ class TestSetUsagePatterns:
 function track_visitor(visitors: Set<string>, id: string) -> bool:
     return set_insert(visitors, id)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_set_tags_system(self):
@@ -110,7 +110,7 @@ function track_visitor(visitors: Set<string>, id: string) -> bool:
 function add_tag(tags: Set<string>, tag: string) -> bool:
     return set_insert(tags, tag)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_set_deduplication(self):
@@ -122,7 +122,7 @@ function deduplicate(items: array<int>) -> Set<int>:
         set_insert(unique, item)
     return unique
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
 
@@ -138,7 +138,7 @@ function test_duplicates() -> bool:
     let second = set_insert(s, "value")
     return first and not second
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_set_membership_check(self):
@@ -147,7 +147,7 @@ function test_duplicates() -> bool:
 function check_membership(s: Set<int>, value: int) -> bool:
     return set_contains(s, value)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
 
@@ -159,7 +159,7 @@ class TestSetFullStdlib:
         with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/types.al") as f:
             pw_code = f.read()
 
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         set_classes = [c for c in ir.classes if c.name == "Set"]
         assert len(set_classes) >= 1
         set_funcs = [f for f in ir.functions if f.name.startswith("set_")]
@@ -170,7 +170,7 @@ class TestSetFullStdlib:
         with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/types.al") as f:
             pw_code = f.read()
 
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         required = ["set_new", "set_insert", "set_remove", "set_contains", "set_len", "set_is_empty"]
         func_names = [f.name for f in ir.functions]
         for req in required:
@@ -186,7 +186,7 @@ class TestSetTypeAnnotations:
 function get_numbers() -> Set<int>:
     return set_new()
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_set_string_type(self):
@@ -195,7 +195,7 @@ function get_numbers() -> Set<int>:
 function get_tags() -> Set<string>:
     return set_new()
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_set_generic_parameter(self):
@@ -204,7 +204,7 @@ function get_tags() -> Set<string>:
 function identity<T>(s: Set<T>) -> Set<T>:
     return s
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
 
@@ -221,7 +221,7 @@ class User:
 function get_users() -> Set<User>:
     return set_new()
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.classes) == 1
         assert len(ir.functions) == 1
 
@@ -232,7 +232,7 @@ function test_empty() -> bool:
     let s = set_new()
     return set_is_empty(s) and set_len(s) == 0
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
 
@@ -244,7 +244,7 @@ class TestSetCompleteness:
         with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/types.al") as f:
             pw_code = f.read()
 
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         set_functions = {f.name for f in ir.functions if f.name.startswith("set_")}
         required = {"set_new", "set_insert", "set_remove", "set_contains", "set_len", "set_is_empty"}
         missing = required - set_functions
@@ -255,7 +255,7 @@ class TestSetCompleteness:
         with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/types.al") as f:
             pw_code = f.read()
 
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         class_names = {c.name for c in ir.classes}
         assert "List" in class_names
         assert "Map" in class_names

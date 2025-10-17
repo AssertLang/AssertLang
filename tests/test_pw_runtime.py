@@ -30,7 +30,7 @@ from dsl.ir import (
     IRWhile,
     LiteralType,
 )
-from dsl.pw_runtime import EnumVariantInstance, PWRuntime, PWRuntimeError
+from dsl.al_runtime import EnumVariantInstance, PWRuntime, PWRuntimeError
 
 
 def test_runtime_literal_evaluation():

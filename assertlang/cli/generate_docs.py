@@ -5,7 +5,7 @@ Generates markdown documentation from PW contracts.
 """
 
 from typing import List, Optional
-from dsl.pw_parser import parse_pw
+from dsl.al_parser import parse_al
 
 
 class ContractDocGenerator:
@@ -16,7 +16,7 @@ class ContractDocGenerator:
         with open(file_path, 'r') as f:
             code = f.read()
 
-        ir = parse_pw(code)
+        ir = parse_al(code)
 
         doc_parts = []
 

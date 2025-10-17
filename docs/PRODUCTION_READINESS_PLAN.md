@@ -650,8 +650,8 @@ def test_python_roundtrip():
     regenerated_pw = parse_python_to_pw(python_code)
 
     # Compare IR
-    original_ir = parse_pw_to_ir(original_pw)
-    regenerated_ir = parse_pw_to_ir(regenerated_pw)
+    original_ir = parse_al_to_ir(original_pw)
+    regenerated_ir = parse_al_to_ir(regenerated_pw)
 
     assert ir_equivalent(original_ir, regenerated_ir)
 ```
@@ -713,7 +713,7 @@ pw repl
 # cli/main.py
 import click
 from pathlib import Path
-from dsl.pw_parser import parse_file
+from dsl.al_parser import parse_file
 from translators.ir_converter import ir_to_mcp
 from translators.python_bridge import pw_to_python
 from language.go_generator import pw_to_go
@@ -860,7 +860,7 @@ class ParseError(Exception):
 ```python
 # tests/benchmarks/bench_compilation.py
 import time
-from dsl.pw_parser import parse_file
+from dsl.al_parser import parse_file
 
 def benchmark_large_file():
     """Benchmark compiling 50,000 line file."""

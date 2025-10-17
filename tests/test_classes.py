@@ -18,7 +18,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent.parent / 'pw-syntax-mcp-server'))
 
-from dsl.pw_parser import parse_pw
+from dsl.al_parser import parse_al
 from translators.ir_converter import ir_to_mcp
 from translators.python_bridge import pw_to_python
 
@@ -36,7 +36,7 @@ def test_basic_class():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.classes)} classes")
 
         cls = ir.classes[0]
@@ -74,7 +74,7 @@ def test_class_with_constructor():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.classes)} classes")
 
         cls = ir.classes[0]
@@ -118,7 +118,7 @@ def test_class_with_methods():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.classes)} classes")
 
         cls = ir.classes[0]
@@ -158,7 +158,7 @@ function create_user() -> User {
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.classes)} classes, {len(ir.functions)} functions")
         print(f"\n✅ SUCCESS: Class instantiation works!")
         return True
@@ -187,7 +187,7 @@ function get_name(user: User) -> string {
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.classes)} classes, {len(ir.functions)} functions")
         print(f"\n✅ SUCCESS: Property access works!")
         return True
@@ -221,7 +221,7 @@ function test_user() -> string {
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.classes)} classes, {len(ir.functions)} functions")
         print(f"\n✅ SUCCESS: Method calls work!")
         return True
@@ -251,7 +251,7 @@ def test_self_reference():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.classes)} classes")
         print(f"\n✅ SUCCESS: Self reference works!")
         return True
@@ -282,7 +282,7 @@ def test_class_code_generation():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.classes)} classes")
 
         mcp_tree = ir_to_mcp(ir)

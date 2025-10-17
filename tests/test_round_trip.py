@@ -19,7 +19,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent.parent / 'pw-syntax-mcp-server'))
 
-from dsl.pw_parser import parse_pw
+from dsl.al_parser import parse_al
 from translators.ir_converter import ir_to_mcp
 from translators.python_bridge import pw_to_python
 from language.go_generator_v2 import GoGeneratorV2
@@ -52,7 +52,7 @@ function calculate() -> int {
     try:
         # Parse PW
         print("  → Parsing PW...")
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 3, "Should have 3 functions"
 
         # Generate Python
@@ -108,7 +108,7 @@ function divide(a: int, b: int) -> int {
     try:
         # Parse PW
         print("  → Parsing PW...")
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         # Generate Go
         print("  → Generating Go...")
@@ -179,7 +179,7 @@ function cube(x: int) -> int {
     try:
         # Parse PW
         print("  → Parsing PW...")
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         # Generate Rust
         print("  → Generating Rust...")
@@ -261,7 +261,7 @@ function process_data() -> int {
     try:
         # Parse PW
         print("  → Parsing PW...")
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         # Generate Python
         print("  → Generating Python...")

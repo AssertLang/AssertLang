@@ -19,7 +19,7 @@ AssertLang errors fall into 4 categories:
 | Error Type | When | Example |
 |------------|------|---------|
 | `ContractViolationError` | Runtime contract check fails | `Precondition 'positive' failed: x = -5` |
-| `PWParseError` | Syntax error in `.pw` file | `Unexpected token at line 5, column 10` |
+| `ALParseError` | Syntax error in `.pw` file | `Unexpected token at line 5, column 10` |
 | `ValidationError` | Invalid contract structure | `Duplicate function definition: add` |
 | `MCPError` | MCP communication fails | `Connection refused: localhost:3000` |
 
@@ -362,10 +362,10 @@ def add(self, item):
 
 **Syntax errors in `.pw` files.**
 
-### PWParseError
+### ALParseError
 
 **Type**: Compile-time exception
-**Raised by**: `parse_pw()` during parsing
+**Raised by**: `parse_al()` during parsing
 
 ---
 
@@ -384,7 +384,7 @@ function add(x: int, y: int) -> int {
 
 **Error**:
 ```
-PWParseError: [Line 2:27] Unexpected token: x
+ALParseError: [Line 2:27] Unexpected token: x
 Expected ':' after clause name 'positive'
 ```
 
@@ -404,7 +404,7 @@ function test(x: int) -> int {
 
 **Error**:
 ```
-PWParseError: [Line 3:5] Unexpected token: return
+ALParseError: [Line 3:5] Unexpected token: return
 Expected ';' or newline after statement
 ```
 
@@ -424,7 +424,7 @@ function test(x: int) -> int {
 
 **Error**:
 ```
-PWParseError: [Line 2:6] Unknown annotation: @require
+ALParseError: [Line 2:6] Unknown annotation: @require
 Did you mean: @requires?
 ```
 
@@ -449,7 +449,7 @@ function test(x: integer) -> int {  // ❌ Unknown type 'integer'
 
 **Error**:
 ```
-PWParseError: [Line 1:18] Unknown type: integer
+ALParseError: [Line 1:18] Unknown type: integer
 Did you mean: int?
 ```
 
@@ -470,7 +470,7 @@ function get_first(items: array) -> int {  // ❌ Missing type parameter
 
 **Error**:
 ```
-PWParseError: [Line 1:31] Generic type 'array' requires type parameters
+ALParseError: [Line 1:31] Generic type 'array' requires type parameters
 Expected: array<T>
 ```
 

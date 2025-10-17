@@ -74,7 +74,7 @@ Python → IR → PW DSL (text) → IR → Go
 
 **Error**:
 ```
-PWParseError: [Line 10:1] Unexpected keyword: let
+ALParseError: [Line 10:1] Unexpected keyword: let
 ```
 
 **Generated PW DSL**:
@@ -125,7 +125,7 @@ let cx = (width / 2)         # ❌ Parser doesn't understand
    # NEW (correct)
    ir = parse_python(code)
    pw_dsl = generate_pw(ir)      # ← Add this
-   ir2 = parse_pw(pw_dsl)         # ← Add this
+   ir2 = parse_al(pw_dsl)         # ← Add this
    go_code = generate_go(ir2)
    ```
 

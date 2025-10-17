@@ -12,7 +12,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from dsl.pw_parser import parse_pw
+from dsl.al_parser import parse_al
 from language.python_generator_v2 import generate_python
 
 # Create a simple, valid PW DSL example (subset of sentient maze logic)
@@ -94,7 +94,7 @@ def main():
     # Parse PW DSL → IR
     print("\n🔄 Parsing PW DSL → IR...")
     try:
-        ir_module = parse_pw(VALID_PW_DSL)
+        ir_module = parse_al(VALID_PW_DSL)
         print(f"   ✅ Parsed successfully!")
         print(f"   - Module: {ir_module.name} v{ir_module.version}")
         print(f"   - Imports: {len(ir_module.imports)}")

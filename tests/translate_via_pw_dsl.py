@@ -21,8 +21,8 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from language.python_parser_v2 import PythonParserV2
 from language.go_generator_v2 import GoGeneratorV2
-from dsl.pw_generator import PWGenerator
-from dsl.pw_parser import parse_pw
+from dsl.al_generator import PWGenerator
+from dsl.al_parser import parse_al
 
 def translate_python_to_go_via_pw(input_path: str, output_path: str, save_pw_dsl: bool = True):
     """
@@ -82,7 +82,7 @@ def translate_python_to_go_via_pw(input_path: str, output_path: str, save_pw_dsl
 
     # Step 2.1: Parse PW DSL to IR
     print("  Step 2.1: Parsing PW DSL → IR...")
-    ir_from_pw = parse_pw(pw_dsl_text)
+    ir_from_pw = parse_al(pw_dsl_text)
     print(f"    ✓ Module: {ir_from_pw.name}")
     print(f"    ✓ Functions: {len(ir_from_pw.functions)}")
     print(f"    ✓ Classes: {len(ir_from_pw.classes)}")

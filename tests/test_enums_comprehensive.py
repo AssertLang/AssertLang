@@ -8,7 +8,7 @@ Bug #19: Enum syntax unclear - comprehensive test coverage
 """
 
 import pytest
-from dsl.pw_parser import parse_pw, PWParseError
+from dsl.al_parser import parse_al, ALParseError
 
 
 def test_simple_enum_basic():
@@ -19,7 +19,7 @@ enum Status:
     - Active
     - Completed
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert len(ir.enums) == 1
     assert ir.enums[0].name == "Status"
     assert len(ir.enums[0].variants) == 3
@@ -34,7 +34,7 @@ def test_simple_enum_single_variant():
 enum Result:
     - Ok
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert len(ir.enums) == 1
     assert ir.enums[0].name == "Result"
     assert len(ir.enums[0].variants) == 1
@@ -53,7 +53,7 @@ enum DayOfWeek:
     - Saturday
     - Sunday
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert len(ir.enums) == 1
     assert ir.enums[0].name == "DayOfWeek"
     assert len(ir.enums[0].variants) == 7
@@ -68,7 +68,7 @@ enum Option:
     - Some(int)
     - None
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert len(ir.enums) == 1
     assert ir.enums[0].name == "Option"
     assert len(ir.enums[0].variants) == 2
@@ -93,7 +93,7 @@ enum Event:
     - KeyPress(string)
     - Scroll(float)
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert len(ir.enums) == 1
     assert ir.enums[0].name == "Event"
 
@@ -124,7 +124,7 @@ enum Result:
     - Ok(int)
     - Error(string)
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert len(ir.enums) == 1
     assert ir.enums[0].name == "Result"
 
@@ -156,7 +156,7 @@ enum Priority:
     - Medium
     - High
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert len(ir.enums) == 3
     assert ir.enums[0].name == "Color"
     assert ir.enums[1].name == "Status"
@@ -182,7 +182,7 @@ class User {
     }
 }
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert len(ir.enums) == 1
     assert len(ir.functions) == 1
     assert len(ir.classes) == 1
@@ -197,8 +197,8 @@ enum OperationType {
     MUTATION
 }
 """
-    with pytest.raises(PWParseError) as exc_info:
-        parse_pw(pw_code)
+    with pytest.raises(ALParseError) as exc_info:
+        parse_al(pw_code)
 
     error_msg = str(exc_info.value)
     assert "Expected :, got {" in error_msg or "Expected COLON" in error_msg
@@ -213,8 +213,8 @@ enum Status {
     Completed;
 }
 """
-    with pytest.raises(PWParseError) as exc_info:
-        parse_pw(pw_code)
+    with pytest.raises(ALParseError) as exc_info:
+        parse_al(pw_code)
 
     error_msg = str(exc_info.value)
     # Should fail on the brace first
@@ -230,7 +230,7 @@ enum Status:
     - Completed
 """
     # Should parse successfully without semicolons
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert len(ir.enums) == 1
 
 
@@ -242,7 +242,7 @@ enum OperationType:
     - MUTATION
     - SUBSCRIPTION
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert len(ir.enums) == 1
     assert ir.enums[0].name == "OperationType"
     assert len(ir.enums[0].variants) == 3
@@ -264,7 +264,7 @@ enum TypeKind:
     - LIST
     - NON_NULL
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert len(ir.enums) == 1
     assert ir.enums[0].name == "TypeKind"
     assert len(ir.enums[0].variants) == 8
@@ -279,7 +279,7 @@ enum CacheState:
     - Ready
     - Stale
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert len(ir.enums) == 1
     assert ir.enums[0].name == "CacheState"
     assert len(ir.enums[0].variants) == 4
@@ -294,7 +294,7 @@ enum NodeType:
     - Parallel
     - Join
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert len(ir.enums) == 1
     assert ir.enums[0].name == "NodeType"
     assert len(ir.enums[0].variants) == 4
@@ -310,7 +310,7 @@ enum ExecutionStatus:
     - Failed
     - Cancelled
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert len(ir.enums) == 1
     assert ir.enums[0].name == "ExecutionStatus"
     assert len(ir.enums[0].variants) == 5
@@ -322,8 +322,8 @@ def test_enum_empty_fails():
 enum EmptyEnum:
 """
     # This should fail - enum must have at least one variant
-    with pytest.raises(PWParseError):
-        parse_pw(pw_code)
+    with pytest.raises(ALParseError):
+        parse_al(pw_code)
 
 
 def test_enum_variant_names_case_sensitive():
@@ -334,7 +334,7 @@ enum Status:
     - Active
     - ACTIVE
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert len(ir.enums) == 1
     assert len(ir.enums[0].variants) == 3
     assert ir.enums[0].variants[0].name == "active"
@@ -356,7 +356,7 @@ enum HttpMethod:
     - CONNECT
     - TRACE
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert len(ir.enums) == 1
     assert len(ir.enums[0].variants) == 9
 
@@ -370,7 +370,7 @@ enum JobStatus:
     - completed_successfully
     - failed_with_error
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert len(ir.enums) == 1
     assert len(ir.enums[0].variants) == 4
     assert ir.enums[0].variants[2].name == "completed_successfully"
@@ -383,7 +383,7 @@ enum Container:
     - Some(array<int>)
     - None
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert len(ir.enums) == 1
     some_variant = ir.enums[0].variants[0]
     assert some_variant.name == "Some"
@@ -400,7 +400,7 @@ enum Response:
     - Success(map<string, int>)
     - Error(string)
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert len(ir.enums) == 1
     success_variant = ir.enums[0].variants[0]
     assert success_variant.name == "Success"

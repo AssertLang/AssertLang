@@ -15,7 +15,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent.parent / 'pw-syntax-mcp-server'))
 
-from dsl.pw_parser import parse_pw
+from dsl.al_parser import parse_al
 from translators.ir_converter import ir_to_mcp
 from translators.python_bridge import pw_to_python
 
@@ -34,7 +34,7 @@ def test_basic_while_loop():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
 
         func = ir.functions[0]
@@ -75,7 +75,7 @@ def test_while_complex_condition():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
         print(f"\n✅ SUCCESS: Complex condition while loop works!")
         return True
@@ -106,7 +106,7 @@ def test_nested_while_loops():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
         print(f"\n✅ SUCCESS: Nested while loops work!")
         return True
@@ -138,7 +138,7 @@ def test_while_with_break_continue():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
         print(f"\n✅ SUCCESS: While loop with break/continue works!")
         return True
@@ -165,7 +165,7 @@ def test_while_code_generation():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
 
         mcp_tree = ir_to_mcp(ir)
@@ -214,7 +214,7 @@ def test_while_multi_line():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
         print(f"\n✅ SUCCESS: Multi-line while loop works!")
         return True

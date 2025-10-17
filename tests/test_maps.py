@@ -18,7 +18,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent.parent / 'pw-syntax-mcp-server'))
 
-from dsl.pw_parser import parse_pw
+from dsl.al_parser import parse_al
 from translators.ir_converter import ir_to_mcp
 from translators.python_bridge import pw_to_python
 
@@ -39,7 +39,7 @@ def test_map_literal():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
 
         func = ir.functions[0]
@@ -78,7 +78,7 @@ def test_map_access():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
         print(f"\n✅ SUCCESS: Map access works!")
         return True
@@ -100,7 +100,7 @@ def test_map_assignment():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
         print(f"\n✅ SUCCESS: Map assignment works!")
         return True
@@ -127,7 +127,7 @@ def test_map_different_types():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
         print(f"\n✅ SUCCESS: Maps with different types work!")
         return True
@@ -158,7 +158,7 @@ def test_nested_maps():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
         print(f"\n✅ SUCCESS: Nested maps work!")
         return True
@@ -180,7 +180,7 @@ def test_empty_map():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
         print(f"\n✅ SUCCESS: Empty map works!")
         return True
@@ -205,7 +205,7 @@ def test_map_code_generation():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
 
         mcp_tree = ir_to_mcp(ir)
@@ -249,7 +249,7 @@ def test_map_multi_line():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
         print(f"\n✅ SUCCESS: Multi-line map works!")
         return True
@@ -277,7 +277,7 @@ def test_string_keys():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
         print(f"\n✅ SUCCESS: String keys work!")
         return True

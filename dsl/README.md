@@ -75,7 +75,7 @@ Target Language Code
 ### Parsing PW Code
 
 ```python
-from dsl.pw_parser import parse_pw
+from dsl.al_parser import parse_al
 
 pw_code = """
 function add(x: int, y: int) -> int {
@@ -83,14 +83,14 @@ function add(x: int, y: int) -> int {
 }
 """
 
-ir = parse_pw(pw_code)
+ir = parse_al(pw_code)
 # Returns IRModule with functions, classes, etc.
 ```
 
 ### Generating PW Code
 
 ```python
-from dsl.pw_generator import PWGenerator
+from dsl.al_generator import PWGenerator
 
 generator = PWGenerator()
 pw_code = generator.generate(ir)

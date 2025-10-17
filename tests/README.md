@@ -304,7 +304,7 @@ pytest tests/ -x
 
 ```python
 import pytest
-from dsl.pw_parser import Lexer, Parser
+from dsl.al_parser import Lexer, Parser
 
 def test_feature_name():
     """Test description."""

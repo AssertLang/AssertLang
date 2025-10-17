@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from dsl.pw_parser import parse_pw
+from dsl.al_parser import parse_al
 from language.python_generator_v2 import PythonGeneratorV2
 
 
@@ -28,7 +28,7 @@ enum Option<T>:
 """
 
     try:
-        module = parse_pw(code)
+        module = parse_al(code)
         print("\n=== Parsed IR ===")
         print(f"Enums: {len(module.enums)}")
         if module.enums:
@@ -71,7 +71,7 @@ enum Result<T, E>:
 """
 
     try:
-        module = parse_pw(code)
+        module = parse_al(code)
         print("\n=== Parsed IR ===")
         print(f"Enums: {len(module.enums)}")
         if module.enums:
@@ -114,7 +114,7 @@ function option_some<T>(value: T) -> Option<T>:
 """
 
     try:
-        module = parse_pw(code)
+        module = parse_al(code)
         print("\n=== Parsed IR ===")
         print(f"Functions: {len(module.functions)}")
         if module.functions:
@@ -161,7 +161,7 @@ def test_full_stdlib_core_file():
         print(f"\n=== Parsing {stdlib_path} ===")
         print(f"File size: {len(code)} characters")
 
-        module = parse_pw(code)
+        module = parse_al(code)
         print(f"Parsed successfully!")
         print(f"  Enums: {len(module.enums)}")
         print(f"  Functions: {len(module.functions)}")

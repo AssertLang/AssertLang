@@ -6,7 +6,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from dsl.pw_parser import parse_pw
+from dsl.al_parser import parse_al
 from language.python_generator_v2 import generate_python
 
 def main():
@@ -20,7 +20,7 @@ def main():
 
     print("\n🔄 Parsing PW DSL → IR...")
     try:
-        ir_module = parse_pw(pw_code)
+        ir_module = parse_al(pw_code)
         print(f"   ✅ Module: {ir_module.name}")
         print(f"   - Functions: {len(ir_module.functions)}")
         print(f"   - Imports: {len(ir_module.imports)}")

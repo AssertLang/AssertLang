@@ -16,7 +16,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent.parent / 'pw-syntax-mcp-server'))
 
-from dsl.pw_parser import parse_pw
+from dsl.al_parser import parse_al
 from translators.ir_converter import ir_to_mcp
 from translators.python_bridge import pw_to_python
 
@@ -34,8 +34,8 @@ def test_minimal_whitespace():
     try:
         print(f"Code: {pw_code}", flush=True)
 
-        print("  About to call parse_pw...", flush=True)
-        ir = parse_pw(pw_code)
+        print("  About to call parse_al...", flush=True)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions", flush=True)
 
         print("  About to call ir_to_mcp...", flush=True)
@@ -65,7 +65,7 @@ def test_excessive_whitespace():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
 
         mcp_tree = ir_to_mcp(ir)
@@ -90,7 +90,7 @@ def test_mixed_tabs_spaces():
     pw_code = "function add(x: int, y: int) -> int {\n\treturn x + y;\n}"
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
 
         mcp_tree = ir_to_mcp(ir)
@@ -116,7 +116,7 @@ def test_trailing_whitespace():
 }   """
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
 
         mcp_tree = ir_to_mcp(ir)
@@ -149,7 +149,7 @@ def test_blank_lines_between_statements():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
 
         mcp_tree = ir_to_mcp(ir)
@@ -186,7 +186,7 @@ function multiply(x: int, y: int) -> int {
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
 
         mcp_tree = ir_to_mcp(ir)
@@ -210,7 +210,7 @@ def test_only_blank_lines():
     pw_code = "\n\n\n\n\n"
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions (expected 0)")
 
         if len(ir.functions) == 0:
@@ -236,7 +236,7 @@ def test_crlf_line_endings():
     pw_code = "function add(x: int, y: int) -> int {\r\n    return x + y;\r\n}"
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
 
         mcp_tree = ir_to_mcp(ir)

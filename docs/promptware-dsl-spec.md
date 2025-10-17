@@ -110,7 +110,7 @@ Lint rules currently warn when:
 | `E_PLAN_REF` | Parser/interpreter reference resolution | Undefined tool alias or `${alias.path}` lookup. |
 | `E_RUNTIME` | Interpreter execution | Tool failure, expectation mismatch, merge type mismatch. |
 
-`PWParseError` and `PWExecutionError` normalise messages to `[CODE] message`. Timeline events bubble the same `code` to keep daemon and interpreter telemetry aligned.
+`ALParseError` and `PWExecutionError` normalise messages to `[CODE] message`. Timeline events bubble the same `code` to keep daemon and interpreter telemetry aligned.
 
 ## 4. Examples
 

@@ -14,7 +14,7 @@ import sys
 sys.path.insert(0, '/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware')
 
 import pytest
-from dsl.pw_parser import Lexer, Parser, TokenType
+from dsl.al_parser import Lexer, Parser, TokenType
 
 
 class TestFloorDivisionOperator:

@@ -68,10 +68,10 @@ Parse target language code into PW IR:
 
 ```python
 from language.python_generator_v2 import PythonGeneratorV2
-from dsl.pw_parser import parse_pw
+from dsl.al_parser import parse_al
 
 pw_code = "function add(x: int, y: int) -> int { return x + y; }"
-ir = parse_pw(pw_code)
+ir = parse_al(pw_code)
 
 generator = PythonGeneratorV2()
 python_code = generator.generate(ir)

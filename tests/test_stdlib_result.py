@@ -6,7 +6,7 @@ Based on implementation-plan.md specifications.
 """
 
 import pytest
-from dsl.pw_parser import parse_pw, PWParseError
+from dsl.al_parser import parse_al, ALParseError
 
 
 class TestResultBasicParsing:
@@ -19,7 +19,7 @@ enum Result<T, E>:
     - Ok(value: T)
     - Err(error: E)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.enums) == 1
         assert ir.enums[0].name == "Result"
         assert len(ir.enums[0].variants) == 2
@@ -32,7 +32,7 @@ enum Result<T, E>:
 function result_ok<T, E>(value: T) -> Result<T, E>:
     return Result.Ok(value)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "result_ok"
 
@@ -42,7 +42,7 @@ function result_ok<T, E>(value: T) -> Result<T, E>:
 function result_err<T, E>(error: E) -> Result<T, E>:
     return Result.Err(error)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "result_err"
 
@@ -59,7 +59,7 @@ function result_map<T, E, U>(res: Result<T, E>, fn: function(T) -> U) -> Result<
     else if res is Err(e):
         return Err(e)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "result_map"
         assert len(ir.functions[0].params) == 2
@@ -73,7 +73,7 @@ function result_map_err<T, E, F>(res: Result<T, E>, fn: function(E) -> F) -> Res
     else if res is Err(e):
         return Err(fn(e))
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "result_map_err"
 
@@ -89,7 +89,7 @@ function result_and_then<T, E, U>(
     else if res is Err(e):
         return Err(e)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "result_and_then"
 
@@ -102,7 +102,7 @@ function result_unwrap_or<T, E>(res: Result<T, E>, default: T) -> T:
     else:
         return default
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "result_unwrap_or"
 
@@ -115,7 +115,7 @@ function result_is_ok<T, E>(res: Result<T, E>) -> bool:
     else:
         return false
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "result_is_ok"
 
@@ -128,7 +128,7 @@ function result_is_err<T, E>(res: Result<T, E>) -> bool:
     else:
         return false
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "result_is_err"
 
@@ -145,7 +145,7 @@ function result_match<T, E, U>(
     else if res is Err(e):
         return err_fn(e)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "result_match"
         assert len(ir.functions[0].params) == 3
@@ -163,7 +163,7 @@ function safe_divide(a: int, b: int) -> Result<int, string>:
     else:
         return result_ok(a / b)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "safe_divide"
 
@@ -176,7 +176,7 @@ function read_config(path: string) -> Result<string, string>:
     else:
         return result_ok("config data")
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_result_validation(self):
@@ -190,7 +190,7 @@ function validate_age(age: int) -> Result<int, string>:
     else:
         return result_ok(age)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_result_chaining(self):
@@ -201,7 +201,7 @@ function process_data(res: Result<int, string>) -> Result<int, string>:
     let validated = result_and_then(doubled, fn(x) -> validate_age(x))
     return validated
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
 
@@ -217,7 +217,7 @@ function describe_result(res: Result<int, string>) -> string:
     else if res is Err(error):
         return "Error: " + error
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_result_err_pattern(self):
@@ -229,7 +229,7 @@ function is_error(res: Result<int, string>) -> bool:
     else:
         return false
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_result_extract_values(self):
@@ -241,7 +241,7 @@ function get_value_or_zero(res: Result<int, string>) -> int:
     else:
         return 0
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
 
@@ -253,7 +253,7 @@ class TestResultFullStdlib:
         with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/core.al") as f:
             pw_code = f.read()
 
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         # Check for Result enum
         result_enums = [e for e in ir.enums if e.name == "Result"]
@@ -268,7 +268,7 @@ class TestResultFullStdlib:
         with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/core.al") as f:
             pw_code = f.read()
 
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         # Required Result functions
         required_funcs = [
@@ -297,7 +297,7 @@ class TestResultTypeAnnotations:
 function divide(a: int, b: int) -> Result<int, string>:
     return Ok(a / b)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].return_type.name == "Result"
         assert len(ir.functions[0].return_type.generic_args) == 2
@@ -310,7 +310,7 @@ function divide(a: int, b: int) -> Result<int, string>:
 function parse_int(s: string) -> Result<int, string>:
     return Err("parse error")
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_result_custom_error_type(self):
@@ -323,7 +323,7 @@ class ValidationError:
 function validate(data: string) -> Result<string, ValidationError>:
     return Ok(data)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.classes) == 1
         assert len(ir.functions) == 1
 
@@ -337,7 +337,7 @@ class TestResultEdgeCases:
 function nested_operation() -> Result<Result<int, string>, string>:
     return Ok(Ok(42))
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_result_with_option(self):
@@ -346,7 +346,7 @@ function nested_operation() -> Result<Result<int, string>, string>:
 function find_value(id: int) -> Result<Option<string>, string>:
     return Ok(Some("value"))
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_result_with_array(self):
@@ -355,7 +355,7 @@ function find_value(id: int) -> Result<Option<string>, string>:
 function get_items() -> Result<array<int>, string>:
     return Ok([1, 2, 3])
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_result_with_map(self):
@@ -364,7 +364,7 @@ function get_items() -> Result<array<int>, string>:
 function get_config() -> Result<map<string, string>, string>:
     return Ok({"key": "value"})
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
 
@@ -377,7 +377,7 @@ class TestResultErrorTypes:
 function operation1() -> Result<int, string>:
     return Err("error message")
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_enum_errors(self):
@@ -391,7 +391,7 @@ enum ErrorCode:
 function operation2() -> Result<int, ErrorCode>:
     return Err(ErrorCode.NotFound)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.enums) == 1
         assert len(ir.functions) == 1
 
@@ -406,7 +406,7 @@ function operation3() -> Result<int, AppError>:
     let err = AppError { code: 404, message: "Not found" }
     return Err(err)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.classes) == 1
         assert len(ir.functions) == 1
 
@@ -442,7 +442,7 @@ class TestResultCompleteness:
         with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/core.al") as f:
             pw_code = f.read()
 
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         result_functions = {f.name for f in ir.functions if f.name.startswith("result_")}
 
@@ -466,7 +466,7 @@ class TestResultCompleteness:
         with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/core.al") as f:
             pw_code = f.read()
 
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         enum_names = {e.name for e in ir.enums}
         assert "Option" in enum_names

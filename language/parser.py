@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
 
-class PWParseError(ValueError):
+class ALParseError(ValueError):
     """Raised when the Promptware DSL cannot be parsed."""
 
     def __init__(self, message: str, *, code: str = "E_SYNTAX") -> None:
@@ -39,7 +39,7 @@ class _PlanBuilder:
     actions: List[Dict[str, Any]] = field(default_factory=list)
 
 
-def parse_pw(text: str) -> PWProgram:
+def parse_al(text: str) -> PWProgram:
     stripped = text.strip()
     if not stripped:
         return PWProgram(prompt=None, plan=None)
@@ -47,7 +47,7 @@ def parse_pw(text: str) -> PWProgram:
         plan = _parse_dsl(text)
         prompt = plan.pop("prompt", None)
         return PWProgram(prompt=prompt, plan=plan)
-    except PWParseError:
+    except ALParseError:
         return PWProgram(prompt=stripped, plan=None)
 
 
@@ -58,7 +58,7 @@ def _parse_dsl(text: str) -> Dict[str, Any]:
 
     def current_actions() -> List[Dict[str, Any]]:
         if not stack or stack[-1][0] != "block":
-            raise PWParseError("Internal parser error: expected block context", code="E_SYNTAX")
+            raise ALParseError("Internal parser error: expected block context", code="E_SYNTAX")
         return stack[-1][2]
 
     i = 0
@@ -71,7 +71,7 @@ def _parse_dsl(text: str) -> Dict[str, Any]:
 
         indent = len(raw_line) - len(raw_line.lstrip(" "))
         if indent % 2 != 0:
-            raise PWParseError(
+            raise ALParseError(
                 f"Indentation must be multiples of two spaces (line {i+1})",
                 code="E_SYNTAX",
             )
@@ -106,7 +106,7 @@ def _parse_dsl(text: str) -> Dict[str, Any]:
         if head == "file" and stripped.endswith(":"):
             path_token = stripped[5:-1].strip()
             if not path_token:
-                raise PWParseError(f"Missing path for file on line {i+1}", code="E_SYNTAX")
+                raise ALParseError(f"Missing path for file on line {i+1}", code="E_SYNTAX")
             entry = {"path": _strip_quotes(path_token), "lines": []}
             stack.append(("file", indent + 2, entry))
             i += 1
@@ -114,42 +114,42 @@ def _parse_dsl(text: str) -> Dict[str, Any]:
 
         if head == "lang":
             if not args:
-                raise PWParseError("lang directive requires a value", code="E_SYNTAX")
+                raise ALParseError("lang directive requires a value", code="E_SYNTAX")
             builder.lang = args[0]
         elif head == "start":
             if not args:
-                raise PWParseError("start directive requires a command", code="E_SYNTAX")
+                raise ALParseError("start directive requires a command", code="E_SYNTAX")
             builder.start = " ".join(args)
         elif head == "prompt":
             builder.prompt = " ".join(args)
         elif head == "assume":
             if not args:
-                raise PWParseError("assume directive requires text", code="E_SYNTAX")
+                raise ALParseError("assume directive requires text", code="E_SYNTAX")
             builder.assumptions.append(" ".join(args))
         elif head == "dep":
             if len(args) < 2:
-                raise PWParseError("dep directive requires language and group", code="E_SYNTAX")
+                raise ALParseError("dep directive requires language and group", code="E_SYNTAX")
             lang = args[0]
             group = args[1]
             values = args[2:]
             if not values:
-                raise PWParseError("dep directive requires at least one value", code="E_SYNTAX")
+                raise ALParseError("dep directive requires at least one value", code="E_SYNTAX")
             lang_deps = builder.deps.setdefault(lang, {})
             group_list = lang_deps.setdefault(group, [])
             group_list.extend(values)
         elif head == "tool":
             if len(args) < 3 or args[1] != "as":
-                raise PWParseError(
+                raise ALParseError(
                     "tool directive must be in the form 'tool <id> as <alias>'",
                     code="E_SYNTAX",
                 )
             builder.tools[args[2]] = args[0]
         elif head == "call":
             if not args:
-                raise PWParseError("call directive requires an alias", code="E_SYNTAX")
+                raise ALParseError("call directive requires an alias", code="E_SYNTAX")
             alias = args[0]
             if alias not in builder.tools:
-                raise PWParseError(
+                raise ALParseError(
                     f"call references undefined tool alias '{alias}'",
                     code="E_PLAN_REF",
                 )
@@ -158,7 +158,7 @@ def _parse_dsl(text: str) -> Dict[str, Any]:
             if "as" in kv_args:
                 idx = kv_args.index("as")
                 if idx + 1 >= len(kv_args):
-                    raise PWParseError("call 'as' directive requires a result alias", code="E_SYNTAX")
+                    raise ALParseError("call 'as' directive requires a result alias", code="E_SYNTAX")
                 result_alias = kv_args[idx + 1]
                 kv_args = kv_args[:idx] + kv_args[idx + 2 :]
             payload, expects, retry_cfg = _parse_key_values(kv_args)
@@ -177,20 +177,20 @@ def _parse_dsl(text: str) -> Dict[str, Any]:
         elif head == "let":
             remainder = stripped[len("let") :].strip()
             if "=" not in remainder:
-                raise PWParseError("let directive requires an assignment", code="E_SYNTAX")
+                raise ALParseError("let directive requires an assignment", code="E_SYNTAX")
             target_text, value_text = remainder.split("=", 1)
             target = target_text.strip()
             if not target:
-                raise PWParseError("let directive requires a target name", code="E_SYNTAX")
+                raise ALParseError("let directive requires a target name", code="E_SYNTAX")
             value_literal = value_text.strip()
             if not value_literal:
-                raise PWParseError("let directive requires a value", code="E_SYNTAX")
+                raise ALParseError("let directive requires a value", code="E_SYNTAX")
             value = _decode_value(value_literal)
             current_actions().append({"type": "let", "target": target, "value": value})
         elif head == "fanout" and stripped.endswith(":"):
             source_token = stripped[len("fanout") : -1].strip()
             if not source_token:
-                raise PWParseError("fanout directive requires a source alias", code="E_SYNTAX")
+                raise ALParseError("fanout directive requires a source alias", code="E_SYNTAX")
             source_alias = _strip_quotes(source_token)
             entry = {"type": "fanout", "source": source_alias, "cases": []}
             current_actions().append(entry)
@@ -199,10 +199,10 @@ def _parse_dsl(text: str) -> Dict[str, Any]:
             continue
         elif head in {"case", "case:"} and stripped.endswith(":"):
             if not stack or stack[-1][0] != "fanout":
-                raise PWParseError("case directive must appear within a fanout block", code="E_SYNTAX")
+                raise ALParseError("case directive must appear within a fanout block", code="E_SYNTAX")
             _, fanout_indent, fanout_entry = stack[-1]
             if indent != fanout_indent:
-                raise PWParseError("case indentation must align with fanout", code="E_SYNTAX")
+                raise ALParseError("case indentation must align with fanout", code="E_SYNTAX")
             scenario = stripped[5:-1].strip()
             cases_list = fanout_entry.setdefault("cases", [])
             index = len(cases_list)
@@ -220,7 +220,7 @@ def _parse_dsl(text: str) -> Dict[str, Any]:
                 mode = args[cursor]
                 cursor += 1
                 if cursor >= len(args):
-                    raise PWParseError("merge append/collect requires 'into <target>'", code="E_SYNTAX")
+                    raise ALParseError("merge append/collect requires 'into <target>'", code="E_SYNTAX")
                 if args[cursor] != "into":
                     bucket_key = args[cursor]
                     cursor += 1
@@ -228,14 +228,14 @@ def _parse_dsl(text: str) -> Dict[str, Any]:
                 mode = "dict"
                 cursor += 1
             if cursor >= len(args) or args[cursor] != "into":
-                raise PWParseError("merge directive must be 'merge into <alias> <source> ...'", code="E_SYNTAX")
+                raise ALParseError("merge directive must be 'merge into <alias> <source> ...'", code="E_SYNTAX")
             cursor += 1
             if cursor >= len(args):
-                raise PWParseError("merge directive requires target alias and at least one source", code="E_SYNTAX")
+                raise ALParseError("merge directive requires target alias and at least one source", code="E_SYNTAX")
             target_alias = args[cursor]
             cursor += 1
             if cursor >= len(args):
-                raise PWParseError("merge directive requires at least one source", code="E_SYNTAX")
+                raise ALParseError("merge directive requires at least one source", code="E_SYNTAX")
             source_tokens = args[cursor:]
             sources: List[Dict[str, str]] = []
             idx = 0
@@ -266,10 +266,10 @@ def _parse_dsl(text: str) -> Dict[str, Any]:
             continue
         elif head in {"branch", "branch:"} and stripped.endswith(":"):
             if not stack or stack[-1][0] != "branches":
-                raise PWParseError("branch directive must appear within a parallel block", code="E_SYNTAX")
+                raise ALParseError("branch directive must appear within a parallel block", code="E_SYNTAX")
             _, branch_indent, parallel_node = stack[-1]
             if indent != branch_indent:
-                raise PWParseError("branch indentation must align with parallel block", code="E_SYNTAX")
+                raise ALParseError("branch indentation must align with parallel block", code="E_SYNTAX")
             name_token = stripped[6:-1].strip()
             branch_name = _strip_quotes(name_token) if name_token else None
             branch = {"name": branch_name, "actions": []}
@@ -280,7 +280,7 @@ def _parse_dsl(text: str) -> Dict[str, Any]:
         elif head == "state" and stripped.endswith(":"):
             state_name = stripped[len("state") : -1].strip()
             if not state_name:
-                raise PWParseError("state block requires a name", code="E_SYNTAX")
+                raise ALParseError("state block requires a name", code="E_SYNTAX")
             node = {"type": "state", "name": state_name, "actions": []}
             current_actions().append(node)
             stack.append(("state", indent, node))
@@ -293,16 +293,16 @@ def _parse_dsl(text: str) -> Dict[str, Any]:
             stack.append(("block", indent + 2, node["then"]))
         elif head in {"else", "else:"} and stripped.endswith(":"):
             if not stack or stack[-1][0] != "if":
-                raise PWParseError("else without matching if", code="E_SYNTAX")
+                raise ALParseError("else without matching if", code="E_SYNTAX")
             _, if_indent, node = stack[-1]
             if indent != if_indent:
-                raise PWParseError("else must align with matching if", code="E_SYNTAX")
+                raise ALParseError("else must align with matching if", code="E_SYNTAX")
             if node.get("else") is not None:
-                raise PWParseError("if already has an else block", code="E_SYNTAX")
+                raise ALParseError("if already has an else block", code="E_SYNTAX")
             node["else"] = []
             stack.append(("block", indent + 2, node["else"]))
         else:
-            raise PWParseError(f"Unknown directive '{head}' on line {i+1}", code="E_SYNTAX")
+            raise ALParseError(f"Unknown directive '{head}' on line {i+1}", code="E_SYNTAX")
 
         i += 1
 
@@ -314,7 +314,7 @@ def _parse_dsl(text: str) -> Dict[str, Any]:
             builder.files.append({"path": entry["path"], "content": content})
 
     if not builder.files and not builder.actions:
-        raise PWParseError("DSL must declare at least one file block or actions", code="E_SYNTAX")
+        raise ALParseError("DSL must declare at least one file block or actions", code="E_SYNTAX")
     if not builder.start and builder.files:
         builder.start = f"python {builder.files[0]['path']}"
 
@@ -416,12 +416,12 @@ def _validate_expression(expr: str) -> None:
     try:
         node = ast.parse(expr, mode="eval")
     except SyntaxError as exc:
-        raise PWParseError(f"Invalid expression '{expr}': {exc.msg}", code="E_SYNTAX") from exc
+        raise ALParseError(f"Invalid expression '{expr}': {exc.msg}", code="E_SYNTAX") from exc
 
     class Visitor(ast.NodeVisitor):
         def generic_visit(self, node):
             if type(node) not in ALLOWED_EXPRESSION_NODES:
-                raise PWParseError(
+                raise ALParseError(
                     f"Disallowed expression component: {type(node).__name__}",
                     code="E_SYNTAX",
                 )
@@ -436,7 +436,7 @@ def _parse_key_values(tokens: List[str]) -> Tuple[Dict[str, Any], Dict[str, Any]
     retry: Dict[str, Any] = {}
     for token in tokens:
         if "=" not in token:
-            raise PWParseError(f"Expected key=value pair, got '{token}'", code="E_SYNTAX")
+            raise ALParseError(f"Expected key=value pair, got '{token}'", code="E_SYNTAX")
         key, value = token.split("=", 1)
         if key.startswith("expect."):
             expects[key[len("expect."):]] = _decode_value(value)
@@ -465,10 +465,10 @@ def _maybe_reference(value: str) -> Optional[List[str]]:
     if value.startswith("${") and value.endswith("}"):
         inner = value[2:-1].strip()
         if not inner:
-            raise PWParseError("Empty reference detected", code="E_PLAN_REF")
+            raise ALParseError("Empty reference detected", code="E_PLAN_REF")
         parts = inner.split('.')
         if any(not part for part in parts):
-            raise PWParseError(f"Invalid reference '{value}'", code="E_PLAN_REF")
+            raise ALParseError(f"Invalid reference '{value}'", code="E_PLAN_REF")
         return parts
     return None
 
@@ -529,32 +529,32 @@ def _normalise_payload(flat: Dict[str, Any]) -> Dict[str, Any]:
 def _set_nested(target: Dict[str, Any], path: List[str], value: Any) -> None:
     segments = _expand_path(path)
     if not segments:
-        raise PWParseError("Empty assignment path", code="E_SYNTAX")
+        raise ALParseError("Empty assignment path", code="E_SYNTAX")
     cursor: Any = target
     for idx, segment in enumerate(segments[:-1]):
         next_segment = segments[idx + 1]
         if isinstance(segment, int):
             if not isinstance(cursor, list):
-                raise PWParseError("List assignment requires list context", code="E_SYNTAX")
+                raise ALParseError("List assignment requires list context", code="E_SYNTAX")
             while len(cursor) <= segment:
                 cursor.append({} if not isinstance(next_segment, int) else [])
             cursor = cursor[segment]
         else:
             if not isinstance(cursor, dict):
-                raise PWParseError("Dict assignment requires mapping context", code="E_SYNTAX")
+                raise ALParseError("Dict assignment requires mapping context", code="E_SYNTAX")
             if segment not in cursor:
                 cursor[segment] = [] if isinstance(next_segment, int) else {}
             cursor = cursor[segment]
     last = segments[-1]
     if isinstance(last, int):
         if not isinstance(cursor, list):
-            raise PWParseError("List assignment requires list context", code="E_SYNTAX")
+            raise ALParseError("List assignment requires list context", code="E_SYNTAX")
         while len(cursor) <= last:
             cursor.append(None)
         cursor[last] = value
     else:
         if not isinstance(cursor, dict):
-            raise PWParseError("Dict assignment requires mapping context", code="E_SYNTAX")
+            raise ALParseError("Dict assignment requires mapping context", code="E_SYNTAX")
         cursor[last] = value
 
 
@@ -580,10 +580,10 @@ def _expand_segment(segment: str) -> List[PathSegment]:
                 token = ""
             end = segment.find(']', i)
             if end == -1:
-                raise PWParseError(f"Malformed path segment '{segment}'", code="E_PLAN_REF")
+                raise ALParseError(f"Malformed path segment '{segment}'", code="E_PLAN_REF")
             index_token = segment[i + 1 : end].strip()
             if not index_token.isdigit():
-                raise PWParseError(f"List index must be numeric in '{segment}'", code="E_PLAN_REF")
+                raise ALParseError(f"List index must be numeric in '{segment}'", code="E_PLAN_REF")
             parts.append(int(index_token))
             i = end + 1
             continue
@@ -616,14 +616,14 @@ def _force_reference(key: str, value: Any) -> Dict[str, Any]:
             return {"__ref__": ref}
         parts = [part.strip() for part in value.split('.') if part.strip()]
         if not parts:
-            raise PWParseError(f"Invalid reference '{value}' for key '{key}'", code="E_PLAN_REF")
+            raise ALParseError(f"Invalid reference '{value}' for key '{key}'", code="E_PLAN_REF")
         if not parts[0].isidentifier():
-            raise PWParseError(
+            raise ALParseError(
                 f"Reference must start with alias identifier (got '{value}')",
                 code="E_PLAN_REF",
             )
         return {"__ref__": parts}
-    raise PWParseError(
+    raise ALParseError(
         f"Reference assignment for '{key}' requires string value",
         code="E_PLAN_REF",
     )

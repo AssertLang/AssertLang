@@ -6,7 +6,7 @@ Verifies that stdlib files with generic types parse correctly.
 
 import pytest
 from pathlib import Path
-from dsl.pw_parser import parse_pw
+from dsl.al_parser import parse_al
 
 
 STDLIB_DIR = Path(__file__).parent.parent / "stdlib"
@@ -18,7 +18,7 @@ def test_parse_stdlib_core_pw():
     with open(core_file, "r") as f:
         code = f.read()
 
-    ir = parse_pw(code)
+    ir = parse_al(code)
 
     # Verify Option enum exists with generic parameter
     option_enums = [e for e in ir.enums if e.name == "Option"]
@@ -43,7 +43,7 @@ def test_parse_stdlib_types_pw():
     with open(types_file, "r") as f:
         code = f.read()
 
-    ir = parse_pw(code)
+    ir = parse_al(code)
 
     # Verify List class exists with generic parameter
     list_classes = [c for c in ir.classes if c.name == "List"]
@@ -70,7 +70,7 @@ def test_option_methods_parse():
     with open(core_file, "r") as f:
         code = f.read()
 
-    ir = parse_pw(code)
+    ir = parse_al(code)
 
     # Check for key Option functions with generics
     option_funcs = [
@@ -98,7 +98,7 @@ def test_result_methods_parse():
     with open(core_file, "r") as f:
         code = f.read()
 
-    ir = parse_pw(code)
+    ir = parse_al(code)
 
     # Check for key Result functions with generics
     result_funcs = [
@@ -127,7 +127,7 @@ def test_collection_methods_parse():
     with open(types_file, "r") as f:
         code = f.read()
 
-    ir = parse_pw(code)
+    ir = parse_al(code)
 
     # Check for key collection functions
     list_funcs = ["list_new", "list_push", "list_pop", "list_map", "list_filter"]
@@ -156,8 +156,8 @@ def test_stdlib_files_syntax_valid():
         if stdlib_file.exists():
             with open(stdlib_file, "r") as f:
                 code = f.read()
-            # Should not raise PWParseError
-            ir = parse_pw(code)
+            # Should not raise ALParseError
+            ir = parse_al(code)
             assert ir is not None, f"Failed to parse {stdlib_file.name}"
 
 

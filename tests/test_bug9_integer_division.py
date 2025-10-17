@@ -14,7 +14,7 @@ Fixed:   mid = (left + right) // 2  →  mid = 3 (Works!)
 """
 
 import pytest
-from dsl.pw_parser import Lexer, Parser
+from dsl.al_parser import Lexer, Parser
 from language.python_generator_v2 import generate_python
 
 

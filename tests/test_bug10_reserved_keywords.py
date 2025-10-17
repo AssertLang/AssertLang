@@ -6,7 +6,7 @@ as class property names without causing parser errors.
 """
 
 import pytest
-from dsl.pw_parser import parse_pw, PWParseError
+from dsl.al_parser import parse_al, ALParseError
 
 
 def test_method_as_property():
@@ -23,7 +23,7 @@ class Request {
 }
 """
     # Should compile without errors
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert ir is not None
     assert len(ir.classes) == 1
     assert ir.classes[0].name == "Request"
@@ -45,7 +45,7 @@ class HttpRequest {
     }
 }
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert ir is not None
     assert len(ir.classes) == 1
     assert ir.classes[0].name == "HttpRequest"
@@ -62,7 +62,7 @@ class User {
     email: string;
 }
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert ir is not None
     assert len(ir.classes) == 1
     assert ir.classes[0].name == "User"
@@ -79,7 +79,7 @@ class Message {
     payload: string;
 }
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert ir is not None
     assert len(ir.classes) == 1
     assert ir.classes[0].name == "Message"
@@ -101,7 +101,7 @@ class ComplexObject {
     throws: array;
 }
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert ir is not None
     assert len(ir.classes) == 1
     assert ir.classes[0].name == "ComplexObject"
@@ -132,7 +132,7 @@ class TestClass {
     }
 }
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert ir is not None
     assert len(ir.classes) == 1
     assert len(ir.classes[0].methods) == 1
@@ -160,7 +160,7 @@ class Request {
     }
 }
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     generator = PythonGeneratorV2()
     python_code = generator.generate(ir)
 

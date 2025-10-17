@@ -126,7 +126,7 @@ Before writing code:
 #!/usr/bin/env python3
 """Test new feature X."""
 
-from dsl.pw_parser import parse_pw
+from dsl.al_parser import parse_al
 
 def test_feature_x():
     """Test that feature X works."""
@@ -135,7 +135,7 @@ function test_feature() -> int {
     return 42;
 }
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert len(ir.functions) == 1
     assert ir.functions[0].name == "test_feature"
     print("✅ Feature X test passed")
@@ -236,7 +236,7 @@ def generate_new_feature(self, node: IRNewFeature) -> str:
 def test_new_feature_parsing():
     """Test parsing new feature."""
     pw_code = "..."
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     # Assertions
 
 def test_new_feature_python_generation():
@@ -376,7 +376,7 @@ function add(x: int, y: int) -> int {
 """
 
     # Act
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
 
     # Assert
     assert len(ir.functions) == 1
@@ -388,14 +388,14 @@ function add(x: int, y: int) -> int {
 def test_type_validation_success():
     """Test valid type usage."""
     pw_code = 'function f() -> int { return 42; }'
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     # Should not raise
 
 def test_type_validation_failure():
     """Test invalid type usage."""
     pw_code = 'function f() -> int { return "string"; }'
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert False, "Should have raised type error"
     except Exception as e:
         assert "type mismatch" in str(e).lower()
@@ -465,7 +465,7 @@ def parse_function(self) -> IRFunction:
         IRFunction with parsed name, params, return type, and body
 
     Raises:
-        PWParseError: If syntax is invalid
+        ALParseError: If syntax is invalid
 
     Example:
         >>> parse_function('function add(x: int, y: int) -> int { return x + y; }')
@@ -688,7 +688,7 @@ x = "alice@example.com"
 1. **Profile before optimizing**:
 ```python
 import cProfile
-cProfile.run('parse_pw(large_file)')
+cProfile.run('parse_al(large_file)')
 ```
 
 2. **Use appropriate data structures**:
@@ -746,8 +746,8 @@ python3 -m pdb tests/test_parser.py
 
 # IPython for interactive testing
 ipython
->>> from dsl.pw_parser import parse_pw
->>> ir = parse_pw("function f() {}")
+>>> from dsl.al_parser import parse_al
+>>> ir = parse_al("function f() {}")
 >>> ir.functions[0]
 ```
 

@@ -17,7 +17,7 @@ from pathlib import Path
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
-from dsl.pw_parser import parse_pw
+from dsl.al_parser import parse_al
 from language.go_generator_v2 import generate_go
 
 
@@ -43,7 +43,7 @@ def main():
     # Step 2: Parse PW DSL → IR
     print("🔄 Parsing PW DSL → IR...")
     try:
-        ir_module = parse_pw(pw_text)
+        ir_module = parse_al(pw_text)
         print(f"   ✅ Module: {ir_module.name}")
         print(f"   ✅ Version: {ir_module.version}")
         print(f"   ✅ Imports: {len(ir_module.imports)}")

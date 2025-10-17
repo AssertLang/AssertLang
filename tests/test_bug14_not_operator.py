@@ -8,7 +8,7 @@ Bug Report: Bugs/v2.1.0b8/PW_BUG_REPORT_BATCH_8.md
 """
 
 import pytest
-from dsl.pw_parser import parse_pw
+from dsl.al_parser import parse_al
 from dsl.ir import UnaryOperator, IRUnaryOp
 from language.python_generator_v2 import PythonGeneratorV2
 from language.go_generator_v2 import GoGeneratorV2
@@ -28,7 +28,7 @@ function test() -> bool {
     return !flag;
 }
 """
-        ir = parse_pw(code)
+        ir = parse_al(code)
         func = ir.functions[0]
         return_stmt = func.body[1]
 
@@ -47,7 +47,7 @@ function test() -> bool {
     return !check();
 }
 """
-        ir = parse_pw(code)
+        ir = parse_al(code)
         func = ir.functions[1]
         return_stmt = func.body[0]
 
@@ -62,7 +62,7 @@ function test(a: int, b: int) -> bool {
     return !(a == b);
 }
 """
-        ir = parse_pw(code)
+        ir = parse_al(code)
         func = ir.functions[0]
         return_stmt = func.body[0]
 
@@ -77,7 +77,7 @@ function test(value: bool) -> bool {
     return !!value;
 }
 """
-        ir = parse_pw(code)
+        ir = parse_al(code)
         func = ir.functions[0]
         return_stmt = func.body[0]
 
@@ -98,7 +98,7 @@ function test(flag: bool) -> string {
     return "true";
 }
 """
-        ir = parse_pw(code)
+        ir = parse_al(code)
         func = ir.functions[0]
         if_stmt = func.body[0]
 
@@ -114,7 +114,7 @@ function test() -> bool {
     return !obj.is_valid;
 }
 """
-        ir = parse_pw(code)
+        ir = parse_al(code)
         func = ir.functions[0]
         return_stmt = func.body[1]
 
@@ -133,7 +133,7 @@ function test(flag: bool) -> bool {
     return !flag;
 }
 """
-        ir = parse_pw(code)
+        ir = parse_al(code)
         generator = PythonGeneratorV2()
         python_code = generator.generate(ir)
 
@@ -147,7 +147,7 @@ function test(flag: bool) -> bool {
     return !flag;
 }
 """
-        ir = parse_pw(code)
+        ir = parse_al(code)
         generator = GoGeneratorV2()
         go_code = generator.generate(ir)
 
@@ -161,7 +161,7 @@ function test(flag: bool) -> bool {
     return !flag;
 }
 """
-        ir = parse_pw(code)
+        ir = parse_al(code)
         generator = RustGeneratorV2()
         rust_code = generator.generate(ir)
 
@@ -175,7 +175,7 @@ function test(flag: bool) -> bool {
     return !flag;
 }
 """
-        ir = parse_pw(code)
+        ir = parse_al(code)
         generator = NodeJSGeneratorV2()
         ts_code = generator.generate(ir)
 
@@ -189,7 +189,7 @@ function test(flag: bool) -> bool {
     return !flag;
 }
 """
-        ir = parse_pw(code)
+        ir = parse_al(code)
         generator = DotNetGeneratorV2()
         csharp_code = generator.generate(ir)
 
@@ -211,7 +211,7 @@ function validate() -> bool {
     return true;
 }
 """
-        ir = parse_pw(code)
+        ir = parse_al(code)
 
         # Should parse successfully
         assert len(ir.functions) == 1
@@ -231,7 +231,7 @@ function test(a: bool, b: bool) -> bool {
     return !a && b;
 }
 """
-        ir = parse_pw(code)
+        ir = parse_al(code)
         func = ir.functions[0]
 
         # Should parse successfully and have correct structure
@@ -244,7 +244,7 @@ function test(a: bool, b: bool, c: bool) -> bool {
     return !(a && b) || !c;
 }
 """
-        ir = parse_pw(code)
+        ir = parse_al(code)
         func = ir.functions[0]
 
         # Should parse successfully
@@ -265,7 +265,7 @@ function test() -> int {
     return count;
 }
 """
-        ir = parse_pw(code)
+        ir = parse_al(code)
         func = ir.functions[0]
 
         # Should parse successfully
@@ -278,7 +278,7 @@ function test(items: array<int>) -> bool {
     return !(items == null);
 }
 """
-        ir = parse_pw(code)
+        ir = parse_al(code)
 
         # Should parse successfully
         assert len(ir.functions) == 1
@@ -311,7 +311,7 @@ function check_flags(is_valid: bool, is_complete: bool) -> string {
 
     def test_python_roundtrip(self, sample_code):
         """Test Python code generation"""
-        ir = parse_pw(sample_code)
+        ir = parse_al(sample_code)
         generator = PythonGeneratorV2()
         python_code = generator.generate(ir)
 
@@ -321,7 +321,7 @@ function check_flags(is_valid: bool, is_complete: bool) -> string {
 
     def test_go_roundtrip(self, sample_code):
         """Test Go code generation"""
-        ir = parse_pw(sample_code)
+        ir = parse_al(sample_code)
         generator = GoGeneratorV2()
         go_code = generator.generate(ir)
 
@@ -331,7 +331,7 @@ function check_flags(is_valid: bool, is_complete: bool) -> string {
 
     def test_rust_roundtrip(self, sample_code):
         """Test Rust code generation"""
-        ir = parse_pw(sample_code)
+        ir = parse_al(sample_code)
         generator = RustGeneratorV2()
         rust_code = generator.generate(ir)
 
@@ -341,7 +341,7 @@ function check_flags(is_valid: bool, is_complete: bool) -> string {
 
     def test_nodejs_roundtrip(self, sample_code):
         """Test Node.js/TypeScript code generation"""
-        ir = parse_pw(sample_code)
+        ir = parse_al(sample_code)
         generator = NodeJSGeneratorV2()
         ts_code = generator.generate(ir)
 
@@ -351,7 +351,7 @@ function check_flags(is_valid: bool, is_complete: bool) -> string {
 
     def test_dotnet_roundtrip(self, sample_code):
         """Test C# code generation"""
-        ir = parse_pw(sample_code)
+        ir = parse_al(sample_code)
         generator = DotNetGeneratorV2()
         csharp_code = generator.generate(ir)
 

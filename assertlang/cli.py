@@ -1094,7 +1094,7 @@ def cmd_build(args) -> int:
     # Add pw-syntax-mcp-server to path
     sys.path.insert(0, str(Path(__file__).parent.parent / 'pw-syntax-mcp-server'))
 
-    from dsl.pw_parser import parse_pw
+    from dsl.al_parser import parse_al
     from translators.ir_converter import ir_to_mcp
     from translators.python_bridge import pw_to_python
     from language.python_generator_v2 import generate_python
@@ -1141,11 +1141,11 @@ def cmd_build(args) -> int:
         # Parse PW → IR with timing
         if has_ux_utils:
             with timed_step("Parsing PW code", verbose=verbose, quiet=quiet):
-                ir = parse_pw(pw_code)
+                ir = parse_al(pw_code)
         else:
             if verbose:
                 print(info("Parsing PW code..."))
-            ir = parse_pw(pw_code)
+            ir = parse_al(pw_code)
 
         if verbose and not quiet:
             print(success(f"Parsed: {len(ir.functions)} functions, {len(ir.classes)} classes"))
@@ -1266,7 +1266,7 @@ def cmd_compile(args) -> int:
     # Add pw-syntax-mcp-server to path
     sys.path.insert(0, str(Path(__file__).parent.parent / 'pw-syntax-mcp-server'))
 
-    from dsl.pw_parser import parse_pw
+    from dsl.al_parser import parse_al
     from translators.ir_converter import ir_to_mcp
     import json
 
@@ -1286,7 +1286,7 @@ def cmd_compile(args) -> int:
         if args.verbose:
             print(info("Parsing PW code..."))
 
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         # IR → MCP
         if args.verbose:
@@ -1323,7 +1323,7 @@ def cmd_run(args) -> int:
     # Add pw-syntax-mcp-server to path
     sys.path.insert(0, str(Path(__file__).parent.parent / 'pw-syntax-mcp-server'))
 
-    from dsl.pw_parser import parse_pw
+    from dsl.al_parser import parse_al
     from translators.ir_converter import ir_to_mcp
     from translators.python_bridge import pw_to_python
 
@@ -1343,7 +1343,7 @@ def cmd_run(args) -> int:
         if args.verbose:
             print(info("Parsing PW code..."))
 
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         # IR → MCP → Python
         if args.verbose:

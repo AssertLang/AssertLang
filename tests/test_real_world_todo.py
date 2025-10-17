@@ -13,7 +13,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from dsl.pw_parser import parse_pw
+from dsl.al_parser import parse_al
 
 
 def test_todo_manager_parses():
@@ -32,7 +32,7 @@ def test_todo_manager_parses():
         print(f"  ✅ Read todo manager program: {len(pw_code)} chars")
 
         # Parse the program
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         print(f"  ✅ Parsed successfully")
         print(f"  ✅ Classes: {len(ir.classes)}")

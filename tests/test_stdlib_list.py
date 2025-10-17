@@ -6,7 +6,7 @@ Based on implementation-plan.md specifications.
 """
 
 import pytest
-from dsl.pw_parser import parse_pw, PWParseError
+from dsl.al_parser import parse_al, ALParseError
 
 
 class TestListBasicParsing:
@@ -18,7 +18,7 @@ class TestListBasicParsing:
 class List<T>:
     items: array<T>
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.classes) == 1
         assert ir.classes[0].name == "List"
 
@@ -28,7 +28,7 @@ class List<T>:
 function list_new<T>() -> List<T>:
     return List { items: [] }
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "list_new"
 
@@ -38,7 +38,7 @@ function list_new<T>() -> List<T>:
 function list_from<T>(items: array<T>) -> List<T>:
     return List { items: items }
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "list_from"
 
@@ -52,7 +52,7 @@ class TestListMutationMethods:
 function list_push<T>(lst: List<T>, item: T) -> void:
     lst.items.append(item)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "list_push"
 
@@ -67,7 +67,7 @@ function list_pop<T>(lst: List<T>) -> Option<T>:
         lst.items = lst.items[:-1]
         return Some(item)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "list_pop"
 
@@ -84,7 +84,7 @@ function list_get<T>(lst: List<T>, index: int) -> Option<T>:
     else:
         return Some(lst.items[index])
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "list_get"
 
@@ -94,7 +94,7 @@ function list_get<T>(lst: List<T>, index: int) -> Option<T>:
 function list_len<T>(lst: List<T>) -> int:
     return len(lst.items)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "list_len"
 
@@ -104,7 +104,7 @@ function list_len<T>(lst: List<T>) -> int:
 function list_is_empty<T>(lst: List<T>) -> bool:
     return len(lst.items) == 0
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "list_is_empty"
 
@@ -121,7 +121,7 @@ function list_map<T, U>(lst: List<T>, fn: function(T) -> U) -> List<U>:
         result.append(fn(item))
     return list_from(result)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "list_map"
 
@@ -135,7 +135,7 @@ function list_filter<T>(lst: List<T>, fn: function(T) -> bool) -> List<T>:
             result.append(item)
     return list_from(result)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "list_filter"
 
@@ -148,7 +148,7 @@ function list_fold<T, U>(lst: List<T>, init: U, fn: function(U, T) -> U) -> U:
         acc = fn(acc, item)
     return acc
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "list_fold"
 
@@ -166,7 +166,7 @@ function manage_todos() -> List<string>:
     list_push(todos, "Deploy")
     return todos
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_list_number_processing(self):
@@ -177,7 +177,7 @@ function process_numbers() -> int:
     let sum = list_fold(numbers, 0, fn(acc, x) -> acc + x)
     return sum
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_list_filtering(self):
@@ -186,7 +186,7 @@ function process_numbers() -> int:
 function get_even_numbers(nums: List<int>) -> List<int>:
     return list_filter(nums, fn(x) -> x % 2 == 0)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_list_transformation(self):
@@ -195,7 +195,7 @@ function get_even_numbers(nums: List<int>) -> List<int>:
 function double_all(nums: List<int>) -> List<int>:
     return list_map(nums, fn(x) -> x * 2)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
 
@@ -207,7 +207,7 @@ class TestListFullStdlib:
         with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/types.al") as f:
             pw_code = f.read()
 
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         # Check for List class
         list_classes = [c for c in ir.classes if c.name == "List"]
@@ -222,7 +222,7 @@ class TestListFullStdlib:
         with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/types.al") as f:
             pw_code = f.read()
 
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         required_funcs = [
             "list_new",
@@ -251,7 +251,7 @@ class TestListTypeAnnotations:
 function get_numbers() -> List<int>:
     return list_from([1, 2, 3])
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].return_type.name == "List"
 
@@ -261,7 +261,7 @@ function get_numbers() -> List<int>:
 function get_names() -> List<string>:
     return list_new()
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_list_generic_parameter(self):
@@ -270,7 +270,7 @@ function get_names() -> List<string>:
 function identity<T>(lst: List<T>) -> List<T>:
     return lst
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
 
@@ -288,7 +288,7 @@ function get_matrix() -> List<List<int>>:
     list_push(matrix, row2)
     return matrix
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_list_with_custom_type(self):
@@ -301,7 +301,7 @@ class User:
 function get_users() -> List<User>:
     return list_new()
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.classes) == 1
         assert len(ir.functions) == 1
 
@@ -315,7 +315,7 @@ function get_optionals() -> List<Option<int>>:
     list_push(items, Some(3))
     return items
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
 
@@ -330,7 +330,7 @@ function process_list(nums: List<int>) -> List<int>:
     let evens = list_filter(doubled, fn(x) -> x % 4 == 0)
     return evens
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_filter_map_fold_chain(self):
@@ -342,7 +342,7 @@ function sum_even_squares(nums: List<int>) -> int:
     let sum = list_fold(squares, 0, fn(acc, x) -> acc + x)
     return sum
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
 
@@ -354,7 +354,7 @@ class TestListCompleteness:
         with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/types.al") as f:
             pw_code = f.read()
 
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         list_functions = {f.name for f in ir.functions if f.name.startswith("list_")}
 
