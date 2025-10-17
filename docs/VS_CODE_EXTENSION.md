@@ -122,7 +122,7 @@ Purple "PW" icon next to `.pw` files in the file explorer.
 ├── syntaxes/
 │   └── pw.tmLanguage.json         # Syntax highlighting rules
 ├── icons/
-│   └── pw-icon.svg                # PW logo (purple square with "PW")
+│   └── al-icon.svg                # AL logo (AssertLang logo)
 ├── iconTheme.json                 # Icon theme definition
 ├── README.md                      # Extension documentation
 └── SETUP.md                       # Installation guide
@@ -140,7 +140,7 @@ cd promptware/.vscode/extensions/pw-language/
 **Direct download** (when repo is public):
 
 - **Full extension**: Download the entire `.vscode/extensions/pw-language/` folder
-- **Logo only**: Download `.vscode/extensions/pw-language/icons/pw-icon.svg`
+- **Logo**: See `.github/assets/logo2.svg` for the official AssertLang logo
 
 ---
 
@@ -443,7 +443,7 @@ See `LICENSE` for full text.
 🔒 **Current:** Private (workspace extension)
 📦 **Download:** Clone from GitHub repository
 🌐 **Future:** Public (VS Code Marketplace)
-🎨 **Logo:** Available at `.vscode/extensions/pw-language/icons/pw-icon.svg`
+🎨 **Logo:** Available at `.github/assets/logo2.svg` (official AssertLang logo)
 
 ---
 
