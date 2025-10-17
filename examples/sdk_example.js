@@ -228,7 +228,7 @@ async function convenienceFunction() {
 (async () => {
   console.log('Promptware SDK Examples\n');
   console.log('Make sure you have an agent running on http://localhost:3000');
-  console.log('Or use: promptware generate test.pw --lang python && cd generated/test && python test_server.py\n');
+  console.log('Or use: promptware generate test.al --lang python && cd generated/test && python test_server.py\n');
 
   try {
     await basicUsage();

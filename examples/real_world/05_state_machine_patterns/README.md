@@ -9,7 +9,7 @@
 python3 -c "
 from dsl.pw_parser import parse_pw
 from language.python_generator_v2 import generate_python
-with open('state_machine.pw', 'r') as f:
+with open('state_machine.al'), 'r') as f:
     ir_module = parse_pw(f.read())
 with open('state_machine.py', 'w') as f:
     f.write(generate_python(ir_module))

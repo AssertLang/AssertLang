@@ -371,7 +371,7 @@ For more help: promptware help <command>
     compile_parser.add_argument(
         '--output', '-o',
         type=str,
-        help='Output JSON file (default: <input>.pw.json)'
+        help='Output JSON file (default: <input>.al.json)'
     )
     compile_parser.add_argument(
         '--verbose', '-v',

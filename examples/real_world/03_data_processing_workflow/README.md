@@ -9,7 +9,7 @@
 python3 -c "
 from dsl.pw_parser import parse_pw
 from language.python_generator_v2 import generate_python
-with open('workflow.pw', 'r') as f:
+with open('workflow.al'), 'r') as f:
     ir_module = parse_pw(f.read())
 with open('workflow.py', 'w') as f:
     f.write(generate_python(ir_module))

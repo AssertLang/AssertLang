@@ -2,7 +2,7 @@
 
 **AssertLang Agent-to-Agent Communication**
 
-This guide explains how to build autonomous agents that coordinate via MCP verbs using AssertLang's `.pw` language.
+This guide explains how to build autonomous agents that coordinate via MCP verbs using AssertLang's .al language.
 
 ---
 
@@ -46,7 +46,7 @@ expose review.status@v1:
 ```python
 from language.mcp_server_generator import generate_mcp_server_from_pw
 
-with open('agent.pw', 'r') as f:
+with open('agent.al', 'r') as f:
     server_code = generate_mcp_server_from_pw(f.read())
 
 with open('agent_server.py', 'w') as f:
@@ -415,7 +415,7 @@ pip3 install fastapi uvicorn requests
 python3 << 'EOF'
 from language.mcp_server_generator import generate_mcp_server_from_pw
 
-with open('examples/demo_agent.pw', 'r') as f:
+with open('examples/demo_agent.al', 'r') as f:
     code = generate_mcp_server_from_pw(f.read())
 
 with open('examples/demo_agent_server.py', 'w') as f:

@@ -10,8 +10,8 @@ recursive-include docs *.txt
 # Include schema files
 recursive-include schemas *.json
 
-# Include example .pw files
-recursive-include examples *.pw
+# Include example .al files
+recursive-include examples *.al
 
 # Exclude test files
 recursive-exclude tests *

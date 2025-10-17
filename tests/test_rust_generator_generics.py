@@ -297,7 +297,7 @@ class TestRealWorldStdlib:
     """Test generation of actual stdlib code patterns."""
 
     def test_option_enum_complete(self):
-        """Test complete Option<T> enum as defined in stdlib/core.pw."""
+        """Test complete Option<T> enum as defined in stdlib/core.al."""
         enum = IREnum(
             name="Option",
             generic_params=["T"],
@@ -317,7 +317,7 @@ class TestRealWorldStdlib:
         assert "None," in code
 
     def test_result_enum_complete(self):
-        """Test complete Result<T, E> enum as defined in stdlib/core.pw."""
+        """Test complete Result<T, E> enum as defined in stdlib/core.al."""
         enum = IREnum(
             name="Result",
             generic_params=["T", "E"],
@@ -337,7 +337,7 @@ class TestRealWorldStdlib:
         assert "Err(E)," in code
 
     def test_list_class_complete(self):
-        """Test complete List<T> class as defined in stdlib/types.pw."""
+        """Test complete List<T> class as defined in stdlib/types.al."""
         cls = IRClass(
             name="List",
             generic_params=["T"],
@@ -359,7 +359,7 @@ class TestRealWorldStdlib:
         assert "impl<T> List<T> {" in code
 
     def test_map_class_complete(self):
-        """Test complete Map<K, V> class as defined in stdlib/types.pw."""
+        """Test complete Map<K, V> class as defined in stdlib/types.al."""
         cls = IRClass(
             name="Map",
             generic_params=["K", "V"],

@@ -67,7 +67,7 @@ python3 << 'EOF'
 from language.agent_parser import parse_agent_pw
 from language.mcp_server_generator import generate_python_mcp_server
 
-with open('examples/ai_code_reviewer.pw') as f:
+with open('examples/ai_code_reviewer.al')) as f:
     agent = parse_agent_pw(f.read())
 
 code = generate_python_mcp_server(agent)
