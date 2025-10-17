@@ -20,6 +20,13 @@ dependencies = [
 [project.scripts]
 asl = "assertlang.cli:main"
 
+[project.urls]
+Homepage = "https://github.com/AssertLang/AssertLang"
+Documentation = "https://github.com/AssertLang/AssertLang/tree/main/docs"
+Repository = "https://github.com/AssertLang/AssertLang"
+"Bug Tracker" = "https://github.com/AssertLang/AssertLang/issues"
+Changelog = "https://github.com/AssertLang/AssertLang/blob/main/CHANGELOG.md"
+
 [project.optional-dependencies]
 dev = [
   "pytest>=7.4.0",
