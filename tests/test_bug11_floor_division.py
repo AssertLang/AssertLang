@@ -184,7 +184,7 @@ function test() -> int {
         assert ir is not None
 
     def test_bug11_exact_reproduction(self):
-        """Test exact Bug #11 scenario from database_query_optimizer.pw."""
+        """Test exact Bug #11 scenario from database_query_optimizer.al."""
         code = """
 class QueryPlan {
     plan_type: string;

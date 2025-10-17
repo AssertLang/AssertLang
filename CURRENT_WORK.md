@@ -270,11 +270,11 @@ AssertLang/
 │   ├── go/                             # Go codegen (5%)
 │   └── csharp/                         # C# codegen (5%)
 ├── stdlib/                              # Standard library
-│   ├── option.pw                       # Option<T> - 15 methods
-│   ├── result.pw                       # Result<T,E> - 18 methods
-│   ├── list.pw                         # List<T> - 25 methods
-│   ├── map.pw                          # Map<K,V> - 20 methods
-│   └── set.pw                          # Set<T> - 18 methods
+│   ├── option.al                       # Option<T> - 15 methods
+│   ├── result.al                       # Result<T,E> - 18 methods
+│   ├── list.al                         # List<T> - 25 methods
+│   ├── map.al                          # Map<K,V> - 20 methods
+│   └── set.al                          # Set<T> - 18 methods
 ├── tests/                               # 302 tests (100% passing)
 ├── examples/
 │   └── agent_coordination/             # Multi-agent proof-of-concept

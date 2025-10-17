@@ -20,7 +20,7 @@ Last Updated: 2025-10-08 (v2.1.0b3)
 
 ### hello-world.al
 
-**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/examples/hello-world.pw`
+**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/examples/hello-world.al`
 
 **Purpose**: Minimal working example
 
@@ -37,7 +37,7 @@ Last Updated: 2025-10-08 (v2.1.0b3)
 
 ### calculator.al
 
-**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/examples/calculator.pw`
+**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/examples/calculator.al`
 
 **Purpose**: Basic arithmetic operations
 
@@ -64,7 +64,7 @@ Last Updated: 2025-10-08 (v2.1.0b3)
 
 ### error_handling.al ✅ NEW
 
-**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/examples/error_handling.pw`
+**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/examples/error_handling.al`
 
 **Purpose**: Demonstrate try/catch patterns
 
@@ -91,7 +91,7 @@ Last Updated: 2025-10-08 (v2.1.0b3)
 
 ### array_and_map_basics.al ✅ NEW
 
-**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/examples/array_and_map_basics.pw`
+**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/examples/array_and_map_basics.al`
 
 **Purpose**: Demonstrate safe collection operations
 
@@ -125,7 +125,7 @@ Last Updated: 2025-10-08 (v2.1.0b3)
 
 ### calculator_cli.al
 
-**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/examples/calculator_cli.pw`
+**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/examples/calculator_cli.al`
 
 **Purpose**: Interactive calculator application
 
@@ -152,7 +152,7 @@ Last Updated: 2025-10-08 (v2.1.0b3)
 
 ### todo_list_manager.al
 
-**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/examples/todo_list_manager.pw`
+**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/examples/todo_list_manager.al`
 
 **Purpose**: Task management system
 
@@ -180,7 +180,7 @@ Last Updated: 2025-10-08 (v2.1.0b3)
 
 ### simple_web_api.al
 
-**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/examples/simple_web_api.pw`
+**Location**: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/examples/simple_web_api.al`
 
 **Purpose**: REST API patterns
 

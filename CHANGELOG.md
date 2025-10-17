@@ -140,7 +140,7 @@ Major bug fix release resolving 5 critical issues identified in v2.1.0b3-beta.
 - Standardized to C-style brace syntax: `try { } catch (e) { } finally { }`
 - Rewrote parser `parse_try()` to expect braces instead of colons
 - Fixed MCP converter field name mismatches
-- Created `examples/error_handling.pw` with working patterns
+- Created `examples/error_handling.al` with working patterns
 
 **Bug #5: While Loops Status Unknown (P3 - Low)**
 - Verified while loops working correctly across all 5 languages
@@ -280,7 +280,7 @@ asl compile file.al -o file.json
 ```
 - Generates intermediate representation
 - Shareable with AI agents
-- Default output: `<input>.pw.json`
+- Default output: `<input>.al.json`
 
 **`promptware run`** - Direct PW execution
 ```bash
@@ -291,19 +291,19 @@ promptware run file.al
 
 #### Real-World Examples (Week 4)
 
-**Calculator CLI** (`examples/calculator_cli.pw` - 3,676 chars)
+**Calculator CLI** (`examples/calculator_cli.al` - 3,676 chars)
 - Calculator class with 6 methods
 - Operation history tracking
 - 5 helper functions
 - Features: classes, arrays, maps, loops, conditionals
 
-**Todo List Manager** (`examples/todo_list_manager.pw` - 5,350 chars)
+**Todo List Manager** (`examples/todo_list_manager.al` - 5,350 chars)
 - TodoItem and TodoListManager classes
 - Full CRUD operations
 - Priority and status management
 - Features: multiple classes, arrays, filtering
 
-**Simple Web API** (`examples/simple_web_api.pw` - 7,535 chars)
+**Simple Web API** (`examples/simple_web_api.al` - 7,535 chars)
 - 4 classes (HttpRequest, HttpResponse, User, ApiServer)
 - 9 route handlers
 - REST API patterns

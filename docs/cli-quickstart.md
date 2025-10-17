@@ -21,7 +21,7 @@ export PATH="$(pwd)/bin:$PATH"
 promptware init hello-world --template basic
 ```
 
-This creates `hello-world.pw`:
+This creates `hello-world.al`:
 
 ```
 agent hello-world
@@ -37,7 +37,7 @@ expose task.execute@v1 (
 
 ### 2. Customize (Optional)
 
-Edit `hello-world.pw` to add tools:
+Edit `hello-world.al` to add tools:
 
 ```
 agent hello-world
@@ -63,7 +63,7 @@ promptware validate hello-world.al --verbose
 
 Output:
 ```
-🔍 Validating hello-world.pw...
+🔍 Validating hello-world.al...
 ✓ Syntax valid
 
 📋 Agent Details:
@@ -82,7 +82,7 @@ promptware generate hello-world.al --lang python
 
 Output:
 ```
-📖 Reading hello-world.pw...
+📖 Reading hello-world.al...
 ✓ Parsed agent: hello-world
   Port: 3000
   Verbs: 1
