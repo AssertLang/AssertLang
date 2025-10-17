@@ -19,7 +19,7 @@ from pathlib import Path
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from dsl.pw_parser import parse_pw, PWParseError
+from dsl.al_parser import parse_al, ALParseError
 from language.python_generator_v2 import generate_python
 
 def main():
@@ -42,7 +42,7 @@ def main():
     # Parse PW DSL → IR
     print("\n🔄 Parsing PW DSL → IR...")
     try:
-        ir_module = parse_pw(pw_code)
+        ir_module = parse_al(pw_code)
         print(f"   ✅ Parsed successfully!")
         print(f"   - Module: {ir_module.name} v{ir_module.version}")
         print(f"   - Imports: {len(ir_module.imports)}")
@@ -51,7 +51,7 @@ def main():
         print(f"   - Types: {len(ir_module.types)}")
         print(f"   - Enums: {len(ir_module.enums)}")
 
-    except PWParseError as e:
+    except ALParseError as e:
         print(f"   ❌ Parse error: {e}")
         print(f"\n⚠️  WARNING: PW DSL is malformed (from Go translation)")
         print(f"   Will attempt to parse what we can...")

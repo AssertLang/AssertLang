@@ -56,7 +56,7 @@ from dsl.ir import (
     SourceLocation,
     UnaryOperator,
 )
-from dsl.pw_parser import parse_pw
+from dsl.al_parser import parse_al
 
 
 # ============================================================================
@@ -223,7 +223,7 @@ class PWRuntime:
         with open(stdlib_path, "r") as f:
             stdlib_source = f.read()
 
-        module = parse_pw(stdlib_source)
+        module = parse_al(stdlib_source)
 
         # Register enums (Option, Result)
         for enum in module.enums:

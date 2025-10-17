@@ -80,7 +80,7 @@ except ImportError:
 # ============================================================================
 
 
-class PWParseError(Exception):
+class ALParseError(Exception):
     """Parse error with location information."""
 
     def __init__(self, message: str, line: int = 0, column: int = 0):
@@ -213,8 +213,8 @@ class Lexer:
         self.indent_stack = [0]
         self.paren_depth = 0  # Track ( ) [ ] { } nesting for multi-line support
 
-    def error(self, msg: str) -> PWParseError:
-        return PWParseError(msg, self.line, self.column)
+    def error(self, msg: str) -> ALParseError:
+        return ALParseError(msg, self.line, self.column)
 
     def peek(self, offset: int = 0) -> str:
         """Peek ahead at character."""
@@ -644,9 +644,9 @@ class Parser:
         self.tokens = tokens
         self.pos = 0
 
-    def error(self, msg: str) -> PWParseError:
+    def error(self, msg: str) -> ALParseError:
         tok = self.current()
-        return PWParseError(msg, tok.line, tok.column)
+        return ALParseError(msg, tok.line, tok.column)
 
     def current(self) -> Token:
         """Get current token."""
@@ -2703,7 +2703,7 @@ class TypeChecker:
 
         # If any errors, raise
         if self.errors:
-            raise PWParseError("\n".join(self.errors))
+            raise ALParseError("\n".join(self.errors))
 
     def _extract_type_name(self, type_obj) -> str:
         """Extract type name from IRType or string."""
@@ -2900,7 +2900,7 @@ class TypeChecker:
         return False
 
 
-def parse_pw(text: str) -> IRModule:
+def parse_al(text: str) -> IRModule:
     """
     Parse PW DSL 2.0 text into IR.
 
@@ -2911,7 +2911,7 @@ def parse_pw(text: str) -> IRModule:
         IRModule: Root IR node
 
     Raises:
-        PWParseError: If parsing fails
+        ALParseError: If parsing fails
     """
     # Lexical analysis
     lexer = Lexer(text)

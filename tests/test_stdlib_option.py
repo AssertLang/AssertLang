@@ -6,7 +6,7 @@ Based on implementation-plan.md specifications.
 """
 
 import pytest
-from dsl.pw_parser import parse_pw, PWParseError
+from dsl.al_parser import parse_al, ALParseError
 
 
 class TestOptionBasicParsing:
@@ -19,7 +19,7 @@ enum Option<T>:
     - Some(value: T)
     - None
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.enums) == 1
         assert ir.enums[0].name == "Option"
         assert len(ir.enums[0].variants) == 2
@@ -32,7 +32,7 @@ enum Option<T>:
 function option_some<T>(value: T) -> Option<T>:
     return Option.Some(value)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "option_some"
 
@@ -42,7 +42,7 @@ function option_some<T>(value: T) -> Option<T>:
 function option_none<T>() -> Option<T>:
     return Option.None
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "option_none"
 
@@ -59,7 +59,7 @@ function option_map<T, U>(opt: Option<T>, fn: function(T) -> U) -> Option<U>:
     else:
         return None
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "option_map"
         assert len(ir.functions[0].params) == 2
@@ -73,7 +73,7 @@ function option_and_then<T, U>(opt: Option<T>, fn: function(T) -> Option<U>) -> 
     else:
         return None
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "option_and_then"
 
@@ -86,7 +86,7 @@ function option_unwrap_or<T>(opt: Option<T>, default: T) -> T:
     else:
         return default
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "option_unwrap_or"
 
@@ -99,7 +99,7 @@ function option_unwrap_or_else<T>(opt: Option<T>, fn: function() -> T) -> T:
     else:
         return fn()
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "option_unwrap_or_else"
 
@@ -112,7 +112,7 @@ function option_is_some<T>(opt: Option<T>) -> bool:
     else:
         return false
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "option_is_some"
 
@@ -125,7 +125,7 @@ function option_is_none<T>(opt: Option<T>) -> bool:
     else:
         return false
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "option_is_none"
 
@@ -142,7 +142,7 @@ function option_match<T, U>(
     else:
         return none_fn()
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "option_match"
         assert len(ir.functions[0].params) == 3
@@ -164,7 +164,7 @@ function find_max(items: array<int>) -> Option<int>:
                 max_val = item
         return Some(max_val)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "find_max"
 
@@ -177,7 +177,7 @@ function get_name(user_id: int) -> Option<string>:
     else:
         return None
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_option_chaining(self):
@@ -188,7 +188,7 @@ function process_value(opt: Option<int>) -> Option<int>:
     let result = option_unwrap_or(doubled, 0)
     return Some(result)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_option_pattern_matching(self):
@@ -200,7 +200,7 @@ function describe_option(opt: Option<int>) -> string:
     else:
         return "Got nothing"
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
 
@@ -214,7 +214,7 @@ class TestOptionFullStdlib:
             pw_code = f.read()
 
         # Should parse without errors
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         # Check basic structure
         assert len(ir.enums) >= 1  # At least Option enum
@@ -228,7 +228,7 @@ class TestOptionFullStdlib:
         with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/core.al") as f:
             pw_code = f.read()
 
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         # Required Option functions
         required_funcs = [
@@ -257,7 +257,7 @@ class TestOptionTypeAnnotations:
 function get_value() -> Option<int>:
     return Some(42)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         # Return type should have generic args
         assert ir.functions[0].return_type.name == "Option"
@@ -270,7 +270,7 @@ function get_value() -> Option<int>:
 function get_name() -> Option<string>:
     return None
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].return_type.name == "Option"
 
@@ -280,7 +280,7 @@ function get_name() -> Option<string>:
 function identity<T>(opt: Option<T>) -> Option<T>:
     return opt
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         # Should have generic type parameters
         assert len(ir.functions[0].params) == 1
@@ -296,7 +296,7 @@ class TestOptionEdgeCases:
 function get_nested() -> Option<Option<int>>:
     return Some(Some(42))
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         # Return type should be Option with Option<int> as generic arg
         assert ir.functions[0].return_type.name == "Option"
@@ -311,7 +311,7 @@ class User:
 function find_user(id: int) -> Option<User>:
     return None
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.classes) == 1
         assert len(ir.functions) == 1
 
@@ -321,7 +321,7 @@ function find_user(id: int) -> Option<User>:
 function get_items() -> Option<array<int>>:
     return Some([1, 2, 3])
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].return_type.name == "Option"
 
@@ -348,7 +348,7 @@ class TestOptionCompleteness:
         with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/core.al") as f:
             pw_code = f.read()
 
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         # API completeness check
         option_functions = {f.name for f in ir.functions if f.name.startswith("option_")}

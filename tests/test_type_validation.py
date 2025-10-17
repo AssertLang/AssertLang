@@ -14,7 +14,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent.parent / 'pw-syntax-mcp-server'))
 
-from dsl.pw_parser import parse_pw
+from dsl.al_parser import parse_al
 
 
 def test_type_mismatch_string_to_int():
@@ -30,7 +30,7 @@ function bad() -> int {
 '''
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         print(f"  ❌ SHOULD HAVE FAILED - accepted string as int")
         return False
@@ -56,7 +56,7 @@ function bad() -> string {
 '''
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         print(f"  ❌ SHOULD HAVE FAILED - accepted int as string")
         return False
@@ -82,7 +82,7 @@ function bad(x: int) {
 '''
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         print(f"  ❌ SHOULD HAVE FAILED - accepted missing return type")
         return False
@@ -108,7 +108,7 @@ function good() -> int {
 '''
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         print(f"  ✅ Correctly accepted int return")
         return True
@@ -130,7 +130,7 @@ function good() -> string {
 '''
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         print(f"  ✅ Correctly accepted string return")
         return True
@@ -152,7 +152,7 @@ function good() -> float {
 '''
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         print(f"  ✅ Correctly accepted float return")
         return True
@@ -174,7 +174,7 @@ function good() -> bool {
 '''
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         print(f"  ✅ Correctly accepted bool return")
         return True
@@ -197,7 +197,7 @@ function good() -> int {
 '''
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         print(f"  ✅ Correctly inferred int type")
         return True
@@ -220,7 +220,7 @@ function good() -> string {
 '''
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         print(f"  ✅ Correctly inferred string type")
         return True
@@ -243,7 +243,7 @@ function bad() -> string {
 '''
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         print(f"  ❌ SHOULD HAVE FAILED - returned int when string expected")
         return False
@@ -269,7 +269,7 @@ function good(a: int, b: int) -> int {
 '''
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         print(f"  ✅ Correctly validated binary operation types")
         return True
@@ -291,7 +291,7 @@ function bad(a: int, b: string) -> int {
 '''
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         print(f"  ❌ SHOULD HAVE FAILED - added int + string")
         return False
@@ -321,7 +321,7 @@ function good(x: int) -> int {
 '''
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         print(f"  ✅ Correctly validated conditional types")
         return True
@@ -347,7 +347,7 @@ function bad(x: int) -> int {
 '''
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         print(f"  ❌ SHOULD HAVE FAILED - else returns string when int expected")
         return False
@@ -373,7 +373,7 @@ function good(a: string, b: string) -> string {
 '''
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         print(f"  ✅ Correctly accepted string concatenation")
         return True
@@ -395,7 +395,7 @@ function good(a: int, b: int) -> bool {
 '''
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         print(f"  ✅ Correctly validated comparison returns bool")
         return True
@@ -417,7 +417,7 @@ function good() -> float {
 '''
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         print(f"  ✅ Correctly accepted int as float")
         return True
@@ -443,7 +443,7 @@ function caller() -> int {
 '''
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         print(f"  ✅ Correctly validated function call types")
         return True
@@ -469,7 +469,7 @@ function bad() -> int {
 '''
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         print(f"  ❌ SHOULD HAVE FAILED - passed string to int parameter")
         return False
@@ -495,7 +495,7 @@ function print_hello() -> void {
 '''
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
 
         print(f"  ✅ Correctly accepted void function")
         return True

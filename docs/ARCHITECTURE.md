@@ -140,7 +140,7 @@ $ asl build calculator.al --lang python -o calculator.py
 ┌─────────────────────────────────────────────┐
 │  CLI (promptware/cli.py)                    │
 │  • Parse arguments                          │
-│  • Call parse_pw(source)                    │
+│  • Call parse_al(source)                    │
 │  • Call generator.generate(ir)              │
 │  • Write output file                        │
 └─────────────────────────────────────────────┘
@@ -408,7 +408,7 @@ asl build file.al --lang python -o output.py
 
 # Implementation:
 1. Read file.al
-2. Call parse_pw(source) → IR
+2. Call parse_al(source) → IR
 3. Select generator based on --lang
 4. Call generator.generate(IR) → code
 5. Write to output.py (or stdout)
@@ -420,7 +420,7 @@ asl compile file.al -o output.json
 
 # Implementation:
 1. Read file.al
-2. Call parse_pw(source) → IR
+2. Call parse_al(source) → IR
 3. Convert IR to MCP JSON
 4. Write to output.json
 ```
@@ -503,12 +503,12 @@ class IRBinaryOp:
 ### Parse Errors
 
 ```python
-class PWParseError(Exception):
+class ALParseError(Exception):
     """Raised when parsing fails."""
     pass
 
 # Example:
-raise PWParseError(f"[Line {line}:{col}] Unexpected token: {token}")
+raise ALParseError(f"[Line {line}:{col}] Unexpected token: {token}")
 ```
 
 Errors include:
@@ -524,7 +524,7 @@ Errors include:
 self.errors.append(f"[Line {line}] Type mismatch: expected {expected}, got {actual}")
 
 if self.errors:
-    raise PWParseError("\n".join(self.errors))
+    raise ALParseError("\n".join(self.errors))
 ```
 
 ### Runtime Errors (Generated Code)

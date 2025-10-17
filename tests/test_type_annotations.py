@@ -24,7 +24,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent.parent / 'pw-syntax-mcp-server'))
 
-from dsl.pw_parser import parse_pw
+from dsl.al_parser import parse_al
 from translators.ir_converter import ir_to_mcp
 from translators.python_bridge import pw_to_python
 
@@ -41,7 +41,7 @@ def test_array_type_annotation_int():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: Successfully parsed array<int> parameter annotation")
 
         func = ir.functions[0]
@@ -70,7 +70,7 @@ def test_array_type_annotation_string():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: Successfully parsed array<string> return type")
 
         func = ir.functions[0]
@@ -97,7 +97,7 @@ def test_array_type_annotation_float():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: Successfully parsed array<float> parameter")
         print(f"\n✅ SUCCESS: array<float> type annotation works!")
         return True
@@ -119,7 +119,7 @@ def test_array_type_annotation_bool():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: Successfully parsed array<bool> return type")
         print(f"\n✅ SUCCESS: array<bool> type annotation works!")
         return True
@@ -141,7 +141,7 @@ def test_array_empty_with_type():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: Successfully parsed function returning array<string>")
         print(f"\n✅ SUCCESS: Empty array with return type works!")
         return True
@@ -162,7 +162,7 @@ def test_map_type_annotation_string_int():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: Successfully parsed map<string, int> parameter")
         print(f"\n✅ SUCCESS: map<string, int> type annotation works!")
         return True
@@ -186,7 +186,7 @@ def test_map_type_annotation_string_string():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: Successfully parsed map<string, string> return type")
         print(f"\n✅ SUCCESS: map<string, string> type annotation works!")
         return True
@@ -207,7 +207,7 @@ def test_map_type_annotation_int_string():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: Successfully parsed map<int, string> parameter")
         print(f"\n✅ SUCCESS: map<int, string> type annotation works!")
         return True
@@ -228,7 +228,7 @@ def test_map_type_annotation_string_float():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: Successfully parsed map<string, float> parameter")
         print(f"\n✅ SUCCESS: map<string, float> type annotation works!")
         return True
@@ -250,7 +250,7 @@ def test_map_empty_with_type():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: Successfully parsed function returning map<string, int>")
         print(f"\n✅ SUCCESS: Empty map with return type works!")
         return True
@@ -274,7 +274,7 @@ def test_nested_array_type():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: Successfully parsed array parameters")
         print(f"  ℹ️  Note: Nested generics array<array<T>> tested in stdlib")
         print(f"\n✅ SUCCESS: Array type syntax works!")
@@ -299,7 +299,7 @@ def test_map_with_array_value():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: Successfully parsed map<string, int> in multiple positions")
         print(f"\n✅ SUCCESS: Map type annotation works in signatures!")
         return True
@@ -323,7 +323,7 @@ def test_array_of_maps():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: Successfully parsed array<int> return type")
         print(f"\n✅ SUCCESS: Array return types work!")
         return True
@@ -354,7 +354,7 @@ function test_generics() -> int {
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: Successfully parsed generic enum definitions")
 
         if len(ir.enums) >= 2:
@@ -385,7 +385,7 @@ def test_invalid_syntax_bare_array():
 
     try:
         # This should parse (for backward compat) but type checker should warn
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ⚠️  Parser allows bare 'array' (backward compat)")
         print(f"  ℹ️  Recommendation: Use array<T> for clarity")
         print(f"\n✅ SUCCESS: Bare array handled gracefully")
@@ -411,7 +411,7 @@ def test_invalid_syntax_bare_map():
 
     try:
         # This should parse (for backward compat) but type checker should warn
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ⚠️  Parser allows bare 'map' (backward compat)")
         print(f"  ℹ️  Recommendation: Use map<K, V> for clarity")
         print(f"\n✅ SUCCESS: Bare map handled gracefully")
@@ -436,7 +436,7 @@ def test_code_generation_array_python():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: Successfully parsed")
 
         mcp_tree = ir_to_mcp(ir)
@@ -475,7 +475,7 @@ def test_code_generation_map_python():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: Successfully parsed")
 
         mcp_tree = ir_to_mcp(ir)
@@ -513,7 +513,7 @@ def test_complex_nested_generics():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: Successfully parsed function with multiple generic params")
         print(f"  ✅ Parameters: array<int> and map<string, int>")
         print(f"\n✅ SUCCESS: Multiple generic type parameters work!")

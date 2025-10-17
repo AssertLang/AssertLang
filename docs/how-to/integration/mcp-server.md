@@ -153,7 +153,7 @@ function add(x: int, y: int) -> int {
 ```
 
 **Claude will**:
-1. Call `parse_pw_contract` operation
+1. Call `parse_al_contract` operation
 2. Show parsed IR structure
 3. Report success/failure
 
@@ -322,7 +322,7 @@ function calculate_discount(price: float, percent: float) -> float {
 ## Available MCP Operations
 
 ### Core Operations (3)
-- `parse_pw_contract` - Parse PW → IR JSON
+- `parse_al_contract` - Parse PW → IR JSON
 - `validate_contract` - Check correctness
 - `explain_contract` - Plain English explanation
 

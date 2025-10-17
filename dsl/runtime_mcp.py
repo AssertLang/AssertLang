@@ -1,7 +1,7 @@
 """MCP Runtime"""
 import subprocess, tempfile
 from pathlib import Path
-from dsl.pw_parser import parse_pw
+from dsl.al_parser import parse_al
 from dsl.language_header import parse_language_header
 from dsl.mcp_code_generator import generate_code
 
@@ -11,7 +11,7 @@ class PWRuntimeMCP:
     
     def execute(self, code: str):
         target, clean = parse_language_header(code)
-        ir = parse_pw(clean)
+        ir = parse_al(clean)
         generated = generate_code(ir, target)
         
         if target == "python":

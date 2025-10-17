@@ -17,7 +17,7 @@ from dataclasses import dataclass
 from typing import List, Set, Dict, Any
 from pathlib import Path
 
-from dsl.pw_parser import Lexer, Parser
+from dsl.al_parser import Lexer, Parser
 from dsl.ir import (
     IRModule, IRFunction, IRClass, IRContractClause,
     IRExpression, IROldExpr, IRBinaryOp, IRUnaryOp,

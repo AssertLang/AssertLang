@@ -58,7 +58,7 @@ function add(x: int, y: int) -> int {
     return x + y;
 }
 
-Claude: [Uses parse_pw_contract + validate_contract operations]
+Claude: [Uses parse_al_contract + validate_contract operations]
 
 ✓ Contract is valid
 ✓ 1 precondition found
@@ -75,7 +75,7 @@ Suggestion: Add postcondition to validate result
 
 | Operation | Description | Input | Output |
 |-----------|-------------|-------|--------|
-| `parse_pw_contract` | Parse PW file to IR | PW code (string) | IR JSON |
+| `parse_al_contract` | Parse PW file to IR | PW code (string) | IR JSON |
 | `validate_contract` | Check contract correctness | PW code (string) | Validation result |
 | `explain_contract` | Explain contract in plain English | PW code (string) | Explanation |
 
@@ -126,7 +126,7 @@ Suggestion: Add postcondition to validate result
 
 ## Operation Details
 
-### parse_pw_contract
+### parse_al_contract
 
 **Parse AssertLang code into Intermediate Representation (IR).**
 
@@ -135,7 +135,7 @@ Suggestion: Add postcondition to validate result
 {
   "method": "tools/call",
   "params": {
-    "name": "parse_pw_contract",
+    "name": "parse_al_contract",
     "arguments": {
       "code": "function add(x: int, y: int) -> int { @requires positive: x > 0; return x + y; }"
     }
@@ -480,7 +480,7 @@ console.log('JavaScript:', jsCode);
 ## Performance
 
 **Operation latency** (average):
-- `parse_pw_contract`: ~10-20ms
+- `parse_al_contract`: ~10-20ms
 - `validate_contract`: ~20-30ms
 - `generate_python`: ~30-50ms
 - `run_contract_tests`: ~100-500ms (depends on test count)

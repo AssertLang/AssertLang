@@ -4,7 +4,7 @@ Tests parsing, IR structure, and code generation for all Map methods.
 """
 
 import pytest
-from dsl.pw_parser import parse_pw, PWParseError
+from dsl.al_parser import parse_al, ALParseError
 
 
 class TestMapBasicParsing:
@@ -16,7 +16,7 @@ class TestMapBasicParsing:
 class Map<K, V>:
     entries: map<K, V>
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.classes) == 1
         assert ir.classes[0].name == "Map"
 
@@ -26,7 +26,7 @@ class Map<K, V>:
 function map_new<K, V>() -> Map<K, V>:
     return Map { entries: {} }
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
         assert ir.functions[0].name == "map_new"
 
@@ -44,7 +44,7 @@ function map_insert<K, V>(m: Map<K, V>, key: K, value: V) -> Option<V>:
     m.entries[key] = value
     return old_value
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_map_remove(self):
@@ -58,7 +58,7 @@ function map_remove<K, V>(m: Map<K, V>, key: K) -> Option<V>:
     else:
         return None
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
 
@@ -74,7 +74,7 @@ function map_get<K, V>(m: Map<K, V>, key: K) -> Option<V>:
     else:
         return None
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_map_contains_key(self):
@@ -83,7 +83,7 @@ function map_get<K, V>(m: Map<K, V>, key: K) -> Option<V>:
 function map_contains_key<K, V>(m: Map<K, V>, key: K) -> bool:
     return key in m.entries
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_map_len(self):
@@ -92,7 +92,7 @@ function map_contains_key<K, V>(m: Map<K, V>, key: K) -> bool:
 function map_len<K, V>(m: Map<K, V>) -> int:
     return len(m.entries)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_map_is_empty(self):
@@ -101,7 +101,7 @@ function map_len<K, V>(m: Map<K, V>) -> int:
 function map_is_empty<K, V>(m: Map<K, V>) -> bool:
     return len(m.entries) == 0
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
 
@@ -114,7 +114,7 @@ class TestMapCollectionMethods:
 function map_keys<K, V>(m: Map<K, V>) -> List<K>:
     return list_from(keys(m.entries))
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_map_values(self):
@@ -123,7 +123,7 @@ function map_keys<K, V>(m: Map<K, V>) -> List<K>:
 function map_values<K, V>(m: Map<K, V>) -> List<V>:
     return list_from(values(m.entries))
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
 
@@ -139,7 +139,7 @@ function create_config() -> Map<string, string>:
     map_insert(config, "port", "8080")
     return config
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_map_cache_pattern(self):
@@ -148,7 +148,7 @@ function create_config() -> Map<string, string>:
 function cache_lookup(cache: Map<string, int>, key: string) -> Option<int>:
     return map_get(cache, key)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_map_user_preferences(self):
@@ -157,7 +157,7 @@ function cache_lookup(cache: Map<string, int>, key: string) -> Option<int>:
 function set_preference(prefs: Map<string, bool>, key: string, value: bool) -> Option<bool>:
     return map_insert(prefs, key, value)
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
 
@@ -169,7 +169,7 @@ class TestMapFullStdlib:
         with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/types.al") as f:
             pw_code = f.read()
 
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         map_classes = [c for c in ir.classes if c.name == "Map"]
         assert len(map_classes) >= 1
         map_funcs = [f for f in ir.functions if f.name.startswith("map_")]
@@ -180,7 +180,7 @@ class TestMapFullStdlib:
         with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/types.al") as f:
             pw_code = f.read()
 
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         required = ["map_new", "map_insert", "map_get", "map_remove", "map_contains_key",
                    "map_len", "map_is_empty", "map_keys", "map_values"]
         func_names = [f.name for f in ir.functions]
@@ -197,7 +197,7 @@ class TestMapTypeAnnotations:
 function get_scores() -> Map<string, int>:
     return map_new()
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_map_generic_parameters(self):
@@ -206,7 +206,7 @@ function get_scores() -> Map<string, int>:
 function identity<K, V>(m: Map<K, V>) -> Map<K, V>:
     return m
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
 
@@ -219,7 +219,7 @@ class TestMapEdgeCases:
 function get_nested() -> Map<string, Map<string, int>>:
     return map_new()
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
     def test_map_with_option_values(self):
@@ -228,7 +228,7 @@ function get_nested() -> Map<string, Map<string, int>>:
 function cache_with_misses() -> Map<string, Option<int>>:
     return map_new()
 """
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         assert len(ir.functions) == 1
 
 
@@ -240,7 +240,7 @@ class TestMapCompleteness:
         with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/types.al") as f:
             pw_code = f.read()
 
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         map_functions = {f.name for f in ir.functions if f.name.startswith("map_")}
         required = {"map_new", "map_insert", "map_get", "map_remove", "map_contains_key",
                    "map_len", "map_is_empty", "map_keys", "map_values"}

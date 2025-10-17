@@ -25,7 +25,7 @@ Formatter and linter parity:
 - Lint warnings for empty control blocks, missing `start` commands when files exist, absent expectations on tool calls, and suspicious fan-in (e.g., `merge append` without a list-like source).
 
 ## 3. Execution Semantics
-1. **Parsing** (`language/parser.py`) emits `{ prompt?, plan? }`, normalising payloads, retries, and references. `PWParseError` exposes `code` (`E_SYNTAX` or `E_PLAN_REF`) so tooling can surface contextual diagnostics.
+1. **Parsing** (`language/parser.py`) emits `{ prompt?, plan? }`, normalising payloads, retries, and references. `ALParseError` exposes `code` (`E_SYNTAX` or `E_PLAN_REF`) so tooling can surface contextual diagnostics.
 2. **Formatting/Linting** (`language/dsl_utils.py`) round-trips `.pw` files and surfaces structural issues before a plan reaches the daemon.
 3. **Interpretation** (`language/interpreter.py`) builds an internal step graph (`CallStep`, `FanoutStep`, `MergeStep`, etc.) and executes actions in-process. `PWExecutionError` now carries `code` values:
    - `E_PLAN`: invalid plan structure (missing targets, duplicate merge aliases, incorrect container types for assignments).

@@ -2,7 +2,7 @@
 """Test Go parser fixes: closures and module-level vars."""
 
 from language.go_parser_v2 import GoParserV2
-from dsl.pw_generator import PWGenerator
+from dsl.al_generator import PWGenerator
 
 # Test Go code with closures and module vars
 go_code = """

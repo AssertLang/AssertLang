@@ -12,7 +12,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent / 'pw-syntax-mcp-server'))
 
 import pytest
-from dsl.pw_parser import parse_pw
+from dsl.al_parser import parse_al
 from translators.ir_converter import ir_to_mcp
 from translators.python_bridge import pw_to_python
 
@@ -30,7 +30,7 @@ class User {
     }
 }
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     mcp_tree = ir_to_mcp(ir)
     python_code = pw_to_python(mcp_tree)
 
@@ -57,7 +57,7 @@ function process_items(items: array) -> array {
     return result;
 }
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     mcp_tree = ir_to_mcp(ir)
     python_code = pw_to_python(mcp_tree)
 
@@ -99,7 +99,7 @@ class Request {
     }
 }
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     mcp_tree = ir_to_mcp(ir)
     python_code = pw_to_python(mcp_tree)
 
@@ -117,7 +117,7 @@ function transform_data(data: array, mapper: map) -> array {
     return data;
 }
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     mcp_tree = ir_to_mcp(ir)
     python_code = pw_to_python(mcp_tree)
 

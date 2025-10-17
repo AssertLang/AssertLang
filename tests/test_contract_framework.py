@@ -32,7 +32,7 @@ from assertlang.runtime.contracts import (
     reset_coverage as reset_runtime_coverage,
 )
 
-from dsl.pw_parser import Lexer, Parser
+from dsl.al_parser import Lexer, Parser
 from language.python_generator_v2 import generate_python
 
 

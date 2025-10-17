@@ -12,7 +12,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from language.python_parser_v2 import PythonParserV2
-from dsl.pw_generator import PWGenerator
+from dsl.al_generator import PWGenerator
 
 
 def main():

@@ -17,7 +17,7 @@ from pygls.server import LanguageServer
 from lsprotocol import types
 
 # PW imports
-from dsl.pw_parser import parse_pw, PWParseError
+from dsl.al_parser import parse_al, ALParseError
 from ml.inference import OperationLookup
 
 # Initialize logging
@@ -57,11 +57,11 @@ def parse_document(uri: str, text: str) -> ParseResult:
 
     try:
         # Parse PW code
-        ir = parse_pw(text)
+        ir = parse_al(text)
         logger.info(f"Successfully parsed {uri}")
         return ParseResult(success=True, ir=ir, diagnostics=[])
 
-    except PWParseError as e:
+    except ALParseError as e:
         # Parse error - create diagnostic
         diagnostic = types.Diagnostic(
             range=types.Range(

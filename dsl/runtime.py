@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any, Dict, Optional, List
 from dataclasses import dataclass
 
-from dsl.pw_parser import parse_pw, PWParseError
+from dsl.al_parser import parse_al, ALParseError
 from dsl.ir import *
 from ml.inference import OperationLookup
 
@@ -56,7 +56,7 @@ class PWRuntime:
         """Execute PW code"""
         try:
             # Parse code
-            ir_module = parse_pw(code)
+            ir_module = parse_al(code)
 
             # Register functions
             for func in ir_module.functions:
@@ -72,7 +72,7 @@ class PWRuntime:
 
             return self.context.return_value
 
-        except PWParseError as e:
+        except ALParseError as e:
             print(f"Parse error in {source_name}:{e.line}:{e.column}")
             print(f"  {e}")
             raise

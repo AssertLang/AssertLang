@@ -3,7 +3,7 @@ Test for Bug #7 - Safe map access through CLI path
 
 This test verifies that property type information (like `users: map`) is preserved
 through the full CLI code path:
-1. PW text → IR (via parse_pw)
+1. PW text → IR (via parse_al)
 2. IR → MCP tree (via ir_to_mcp)
 3. MCP tree → IR (via mcp_to_ir)
 4. IR → Python (via PythonGeneratorV2)
@@ -15,7 +15,7 @@ from pathlib import Path
 # Add pw-syntax-mcp-server to path
 sys.path.insert(0, str(Path(__file__).parent.parent / 'pw-syntax-mcp-server'))
 
-from dsl.pw_parser import parse_pw
+from dsl.al_parser import parse_al
 from translators.ir_converter import ir_to_mcp, mcp_to_ir
 from language.python_generator_v2 import PythonGeneratorV2
 
@@ -37,7 +37,7 @@ class AuthManager {
 """
 
     # Step 1: Parse PW → IR
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
 
     # Step 2: IR → MCP
     mcp_tree = ir_to_mcp(ir)

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 from language.interpreter import ActionExecutor, PWExecutionError
-from language.parser import parse_pw
+from language.parser import parse_al
 
 
 def fake_runner(tool_id: str, payload: dict) -> dict:
@@ -29,7 +29,7 @@ tool echo as send
 call send message="hello" expect.data.message="hello"
 let echoed = ${send.data.message}
 """
-    plan = parse_pw(text).plan
+    plan = parse_al(text).plan
     assert plan is not None
     executor = ActionExecutor(plan["tools"], runner=fake_runner)
     responses = executor.execute(plan["actions"])
@@ -46,7 +46,7 @@ if ${send.data.count} > 2:
 else:
   let verdict = "short"
 """
-    plan = parse_pw(text).plan
+    plan = parse_al(text).plan
     assert plan is not None
     executor = ActionExecutor(plan["tools"], runner=fake_runner)
     responses = executor.execute(plan["actions"])
@@ -63,7 +63,7 @@ parallel:
   branch second:
     call send message="bye"
 """
-    plan = parse_pw(text).plan
+    plan = parse_al(text).plan
     assert plan is not None
     executor = ActionExecutor(plan["tools"], runner=fake_runner)
     responses = executor.execute(plan["actions"])
@@ -79,7 +79,7 @@ tool echo as send
 call send message="hello" expect.data.payload.message="hello"
 let first_char = ${send.data.message[0]}
 """
-    plan = parse_pw(text).plan
+    plan = parse_al(text).plan
     assert plan is not None
     executor = ActionExecutor(plan["tools"], runner=fake_runner)
     responses = executor.execute(plan["actions"])
@@ -96,7 +96,7 @@ parallel:
   branch one:
     call send message="a"
 """
-    plan = parse_pw(text).plan
+    plan = parse_al(text).plan
     assert plan is not None
     executor = ActionExecutor(plan["tools"], runner=fake_runner)
     executor.execute(plan["actions"])
@@ -111,7 +111,7 @@ tool transform as xf
 call log message="hi"
 call xf config={user: ${log.data.message}, retries: 3, note: "ok"}
 """
-    prog = parse_pw(text).plan
+    prog = parse_al(text).plan
     assert prog is not None
 
     # provide per-tool behaviour
@@ -136,7 +136,7 @@ state shared:
   call log message="hi"
 let summary = ${shared.log.data.message}
 """
-    plan = parse_pw(text).plan
+    plan = parse_al(text).plan
     assert plan is not None
     executor = ActionExecutor(plan["tools"], runner=fake_runner)
     responses = executor.execute(plan["actions"])
@@ -153,7 +153,7 @@ state shared:
   call log message="hi"
 merge into snapshot shared
 """
-    plan = parse_pw(text).plan
+    plan = parse_al(text).plan
     assert plan is not None
     executor = ActionExecutor(plan["tools"], runner=fake_runner)
     responses = executor.execute(plan["actions"])
@@ -170,7 +170,7 @@ call log message="hi"
 call fetch method=GET url="https://example.com"
 merge into summary log as logger fetch as http
 """
-    plan = parse_pw(text).plan
+    plan = parse_al(text).plan
     assert plan is not None
 
     def runner(tool_id: str, payload: dict) -> dict:
@@ -195,7 +195,7 @@ case ${send.data.count}==3:
 case ${send.data.count}==5:
   let info.miss = "unused"
 """
-    plan = parse_pw(text).plan
+    plan = parse_al(text).plan
     assert plan is not None
     executor = ActionExecutor(plan["tools"], runner=fake_runner)
     responses = executor.execute(plan["actions"])
@@ -222,7 +222,7 @@ case:
   let info.value = "second"
 merge into summary send.case_0 send.case_1
 """
-    plan = parse_pw(text).plan
+    plan = parse_al(text).plan
     assert plan is not None
     executor = ActionExecutor(plan["tools"], runner=fake_runner)
     responses = executor.execute(plan["actions"])
@@ -241,7 +241,7 @@ call primary data={items: [1, 2, 3]}
 call secondary data={items: [4]}
 merge append totals into combined primary.data.items secondary.data.items
 """
-    plan = parse_pw(text).plan
+    plan = parse_al(text).plan
     assert plan is not None
 
     def runner(tool_id: str, payload: dict) -> dict:
@@ -265,7 +265,7 @@ call primary data={items: [1, 2]}
 call secondary data={items: [3, 4]}
 merge append into combined primary.data.items as all secondary.data.items as all
 """
-    plan = parse_pw(text).plan
+    plan = parse_al(text).plan
     assert plan is not None
 
     def runner(tool_id: str, payload: dict) -> dict:
@@ -285,7 +285,7 @@ call primary value={a: 1}
 call secondary value={b: 2}
 merge dict into combined primary.data secondary.data
 """
-    plan = parse_pw(text).plan
+    plan = parse_al(text).plan
     assert plan is not None
 
     def runner(tool_id: str, payload: dict) -> dict:
@@ -308,7 +308,7 @@ call primary value={a: 1}
 call secondary value={b: 2}
 merge dict into combined primary.data as first secondary.data as second
 """
-    plan = parse_pw(text).plan
+    plan = parse_al(text).plan
     assert plan is not None
 
     def runner(tool_id: str, payload: dict) -> dict:
@@ -330,7 +330,7 @@ def test_executor_retry_events():
 tool logger as log
 call log message="hi" retry.max=2
 """
-    plan = parse_pw(text).plan
+    plan = parse_al(text).plan
     assert plan is not None
     attempts = []
 
@@ -359,7 +359,7 @@ call primary score=1
 call secondary score=2
 merge collect totals into combined primary.data.score secondary.data.score
 """
-    plan = parse_pw(text).plan
+    plan = parse_al(text).plan
     assert plan is not None
 
     def runner(tool_id: str, payload: dict) -> dict:
@@ -378,7 +378,7 @@ def test_executor_unknown_reference_raises_plan_ref():
     text = """
 let missing = ${unknown.value}
 """
-    plan = parse_pw(text).plan
+    plan = parse_al(text).plan
     assert plan is not None
     executor = ActionExecutor(plan["tools"], runner=fake_runner)
     try:
@@ -394,7 +394,7 @@ def test_executor_missing_tool_binding_raises_plan_ref():
 tool echo as send
 call send message="hi"
 """
-    plan = parse_pw(text).plan
+    plan = parse_al(text).plan
     assert plan is not None
     tools = dict(plan["tools"])
     tools.pop("send", None)

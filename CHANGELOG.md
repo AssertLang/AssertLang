@@ -5,6 +5,110 @@ All notable changes to AssertLang will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.1] - 2025-10-17
+
+### 🎉 Initial Alpha Release
+
+Early alpha release of AssertLang - executable contracts for multi-agent systems.
+
+### Breaking Changes
+
+**File Extension Change**
+- All contract files now use `.al` extension instead of `.pw`
+- Example: `contract.pw` → `contract.al`
+- Reflects the AssertLang brand identity
+
+**Module Naming**
+- `pw_parser` → `al_parser`
+- `pw_runtime` → `al_runtime`
+- `pw_generator` → `al_generator`
+- All internal references updated
+
+**Command Line Tool**
+- Primary command is now `asl` (AssertLang)
+- Old `pw` command deprecated
+- Example: `asl build contract.al --lang python`
+
+### Added
+
+**Version Synchronization**
+- Unified version to 3.0.0 across all packages
+- Consistent versioning in pyproject.toml, setup.py, __init__.py files
+- SDK version synchronized
+
+**Test Infrastructure**
+- Restored translators module for test support
+- Created proper Python package structure
+- 1269 tests collected successfully
+- Representative test suites verified passing
+
+**Build System**
+- Verified wheel and source distribution builds
+- Passed twine validation checks
+- Ready for PyPI publication
+
+**CI/CD Enhancements**
+- Comprehensive test matrix (Python 3.9-3.13, multi-OS)
+- Automated PyPI publishing workflow
+- Build, lint, and documentation workflows
+- Integration test automation
+
+### Changed
+
+**Repository Structure**
+- Professional project layout
+- 276 files removed/archived during cleanup
+- Clear separation of production and development code
+- Logo integration across all documentation
+
+**Multi-Agent Focus**
+- Pivot to executable contracts for multi-agent systems
+- Deterministic coordination across frameworks
+- Examples in `examples/agent_coordination/`
+- Support for CrewAI, LangGraph integration
+
+### Fixed
+
+- Test collection errors reduced from 50 to 34
+- Module import paths corrected
+- Package metadata updated
+- Build process streamlined
+
+### Known Issues
+
+- 34 test files require Python 3.10+ (dataclass slots parameter)
+- Some tests use return statements instead of assertions (non-blocking)
+
+### Migration Guide
+
+**For Developers Using `.pw` Files:**
+```bash
+# Rename all .pw files to .al
+find . -name "*.pw" -exec sh -c 'mv "$1" "${1%.pw}.al"' _ {} \;
+
+# Update imports in your code
+sed -i 's/from dsl.pw_parser/from dsl.al_parser/g' **/*.py
+sed -i 's/from dsl.pw_runtime/from dsl.al_runtime/g' **/*.py
+```
+
+**For CLI Users:**
+```bash
+# Old command
+pw build contract.pw --lang python
+
+# New command
+asl build contract.al --lang python
+```
+
+### Package Information
+
+- **Version**: 0.0.1 (Alpha)
+- **Python**: 3.9-3.13 supported
+- **License**: MIT
+- **Status**: Early development - APIs may change
+
+---
+
 ## [2.1.0b6] - 2025-10-09
 
 ### 🔥 Critical Regression Fix

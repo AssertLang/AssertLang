@@ -102,7 +102,7 @@ PW Code → Compiler → Python | Go | Rust | TypeScript | C#
 Parses PW source code → IR:
 
 ```python
-from dsl.pw_parser import parse_pw
+from dsl.al_parser import parse_al
 
 pw_code = """
 function add(x: int, y: int) -> int {
@@ -110,7 +110,7 @@ function add(x: int, y: int) -> int {
 }
 """
 
-ir = parse_pw(pw_code)  # Returns IRModule
+ir = parse_al(pw_code)  # Returns IRModule
 ```
 
 **Features**:
@@ -368,7 +368,7 @@ python3 -m pytest tests/ --cov=dsl --cov=language
 #!/usr/bin/env python3
 """Test for loop functionality."""
 
-from dsl.pw_parser import parse_pw
+from dsl.al_parser import parse_al
 
 def test_basic_for_loop():
     """Test basic for-in loop."""
@@ -380,7 +380,7 @@ function iterate() {
     }
 }
 """
-    ir = parse_pw(pw_code)
+    ir = parse_al(pw_code)
     assert len(ir.functions) == 1
     func = ir.functions[0]
     # Find for loop in body
@@ -490,8 +490,8 @@ examples/simple_web_api.al          # 7,535 chars
 
 ```python
 # Parser API
-from dsl.pw_parser import parse_pw
-ir = parse_pw(pw_source_code)
+from dsl.al_parser import parse_al
+ir = parse_al(pw_source_code)
 
 # Generator API
 from language.python_generator_v2 import PythonGeneratorV2

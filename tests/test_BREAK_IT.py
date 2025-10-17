@@ -18,7 +18,7 @@ import time
 sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent.parent / 'pw-syntax-mcp-server'))
 
-from dsl.pw_parser import Lexer, Parser
+from dsl.al_parser import Lexer, Parser
 from translators.ir_converter import ir_to_mcp
 from translators.python_bridge import pw_to_python
 

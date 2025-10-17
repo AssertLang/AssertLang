@@ -17,7 +17,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from language.go_parser_v2 import GoParserV2
-from dsl.pw_generator import PWGenerator
+from dsl.al_generator import PWGenerator
 
 
 def reverse_parse_go_to_pw(go_file: str, output_file: str) -> dict:

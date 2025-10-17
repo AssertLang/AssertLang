@@ -12,11 +12,11 @@ Tests contract annotations:
 """
 
 import pytest
-from dsl.pw_parser import Lexer, Parser
+from dsl.al_parser import Lexer, Parser
 from dsl.ir import IRFunction, IRClass, IRContractClause, IROldExpr, IRBinaryOp
 
 
-def parse_pw(code: str):
+def parse_al(code: str):
     """Helper to parse PW code."""
     lexer = Lexer(code)
     tokens = lexer.tokenize()
@@ -35,7 +35,7 @@ function test(x: int) -> int {
     return x
 }
 """
-        module = parse_pw(code)
+        module = parse_al(code)
         assert len(module.functions) == 1
         func = module.functions[0]
         assert func.name == "test"
@@ -55,7 +55,7 @@ function test(x: int) -> int {
     return x + 1
 }
 """
-        module = parse_pw(code)
+        module = parse_al(code)
         func = module.functions[0]
         assert len(func.ensures) == 1
 
@@ -71,7 +71,7 @@ function createUser(name: string) -> int {
     return 42
 }
 """
-        module = parse_pw(code)
+        module = parse_al(code)
         func = module.functions[0]
         assert len(func.effects) == 2
         assert "database.write" in func.effects
@@ -87,7 +87,7 @@ function divide(a: int, b: int) -> int {
     return a / b
 }
 """
-        module = parse_pw(code)
+        module = parse_al(code)
         func = module.functions[0]
         assert len(func.requires) == 2
         assert len(func.ensures) == 1
@@ -107,7 +107,7 @@ function increment(x: int) -> int {
     return x + 1
 }
 """
-        module = parse_pw(code)
+        module = parse_al(code)
         func = module.functions[0]
         assert len(func.ensures) == 1
 
@@ -125,7 +125,7 @@ function updateBalance(amount: int) -> int {
     return this.balance + amount
 }
 """
-        module = parse_pw(code)
+        module = parse_al(code)
         func = module.functions[0]
         assert len(func.ensures) == 1
 
@@ -140,7 +140,7 @@ function add(a: int, b: int) -> int {
     return a + b
 }
 """
-        module = parse_pw(code)
+        module = parse_al(code)
         func = module.functions[0]
         assert func.name == "add"
         assert len(func.requires) == 0
@@ -155,7 +155,7 @@ class User {
     name: string;
 }
 """
-        module = parse_pw(code)
+        module = parse_al(code)
         assert len(module.classes) == 1
         cls = module.classes[0]
         assert cls.name == "User"
@@ -174,7 +174,7 @@ function validate(name: string, age: int) -> bool {
     return true
 }
 """
-        module = parse_pw(code)
+        module = parse_al(code)
         func = module.functions[0]
         assert len(func.requires) == 2
 
@@ -187,7 +187,7 @@ function processUser(user: User) -> int {
     return user.id
 }
 """
-        module = parse_pw(code)
+        module = parse_al(code)
         func = module.functions[0]
         assert len(func.requires) == 1
         assert len(func.ensures) == 1
@@ -205,7 +205,7 @@ function test(x: int) -> int {
 }
 """
         with pytest.raises(Exception):  # Should raise parse error
-            parse_pw(code)
+            parse_al(code)
 
     def test_invalid_annotation(self):
         """Test that invalid annotation name raises error."""
@@ -216,7 +216,7 @@ function test(x: int) -> int {
 }
 """
         with pytest.raises(Exception):  # Should raise parse error
-            parse_pw(code)
+            parse_al(code)
 
 
 class TestPythonStyleSyntax:
@@ -229,7 +229,7 @@ function test(x: int) -> int:
     @requires positive: x > 0
     return x
 """
-        module = parse_pw(code)
+        module = parse_al(code)
         func = module.functions[0]
         assert len(func.requires) == 1
         assert func.requires[0].name == "positive"
@@ -244,7 +244,7 @@ function test(x: int) -> int {
     return x + 1
 }
 """
-    module = parse_pw(code)
+    module = parse_al(code)
     print(f"✓ Parsed function: {module.functions[0].name}")
     print(f"✓ Requires: {len(module.functions[0].requires)}")
     print(f"✓ Ensures: {len(module.functions[0].ensures)}")

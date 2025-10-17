@@ -15,7 +15,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent.parent / 'pw-syntax-mcp-server'))
 
-from dsl.pw_parser import parse_pw
+from dsl.al_parser import parse_al
 from translators.ir_converter import ir_to_mcp
 from translators.python_bridge import pw_to_python
 
@@ -35,7 +35,7 @@ def test_multiline_function_params():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
 
         func = ir.functions[0]
@@ -75,7 +75,7 @@ function caller() -> float {
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
 
         # Check that caller function has a call expression
@@ -105,7 +105,7 @@ def test_multiline_expression():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
 
         print(f"\n✅ SUCCESS: Multi-line expressions work!")
@@ -133,7 +133,7 @@ def test_multiline_if_condition():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
 
         print(f"\n✅ SUCCESS: Multi-line if conditions work!")
@@ -174,7 +174,7 @@ function calculate(a: int, b: int, c: int) -> int {
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
 
         print(f"\n✅ SUCCESS: Nested multi-line structures work!")
@@ -199,7 +199,7 @@ def test_trailing_comma():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
 
         print(f"\n✅ SUCCESS: Trailing comma works!")
@@ -227,7 +227,7 @@ def test_multiline_with_comments():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
 
         print(f"\n✅ SUCCESS: Multi-line with comments works!")
@@ -258,7 +258,7 @@ def test_very_long_param_list():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
 
         func = ir.functions[0]
@@ -290,7 +290,7 @@ def test_multiline_generates_correctly():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
 
         mcp_tree = ir_to_mcp(ir)
@@ -324,7 +324,7 @@ def test_single_line_still_works():
 }"""
 
     try:
-        ir = parse_pw(pw_code)
+        ir = parse_al(pw_code)
         print(f"  ✅ Parser: {len(ir.functions)} functions")
 
         print(f"\n✅ SUCCESS: Single-line syntax still works!")

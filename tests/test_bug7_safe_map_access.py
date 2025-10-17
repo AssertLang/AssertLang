@@ -9,7 +9,7 @@ Tests that map[key] in read context generates safe access patterns:
 But map[key] = value in write context generates direct assignment.
 """
 
-from dsl.pw_parser import Lexer, Parser
+from dsl.al_parser import Lexer, Parser
 from language.python_generator_v2 import PythonGeneratorV2
 from language.go_generator_v2 import GoGeneratorV2
 from language.rust_generator_v2 import RustGeneratorV2

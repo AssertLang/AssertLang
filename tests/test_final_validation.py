@@ -10,8 +10,8 @@ from language.python_parser_v2 import PythonParserV2
 from language.go_generator_v2 import GoGeneratorV2
 from language.go_parser_v2 import GoParserV2
 from language.python_generator_v2 import PythonGeneratorV2
-from dsl.pw_generator import generate_pw
-from dsl.pw_parser import parse_pw
+from dsl.al_generator import generate_pw
+from dsl.al_parser import parse_al
 
 
 def test_simple_function():

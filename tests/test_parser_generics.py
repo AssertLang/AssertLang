@@ -9,7 +9,7 @@ Tests parser support for:
 """
 
 import pytest
-from dsl.pw_parser import parse_pw, PWParseError
+from dsl.al_parser import parse_al, ALParseError
 
 
 def test_parse_generic_enum_single_param():
@@ -19,7 +19,7 @@ enum Option<T>:
     - Some(value: T)
     - None
 """
-    ir = parse_pw(code)
+    ir = parse_al(code)
     assert len(ir.enums) == 1
     assert ir.enums[0].name == "Option"
     assert ir.enums[0].generic_params == ["T"]
@@ -35,7 +35,7 @@ enum Result<T, E>:
     - Ok(value: T)
     - Err(error: E)
 """
-    ir = parse_pw(code)
+    ir = parse_al(code)
     assert len(ir.enums) == 1
     assert ir.enums[0].name == "Result"
     assert ir.enums[0].generic_params == ["T", "E"]
@@ -49,7 +49,7 @@ function foo<T>(x: T) -> T {
     return x
 }
 """
-    ir = parse_pw(code)
+    ir = parse_al(code)
     assert len(ir.functions) == 1
     assert ir.functions[0].name == "foo"
     assert ir.functions[0].generic_params == ["T"]
@@ -64,7 +64,7 @@ function map<T, U>(opt: Option<T>, fn: function(T) -> U) -> Option<U> {
     return None
 }
 """
-    ir = parse_pw(code)
+    ir = parse_al(code)
     assert len(ir.functions) == 1
     assert ir.functions[0].name == "map"
     assert ir.functions[0].generic_params == ["T", "U"]
@@ -77,7 +77,7 @@ class List<T> {
     items: array<T>
 }
 """
-    ir = parse_pw(code)
+    ir = parse_al(code)
     assert len(ir.classes) == 1
     assert ir.classes[0].name == "List"
     assert ir.classes[0].generic_params == ["T"]
@@ -91,7 +91,7 @@ class Map<K, V> {
     entries: map<K, V>
 }
 """
-    ir = parse_pw(code)
+    ir = parse_al(code)
     assert len(ir.classes) == 1
     assert ir.classes[0].name == "Map"
     assert ir.classes[0].generic_params == ["K", "V"]
@@ -104,7 +104,7 @@ function foo(x: List<Option<int>>) -> void {
     pass
 }
 """
-    ir = parse_pw(code)
+    ir = parse_al(code)
     assert len(ir.functions) == 1
     param_type = ir.functions[0].params[0].param_type
     assert param_type.name == "List"
@@ -128,7 +128,7 @@ class Container<T> {
     value: T
 }
 """
-    ir = parse_pw(code)
+    ir = parse_al(code)
 
     # Check enum
     assert ir.enums[0].generic_params == ["T"]
@@ -147,7 +147,7 @@ function swap<T, U>(a: T, b: U) -> map<U, T> {
     return {first: b, second: a}
 }
 """
-    ir = parse_pw(code)
+    ir = parse_al(code)
     assert ir.functions[0].generic_params == ["T", "U"]
     assert ir.functions[0].params[0].param_type.name == "T"
     assert ir.functions[0].params[1].param_type.name == "U"
@@ -160,8 +160,8 @@ def test_reject_empty_generic():
 enum Foo<>:
     - Bar
 """
-    with pytest.raises(PWParseError) as exc_info:
-        parse_pw(code)
+    with pytest.raises(ALParseError) as exc_info:
+        parse_al(code)
     assert "Expected IDENTIFIER" in str(exc_info.value) or "Expected" in str(exc_info.value)
 
 
@@ -176,7 +176,7 @@ function foo() -> bool {
     return false
 }
 """
-    ir = parse_pw(code)
+    ir = parse_al(code)
     assert len(ir.functions) == 1
     assert ir.functions[0].name == "foo"
     assert ir.functions[0].generic_params == []  # No generics
@@ -189,7 +189,7 @@ function create<T>() -> Option<T> {
     return None
 }
 """
-    ir = parse_pw(code)
+    ir = parse_al(code)
     assert ir.functions[0].return_type.name == "Option"
     assert ir.functions[0].return_type.generic_args[0].name == "T"
 
@@ -201,7 +201,7 @@ function process<T>(items: List<T>) -> void {
     pass
 }
 """
-    ir = parse_pw(code)
+    ir = parse_al(code)
     param_type = ir.functions[0].params[0].param_type
     assert param_type.name == "List"
     assert param_type.generic_args[0].name == "T"
@@ -220,8 +220,8 @@ enum Option < T > :
     - None
 """
     # Both should parse (whitespace around < > is allowed)
-    ir1 = parse_pw(code1)
-    ir2 = parse_pw(code2)
+    ir1 = parse_al(code1)
+    ir2 = parse_al(code2)
 
     assert ir1.enums[0].generic_params == ["T"]
     assert ir2.enums[0].generic_params == ["T"]
@@ -234,7 +234,7 @@ function transform<T, U>(data: Map<string, List<T>>, fn: function(T) -> U) -> Ma
     return {}
 }
 """
-    ir = parse_pw(code)
+    ir = parse_al(code)
 
     # Check input parameter type: Map<string, List<T>>
     input_type = ir.functions[0].params[0].param_type
@@ -259,7 +259,7 @@ enum Container<T>:
     - Single(item: T)
     - Multiple(items: List<T>)
 """
-    ir = parse_pw(code)
+    ir = parse_al(code)
     assert ir.enums[0].generic_params == ["T"]
     assert ir.enums[0].variants[1].name == "Single"
     assert ir.enums[0].variants[1].associated_types[0].name == "T"

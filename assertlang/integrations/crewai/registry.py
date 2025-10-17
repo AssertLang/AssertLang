@@ -13,7 +13,7 @@ from typing import Dict, List, Optional, Any, Callable
 from pathlib import Path
 import importlib.util
 
-from dsl.pw_parser import parse_pw
+from dsl.al_parser import parse_al
 from dsl.ir import IRModule, IRFunction
 from assertlang.integrations.crewai.tools import ContractTool
 
@@ -71,7 +71,7 @@ class ContractRegistry:
         with open(contract_path, "r") as f:
             source = f.read()
 
-        module = parse_pw(source)
+        module = parse_al(source)
         self.contracts[agent_name] = module
 
         # Build and import Python code if requested

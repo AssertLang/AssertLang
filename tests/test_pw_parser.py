@@ -39,8 +39,8 @@ from dsl.ir import (
     LiteralType,
     UnaryOperator,
 )
-from dsl.pw_generator import generate_pw
-from dsl.pw_parser import parse_pw
+from dsl.al_generator import generate_pw
+from dsl.al_parser import parse_al
 
 
 class TestLexer:
@@ -52,7 +52,7 @@ class TestLexer:
 module test
 version 1.0.0
 """
-        module = parse_pw(code.strip())
+        module = parse_al(code.strip())
         assert module.name == "test"
         assert module.version == "1.0.0"
 
@@ -66,7 +66,7 @@ import http_client
 import database from storage
 import json as JSON
 """
-        module = parse_pw(code.strip())
+        module = parse_al(code.strip())
         assert len(module.imports) == 3
         assert module.imports[0].module == "http_client"
         assert module.imports[1].module == "database"
@@ -88,7 +88,7 @@ type User:
   name string
   age int
 """
-        module = parse_pw(code.strip())
+        module = parse_al(code.strip())
         assert len(module.types) == 1
         user_type = module.types[0]
         assert user_type.name == "User"
@@ -106,7 +106,7 @@ type User:
   id string
   email string?
 """
-        module = parse_pw(code.strip())
+        module = parse_al(code.strip())
         user_type = module.types[0]
         assert user_type.fields[1].prop_type.is_optional
 
@@ -120,7 +120,7 @@ type Container:
   items array<string>
   metadata map<string, any>
 """
-        module = parse_pw(code.strip())
+        module = parse_al(code.strip())
         container_type = module.types[0]
         assert container_type.fields[0].prop_type.name == "array"
         assert len(container_type.fields[0].prop_type.generic_args) == 1
@@ -141,7 +141,7 @@ enum Status:
   - completed
   - failed
 """
-        module = parse_pw(code.strip())
+        module = parse_al(code.strip())
         assert len(module.enums) == 1
         status_enum = module.enums[0]
         assert status_enum.name == "Status"
@@ -158,7 +158,7 @@ enum Result:
   - ok(value any)
   - error(message string, code int)
 """
-        module = parse_pw(code.strip())
+        module = parse_al(code.strip())
         result_enum = module.enums[0]
         assert len(result_enum.variants[1].associated_types) == 2
 
@@ -180,7 +180,7 @@ function greet:
   body:
     return "Hello " + name
 """
-        module = parse_pw(code.strip())
+        module = parse_al(code.strip())
         assert len(module.functions) == 1
         func = module.functions[0]
         assert func.name == "greet"
@@ -206,7 +206,7 @@ function process:
   body:
     return data
 """
-        module = parse_pw(code.strip())
+        module = parse_al(code.strip())
         func = module.functions[0]
         assert len(func.throws) == 2
         assert func.throws[0] == "ValidationError"
@@ -225,7 +225,7 @@ async function fetch_data:
   body:
     return null
 """
-        module = parse_pw(code.strip())
+        module = parse_al(code.strip())
         func = module.functions[0]
         assert func.is_async
 
@@ -258,7 +258,7 @@ class Point:
     body:
       return 0.0
 """
-        module = parse_pw(code.strip())
+        module = parse_al(code.strip())
         assert len(module.classes) == 1
         cls = module.classes[0]
         assert cls.name == "Point"
@@ -281,7 +281,7 @@ function test:
     let x = 10
     let y = "hello"
 """
-        module = parse_pw(code.strip())
+        module = parse_al(code.strip())
         func = module.functions[0]
         assert isinstance(func.body[0], IRAssignment)
         assert func.body[0].target == "x"
@@ -300,7 +300,7 @@ function test:
     else:
       return 0
 """
-        module = parse_pw(code.strip())
+        module = parse_al(code.strip())
         func = module.functions[0]
         assert isinstance(func.body[0], IRIf)
 
@@ -315,7 +315,7 @@ function test:
     for item in items:
       pass
 """
-        module = parse_pw(code.strip())
+        module = parse_al(code.strip())
         func = module.functions[0]
         assert isinstance(func.body[0], IRFor)
         assert func.body[0].iterator == "item"
@@ -331,7 +331,7 @@ function test:
     while x > 0:
       x = x - 1
 """
-        module = parse_pw(code.strip())
+        module = parse_al(code.strip())
         func = module.functions[0]
         assert isinstance(func.body[0], IRWhile)
 
@@ -353,7 +353,7 @@ function test:
     let d = true
     let e = null
 """
-        module = parse_pw(code.strip())
+        module = parse_al(code.strip())
         func = module.functions[0]
         assert isinstance(func.body[0].value, IRLiteral)
         assert func.body[0].value.literal_type == LiteralType.INTEGER
@@ -371,7 +371,7 @@ function test:
     let b = x == y
     let c = p and q
 """
-        module = parse_pw(code.strip())
+        module = parse_al(code.strip())
         func = module.functions[0]
         assert isinstance(func.body[0].value, IRBinaryOp)
         assert func.body[0].value.op == BinaryOperator.ADD
@@ -386,7 +386,7 @@ function test:
   body:
     let result = process(x, y, z: 10)
 """
-        module = parse_pw(code.strip())
+        module = parse_al(code.strip())
         func = module.functions[0]
         call = func.body[0].value
         assert isinstance(call, IRCall)
@@ -403,7 +403,7 @@ function test:
   body:
     let name = user.name
 """
-        module = parse_pw(code.strip())
+        module = parse_al(code.strip())
         func = module.functions[0]
         from dsl.ir import IRPropertyAccess
         assert isinstance(func.body[0].value, IRPropertyAccess)
@@ -418,7 +418,7 @@ function test:
   body:
     let items = [1, 2, 3]
 """
-        module = parse_pw(code.strip())
+        module = parse_al(code.strip())
         func = module.functions[0]
         assert isinstance(func.body[0].value, IRArray)
         assert len(func.body[0].value.elements) == 3
@@ -433,7 +433,7 @@ function test:
   body:
     let obj = {name: "Alice", age: 30}
 """
-        module = parse_pw(code.strip())
+        module = parse_al(code.strip())
         func = module.functions[0]
         assert isinstance(func.body[0].value, IRMap)
         assert len(func.body[0].value.entries) == 2
@@ -456,13 +456,13 @@ function greet:
     return "Hello"
 """
         # Parse
-        module = parse_pw(original)
+        module = parse_al(original)
 
         # Generate
         generated = generate_pw(module)
 
         # Parse again
-        module2 = parse_pw(generated)
+        module2 = parse_al(generated)
 
         # Compare
         assert module.name == module2.name
@@ -502,13 +502,13 @@ function process_payment:
     return Status.completed
 """
         # Parse
-        module = parse_pw(original)
+        module = parse_al(original)
 
         # Generate
         generated = generate_pw(module)
 
         # Parse again
-        module2 = parse_pw(generated)
+        module2 = parse_al(generated)
 
         # Verify structure preserved
         assert module.name == module2.name
@@ -546,7 +546,7 @@ function fibonacci:
       return n
     return fibonacci(n - 1) + fibonacci(n - 2)
 """
-        module = parse_pw(code)
+        module = parse_al(code)
         assert len(module.functions) == 2
         assert module.functions[0].name == "factorial"
         assert module.functions[1].name == "fibonacci"
@@ -588,7 +588,7 @@ class BankAccount:
       self.balance = self.balance - amount
       return self.balance
 """
-        module = parse_pw(code)
+        module = parse_al(code)
         assert len(module.classes) == 1
         cls = module.classes[0]
         assert cls.name == "BankAccount"
@@ -608,8 +608,8 @@ function test:
    body:
     return 1
 """
-        with pytest.raises(Exception):  # Should raise PWParseError
-            parse_pw(code)
+        with pytest.raises(Exception):  # Should raise ALParseError
+            parse_al(code)
 
     def test_semantic_error_undefined(self):
         """Test undefined reference (future enhancement)."""
@@ -650,7 +650,7 @@ function process_batch:
     return {success: true, count: count, errors: errors}
 """
     # Parse
-    module = parse_pw(code)
+    module = parse_al(code)
 
     # Verify structure
     assert module.name == "data_processor"
@@ -664,7 +664,7 @@ function process_batch:
     generated = generate_pw(module)
 
     # Round-trip
-    module2 = parse_pw(generated)
+    module2 = parse_al(generated)
     assert module.name == module2.name
 
 
