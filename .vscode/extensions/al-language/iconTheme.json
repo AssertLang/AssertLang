@@ -1,11 +1,11 @@
 {
   "extends": "vs-seti",
   "iconDefinitions": {
-    "pw-file": {
-      "iconPath": "./icons/pw-icon.svg"
+    "al-file": {
+      "iconPath": "./icons/al-icon.svg"
     }
   },
   "fileExtensions": {
-    "pw": "pw-file"
+    "al": "al-file"
   }
 }

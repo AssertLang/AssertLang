@@ -1,7 +1,7 @@
 {
-  "name": "PW",
+  "name": "AL",
   "scopeName": "source.al",
-  "fileTypes": ["pw"],
+  "fileTypes": ["al"],
   "patterns": [
     { "include": "#comments" },
     { "include": "#keywords" },

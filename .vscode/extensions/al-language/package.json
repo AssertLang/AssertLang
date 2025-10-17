@@ -1,9 +1,9 @@
 {
-  "name": "pw-language",
-  "displayName": "PW Language Support",
-  "description": "Syntax highlighting and icons for PW (Promptware) language",
+  "name": "al-language",
+  "displayName": "AL Language Support",
+  "description": "Syntax highlighting and icons for AL (AssertLang) language",
   "version": "2.0.0",
-  "publisher": "promptware",
+  "publisher": "assertlang",
   "engines": {
     "vscode": "^1.75.0"
   },
@@ -13,27 +13,27 @@
   "contributes": {
     "languages": [
       {
-        "id": "pw",
-        "aliases": ["PW", "Promptware"],
+        "id": "al",
+        "aliases": ["AL", "AssertLang"],
         "extensions": [".al"],
         "configuration": "./language-configuration.json",
         "icon": {
-          "light": "./icons/pw-icon.svg",
-          "dark": "./icons/pw-icon.svg"
+          "light": "./icons/al-icon.svg",
+          "dark": "./icons/al-icon.svg"
         }
       }
     ],
     "grammars": [
       {
-        "language": "pw",
+        "language": "al",
         "scopeName": "source.al",
-        "path": "./syntaxes/pw.tmLanguage.json"
+        "path": "./syntaxes/al.tmLanguage.json"
       }
     ],
     "iconThemes": [
       {
-        "id": "pw-icons",
-        "label": "PW Icons",
+        "id": "al-icons",
+        "label": "AL Icons",
         "path": "./iconTheme.json"
       }
     ]

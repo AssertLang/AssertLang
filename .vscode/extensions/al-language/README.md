@@ -1,16 +1,16 @@
-# PW Language Support for VS Code
+# AL Language Support for VS Code
 
-Syntax highlighting and file icons for PW (AssertLang) - the universal programming language.
+Syntax highlighting and file icons for AL (AssertLang) - executable contracts for multi-agent systems.
 
 ## Features
 
-- **Syntax Highlighting**: Full colorization for PW syntax
+- **Syntax Highlighting**: Full colorization for AL syntax
   - Keywords: `function`, `if`, `else`, `return`, `let`, etc.
   - Types: `int`, `float`, `string`, `bool`, `array`, `map`
   - Comments: `//` and `/* */`
   - Strings, numbers, operators
 
-- **File Icons**: Purple "PW" icon for `.al` files in file explorer
+- **File Icons**: Purple "AL" icon for `.al` files in file explorer
 
 - **Auto-Closing**: Automatic closing of brackets, braces, quotes
 
@@ -20,14 +20,14 @@ Syntax highlighting and file icons for PW (AssertLang) - the universal programmi
 
 ### Option 1: Local Development (Current Setup)
 
-The extension is already in `.vscode/extensions/pw-language/` and will be automatically loaded when you open this workspace.
+The extension is already in `.vscode/extensions/al-language/` and will be automatically loaded when you open this workspace.
 
 ### Option 2: Install Globally
 
 ```bash
-cd .vscode/extensions/pw-language
+cd .vscode/extensions/al-language
 vsce package
-code --install-extension pw-language-0.1.0.vsix
+code --install-extension al-language-2.0.0.vsix
 ```
 
 ### Option 3: Publish to VS Code Marketplace
@@ -41,7 +41,7 @@ Just open any `.al` file and enjoy syntax highlighting!
 ## Example
 
 ```al
-// PW code with syntax highlighting
+// AL code with syntax highlighting
 function greet(name: string) -> string {
     return "Hello, " + name + "!";
 }
