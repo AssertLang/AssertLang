@@ -1,4 +1,0 @@
-function test(email: string) -> bool {
-    @requires email_has_at: str.contains(email, "@")
-    return true;
-}

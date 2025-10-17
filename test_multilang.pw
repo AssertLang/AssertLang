@@ -1,8 +1,0 @@
-#lang python
-
-function main() -> int {
-    print("Hello from Python via MCP!");
-    let x = 5 + 3;
-    print("Result:", x);
-    return 0;
-}
