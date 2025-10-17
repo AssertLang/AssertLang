@@ -44,14 +44,13 @@ venv.bak/
 .vscode/tasks.json
 # Keep: .vscode/extensions/pw-language/ (our extension)
 
-# Personal config (but keep project docs!)
+# Personal config and development files (NEVER commit these)
 .cursor/
 .claude/
-# Keep: CLAUDE.md (project instructions)
-# Keep: Current_Work.md (status tracking)
+.archive/
+.vscode/
 
-# Archive (session docs, old files) - TRACKED in repo for history
-# .archive/ is intentionally committed
+# Development docs now in .github/ (not root)
 
 # Testing
 .pytest_cache/
