@@ -1,7 +1,7 @@
 """
-Promptware Python Client Library
+AssertLang Python Client Library
 
-Provides MCP client for calling Promptware services over HTTP.
+Provides MCP client for calling AssertLang services over HTTP.
 """
 
 from .client import MCPClient, call_verb
@@ -15,7 +15,7 @@ from .exceptions import (
     TimeoutError,
 )
 
-__version__ = "2.1.0b4"
+__version__ = "0.0.1"
 
 __all__ = [
     "MCPClient",
