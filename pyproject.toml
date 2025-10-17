@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "assertlang"
-version = "0.0.2"
+version = "0.0.3"
 description = "Executable contracts for multi-agent systems - deterministic coordination across frameworks and languages"
 requires-python = ">=3.9"
 readme = "README.md"
