@@ -396,6 +396,18 @@ For more help: promptware help <command>
         help='Verbose output'
     )
 
+    # Install-VSCode command (NEW - Install VS Code extension)
+    install_vscode_parser = subparsers.add_parser(
+        'install-vscode',
+        help='Install AssertLang VS Code extension',
+        description='Install the AssertLang language extension for Visual Studio Code.'
+    )
+    install_vscode_parser.add_argument(
+        '--check',
+        action='store_true',
+        help='Check if extension is already installed'
+    )
+
     # AI Guide command
     subparsers.add_parser(
         'ai-guide',
@@ -1369,6 +1381,59 @@ def cmd_run(args) -> int:
         return 1
 
 
+def cmd_install_vscode(args) -> int:
+    """Execute install-vscode command - install VS Code extension."""
+    import shutil
+    from pathlib import Path
+
+    # Get extension source directory
+    ext_src = project_root / '.vscode/extensions/al-language'
+
+    if not ext_src.exists():
+        print(error(f"Extension not found at: {ext_src}"))
+        return 1
+
+    # Determine VS Code extensions directory
+    vscode_ext_dir = Path.home() / '.vscode' / 'extensions' / 'assertlang.al-language'
+
+    # Check if already installed
+    if args.check:
+        if vscode_ext_dir.exists():
+            print(success("AssertLang extension is already installed"))
+            print(f"Location: {vscode_ext_dir}")
+            return 0
+        else:
+            print(info("AssertLang extension is not installed"))
+            return 1
+
+    # Install extension by copying to ~/.vscode/extensions/
+    print(colored("Installing AssertLang VS Code extension...", "📦"))
+
+    try:
+        # Remove existing installation if present
+        if vscode_ext_dir.exists():
+            print(info("Removing existing installation..."))
+            shutil.rmtree(vscode_ext_dir)
+
+        # Copy extension directory
+        shutil.copytree(ext_src, vscode_ext_dir)
+
+        print(success("✅ VS Code extension installed!"))
+        print(f"\nInstalled to: {vscode_ext_dir}")
+        print("\nThe AssertLang extension provides:")
+        print("  • Syntax highlighting for .al files")
+        print("  • File icons")
+        print("  • Language configuration")
+        print("\n⚠️  Restart VS Code to activate the extension.")
+        return 0
+
+    except Exception as e:
+        print(error(f"Installation failed: {e}"))
+        print(f"\nManual installation:")
+        print(f"  cp -r {ext_src} {vscode_ext_dir}")
+        return 1
+
+
 def cmd_ai_guide(args) -> int:
     """Execute ai-guide command - show AI agent onboarding guide."""
     guide_path = Path(__file__).parent.parent / "AI-AGENT-GUIDE.md"
@@ -1508,9 +1573,10 @@ def main():
         'list-tools': cmd_list_tools,
         'init': cmd_init,
         'config': cmd_config,
-        'build': cmd_build,      # NEW
-        'compile': cmd_compile,  # NEW
-        'run': cmd_run,          # NEW
+        'build': cmd_build,         # NEW
+        'compile': cmd_compile,     # NEW
+        'run': cmd_run,             # NEW
+        'install-vscode': cmd_install_vscode,  # NEW
         'ai-guide': cmd_ai_guide,
         'help': cmd_help,
     }

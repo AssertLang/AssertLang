@@ -173,6 +173,31 @@ const greetNode = async (state) => {
 
 ---
 
+## 🎨 VS Code Extension
+
+Get syntax highlighting and file icons for `.al` files:
+
+### Installation
+
+**Option 1: CLI (Recommended)**
+```bash
+asl install-vscode
+```
+
+**Option 2: Manual**
+```bash
+cp -r .vscode/extensions/al-language ~/.vscode/extensions/assertlang.al-language
+```
+
+**Features:**
+- Syntax highlighting for AL contracts
+- File icons for `.al` files
+- Language configuration (brackets, comments, auto-closing)
+
+Restart VS Code after installation to activate the extension.
+
+---
+
 ## Why This Matters
 
 ### Without AssertLang Contracts
