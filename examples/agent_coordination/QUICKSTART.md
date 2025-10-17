@@ -11,7 +11,7 @@ Two agents from different frameworks execute IDENTICAL logic:
 
 - **Agent A**: Python + CrewAI framework
 - **Agent B**: JavaScript + LangGraph framework
-- **Contract**: `user_service_contract.pw` (single source of truth)
+- **Contract**: `user_service_contract.al` (single source of truth)
 
 **Result:** 100% identical behavior (5/5 tests match)
 
@@ -83,7 +83,7 @@ Test 4: Valid email format
 
 ### 1. The Contract
 
-`user_service_contract.pw` defines the EXACT behavior:
+`user_service_contract.al` defines the EXACT behavior:
 
 ```pw
 function createUser(name: string, email: string) -> User {
@@ -166,7 +166,7 @@ No interpretation required - just execute the contract
 
 | File | Purpose |
 |------|---------|
-| `user_service_contract.pw` | PW contract (source of truth) |
+| `user_service_contract.al` | AL contract (source of truth) |
 | `agent_a_crewai.py` | Python/CrewAI implementation |
 | `agent_b_langgraph.js` | JavaScript/LangGraph implementation |
 | `run_demo.sh` | Automated demo script |
@@ -178,7 +178,7 @@ No interpretation required - just execute the contract
 
 ## Next Steps
 
-1. **Modify the contract**: Change validation rules in `user_service_contract.pw`
+1. **Modify the contract**: Change validation rules in `user_service_contract.al`
 2. **Regenerate agents**: Transpile to Python and JavaScript again
 3. **Run demo**: See that both agents still match 100%
 

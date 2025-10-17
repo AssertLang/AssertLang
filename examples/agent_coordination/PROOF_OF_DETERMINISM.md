@@ -6,7 +6,7 @@
 
 - **Agent A**: Python (CrewAI framework)
 - **Agent B**: JavaScript (LangGraph framework)
-- **Contract**: `user_service_contract.pw`
+- **Contract**: `user_service_contract.al`
 - **Test**: Same inputs, verify identical outputs
 
 ---
@@ -166,7 +166,7 @@ Same input → Same output, regardless of:
 - Execution environment
 
 ### 2. Semantic Preservation
-The PW contract semantics are preserved across transpilation:
+The AL contract semantics are preserved across transpilation:
 - Validation rules identical
 - Error messages identical
 - Business logic identical
@@ -198,9 +198,9 @@ Agent A:             "Uh... just validate it I guess?"
 Result: ❌ Different implementations, inconsistent behavior
 ```
 
-**PW Contract Coordination:**
+**AL Contract Coordination:**
 ```
-PW Contract: Defines exact validation, ID generation, error handling
+AL Contract: Defines exact validation, ID generation, error handling
 Agent A (Python): Transpiles contract → implements identically
 Agent B (JavaScript): Transpiles contract → implements identically
 Result: ✅ Guaranteed identical behavior
@@ -246,7 +246,7 @@ Expected: Zero differences in test results.
 
 ## Conclusion
 
-**PW Contracts enable deterministic multi-agent coordination across:**
+**AL Contracts enable deterministic multi-agent coordination across:**
 - ✅ Different programming languages
 - ✅ Different agent frameworks
 - ✅ Different execution environments
