@@ -114,8 +114,10 @@ asl build user_service.al --lang javascript -o agent_b.js
 ### 1. Install
 
 ```bash
-pip install assertlang
+pip install assertlang==0.0.3
 ```
+
+> **Note:** Use explicit version `==0.0.3` to ensure you get the latest release.
 
 ### 2. Write a contract
 
@@ -567,7 +569,7 @@ Built with ❤️ for the multi-agent AI community.
 
 ```bash
 # Install
-pip install assertlang
+pip install assertlang==0.0.3
 
 # Create a contract
 cat > my_contract.al << 'EOF'
