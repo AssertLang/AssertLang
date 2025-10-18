@@ -410,10 +410,10 @@ Built with ❤️ (and lots of Claude Code assistance) for the multi-agent AI co
 
 ## 🎯 Current Status & Roadmap
 
-### v0.0.3 (Current) ✅
+### v0.0.4 (Current) ✅
 - Core transpiler working (5 languages)
 - 134/134 stdlib tests passing
-- CLI functional end-to-end
+- CLI functional end-to-end (fixed critical import bug!)
 - CrewAI & LangGraph examples
 - Proof of identical behavior verified
 

@@ -57,6 +57,7 @@ SESSION_*.md
 *_BACKUP.md
 *_SUMMARY.md
 WEBSITE_FIX_REQUIREMENTS.md
+RELEASE_NOTES_*.md
 
 # Testing
 .pytest_cache/
