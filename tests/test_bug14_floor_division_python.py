@@ -28,7 +28,7 @@ def compile_pw_to_python(pw_code: str) -> str:
 
     try:
         result = subprocess.run(
-            [sys.executable, '-m', 'promptware.cli', 'build', pw_file, '--lang', 'python', '-o', py_file],
+            [sys.executable, '-m', 'assertlang.cli', 'build', pw_file, '--lang', 'python', '-o', py_file],
             capture_output=True,
             text=True
         )

@@ -1,7 +1,7 @@
 """
 .NET Generator V2 - IR to Idiomatic C# Code
 
-Converts Promptware IR into production-quality, idiomatic C# code.
+Converts AssertLang IR into production-quality, idiomatic C# code.
 
 This generator:
 - Produces idiomatic C# with proper conventions
@@ -72,7 +72,7 @@ from language.library_mapping import LibraryMapper
 
 class DotNetGeneratorV2:
     """
-    Generate idiomatic C# code from Promptware IR.
+    Generate idiomatic C# code from AssertLang IR.
 
     Supports:
     - Classes with properties (auto-properties)

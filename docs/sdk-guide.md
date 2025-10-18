@@ -7,13 +7,13 @@ Official client libraries for calling AssertLang MCP agents.
 ### Python
 
 ```bash
-pip install promptware
+pip install assertlang
 ```
 
 ### Node.js
 
 ```bash
-npm install @promptware/client
+npm install @assertlang/client
 ```
 
 ## Quick Start
@@ -21,7 +21,7 @@ npm install @promptware/client
 ### Python
 
 ```python
-from promptware.sdk import Agent
+from assertlang.sdk import Agent
 
 # Create agent client
 agent = Agent("http://localhost:3000")
@@ -38,7 +38,7 @@ print(user)
 ### Node.js
 
 ```javascript
-import { Agent } from '@promptware/client/sdk';
+import { Agent } from '@assertlang/client/sdk';
 
 // Create agent client
 const agent = new Agent('http://localhost:3000');
@@ -151,7 +151,7 @@ SDKs include circuit breaker pattern for fault tolerance:
 
 **Python:**
 ```python
-from promptware.sdk import Agent, CircuitBreakerError
+from assertlang.sdk import Agent, CircuitBreakerError
 
 agent = Agent(
     "http://localhost:3000",
@@ -167,7 +167,7 @@ except CircuitBreakerError:
 
 **Node.js:**
 ```javascript
-import { Agent, CircuitBreakerError } from '@promptware/client/sdk';
+import { Agent, CircuitBreakerError } from '@assertlang/client/sdk';
 
 const agent = new Agent('http://localhost:3000', {
   circuitBreakerThreshold: 10,  // Open after 10 failures
@@ -220,7 +220,7 @@ Use context managers for automatic cleanup:
 
 **Python:**
 ```python
-from promptware.sdk import Agent
+from assertlang.sdk import Agent
 
 with Agent("http://localhost:3000") as agent:
     result = agent.user.create(email="test@example.com", name="Test")
@@ -290,7 +290,7 @@ new Agent(
 
 **Python:**
 ```python
-from promptware.sdk import (
+from assertlang.sdk import (
     AgentError,           # Base error
     ConnectionError,      # Connection failed
     TimeoutError,         # Request timed out
@@ -309,7 +309,7 @@ import {
   VerbNotFoundError,    // Verb doesn't exist
   InvalidParamsError,   // Invalid parameters
   CircuitBreakerError   // Circuit breaker open
-} from '@promptware/client/sdk';
+} from '@assertlang/client/sdk';
 ```
 
 ## Examples
@@ -318,7 +318,7 @@ import {
 
 **Python:**
 ```python
-from promptware.sdk import Agent
+from assertlang.sdk import Agent
 
 agent = Agent("http://localhost:3000")
 
@@ -341,7 +341,7 @@ print(f"Found {len(users)} users")
 
 **Node.js:**
 ```javascript
-import { Agent } from '@promptware/client/sdk';
+import { Agent } from '@assertlang/client/sdk';
 
 const agent = new Agent('http://localhost:3000');
 
@@ -366,7 +366,7 @@ console.log(`Found ${users.length} users`);
 
 **Python:**
 ```python
-from promptware.sdk import (
+from assertlang.sdk import (
     Agent,
     VerbNotFoundError,
     InvalidParamsError,
@@ -394,7 +394,7 @@ import {
   VerbNotFoundError,
   InvalidParamsError,
   ConnectionError
-} from '@promptware/client/sdk';
+} from '@assertlang/client/sdk';
 
 const agent = new Agent('http://localhost:3000');
 
@@ -417,7 +417,7 @@ try {
 
 **Python:**
 ```python
-from promptware.sdk import Agent
+from assertlang.sdk import Agent
 import logging
 
 # Enable detailed logging
@@ -440,7 +440,7 @@ with agent:
 
 **Node.js:**
 ```javascript
-import { Agent } from '@promptware/client/sdk';
+import { Agent } from '@assertlang/client/sdk';
 import http from 'http';
 import https from 'https';
 
@@ -481,7 +481,7 @@ try {
 The Node.js SDK includes full TypeScript definitions:
 
 ```typescript
-import { Agent, VerbSchema } from '@promptware/client/sdk';
+import { Agent, VerbSchema } from '@assertlang/client/sdk';
 
 const agent = new Agent('http://localhost:3000', {
   timeout: 30000,

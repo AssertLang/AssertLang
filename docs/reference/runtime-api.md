@@ -18,11 +18,11 @@ When AssertLang generates code, it embeds runtime contract checks. This document
 
 ## Python Runtime API
 
-### Module: `promptware.runtime.contracts`
+### Module: `assertlang.runtime.contracts`
 
 **Import**:
 ```python
-from promptware.runtime.contracts import (
+from assertlang.runtime.contracts import (
     check_precondition,
     check_postcondition,
     check_invariant,
@@ -193,9 +193,9 @@ def disable_contracts() -> None
 **Example**:
 ```python
 import os
-from promptware.runtime.contracts import disable_contracts
+from assertlang.runtime.contracts import disable_contracts
 
-if os.getenv("PROMPTWARE_DISABLE_CONTRACTS") == "1":
+if os.getenv("ASSERTLANG_DISABLE_CONTRACTS") == "1":
     disable_contracts()
 
 # Contracts now disabled - functions run without checks
@@ -215,7 +215,7 @@ def enable_contracts() -> None
 
 **Example**:
 ```python
-from promptware.runtime.contracts import enable_contracts
+from assertlang.runtime.contracts import enable_contracts
 
 # Re-enable contracts (enabled by default)
 enable_contracts()
@@ -236,7 +236,7 @@ def are_contracts_enabled() -> bool
 
 **Example**:
 ```python
-from promptware.runtime.contracts import are_contracts_enabled
+from assertlang.runtime.contracts import are_contracts_enabled
 
 if are_contracts_enabled():
     print("Contracts active - validation enabled")
@@ -248,7 +248,7 @@ else:
 
 ## JavaScript Runtime API
 
-### Module: `@promptware/runtime`
+### Module: `@assertlang/runtime`
 
 **Import**:
 ```javascript
@@ -260,7 +260,7 @@ const {
     disableContracts,
     enableContracts,
     areContractsEnabled
-} = require('@promptware/runtime');
+} = require('@assertlang/runtime');
 ```
 
 ---
@@ -401,9 +401,9 @@ function disableContracts(): void
 
 **Example**:
 ```javascript
-const { disableContracts } = require('@promptware/runtime');
+const { disableContracts } = require('@assertlang/runtime');
 
-if (process.env.PROMPTWARE_DISABLE_CONTRACTS === '1') {
+if (process.env.ASSERTLANG_DISABLE_CONTRACTS === '1') {
     disableContracts();
 }
 ```
@@ -440,18 +440,18 @@ function areContractsEnabled(): boolean
 
 | Variable | Values | Effect |
 |----------|--------|--------|
-| `PROMPTWARE_DISABLE_CONTRACTS` | `1` or `true` | Disable all contract checks |
-| `PROMPTWARE_DEBUG_CONTRACTS` | `1` or `true` | Enable verbose contract debugging |
-| `PROMPTWARE_STRICT_MODE` | `1` or `true` | Fail fast on first contract violation |
+| `ASSERTLANG_DISABLE_CONTRACTS` | `1` or `true` | Disable all contract checks |
+| `ASSERTLANG_DEBUG_CONTRACTS` | `1` or `true` | Enable verbose contract debugging |
+| `ASSERTLANG_STRICT_MODE` | `1` or `true` | Fail fast on first contract violation |
 
 **Example**:
 ```bash
 # Disable contracts in production
-export PROMPTWARE_DISABLE_CONTRACTS=1
+export ASSERTLANG_DISABLE_CONTRACTS=1
 python main.py
 
 # Enable debug mode in development
-export PROMPTWARE_DEBUG_CONTRACTS=1
+export ASSERTLANG_DEBUG_CONTRACTS=1
 node server.js
 ```
 
@@ -476,7 +476,7 @@ function add(x: int, y: int) -> int {
 
 **Generated Python**:
 ```python
-from promptware.runtime.contracts import check_precondition, check_postcondition
+from assertlang.runtime.contracts import check_precondition, check_postcondition
 
 def add(x: int, y: int) -> int:
     # Preconditions
@@ -517,7 +517,7 @@ class Counter {
 
 **Generated Python**:
 ```python
-from promptware.runtime.contracts import check_invariant, check_postcondition
+from assertlang.runtime.contracts import check_invariant, check_postcondition
 
 class Counter:
     def __init__(self):
@@ -593,7 +593,7 @@ ContractViolationError: Precondition 'non_negative' failed
 
 ```python
 import pytest
-from promptware.runtime.contracts import ContractViolationError
+from assertlang.runtime.contracts import ContractViolationError
 
 def test_sqrt_rejects_negative():
     with pytest.raises(ContractViolationError) as exc_info:

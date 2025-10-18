@@ -8,16 +8,16 @@ Generate MCP configuration for your project:
 
 ```bash
 # For Cursor (default)
-promptware mcp-config --directory examples/devops_suite
+assertlang mcp-config --directory examples/devops_suite
 
 # For Windsurf
-promptware mcp-config --directory examples/devops_suite --editor windsurf
+assertlang mcp-config --directory examples/devops_suite --editor windsurf
 
 # For Cline (VSCode extension)
-promptware mcp-config --directory examples/devops_suite --editor cline
+assertlang mcp-config --directory examples/devops_suite --editor cline
 
 # For current directory (auto-scans for .al files)
-promptware mcp-config
+assertlang mcp-config
 ```
 
 ## Supported Editors
@@ -27,13 +27,13 @@ promptware mcp-config
 **Auto-Config:**
 ```bash
 cd your-project
-promptware mcp-config --editor cursor
+assertlang mcp-config --editor cursor
 ```
 
 This creates `.cursor/mcp.json` in your project directory. Cursor automatically loads it.
 
 **Manual Setup:**
-1. Run `promptware mcp-config`
+1. Run `assertlang mcp-config`
 2. Copy the generated config from `.cursor/mcp.json`
 3. Open Cursor Settings (Cmd+, or Ctrl+,)
 4. Search for "MCP"
@@ -50,7 +50,7 @@ This creates `.cursor/mcp.json` in your project directory. Cursor automatically 
 **Auto-Config:**
 ```bash
 cd your-project
-promptware mcp-config --editor windsurf
+assertlang mcp-config --editor windsurf
 ```
 
 This creates `.windsurf/mcp.json` which Windsurf loads automatically.
@@ -66,14 +66,14 @@ This creates `.windsurf/mcp.json` which Windsurf loads automatically.
 **Auto-Config:**
 ```bash
 cd your-project
-promptware mcp-config --editor cline
+assertlang mcp-config --editor cline
 ```
 
 This creates `.vscode/mcp.json` for the Cline extension.
 
 **Manual Setup:**
 1. Install Cline extension in VSCode
-2. Run `promptware mcp-config --editor cline`
+2. Run `assertlang mcp-config --editor cline`
 3. Open VSCode Settings
 4. Search for "Cline MCP"
 5. Configuration loaded from `.vscode/mcp.json`
@@ -83,7 +83,7 @@ This creates `.vscode/mcp.json` for the Cline extension.
 The `mcp-config` command:
 
 1. **Scans** your project for `.pw` agent files
-2. **Generates** MCP server configs pointing to `promptware run <agent.al>`
+2. **Generates** MCP server configs pointing to `assertlang run <agent.al>`
 3. **Creates** editor-specific config files (`.cursor/mcp.json`, etc.)
 4. **No API keys** needed - uses your editor's AI features
 
@@ -91,7 +91,7 @@ The `mcp-config` command:
 
 ```bash
 # Generate config for DevOps agents
-promptware mcp-config --directory examples/devops_suite --editor cursor
+assertlang mcp-config --directory examples/devops_suite --editor cursor
 
 # Output: .cursor/mcp.json with 3 agents:
 # - code-reviewer (AI-powered security analysis)
@@ -114,11 +114,11 @@ Generated config looks like:
 {
   "mcpServers": {
     "code-reviewer": {
-      "command": "promptware",
+      "command": "assertlang",
       "args": ["run", "/path/to/code_reviewer_agent.al"]
     },
     "test-runner": {
-      "command": "promptware",
+      "command": "assertlang",
       "args": ["run", "/path/to/test_runner_agent.al"]
     }
   }
@@ -136,21 +136,21 @@ Each agent is:
 ### Custom Output Location
 
 ```bash
-promptware mcp-config --directory examples --output ~/.config/cursor
+assertlang mcp-config --directory examples --output ~/.config/cursor
 ```
 
 ### Single Agent
 
 ```bash
-promptware mcp-config --agent-file my_agent.al --editor cursor
+assertlang mcp-config --agent-file my_agent.al --editor cursor
 ```
 
 ### Project-Wide Setup
 
 ```bash
 # Setup for entire project (scans all subdirectories)
-cd my-promptware-project
-promptware mcp-config
+cd my-assertlang-project
+assertlang mcp-config
 ```
 
 This creates configs for all `.pw` files found in the project tree.
@@ -183,9 +183,9 @@ This creates configs for all `.pw` files found in the project tree.
 1. Check config was created: `ls .cursor/mcp.json`
 2. Restart your editor
 3. Check editor MCP settings
-4. Verify `promptware` is in PATH: `which promptware`
+4. Verify `assertlang` is in PATH: `which assertlang`
 
-**"Command not found: promptware":**
+**"Command not found: assertlang":**
 ```bash
 pip install -e .
 # Or add to PATH manually
@@ -202,7 +202,7 @@ Edit the generated config to add env vars:
 {
   "mcpServers": {
     "code-reviewer": {
-      "command": "promptware",
+      "command": "assertlang",
       "args": ["run", "/path/to/agent.al"],
       "env": {
         "ANTHROPIC_API_KEY": "sk-..."

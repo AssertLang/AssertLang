@@ -1,4 +1,4 @@
-# Promptware Standard Library - Core Types (Simplified for Runtime)
+# AssertLang Standard Library - Core Types (Simplified for Runtime)
 # Temporary version without "is" pattern matching syntax
 # TODO: Replace with full core.pw once parser supports pattern matching
 

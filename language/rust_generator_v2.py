@@ -1,7 +1,7 @@
 """
-Rust Generator V2: Promptware IR → Idiomatic Rust
+Rust Generator V2: AssertLang IR → Idiomatic Rust
 
-This generator converts Promptware IR into production-quality, idiomatic Rust code.
+This generator converts AssertLang IR into production-quality, idiomatic Rust code.
 
 Key Features:
 - Generate valid, compilable Rust code from IR
@@ -89,7 +89,7 @@ from language.library_mapping import LibraryMapper
 
 
 class RustGeneratorV2:
-    """Generate idiomatic Rust code from Promptware IR."""
+    """Generate idiomatic Rust code from AssertLang IR."""
 
     def __init__(self):
         self.type_system = TypeSystem()

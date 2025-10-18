@@ -1,5 +1,5 @@
 """
-Promptware integrations with popular AI agent frameworks.
+AssertLang integrations with popular AI agent frameworks.
 
 Supported frameworks:
 - CrewAI: Multi-agent collaboration with contracts

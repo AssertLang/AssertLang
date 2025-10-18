@@ -7,7 +7,7 @@
 - Support incremental evolution toward a natural-language compiler while remaining production-worthy today.
 
 ## 2. Current Surface
-Wave 1 delivers the following constructs (see `docs/promptware-dsl-spec.md` for the formal grammar):
+Wave 1 delivers the following constructs (see `docs/assertlang-dsl-spec.md` for the formal grammar):
 
 - **Metadata directives**: `lang`, `start`, `prompt`, `assume`, `dep`, and `tool` configure the execution environment.
 - **Files**: `file <path>:` blocks capture source artefacts; indentation inside the block is preserved verbatim.
@@ -47,7 +47,7 @@ Timeline payloads include the same `code` when `status == "error"`, giving downs
 ## 5. Wave 1 Wrap-Up & Next Steps
 - ✅ Grammar coverage now includes state scopes, fan-out, merge modes, inline collections, and dataflow helpers. Golden fixtures in `tests/dsl_fixtures/` cover each construct.
 - ✅ Interpreter orchestrates plans via the step graph, logging retry attempts and merge metadata.
-- ✅ Documentation refreshed (`docs/promptware-dsl-spec.md`, this file) to describe the shipped behaviour and lint rules.
+- ✅ Documentation refreshed (`docs/assertlang-dsl-spec.md`, this file) to describe the shipped behaviour and lint rules.
 - 🔜 Wave 2+ priorities: cross-language adapter templates, host SDKs, richer policy enforcement, and the natural-language prompt compiler.
 
 Keep this design note synced with parser/interpreter changes so new contributors understand the contract between syntax, runtime semantics, and telemetry.

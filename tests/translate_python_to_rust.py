@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Translate Python code to Rust using Promptware translation system.
+Translate Python code to Rust using AssertLang translation system.
 
 This script:
 1. Reads a Python file
@@ -67,8 +67,8 @@ def translate_python_to_rust(input_file: str, output_file: str) -> dict:
 
 if __name__ == "__main__":
     # Translate test_code_original.py → test_code_from_python.rs
-    input_path = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_code_original.py"
-    output_path = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_code_from_python.rs"
+    input_path = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_code_original.py"
+    output_path = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_code_from_python.rs"
 
     try:
         stats = translate_python_to_rust(input_path, output_path)

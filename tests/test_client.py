@@ -1,5 +1,5 @@
 """
-Unit tests for Promptware MCP client library.
+Unit tests for AssertLang MCP client library.
 
 Tests the client API, transport layer, and error handling.
 """
@@ -291,7 +291,7 @@ def test_call_verb_default_address():
     mock_result = {"status": "ok"}
 
     with patch.object(HTTPTransport, "request", return_value=mock_result):
-        with patch("promptware.client.MCPClient") as MockClient:
+        with patch("assertlang.client.MCPClient") as MockClient:
             mock_client = MagicMock()
             mock_client.call.return_value = mock_result
             MockClient.return_value.__enter__.return_value = mock_client

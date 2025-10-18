@@ -1,4 +1,4 @@
-"""Timeline event readers for Promptware SDK."""
+"""Timeline event readers for AssertLang SDK."""
 
 from .reader import TimelineReader
 

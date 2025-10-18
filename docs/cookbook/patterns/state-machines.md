@@ -90,7 +90,7 @@ function transition_state(
 
 **Generated Python:**
 ```python
-from promptware.runtime.contracts import check_precondition, check_postcondition
+from assertlang.runtime.contracts import check_precondition, check_postcondition
 
 def can_transition(current_state: str, next_state: str) -> bool:
     check_precondition(is_valid_state(current_state), "valid_current")

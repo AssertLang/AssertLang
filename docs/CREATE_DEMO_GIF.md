@@ -34,7 +34,7 @@ terminalizer record demo --skip-sharing
 
 ```bash
 # Show version
-promptware --version
+assertlang --version
 
 # Create a simple PW file
 cat > calculator.al << 'EOF'
@@ -85,7 +85,7 @@ Press `Ctrl+D` to stop recording.
 ### Generate GIF
 
 ```bash
-terminalizer render demo -o docs/images/promptware-demo.gif
+terminalizer render demo -o docs/images/assertlang-demo.gif
 ```
 
 ---
@@ -99,7 +99,7 @@ asciinema rec demo.cast
 # Run the same commands above
 
 # Convert to GIF
-agg demo.cast docs/images/promptware-demo.gif
+agg demo.cast docs/images/assertlang-demo.gif
 ```
 
 ---
@@ -127,7 +127,7 @@ theme:
 ## Final Output
 
 The GIF should show:
-1. `promptware --version` → shows version
+1. `assertlang --version` → shows version
 2. Create `calculator.pw` → shows code
 3. Compile to Python → shows output
 4. Compile to Go → shows output

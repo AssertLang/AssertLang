@@ -43,14 +43,14 @@ AssertLang has been **triple confirmed** as ready for professional launch:
 ### Failures Analyzed (21 tests - NOT functional blockers)
 
 #### 1. Stdlib Completeness Tests (18 failures)
-**Root Cause:** Tests reference old path `/Promptware/stdlib/core.al` instead of `/AssertLang/stdlib/core.al`
+**Root Cause:** Tests reference old path `/AssertLang/stdlib/core.al` instead of `/AssertLang/stdlib/core.al`
 
 **Impact:** **ZERO** - stdlib files exist and work correctly, test paths are stale
 
 **Example:**
 ```
 FileNotFoundError: [Errno 2] No such file or directory:
-'/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/core.al'
+'/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/stdlib/core.al'
 ```
 
 **Fix:** Update test paths (post-launch, non-blocking)

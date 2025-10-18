@@ -69,7 +69,7 @@ ContractViolation: Postcondition failed in divide()
 
 **Example:**
 
-```promptware
+```assertlang
 function calculate_discount(price: Float, discount_percent: Float) -> Float
   requires:
     price > 0.0
@@ -110,7 +110,7 @@ discount = calculate_discount(price, 20.0)
 
 **Example:**
 
-```promptware
+```assertlang
 function calculate_age(birth_year: Int) -> Int
   requires:
     birth_year > 1900
@@ -139,7 +139,7 @@ ContractViolation: Postcondition failed in calculate_age()
 
 **Fix:** Correct the implementation:
 
-```promptware
+```assertlang
 function calculate_age(birth_year: Int) -> Int
   requires:
     birth_year > 1900
@@ -161,7 +161,7 @@ end
 
 **Example:**
 
-```promptware
+```assertlang
 function format_price(amount: Float) -> String
   requires:
     amount >= 0.0
@@ -241,7 +241,7 @@ assert divide(10, 0)  # Should fail with clear error
 ### Issue: "Array index out of bounds"
 
 **Contract:**
-```promptware
+```assertlang
 function get_item(items: List<String>, index: Int) -> String
   requires:
     index >= 0
@@ -273,7 +273,7 @@ else:
 ### Issue: "Null/None value passed"
 
 **Contract:**
-```promptware
+```assertlang
 function process_user(user: User) -> String
   requires:
     user != null
@@ -291,7 +291,7 @@ ContractViolation: Precondition failed in process_user()
 ```
 
 **Fix with Option type:**
-```promptware
+```assertlang
 function process_user(user: Option<User>) -> String
   do
     return match user:
@@ -307,7 +307,7 @@ end
 ### Issue: "Empty collection"
 
 **Contract:**
-```promptware
+```assertlang
 function get_first(items: List<Int>) -> Int
   requires:
     len(items) > 0
@@ -325,7 +325,7 @@ ContractViolation: Precondition failed in get_first()
 ```
 
 **Fix with Result type:**
-```promptware
+```assertlang
 function get_first(items: List<Int>) -> Result<Int, String>
   do
     if len(items) > 0:
@@ -478,7 +478,7 @@ def process_items(items: List[str], index: int) -> Optional[str]:
 ### Scenario: E-commerce Cart
 
 **Contract:**
-```promptware
+```assertlang
 function apply_bulk_discount(
     items: List<CartItem>,
     min_quantity: Int

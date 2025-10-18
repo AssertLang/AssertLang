@@ -25,7 +25,7 @@ A command-line calculator with operation history tracking.
 
 **Run**:
 ```bash
-promptware run examples/calculator_cli.al
+assertlang run examples/calculator_cli.al
 ```
 
 **Compile to Python**:
@@ -56,7 +56,7 @@ A complete todo list management system with priorities and status tracking.
 
 **Run**:
 ```bash
-promptware run examples/todo_list_manager.al
+assertlang run examples/todo_list_manager.al
 ```
 
 ### 3. Simple Web API (`simple_web_api.al`)
@@ -86,7 +86,7 @@ A simple REST API server with user management endpoints.
 
 **Run**:
 ```bash
-promptware run examples/simple_web_api.al
+assertlang run examples/simple_web_api.al
 ```
 
 ## Total Example Code
@@ -124,7 +124,7 @@ asl build <file.al> --lang <target> -o <output>
 ### Direct Execution
 
 ```bash
-promptware run examples/calculator_cli.al
+assertlang run examples/calculator_cli.al
 ```
 
 Compiles to Python and executes immediately.

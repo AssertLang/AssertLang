@@ -48,7 +48,7 @@ def get_user_email(user_id):
 
 Use explicit types that encode optionality and errors:
 
-```promptware
+```assertlang
 function get_user_email(user_id: Int) -> String
   do
     let user = find_user(user_id)  # Returns Option<User>
@@ -80,7 +80,7 @@ end
 
 Option represents a value that might or might not exist:
 
-```promptware
+```assertlang
 enum Option<T>:
   Some(value: T)  # Has a value
   None            # No value
@@ -94,7 +94,7 @@ end
 
 ### Creating Options
 
-```promptware
+```assertlang
 # Using constructors
 let some_value = Some(42)           # Option<Int> with value
 let no_value = None                 # Option<Int> without value
@@ -106,7 +106,7 @@ let val2 = option_none()            # None
 
 ### Pattern Matching on Option
 
-```promptware
+```assertlang
 function describe(opt: Option<Int>) -> String
   do
     if opt is Some(value):
@@ -124,7 +124,7 @@ end
 
 ### map - Transform Values
 
-```promptware
+```assertlang
 # Apply function to value inside Some, or pass through None
 let num = Some(5)
 let doubled = option_map(num, fn(x) -> x * 2)  # Some(10)
@@ -134,13 +134,13 @@ let result = option_map(empty, fn(x) -> x * 2)  # None
 ```
 
 **Signature:**
-```promptware
+```assertlang
 function option_map<T, U>(opt: Option<T>, fn: function(T) -> U) -> Option<U>
 ```
 
 ### and_then - Chain Operations (flatMap)
 
-```promptware
+```assertlang
 function safe_divide(a: Int, b: Int) -> Option<Int>
   do
     if b == 0:
@@ -157,7 +157,7 @@ let bad = option_and_then(num, fn(x) -> safe_divide(x, 0))     # None
 ```
 
 **Signature:**
-```promptware
+```assertlang
 function option_and_then<T, U>(
     opt: Option<T>,
     fn: function(T) -> Option<U>
@@ -166,7 +166,7 @@ function option_and_then<T, U>(
 
 ### unwrap_or - Provide Default
 
-```promptware
+```assertlang
 let num = Some(42)
 let value = option_unwrap_or(num, 0)  # 42
 
@@ -176,7 +176,7 @@ let value2 = option_unwrap_or(empty, 0)  # 0
 
 ### unwrap_or_else - Lazy Default
 
-```promptware
+```assertlang
 # Function is only called if None
 let num = Some(42)
 let value = option_unwrap_or_else(num, fn() -> expensive_default())  # 42, fn not called
@@ -187,7 +187,7 @@ let value2 = option_unwrap_or_else(empty, fn() -> expensive_default())  # Calls 
 
 ### is_some / is_none - Check Presence
 
-```promptware
+```assertlang
 let num = Some(42)
 let has_value = option_is_some(num)  # true
 let is_empty = option_is_none(num)   # false
@@ -199,7 +199,7 @@ let is_empty2 = option_is_none(empty)   # true
 
 ### match - Pattern Match with Functions
 
-```promptware
+```assertlang
 let num = Some(42)
 let msg = option_match(
     num,
@@ -216,7 +216,7 @@ let msg = option_match(
 
 Result represents success or failure with typed errors:
 
-```promptware
+```assertlang
 enum Result<T, E>:
   Ok(value: T)    # Success with value
   Err(error: E)   # Failure with error
@@ -230,7 +230,7 @@ end
 
 ### Creating Results
 
-```promptware
+```assertlang
 # Using constructors
 let success = Ok(42)                # Result<Int, String>
 let failure = Err("failed")         # Result<Int, String>
@@ -242,7 +242,7 @@ let val2 = result_err("error")      # Err("error")
 
 ### Pattern Matching on Result
 
-```promptware
+```assertlang
 function handle_result(res: Result<Int, String>) -> String
   do
     if res is Ok(value):
@@ -262,7 +262,7 @@ end
 
 ### map - Transform Success Value
 
-```promptware
+```assertlang
 let success = Ok(5)
 let doubled = result_map(success, fn(x) -> x * 2)  # Ok(10)
 
@@ -272,7 +272,7 @@ let result = result_map(failure, fn(x) -> x * 2)   # Err("error")
 
 ### map_err - Transform Error
 
-```promptware
+```assertlang
 let success = Ok(42)
 let result = result_map_err(success, fn(e) -> "Error: " + e)  # Ok(42)
 
@@ -282,7 +282,7 @@ let mapped = result_map_err(failure, fn(e) -> "Error: " + e)  # Err("Error: bad"
 
 ### and_then - Chain Failable Operations
 
-```promptware
+```assertlang
 function safe_divide(a: Int, b: Int) -> Result<Int, String>
   do
     if b == 0:
@@ -300,7 +300,7 @@ let bad = result_and_then(num, fn(x) -> safe_divide(x, 0))     # Err("division b
 
 ### unwrap_or - Extract or Default
 
-```promptware
+```assertlang
 let success = Ok(42)
 let value = result_unwrap_or(success, 0)  # 42
 
@@ -310,7 +310,7 @@ let value2 = result_unwrap_or(failure, 0)  # 0
 
 ### is_ok / is_err - Check Result
 
-```promptware
+```assertlang
 let success = Ok(42)
 let is_success = result_is_ok(success)  # true
 let is_error = result_is_err(success)   # false
@@ -322,7 +322,7 @@ let is_error2 = result_is_err(failure)   # true
 
 ### match - Pattern Match with Functions
 
-```promptware
+```assertlang
 let success = Ok(42)
 let msg = result_match(
     success,
@@ -337,7 +337,7 @@ let msg = result_match(
 
 ### Defining Generic Functions
 
-```promptware
+```assertlang
 function identity<T>(value: T) -> T
   do
     return value
@@ -351,7 +351,7 @@ let text = identity("hello")  # T = String
 
 ### Multiple Type Parameters
 
-```promptware
+```assertlang
 function pair<A, B>(first: A, second: B) -> List<Any>
   do
     return [first, second]
@@ -363,7 +363,7 @@ let result = pair(42, "hello")  # A = Int, B = String
 
 ### Constrained Generics
 
-```promptware
+```assertlang
 function max<T>(a: T, b: T) -> T
   requires:
     a == a  # T must support equality
@@ -383,7 +383,7 @@ end
 
 ### Option<Option<T>>
 
-```promptware
+```assertlang
 function flatten_option(nested: Option<Option<Int>>) -> Option<Int>
   do
     if nested is Some(inner):
@@ -402,7 +402,7 @@ end
 
 ### List<Option<T>>
 
-```promptware
+```assertlang
 function filter_some(items: List<Option<Int>>) -> List<Int>
   do
     let result = []
@@ -422,7 +422,7 @@ let filtered = filter_some(items)  # [1, 3, 5]
 
 ### Result<Option<T>, E>
 
-```promptware
+```assertlang
 function parse_optional_int(s: String) -> Result<Option<Int>, String>
   do
     if len(s) == 0:
@@ -442,7 +442,7 @@ end
 
 ### Safe Parsing
 
-```promptware
+```assertlang
 function parse_int(s: String) -> Option<Int>
   do
     # Simplified: real implementation would parse string
@@ -464,7 +464,7 @@ end
 
 ### Chaining Computations
 
-```promptware
+```assertlang
 function safe_sqrt(x: Float) -> Result<Float, String>
   do
     if x < 0.0:
@@ -496,7 +496,7 @@ end
 
 ### Error Recovery
 
-```promptware
+```assertlang
 function divide_with_fallback(a: Int, b: Int, fallback: Int) -> Int
   do
     let result = safe_divide(a, b)
@@ -511,7 +511,7 @@ let val2 = divide_with_fallback(10, 0, 99) # 99 (fallback)
 
 ### Collecting Results
 
-```promptware
+```assertlang
 function divide_many(nums: List<Int>, divisor: Int) -> List<Result<Int, String>>
   do
     let results = []
@@ -534,7 +534,7 @@ let bad = divide_many([10, 20, 30], 0)      # [Err(...), Err(...), Err(...)]
 
 ### Define Generic Data Structures
 
-```promptware
+```assertlang
 type Box<T>:
   value: T
 end
@@ -554,7 +554,7 @@ end
 
 ### Generic Containers
 
-```promptware
+```assertlang
 type Container<T>:
   items: List<T>
   count: Int
@@ -595,7 +595,7 @@ end
 
 ### Automatic Type Inference
 
-```promptware
+```assertlang
 # Type inferred from literal
 let num = Some(42)  # Option<Int>
 let text = Some("hello")  # Option<String>
@@ -610,7 +610,7 @@ let user = get_user(123)  # Type is Option<User>
 
 ### Explicit Type Annotations
 
-```promptware
+```assertlang
 # When inference isn't enough
 let empty: Option<Int> = None  # Explicit type needed for None
 
@@ -629,7 +629,7 @@ let result: Option<String> = identity(Some("hello"))
 
 ### Avoid Unnecessary Allocations
 
-```promptware
+```assertlang
 # Good: Direct return
 function get_value(opt: Option<Int>) -> Int
   do
@@ -652,7 +652,7 @@ end
 
 ### Inline Pattern Matching
 
-```promptware
+```assertlang
 # Fast: Direct pattern match
 function process(opt: Option<Int>) -> Int
   do

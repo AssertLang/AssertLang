@@ -50,7 +50,7 @@ The IR enables:
                   │
                   ▼
 ┌──────────────────────────────────────────────────────────┐
-│  PROMPTWARE IR (Language-Agnostic)                      │
+│  ASSERTLANG IR (Language-Agnostic)                      │
 │  ┌────────────────────────────────────────────────────┐ │
 │  │ Modules, Functions, Classes, Types                 │ │
 │  │ Control Flow (if/for/while/try)                   │ │

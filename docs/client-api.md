@@ -14,7 +14,7 @@ pip install -e .
 ### Simple Function Call
 
 ```python
-from promptware import call_verb
+from assertlang import call_verb
 
 result = call_verb(
     service="user-service",
@@ -29,7 +29,7 @@ print(result)
 ### Reusable Client
 
 ```python
-from promptware import MCPClient
+from assertlang import MCPClient
 
 client = MCPClient("http://localhost:23450")
 
@@ -53,7 +53,7 @@ client.close()
 ### Context Manager (Recommended)
 
 ```python
-from promptware import MCPClient
+from assertlang import MCPClient
 
 with MCPClient("http://localhost:23450") as client:
     result = client.call("user.get@v1", {"user_id": "123"})
@@ -187,8 +187,8 @@ MCPError (base)
 ### Example
 
 ```python
-from promptware import call_verb
-from promptware.exceptions import (
+from assertlang import call_verb
+from assertlang.exceptions import (
     InvalidVerbError,
     InvalidParamsError,
     TimeoutError,
@@ -280,7 +280,7 @@ All verb calls return a dict with this structure:
 Example: Order service calling user service
 
 ```python
-from promptware import MCPClient
+from assertlang import MCPClient
 
 def create_order(user_id: str, items: list, total: float):
     # Validate user first

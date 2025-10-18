@@ -15,12 +15,12 @@ AssertLang provides a comprehensive CLI for working with contracts:
 
 **Installation**:
 ```bash
-pip install promptware
+pip install assertlang
 ```
 
 **Verify**:
 ```bash
-promptware --version
+assertlang --version
 # Output: AssertLang 2.2.0
 ```
 
@@ -32,14 +32,14 @@ promptware --version
 |---------|---------|---------|
 | `build` | Compile PW to target language | `asl build file.al -o file.py` |
 | `compile` | Compile PW to MCP JSON | `asl compile file.pw` |
-| `run` | Execute PW file | `promptware run file.pw` |
-| `validate` | Check contract syntax | `promptware validate file.pw` |
-| `generate` | Generate MCP server | `promptware generate agent.pw` |
+| `run` | Execute PW file | `assertlang run file.pw` |
+| `validate` | Check contract syntax | `assertlang validate file.pw` |
+| `generate` | Generate MCP server | `assertlang generate agent.pw` |
 | `test` | Test MCP agent | `asl test http://localhost:3000 --auto` |
-| `list-tools` | Show available tools | `promptware list-tools` |
-| `init` | Create new project | `promptware init my-agent` |
-| `config` | Manage configuration | `promptware config set defaults.language go` |
-| `ai-guide` | Show AI agent guide | `promptware ai-guide` |
+| `list-tools` | Show available tools | `assertlang list-tools` |
+| `init` | Create new project | `assertlang init my-agent` |
+| `config` | Manage configuration | `assertlang config set defaults.language go` |
+| `ai-guide` | Show AI agent guide | `assertlang ai-guide` |
 
 ---
 
@@ -137,7 +137,7 @@ def add(x: int, y: int) -> int:
 
 **Python (standard)**:
 ```python
-from promptware.runtime.contracts import check_precondition, check_postcondition
+from assertlang.runtime.contracts import check_precondition, check_postcondition
 
 def add(x: int, y: int) -> int:
     check_precondition(x > 0, "positive_x", f"Expected x > 0, got x = {x}")
@@ -254,7 +254,7 @@ Output:
 
 ### Syntax
 ```bash
-promptware run <file.al> [OPTIONS]
+assertlang run <file.al> [OPTIONS]
 ```
 
 ### Options
@@ -267,12 +267,12 @@ promptware run <file.al> [OPTIONS]
 
 **Basic execution:**
 ```bash
-promptware run calculator.al
+assertlang run calculator.al
 ```
 
 **With verbose:**
 ```bash
-promptware run program.al --verbose
+assertlang run program.al --verbose
 ```
 Output:
 ```
@@ -299,7 +299,7 @@ Result: 42
 
 ### Syntax
 ```bash
-promptware validate <file.al> [OPTIONS]
+assertlang validate <file.al> [OPTIONS]
 ```
 
 ### Options
@@ -312,7 +312,7 @@ promptware validate <file.al> [OPTIONS]
 
 **Basic validation:**
 ```bash
-promptware validate order.al
+assertlang validate order.al
 ```
 Output:
 ```
@@ -322,7 +322,7 @@ Output:
 
 **Verbose validation:**
 ```bash
-promptware validate order.al --verbose
+assertlang validate order.al --verbose
 ```
 Output:
 ```
@@ -346,7 +346,7 @@ Output:
 
 **Validation errors:**
 ```bash
-promptware validate broken.al
+assertlang validate broken.al
 ```
 Output:
 ```
@@ -368,7 +368,7 @@ Suggestion: Add colon after clause name: @requires positive: x > 0
 
 ### Syntax
 ```bash
-promptware generate <agent.al> [OPTIONS]
+assertlang generate <agent.al> [OPTIONS]
 ```
 
 ### Options
@@ -386,7 +386,7 @@ promptware generate <agent.al> [OPTIONS]
 
 **Python server:**
 ```bash
-promptware generate user-service.al --lang python
+assertlang generate user-service.al --lang python
 ```
 Output:
 ```
@@ -418,12 +418,12 @@ Proceed? [Y/n] y
 
 **Go server:**
 ```bash
-promptware generate api.al --lang go --output ./build
+assertlang generate api.al --lang go --output ./build
 ```
 
 **Dry-run mode:**
 ```bash
-promptware generate agent.al --dry-run
+assertlang generate agent.al --dry-run
 ```
 Output:
 ```
@@ -439,7 +439,7 @@ Would create in: /path/to/generated/my-agent
 
 **Auto-confirm:**
 ```bash
-promptware generate agent.al --yes
+assertlang generate agent.al --yes
 ```
 
 ---
@@ -561,7 +561,7 @@ Output:
 
 ### Syntax
 ```bash
-promptware list-tools [OPTIONS]
+assertlang list-tools [OPTIONS]
 ```
 
 ### Options
@@ -575,7 +575,7 @@ promptware list-tools [OPTIONS]
 
 **List all tools:**
 ```bash
-promptware list-tools
+assertlang list-tools
 ```
 Output:
 ```
@@ -607,7 +607,7 @@ Total: 27 tools
 
 **Filter by language:**
 ```bash
-promptware list-tools --lang rust
+assertlang list-tools --lang rust
 ```
 Output:
 ```
@@ -630,7 +630,7 @@ Total: 3 tools
 
 ### Syntax
 ```bash
-promptware init <name> [OPTIONS]
+assertlang init <name> [OPTIONS]
 ```
 
 ### Options
@@ -644,7 +644,7 @@ promptware init <name> [OPTIONS]
 
 **Basic agent:**
 ```bash
-promptware init my-agent
+assertlang init my-agent
 ```
 Output:
 ```
@@ -652,8 +652,8 @@ Output:
 
 📝 Next steps:
   1. Edit my-agent.al to customize your agent
-  2. Validate: promptware validate my-agent.al
-  3. Generate: promptware generate my-agent.al --lang python
+  2. Validate: assertlang validate my-agent.al
+  3. Generate: assertlang generate my-agent.al --lang python
 ```
 
 Generated `my-agent.pw`:
@@ -671,7 +671,7 @@ expose task.execute@v1 (
 
 **API agent:**
 ```bash
-promptware init api-service --template api --port 8080
+assertlang init api-service --template api --port 8080
 ```
 Generated `api-service.pw`:
 ```pw
@@ -692,7 +692,7 @@ expose api.call@v1 (
 
 **AI agent:**
 ```bash
-promptware init assistant --template ai
+assertlang init assistant --template ai
 ```
 Generated `assistant.pw`:
 ```pw
@@ -713,7 +713,7 @@ expose chat.message@v1 (
 
 **Workflow agent:**
 ```bash
-promptware init workflow --template workflow
+assertlang init workflow --template workflow
 ```
 
 ---
@@ -724,7 +724,7 @@ promptware init workflow --template workflow
 
 ### Syntax
 ```bash
-promptware config <action> [OPTIONS]
+assertlang config <action> [OPTIONS]
 ```
 
 ### Actions
@@ -748,7 +748,7 @@ promptware config <action> [OPTIONS]
 
 **Set default language:**
 ```bash
-promptware config set defaults.language go
+assertlang config set defaults.language go
 ```
 Output:
 ```
@@ -757,7 +757,7 @@ Output:
 
 **Get configuration:**
 ```bash
-promptware config get defaults.language
+assertlang config get defaults.language
 ```
 Output:
 ```
@@ -766,7 +766,7 @@ go
 
 **List all config:**
 ```bash
-promptware config list
+assertlang config list
 ```
 Output:
 ```json
@@ -783,22 +783,22 @@ Output:
 
 **Edit config:**
 ```bash
-promptware config edit
+assertlang config edit
 ```
 Opens config file in `$EDITOR` (nano, vim, etc.)
 
 **Show config path:**
 ```bash
-promptware config path
+assertlang config path
 ```
 Output:
 ```
-/Users/username/.config/promptware/config.toml
+/Users/username/.config/assertlang/config.toml
 ```
 
 **Project-level config:**
 ```bash
-promptware config set defaults.language python --project
+assertlang config set defaults.language python --project
 ```
 Output:
 ```
@@ -807,7 +807,7 @@ Output:
 
 **Unset config:**
 ```bash
-promptware config unset defaults.language
+assertlang config unset defaults.language
 ```
 Output:
 ```
@@ -831,13 +831,13 @@ Output:
 
 ### Syntax
 ```bash
-promptware ai-guide
+assertlang ai-guide
 ```
 
 ### Example
 
 ```bash
-promptware ai-guide
+assertlang ai-guide
 ```
 Output:
 ```markdown
@@ -859,21 +859,21 @@ This guide helps AI coding agents understand AssertLang...
 
 ### Syntax
 ```bash
-promptware help [COMMAND]
+assertlang help [COMMAND]
 ```
 
 ### Examples
 
 **General help:**
 ```bash
-promptware help
+assertlang help
 ```
 
 **Command-specific help:**
 ```bash
-promptware help build
-promptware help generate
-promptware help test
+assertlang help build
+assertlang help generate
+assertlang help test
 ```
 
 ---
@@ -887,7 +887,7 @@ promptware help test
 vim user.al
 
 # 2. Validate syntax
-promptware validate user.al
+assertlang validate user.al
 
 # 3. Test with different targets
 asl build user.al                          # Python (default)
@@ -905,16 +905,16 @@ python user.py
 
 ```bash
 # 1. Create agent from template
-promptware init my-service --template api
+assertlang init my-service --template api
 
 # 2. Edit agent definition
 vim my-service.al
 
 # 3. Validate
-promptware validate my-service.al
+assertlang validate my-service.al
 
 # 4. Generate server
-promptware generate my-service.al --lang python
+assertlang generate my-service.al --lang python
 
 # 5. Run server
 cd generated/my-service
@@ -953,7 +953,7 @@ asl test http://localhost:3000 --auto --coverage
 |----------|--------|--------|
 | `NO_COLOR` | 1, true | Disable colored output |
 | `EDITOR` | editor path | Default editor for `config edit` |
-| `PROMPTWARE_DISABLE_CONTRACTS` | 1, true | Disable runtime contract checking |
+| `ASSERTLANG_DISABLE_CONTRACTS` | 1, true | Disable runtime contract checking |
 
 ### Examples
 
@@ -962,10 +962,10 @@ asl test http://localhost:3000 --auto --coverage
 NO_COLOR=1 asl build contract.al
 
 # Use specific editor
-EDITOR=vim promptware config edit
+EDITOR=vim assertlang config edit
 
 # Disable runtime contracts
-PROMPTWARE_DISABLE_CONTRACTS=1 python generated_code.py
+ASSERTLANG_DISABLE_CONTRACTS=1 python generated_code.py
 ```
 
 ---

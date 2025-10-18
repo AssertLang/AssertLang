@@ -9,7 +9,7 @@ This guide demonstrates how to integrate AssertLang into your applications using
 ### Python SDK
 
 ```bash
-pip install promptware-sdk
+pip install assertlang-sdk
 ```
 
 **Requirements**:
@@ -23,12 +23,12 @@ pip install promptware-sdk
 ### 1. Create and Execute a Plan
 
 ```python
-from promptware_sdk import mcp
+from assertlang_sdk import mcp
 
 # Define a plan in AssertLang DSL
 plan_source = """
 call http_client as api {
-    url: "https://api.github.com/repos/promptware/promptware"
+    url: "https://api.github.com/repos/assertlang/assertlang"
     method: "GET"
 }
 
@@ -50,7 +50,7 @@ print(f"Started run: {run_id}")
 ### 2. Stream Timeline Events
 
 ```python
-from promptware_sdk import TimelineReader
+from assertlang_sdk import TimelineReader
 
 # Create timeline reader
 reader = TimelineReader(run_id)
@@ -92,7 +92,7 @@ mcp.report_finish_v1(run_id, status)
 ## Example: HTTP Health Check
 
 ```python
-from promptware_sdk import mcp, AssertLangError
+from assertlang_sdk import mcp, AssertLangError
 
 try:
     # Assert endpoint is healthy
@@ -116,7 +116,7 @@ except AssertLangError as e:
 ## Example: Natural Language Plans
 
 ```python
-from promptware_sdk import mcp
+from assertlang_sdk import mcp
 
 # Create plan from natural language
 plan = mcp.plan_create_v1(
@@ -135,7 +135,7 @@ run_id = mcp.run_start_v1(plan)
 ## Error Handling
 
 ```python
-from promptware_sdk import AssertLangError, E_RUNTIME, E_TIMEOUT, E_POLICY
+from assertlang_sdk import AssertLangError, E_RUNTIME, E_TIMEOUT, E_POLICY
 
 try:
     plan = mcp.plan_create_v1(plan_source)
@@ -157,7 +157,7 @@ except AssertLangError as e:
 ## Filtering Timeline Events
 
 ```python
-from promptware_sdk import TimelineReader
+from assertlang_sdk import TimelineReader
 
 reader = TimelineReader(run_id)
 
@@ -185,7 +185,7 @@ for event in if_events:
 ### Custom Daemon URL
 
 ```python
-from promptware_sdk import MCP, TimelineReader
+from assertlang_sdk import MCP, TimelineReader
 
 # Connect to remote daemon
 mcp_client = MCP(daemon_url="http://production.example.com:8765")
@@ -204,10 +204,10 @@ reader = TimelineReader(
 
 ```bash
 # Set daemon URL via environment
-export PROMPTWARE_DAEMON_URL=http://localhost:8765
+export ASSERTLANG_DAEMON_URL=http://localhost:8765
 
 # Set log level
-export PROMPTWARE_LOG_LEVEL=debug
+export ASSERTLANG_LOG_LEVEL=debug
 ```
 
 **Note**: Environment variable support planned for SDK 0.2.0.
@@ -220,7 +220,7 @@ export PROMPTWARE_LOG_LEVEL=debug
 
 ```python
 from unittest.mock import Mock, patch
-from promptware_sdk import mcp
+from assertlang_sdk import mcp
 
 def test_plan_creation():
     with patch.object(mcp.transport, 'call_verb') as mock_call:
@@ -243,7 +243,7 @@ def test_plan_creation():
 
 ```python
 import pytest
-from promptware_sdk import mcp, TimelineReader
+from assertlang_sdk import mcp, TimelineReader
 
 @pytest.mark.integration
 def test_full_execution():
@@ -272,7 +272,7 @@ def test_full_execution():
 ### 1. Always Handle Errors
 
 ```python
-from promptware_sdk import AssertLangError
+from assertlang_sdk import AssertLangError
 
 try:
     plan = mcp.plan_create_v1(plan_source)
@@ -355,7 +355,7 @@ for event in reader.events():
 curl http://localhost:8765/health
 
 # Start daemon if not running
-promptware daemon start
+assertlang daemon start
 ```
 
 ---
@@ -367,11 +367,11 @@ promptware daemon start
 **Solution**:
 ```bash
 # Check versions
-python -c "from promptware_sdk import __version__; print(__version__)"
-promptware --version
+python -c "from assertlang_sdk import __version__; print(__version__)"
+assertlang --version
 
 # Upgrade SDK to match daemon
-pip install --upgrade promptware-sdk
+pip install --upgrade assertlang-sdk
 ```
 
 ---
@@ -389,8 +389,8 @@ pip install --upgrade promptware-sdk
 
 ## Support
 
-- **Issues**: https://github.com/promptware/promptware/issues
-- **Discussions**: https://github.com/promptware/promptware/discussions
+- **Issues**: https://github.com/assertlang/assertlang/issues
+- **Discussions**: https://github.com/assertlang/assertlang/discussions
 - **Documentation**: https://docs.assertlang.dev
 
 ---

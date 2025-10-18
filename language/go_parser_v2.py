@@ -1,7 +1,7 @@
 """
 Go Parser V2 - Arbitrary Go Code → IR
 
-This parser converts arbitrary Go code into Promptware's Intermediate Representation (IR).
+This parser converts arbitrary Go code into AssertLang's Intermediate Representation (IR).
 Unlike V1 which only handled MCP servers, V2 parses any Go code including:
 - Functions and methods
 - Structs and interfaces

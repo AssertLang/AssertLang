@@ -40,7 +40,7 @@ save_user(user)  # Crashes!
 
 Use builder pattern with contracts:
 
-```promptware
+```assertlang
 type UserBuilder:
   name: Option<String>
   email: Option<String>
@@ -136,7 +136,7 @@ else:
 
 ## Fluent Builder API
 
-```promptware
+```assertlang
 type ConfigBuilder:
   host: Option<String>
   port: Option<Int>
@@ -241,7 +241,7 @@ if isinstance(result, Ok):
 
 ## Validation During Construction
 
-```promptware
+```assertlang
 type EmailConfig:
   smtp_host: String
   smtp_port: Int
@@ -342,7 +342,7 @@ end
 
 ## Real-World Example: HTTP Request Builder
 
-```promptware
+```assertlang
 type HttpMethod:
   is GET
   is POST
@@ -540,7 +540,7 @@ user = User()  # Invalid! Missing required fields
 
 ### ✅ Contract Enforces Completeness
 
-```promptware
+```assertlang
 # Good: Contract prevents incomplete objects
 function build_user(builder: UserBuilder) -> Result<User, List<String>>
   do
@@ -564,7 +564,7 @@ builder.name = None  # Breaks invariants!
 
 ### ✅ Immutable Builder Updates
 
-```promptware
+```assertlang
 # Good: Builder updates return new builder
 function set_name(builder: Builder, name: String) -> Builder
   do

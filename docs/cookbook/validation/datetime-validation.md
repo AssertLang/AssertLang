@@ -29,7 +29,7 @@ def schedule_meeting(date: str, time: str):
 
 Use contracts to enforce valid date/time ranges:
 
-```promptware
+```assertlang
 function schedule_meeting(
     year: Int,
     month: Int,
@@ -61,7 +61,7 @@ end
 
 ### Valid Date Components
 
-```promptware
+```assertlang
 function is_valid_date(year: Int, month: Int, day: Int) -> Bool
   do
     # Year range
@@ -95,7 +95,7 @@ end
 
 ### Leap Year Handling
 
-```promptware
+```assertlang
 function is_leap_year(year: Int) -> Bool
   requires:
     year > 0
@@ -146,7 +146,7 @@ end
 
 ### 24-Hour Format
 
-```promptware
+```assertlang
 function validate_time_24h(hour: Int, minute: Int, second: Int) -> Result<String, String>
   do
     if hour < 0 or hour > 23:
@@ -168,7 +168,7 @@ end
 
 ### 12-Hour Format with AM/PM
 
-```promptware
+```assertlang
 function validate_time_12h(
     hour: Int,
     minute: Int,
@@ -200,7 +200,7 @@ end
 
 ### Future Dates Only
 
-```promptware
+```assertlang
 function validate_future_date(
     year: Int,
     month: Int,
@@ -243,7 +243,7 @@ end
 
 ### Date Within Range
 
-```promptware
+```assertlang
 function validate_date_range(
     year: Int,
     month: Int,
@@ -274,7 +274,7 @@ end
 
 ### Validate ISO Date String
 
-```promptware
+```assertlang
 function validate_iso_date(date_str: String) -> Result<String, String>
   requires:
     len(date_str) > 0
@@ -308,7 +308,7 @@ end
 
 ### Skip Weekends
 
-```promptware
+```assertlang
 function is_weekday(year: Int, month: Int, day: Int) -> Bool
   requires:
     is_valid_date(year, month, day)
@@ -351,7 +351,7 @@ end
 
 ### Validate Time Duration
 
-```promptware
+```assertlang
 function validate_duration_hours(hours: Int) -> Result<Int, String>
   do
     if hours < 0:
@@ -472,7 +472,7 @@ def create_event(event: EventRequest):
 
 ### ❌ Forgetting Leap Years
 
-```promptware
+```assertlang
 # Bad: Always uses 28 for February
 function days_in_february_bad() -> Int
   do
@@ -483,7 +483,7 @@ end
 
 ### ❌ No Timezone Handling
 
-```promptware
+```assertlang
 # Bad: Assumes local time without timezone
 function schedule_bad(hour: Int) -> String
   do
@@ -495,7 +495,7 @@ end
 
 ### ✅ Good Pattern
 
-```promptware
+```assertlang
 function schedule_good(hour: Int, timezone: String) -> String
   requires:
     hour >= 0

@@ -5,13 +5,13 @@ Host SDK for integrating with AssertLang daemon via MCP (Model Context Protocol)
 ## Installation
 
 ```bash
-pip install promptware-sdk
+pip install assertlang-sdk
 ```
 
 ## Quick Start
 
 ```python
-from promptware_sdk import mcp, TimelineReader
+from assertlang_sdk import mcp, TimelineReader
 
 # Create and execute a plan
 plan = mcp.plan_create_v1("""

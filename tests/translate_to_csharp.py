@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Translate Python code to C# using Promptware translation system.
+Translate Python code to C# using AssertLang translation system.
 
 This script:
 1. Parses Python source using PythonParserV2
@@ -19,7 +19,7 @@ from language.dotnet_generator_v2 import DotNetGeneratorV2
 
 def translate_python_to_csharp(input_file: str, output_file: str) -> dict:
     """
-    Translate Python file to C# using Promptware IR.
+    Translate Python file to C# using AssertLang IR.
 
     Args:
         input_file: Path to Python source file
@@ -69,8 +69,8 @@ def translate_python_to_csharp(input_file: str, output_file: str) -> dict:
 
 if __name__ == "__main__":
     # File paths
-    input_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_code_original.py"
-    output_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_code_from_python.cs"
+    input_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_code_original.py"
+    output_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_code_from_python.cs"
 
     # Run translation
     stats = translate_python_to_csharp(input_file, output_file)

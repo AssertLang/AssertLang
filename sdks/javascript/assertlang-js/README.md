@@ -1,11 +1,11 @@
-# @promptware/client
+# @assertlang/client
 
 Node.js client library for calling AssertLang MCP services over HTTP.
 
 ## Installation
 
 ```bash
-npm install @promptware/client
+npm install @assertlang/client
 ```
 
 ## Quick Start
@@ -13,7 +13,7 @@ npm install @promptware/client
 ### Simple Function Call
 
 ```javascript
-import { callVerb } from '@promptware/client';
+import { callVerb } from '@assertlang/client';
 
 const result = await callVerb({
   service: 'user-service',
@@ -28,7 +28,7 @@ console.log(result);
 ### Reusable Client
 
 ```javascript
-import { MCPClient } from '@promptware/client';
+import { MCPClient } from '@assertlang/client';
 
 const client = new MCPClient('http://localhost:23450');
 
@@ -158,7 +158,7 @@ import {
   InvalidParamsError,
   TimeoutError,
   ConnectionError
-} from '@promptware/client';
+} from '@assertlang/client';
 
 try {
   const result = await callVerb({
@@ -209,7 +209,7 @@ Attempt 4: 4s delay (if retries=3)
 Example: Order service calling user service
 
 ```javascript
-import { MCPClient } from '@promptware/client';
+import { MCPClient } from '@assertlang/client';
 
 async function createOrder(userId, items, total) {
   // Validate user first

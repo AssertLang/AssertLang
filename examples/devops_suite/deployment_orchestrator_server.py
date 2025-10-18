@@ -233,7 +233,7 @@ error_counter = meter.create_counter(
 # MCP Server for agent: deployment-orchestrator
 app = FastAPI(
     title="deployment-orchestrator",
-    description="Promptware MCP Agent",
+    description="AssertLang MCP Agent",
     version="v1"
 )
 

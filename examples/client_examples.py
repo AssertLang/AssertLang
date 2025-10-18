@@ -1,5 +1,5 @@
 """
-Examples of using the Promptware MCP client library.
+Examples of using the AssertLang MCP client library.
 
 Demonstrates both simple function calls and reusable client instances.
 """
@@ -172,7 +172,7 @@ def example_tool_results():
 
 
 if __name__ == "__main__":
-    print("Promptware MCP Client Examples")
+    print("AssertLang MCP Client Examples")
     print("=" * 50)
     print("\nNote: These examples assume services are running.")
     print("Start services first with:")

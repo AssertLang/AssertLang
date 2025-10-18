@@ -21,7 +21,7 @@ This pack contains **everything a coding agent (and human devs) need** to implem
 
 ```json
 {
-  "name": "promptware-mcpd",
+  "name": "assertlang-mcpd",
   "version": "0.1.0",
   "capabilities": [
     {"verb": "plan.create", "version": "v1"},

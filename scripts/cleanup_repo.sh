@@ -4,7 +4,7 @@
 
 set -e
 
-echo "=== Promptware Repository Cleanup ==="
+echo "=== AssertLang Repository Cleanup ==="
 echo ""
 
 # Create archive directories

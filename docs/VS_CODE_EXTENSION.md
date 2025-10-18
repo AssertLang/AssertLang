@@ -25,7 +25,7 @@ We plan to publish to the VS Code Marketplace so anyone can install with one cli
 1. Clone the AssertLang repository:
    ```bash
    git clone https://github.com/AssertLang/AssertLang.git
-   cd promptware
+   cd assertlang
    ```
 
 2. Open in VS Code:
@@ -134,7 +134,7 @@ Purple "PW" icon next to `.pw` files in the file explorer.
 
 ```bash
 git clone https://github.com/AssertLang/AssertLang.git
-cd promptware/.vscode/extensions/pw-language/
+cd assertlang/.vscode/extensions/pw-language/
 ```
 
 **Direct download** (when repo is public):
@@ -231,7 +231,7 @@ Associate other file extensions with PW:
 ```json
 {
   "files.associations": {
-    "*.promptware": "pw",
+    "*.assertlang": "pw",
     "*.pwlang": "pw"
   }
 }

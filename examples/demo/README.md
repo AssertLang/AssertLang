@@ -111,7 +111,7 @@ curl -X POST http://localhost:23451/mcp \
 ## Using the Python Client
 
 ```python
-from promptware import MCPClient
+from assertlang import MCPClient
 
 # Call user service
 with MCPClient("http://localhost:23450") as user_client:

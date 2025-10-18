@@ -37,7 +37,7 @@ result = chain.run({"input": anything})  # Could be anything!
 Use AssertLang contracts with LangChain:
 
 **1. Define contract:**
-```promptware
+```assertlang
 type ChainInput:
   query: String
   max_length: Int
@@ -108,7 +108,7 @@ class ValidatedChain:
 
 ### Simple Chain Validation
 
-```promptware
+```assertlang
 type QuestionInput:
   question: String
   context: Option<String>
@@ -141,7 +141,7 @@ end
 
 ### LangChain Tool with Contracts
 
-```promptware
+```assertlang
 type ToolInput:
   operation: String
   arguments: Map<String, String>
@@ -249,7 +249,7 @@ response = agent.run("Search for AI papers and calculate average citations")
 
 ### Sequential Chain with Validation
 
-```promptware
+```assertlang
 type Step1Input:
   raw_text: String
 end
@@ -359,7 +359,7 @@ class ValidatedSequentialChain:
 ## Real-World Example: Document QA
 
 **Contract:**
-```promptware
+```assertlang
 # document_qa.al
 type DocumentInput:
   document: String
@@ -529,7 +529,7 @@ def search(query: str, limit: int):
 
 ### ✅ Tool Validates Args
 
-```promptware
+```assertlang
 # Good: Contract enforces valid args
 function search(query: String, limit: Int) -> Result<List<String>, String>
   requires:

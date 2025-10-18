@@ -1,7 +1,7 @@
 """
 Test CLI compile and run commands
 
-Tests the `asl compile` and `promptware run` commands.
+Tests the `asl compile` and `assertlang run` commands.
 """
 
 import sys
@@ -14,9 +14,9 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 
 def run_cli_command(args):
-    """Run promptware CLI command and return (returncode, stdout, stderr)."""
+    """Run assertlang CLI command and return (returncode, stdout, stderr)."""
     result = subprocess.run(
-        ["python3", "-m", "promptware.cli"] + args,
+        ["python3", "-m", "assertlang.cli"] + args,
         capture_output=True,
         text=True,
         cwd=Path(__file__).parent.parent
@@ -109,7 +109,7 @@ def test_compile_default_output():
 def test_run_executes():
     """Test run command executes PW code."""
     print(f"\n{'='*60}")
-    print("Testing: promptware run")
+    print("Testing: assertlang run")
     print(f"{'='*60}")
 
     # Create PW file that prints output
@@ -149,7 +149,7 @@ function main() -> int {
 def test_run_verbose():
     """Test run with verbose output."""
     print(f"\n{'='*60}")
-    print("Testing: promptware run --verbose")
+    print("Testing: assertlang run --verbose")
     print(f"{'='*60}")
 
     with tempfile.NamedTemporaryFile(mode='w', suffix='.al', delete=False) as f:

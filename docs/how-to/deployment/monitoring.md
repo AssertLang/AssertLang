@@ -99,7 +99,7 @@ def log_contract_violation(
 
 ```python
 # Generated contract code with logging
-from promptware.runtime.contracts import check_precondition
+from assertlang.runtime.contracts import check_precondition
 
 def process_order(order_id, amount):
     # Precondition check with logging

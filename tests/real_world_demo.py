@@ -280,7 +280,7 @@ def main():
     print("\n")
     print("╔═══════════════════════════════════════════════════════════════════╗")
     print("║                                                                   ║")
-    print("║         PROMPTWARE V2 - REAL-WORLD TRANSLATION DEMO              ║")
+    print("║         ASSERTLANG V2 - REAL-WORLD TRANSLATION DEMO              ║")
     print("║                                                                   ║")
     print("╚═══════════════════════════════════════════════════════════════════╝")
 

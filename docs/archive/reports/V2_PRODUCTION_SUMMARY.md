@@ -286,7 +286,7 @@ Agent 3 (Security expert): Reads PW DSL → identifies vulnerabilities
 ## 📋 Next Steps (Future Work)
 
 ### Short-Term (This Month)
-1. CLI tool (`promptware translate <file> --to=<lang>`)
+1. CLI tool (`assertlang translate <file> --to=<lang>`)
 2. VS Code extension (syntax highlighting for PW DSL)
 3. GitHub Actions workflow (auto-translate on PR)
 

@@ -1,17 +1,17 @@
 {
   "mcpServers": {
     "data-processor": {
-      "command": "promptware",
+      "command": "assertlang",
       "args": [
         "run",
-        "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/examples/cross_language/data_processor.al"
+        "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/examples/cross_language/data_processor.al"
       ]
     },
     "cache-service": {
-      "command": "promptware",
+      "command": "assertlang",
       "args": [
         "run",
-        "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/examples/cross_language/cache_service.al"
+        "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/examples/cross_language/cache_service.al"
       ]
     }
   }

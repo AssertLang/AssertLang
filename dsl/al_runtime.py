@@ -1,7 +1,7 @@
 """
-Promptware Runtime Interpreter
+AssertLang Runtime Interpreter
 
-This module implements the PW runtime that executes Promptware IR directly
+This module implements the PW runtime that executes AssertLang IR directly
 without transpilation. This IS the runtime for the PW programming language.
 
 Architecture:
@@ -196,9 +196,9 @@ class PatternMatcher:
 
 class PWRuntime:
     """
-    Promptware Runtime Interpreter
+    AssertLang Runtime Interpreter
 
-    Executes Promptware IR directly without transpilation.
+    Executes AssertLang IR directly without transpilation.
     This IS the runtime for the PW programming language.
     """
 

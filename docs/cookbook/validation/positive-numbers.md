@@ -40,7 +40,7 @@ function calculate_discount(
 
 **Generated Python:**
 ```python
-from promptware.runtime.contracts import check_precondition, check_postcondition
+from assertlang.runtime.contracts import check_precondition, check_postcondition
 
 def calculate_discount(original_price: float, discount_percent: float) -> float:
     # Preconditions
@@ -232,7 +232,7 @@ def test_invalid_tax_rate_rejected():
 
 **Disable in production** (if needed):
 ```bash
-export PROMPTWARE_DISABLE_CONTRACTS=1
+export ASSERTLANG_DISABLE_CONTRACTS=1
 ```
 
 Contracts still serve as documentation.

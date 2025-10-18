@@ -46,7 +46,7 @@ error_counter = meter.create_counter(
 # MCP Server for agent: monitored-service
 app = FastAPI(
     title="monitored-service",
-    description="Promptware MCP Agent",
+    description="AssertLang MCP Agent",
     version="v1"
 )
 

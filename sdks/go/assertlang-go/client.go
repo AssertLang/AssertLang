@@ -1,4 +1,4 @@
-package promptware
+package assertlang
 
 import (
 	"bytes"
@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-// MCPClient represents an MCP client for calling Promptware services
+// MCPClient represents an MCP client for calling AssertLang services
 type MCPClient struct {
 	BaseURL    string
 	HTTPClient *http.Client

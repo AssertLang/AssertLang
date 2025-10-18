@@ -1,5 +1,5 @@
 """
-Promptware SDK - Production-ready client library for MCP agents.
+AssertLang SDK - Production-ready client library for MCP agents.
 
 Features:
 - Dynamic verb discovery with autocomplete

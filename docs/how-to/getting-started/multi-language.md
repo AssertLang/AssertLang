@@ -72,7 +72,7 @@ asl build user.al --lang python -o user.py
 **Output** (`user.py`):
 
 ```python
-from promptware.runtime.contracts import check_precondition, check_postcondition
+from assertlang.runtime.contracts import check_precondition, check_postcondition
 
 def validate_email(email: str) -> bool:
     check_precondition(len(email) > 0, "non_empty", "len(email) > 0", "validate_email",
@@ -131,7 +131,7 @@ asl build user.al --lang javascript -o user.js
 **Output** (`user.js`):
 
 ```javascript
-const { checkPrecondition, checkPostcondition } = require('@promptware/runtime');
+const { checkPrecondition, checkPostcondition } = require('@assertlang/runtime');
 
 function validate_email(email) {
     checkPrecondition(email.length > 0, "non_empty", "len(email) > 0", "validate_email",
@@ -334,7 +334,7 @@ asl build user.al --lang typescript -o user.ts
 **Output** (`user.ts`):
 
 ```typescript
-import { checkPrecondition, checkPostcondition } from '@promptware/runtime';
+import { checkPrecondition, checkPostcondition } from '@assertlang/runtime';
 
 function validate_email(email: string): boolean {
     checkPrecondition(email.length > 0, "non_empty", "len(email) > 0", "validate_email",
@@ -428,7 +428,7 @@ asl build user.al --lang python --format typeddict -o types.py
 
 ```bash
 # Always validate first
-promptware validate user.al && \
+assertlang validate user.al && \
     asl build user.al --lang python -o user.py
 ```
 
@@ -469,7 +469,7 @@ promptware validate user.al && \
 
 **Fix**: Install runtime:
 ```bash
-npm install @promptware/runtime
+npm install @assertlang/runtime
 ```
 
 ---

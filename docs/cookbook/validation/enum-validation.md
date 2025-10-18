@@ -36,7 +36,7 @@ def set_user_role(role: str):
 
 Use AssertLang enums with contract validation:
 
-```promptware
+```assertlang
 type UserRole:
   is Admin
   is User
@@ -61,7 +61,7 @@ end
 
 ### Simple Enum
 
-```promptware
+```assertlang
 type Status:
   is Pending
   is Active
@@ -80,7 +80,7 @@ end
 
 ### Enum with Values
 
-```promptware
+```assertlang
 type Priority:
   is Low = 1
   is Medium = 2
@@ -104,7 +104,7 @@ end
 
 ### String to Enum Conversion
 
-```promptware
+```assertlang
 function parse_user_role(role_str: String) -> Result<UserRole, String>
   requires:
     len(role_str) > 0
@@ -147,7 +147,7 @@ def parse_user_role(role_str: str) -> Union[Ok[UserRole], Err[str]]:
 
 ### Case-Insensitive Parsing
 
-```promptware
+```assertlang
 function parse_status_flexible(status_str: String) -> Result<Status, String>
   requires:
     len(status_str) > 0
@@ -175,7 +175,7 @@ end
 
 ### Valid Transitions Only
 
-```promptware
+```assertlang
 type OrderStatus:
   is Pending
   is Confirmed
@@ -233,7 +233,7 @@ end
 
 ### Role-Based Access Control
 
-```promptware
+```assertlang
 type Permission:
   is Read
   is Write
@@ -286,7 +286,7 @@ end
 
 ### Flags/Bitfields
 
-```promptware
+```assertlang
 type FilePermission:
   is Read = 1
   is Write = 2
@@ -418,7 +418,7 @@ def check_access(user: User, resource: str, action: str):
 
 ### ❌ Using Magic Strings
 
-```promptware
+```assertlang
 # Bad: Using strings instead of enums
 function set_role_bad(role: String) -> Bool
   do
@@ -432,7 +432,7 @@ end
 
 ### ✅ Using Enums
 
-```promptware
+```assertlang
 # Good: Type-safe enums
 function set_role_good(role: UserRole) -> Bool
   do
@@ -446,7 +446,7 @@ end
 
 ### ❌ No Validation on Transitions
 
-```promptware
+```assertlang
 # Bad: Any transition allowed
 function transition_bad(current: Status, next: Status) -> Status
   do
@@ -457,7 +457,7 @@ end
 
 ### ✅ Validated Transitions
 
-```promptware
+```assertlang
 # Good: Only valid transitions allowed
 function transition_good(current: Status, next: Status) -> Result<Status, String>
   requires:
@@ -603,7 +603,7 @@ For enums with many values (100+), consider:
 - Caching validation results
 - Disabling contracts in production
 
-```promptware
+```assertlang
 # Efficient parsing for large enums
 function parse_large_enum(value: String) -> Result<LargeEnum, String>
   do

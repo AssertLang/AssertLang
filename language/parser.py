@@ -8,7 +8,7 @@ from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
 
 class ALParseError(ValueError):
-    """Raised when the Promptware DSL cannot be parsed."""
+    """Raised when the AssertLang DSL cannot be parsed."""
 
     def __init__(self, message: str, *, code: str = "E_SYNTAX") -> None:
         super().__init__(message)

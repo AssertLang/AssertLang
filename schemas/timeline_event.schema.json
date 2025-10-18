@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://assertlang.dev/schemas/timeline-event.json",
-  "title": "Promptware Timeline Event",
+  "title": "AssertLang Timeline Event",
   "type": "object",
   "required": [
     "status"

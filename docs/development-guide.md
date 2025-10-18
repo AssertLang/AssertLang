@@ -16,7 +16,7 @@
 
 ## Testing Notes
 - `pytest tests/test_toolgen_templates.py -q` checks that every language template stays syntactically valid.
-- Dotnet compilation smoke tests are opt-in: export `PROMPTWARE_RUN_DOTNET_SMOKE=1` before running pytest to compile generated C# adapters with the local `dotnet` CLI.
+- Dotnet compilation smoke tests are opt-in: export `ASSERTLANG_RUN_DOTNET_SMOKE=1` before running pytest to compile generated C# adapters with the local `dotnet` CLI.
 
 ## Containers
 - Use Docker/ContainerD for sandbox isolation

@@ -5,7 +5,7 @@ Shows all major features and generates a complete Rust module.
 """
 
 import sys
-sys.path.insert(0, '/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware')
+sys.path.insert(0, '/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang')
 
 from language.rust_generator_v2 import generate_rust
 from dsl.ir import (
@@ -359,7 +359,7 @@ def main():
     print("=" * 70)
 
     # Save to file
-    output_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/generated_example.rs"
+    output_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/generated_example.rs"
     with open(output_file, 'w') as f:
         f.write(rust_code)
     print(f"\nSaved to: {output_file}")

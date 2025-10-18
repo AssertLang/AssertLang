@@ -37,7 +37,7 @@ def create_user(username: str, password: str):
 
 Build custom validators with contracts:
 
-```promptware
+```assertlang
 function validate_username(username: String) -> Result<String, String>
   requires:
     len(username) > 0
@@ -66,7 +66,7 @@ end
 
 ### Username Validator
 
-```promptware
+```assertlang
 function is_alphanumeric(text: String) -> Bool
   requires:
     len(text) > 0
@@ -110,7 +110,7 @@ end
 
 ### Password Strength Validator
 
-```promptware
+```assertlang
 function has_uppercase(text: String) -> Bool
   do
     # Check for at least one uppercase letter
@@ -184,7 +184,7 @@ end
 
 ### Combining Validators
 
-```promptware
+```assertlang
 function validate_user_registration(
     username: String,
     password: String,
@@ -228,7 +228,7 @@ end
 
 ### Validator Pipeline
 
-```promptware
+```assertlang
 function chain_validators<T>(
     value: T,
     validators: List<function(T) -> Result<T, String>>
@@ -258,7 +258,7 @@ end
 
 ### Credit Card Validation (Luhn Algorithm)
 
-```promptware
+```assertlang
 function luhn_check(card_number: String) -> Bool
   requires:
     len(card_number) > 0
@@ -317,7 +317,7 @@ end
 
 ### Phone Number Validation
 
-```promptware
+```assertlang
 function validate_phone_number(
     phone: String,
     country_code: String
@@ -585,7 +585,7 @@ def validate_bad(value: str) -> Optional[str]:
 
 ### ✅ Use Result Type
 
-```promptware
+```assertlang
 # Good: Explicit success/error
 function validate_good(value: String) -> Result<String, String>
   do
@@ -609,7 +609,7 @@ def clean_username(username: str) -> str:
 
 ### ✅ Explicit Validation
 
-```promptware
+```assertlang
 # Good: Tell user what's wrong
 function validate_username_strict(username: String) -> Result<String, String>
   do
@@ -639,7 +639,7 @@ def validate_expensive(value: str) -> bool:
 
 ### Fail Fast
 
-```promptware
+```assertlang
 # Stop at first error for performance
 function validate_fast(value: String) -> Result<String, String>
   do

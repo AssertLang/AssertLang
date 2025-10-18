@@ -213,7 +213,7 @@ spec:
     spec:
       containers:
       - name: code-reviewer
-        image: promptware/code-reviewer:latest
+        image: assertlang/code-reviewer:latest
         env:
         - name: ANTHROPIC_API_KEY
           valueFrom:

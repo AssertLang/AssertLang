@@ -33,7 +33,7 @@ function process_text(text: string) -> string {
 
 **Generated Python:**
 ```python
-from promptware.runtime.contracts import check_precondition, check_postcondition
+from assertlang.runtime.contracts import check_precondition, check_postcondition
 
 def process_text(text: str) -> str:
     # Preconditions

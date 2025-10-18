@@ -167,7 +167,7 @@ These directories exist locally but are **not visible on GitHub**:
 ### ✅ Branding Consistency (100%)
 
 - ✅ All file extensions: `.al` (not `.pw`)
-- ✅ All terminology: "AssertLang" (not "Promptware")
+- ✅ All terminology: "AssertLang" (not "AssertLang")
 - ✅ All contract references: "AL contract" (not "PW contract")
 - ✅ VS Code extension icon: Updated with AssertLang logo
 - ✅ Package name: `assertlang` on PyPI

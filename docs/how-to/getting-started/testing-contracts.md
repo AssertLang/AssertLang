@@ -69,7 +69,7 @@ Create `test_math_utils.py`:
 ```python
 import pytest
 from math_utils import divide, factorial
-from promptware.runtime.contracts import ContractViolationError
+from assertlang.runtime.contracts import ContractViolationError
 
 
 class TestDivide:
@@ -194,7 +194,7 @@ asl build buggy_math.al -o buggy_math.py
 # test_buggy_math.py
 import pytest
 from buggy_math import absolute
-from promptware.runtime.contracts import ContractViolationError
+from assertlang.runtime.contracts import ContractViolationError
 
 
 def test_absolute_catches_bug():
@@ -267,7 +267,7 @@ asl build account.al -o account.py
 # test_account.py
 import pytest
 from account import BankAccount
-from promptware.runtime.contracts import ContractViolationError
+from assertlang.runtime.contracts import ContractViolationError
 
 
 class TestBankAccount:
@@ -320,7 +320,7 @@ Track which contracts were tested:
 # test_with_coverage.py
 import pytest
 from math_utils import divide, factorial
-from promptware.runtime.contracts import (
+from assertlang.runtime.contracts import (
     ContractViolationError,
     get_coverage,
     reset_coverage
@@ -419,7 +419,7 @@ Test multiple inputs efficiently:
 # test_parametrized.py
 import pytest
 from math_utils import divide, factorial
-from promptware.runtime.contracts import ContractViolationError
+from assertlang.runtime.contracts import ContractViolationError
 
 
 class TestDivideParametrized:
@@ -634,7 +634,7 @@ class TestInvariants:
 
 **Fix**: Verify contracts are enabled
 ```python
-from promptware.runtime.contracts import are_contracts_enabled
+from assertlang.runtime.contracts import are_contracts_enabled
 assert are_contracts_enabled()  # Should be True
 ```
 
@@ -642,9 +642,9 @@ assert are_contracts_enabled()  # Should be True
 
 **Problem**: Can't import ContractViolationError
 
-**Fix**: Install promptware runtime
+**Fix**: Install assertlang runtime
 ```bash
-pip install promptware
+pip install assertlang
 ```
 
 ---
@@ -653,7 +653,7 @@ pip install promptware
 
 **Fix**: Call `reset_coverage()` before tests
 ```python
-from promptware.runtime.contracts import reset_coverage
+from assertlang.runtime.contracts import reset_coverage
 
 def setup_method(self):
     reset_coverage()

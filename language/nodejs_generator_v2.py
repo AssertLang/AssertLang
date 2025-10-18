@@ -1,7 +1,7 @@
 """
 Node.js Generator V2: IR → JavaScript/TypeScript
 
-Generates idiomatic JavaScript or TypeScript code from Promptware IR.
+Generates idiomatic JavaScript or TypeScript code from AssertLang IR.
 Supports:
 - ES6+ modern JavaScript (const/let, arrow functions, template literals)
 - TypeScript type annotations

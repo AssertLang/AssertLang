@@ -69,9 +69,9 @@ check_forbidden_files '\.(env|pem|key)$' "credential files"
 check_forbidden_files 'credentials\.json' "credential files"
 
 # Check for PDF files (except allowed docs)
-if git ls-files | grep -E '\.pdf$' | grep -v 'docs/promptware_cheatsheet\.pdf'; then
+if git ls-files | grep -E '\.pdf$' | grep -v 'docs/assertlang_cheatsheet\.pdf'; then
     echo -e "${YELLOW}⚠ Found unexpected PDF files:${NC}"
-    git ls-files | grep -E '\.pdf$' | grep -v 'docs/promptware_cheatsheet\.pdf' | sed 's/^/  /'
+    git ls-files | grep -E '\.pdf$' | grep -v 'docs/assertlang_cheatsheet\.pdf' | sed 's/^/  /'
     ERRORS=$((ERRORS + 1))
 fi
 

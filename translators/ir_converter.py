@@ -2,7 +2,7 @@
 """
 IR ⟷ MCP Tree Converter
 
-Converts between Promptware IR (Python dataclasses) and MCP trees (JSON-serializable dicts).
+Converts between AssertLang IR (Python dataclasses) and MCP trees (JSON-serializable dicts).
 This allows IR nodes to be sent as MCP tool parameters and returned as MCP tool results.
 """
 

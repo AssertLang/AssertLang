@@ -4,7 +4,7 @@ Test real-world async HTTP client translation.
 """
 
 import sys
-sys.path.insert(0, '/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware')
+sys.path.insert(0, '/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang')
 
 from language.python_parser_v2 import PythonParserV2
 from language.nodejs_generator_v2 import NodeJSGeneratorV2

@@ -37,7 +37,7 @@ def process_node(state: dict):
 Use AssertLang contracts with LangGraph TypedDict:
 
 **1. Define state with contracts:**
-```promptware
+```assertlang
 type AgentState:
   messages: List<String>
   current_step: String
@@ -105,7 +105,7 @@ def research_node(state: AgentState) -> AgentState:
 
 ### Simple State Machine
 
-```promptware
+```assertlang
 type WorkflowState:
   status: String  # "pending" | "processing" | "complete" | "failed"
   data: Option<String>
@@ -157,7 +157,7 @@ end
 
 ### Research → Analyze → Summarize Pipeline
 
-```promptware
+```assertlang
 type ResearchState:
   query: String
   research_results: Option<List<String>>
@@ -219,7 +219,7 @@ end
 
 ### Validate Individual Fields
 
-```promptware
+```assertlang
 function validate_messages(messages: List<String>) -> Result<List<String>, String>
   do
     if len(messages) == 0:
@@ -277,7 +277,7 @@ end
 ## Real-World Example: Multi-Agent Research
 
 **AssertLang Contract:**
-```promptware
+```assertlang
 # research_workflow.al
 type ResearchWorkflowState:
   topic: String
@@ -524,7 +524,7 @@ def my_node(state):
 
 ### ✅ Validate Transitions
 
-```promptware
+```assertlang
 # Good: Only valid transitions allowed
 function transition_state(state: State, next_status: String) -> Result<State, String>
   do

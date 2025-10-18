@@ -97,9 +97,9 @@ def test_prepare_dependencies_node(tmp_path, monkeypatch):
             assert env["NPM_CONFIG_ALWAYS_AUTH"] == "true"
             assert env["NPM_TOKEN"] == "secret"
             assert env["npm_config_cache"].startswith(str(cache_root))
-            assert env["PROMPTWARE_NODE_CACHE_TTL_DAYS"] == "5"
+            assert env["ASSERTLANG_NODE_CACHE_TTL_DAYS"] == "5"
     assert "PATH" in updates
-    assert updates["PROMPTWARE_NODE_CACHE_TTL_DAYS"] == "5"
+    assert updates["ASSERTLANG_NODE_CACHE_TTL_DAYS"] == "5"
 
 
 def test_prepare_dependencies_dotnet(tmp_path, monkeypatch):
@@ -140,7 +140,7 @@ def test_prepare_dependencies_dotnet(tmp_path, monkeypatch):
     assert _is_relative_to(Path(updates["NUGET_PACKAGES"]), cache_root)
 
     env_dir = tmp_path / "env" / "dotnet"
-    proj_path = env_dir / "deps" / "PromptwareDeps.csproj"
+    proj_path = env_dir / "deps" / "AssertLangDeps.csproj"
     assert proj_path.exists()
     contents = proj_path.read_text(encoding="utf-8")
     assert "Newtonsoft.Json" in contents
@@ -150,10 +150,10 @@ def test_prepare_dependencies_dotnet(tmp_path, monkeypatch):
     assert "nuget.org" in config_text and "nuget.example.com" in config_text
     assert "packageSourceCredentials" in config_text and "svc-account" in config_text
     assert "supersecret" in config_text
-    assert updates["PROMPTWARE_DOTNET_CACHE_TTL_DAYS"] == "14"
+    assert updates["ASSERTLANG_DOTNET_CACHE_TTL_DAYS"] == "14"
 
     restore_env = next(kwargs["env"] for cmd, kwargs in calls if cmd[:2] == ["dotnet", "restore"])
-    assert restore_env["PROMPTWARE_DOTNET_CACHE_TTL_DAYS"] == "14"
+    assert restore_env["ASSERTLANG_DOTNET_CACHE_TTL_DAYS"] == "14"
 
 
 def test_prepare_dependencies_rust(tmp_path, monkeypatch):

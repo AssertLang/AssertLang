@@ -1,5 +1,5 @@
 """
-Example: Testing a Promptware MCP Agent
+Example: Testing a AssertLang MCP Agent
 
 Demonstrates how to use the AgentTester class to:
 - Auto-generate test fixtures
@@ -216,7 +216,7 @@ def example_production_workflow():
 
 
 if __name__ == "__main__":
-    print("Promptware Agent Testing Examples\n")
+    print("AssertLang Agent Testing Examples\n")
     print("Make sure you have an agent running at http://localhost:3000")
     print("Example: python3 examples/demo/python/user_service_server.py\n")
     print("="*60 + "\n")

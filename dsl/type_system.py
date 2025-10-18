@@ -1,8 +1,8 @@
 """
-Promptware Universal Type System
+AssertLang Universal Type System
 
 This module provides cross-language type mapping and type inference for the
-Promptware universal code translation system. It enables seamless translation
+AssertLang universal code translation system. It enables seamless translation
 between dynamically-typed (Python, Node.js) and statically-typed (Go, Rust, .NET)
 languages.
 
@@ -196,7 +196,7 @@ class TypeInfo:
 
 class TypeSystem:
     """
-    Universal type system for Promptware.
+    Universal type system for AssertLang.
 
     Provides:
     - Cross-language type mapping

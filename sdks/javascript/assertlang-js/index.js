@@ -1,7 +1,7 @@
 /**
- * Promptware Node.js Client Library
+ * AssertLang Node.js Client Library
  *
- * Provides MCP client for calling Promptware services over HTTP.
+ * Provides MCP client for calling AssertLang services over HTTP.
  */
 
 export { MCPClient, callVerb } from './client.js';

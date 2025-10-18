@@ -74,13 +74,13 @@ The world's first bidirectional code translator across 5 languages.
 ```bash
 # Install
 git clone https://github.com/AssertLang/AssertLang.git
-cd promptware && pip install -e .
+cd assertlang && pip install -e .
 
 # Parse existing code to PW
 python3 reverse_parsers/cli.py your_server.py
 
 # Generate in another language
-promptware generate agent.pw --lang go
+assertlang generate agent.pw --lang go
 ```
 
 ## What Makes This Special

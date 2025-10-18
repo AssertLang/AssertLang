@@ -1,4 +1,4 @@
-"""Promptware SDK type definitions."""
+"""AssertLang SDK type definitions."""
 
 from typing import Any, Literal, TypedDict
 

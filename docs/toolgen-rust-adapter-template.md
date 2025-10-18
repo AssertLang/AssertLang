@@ -35,7 +35,7 @@ tools/
 - During Wave 2, introduce generated `_test.rs` files (or template-driven tests) that:
   1. Construct representative `Value` payloads.
   2. Call `handle` and assert success/error cases.
-  3. Run under `cargo test --package promptware_adapters --bin <tool>_adapter` (harness will fill in package/bin names).
+  3. Run under `cargo test --package assertlang_adapters --bin <tool>_adapter` (harness will fill in package/bin names).
 - Until tests land, quick manual validation:
 ```
 cargo run --bin adapter -- tools/api_auth/adapters/adapter_rust.rs <<'JSON'
@@ -47,7 +47,7 @@ JSON
 Automated smoke coverage is now provided by `pytest tests/tools/test_rust_adapters.py`, which materialises a disposable Cargo project per adapter, executes it via `cargo run`, and validates responses using fixtures in `tests/fixtures/rust_adapters/`.
 
 ## Open Questions
-- Do we want to expose a shared crate of helper utilities (`promptware_adapter_support`) to reduce duplication?
+- Do we want to expose a shared crate of helper utilities (`assertlang_adapter_support`) to reduce duplication?
 - Should we enable `async` + `tokio` once the daemon supports async runtimes?
 - How will we stub network calls for deterministic smoke tests?
 

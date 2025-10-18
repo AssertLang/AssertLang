@@ -1,7 +1,7 @@
 {
   "start_time": 1759493909.553259,
-  "fixtures_dir": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/fixtures",
-  "output_dir": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/rust",
+  "fixtures_dir": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/fixtures",
+  "output_dir": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/rust",
   "fixtures_tested": 2,
   "fixtures_passed": 2,
   "fixtures_failed": 0,
@@ -18,16 +18,16 @@
         "generate": {
           "fixture": "rust_with_tools.al",
           "generated": true,
-          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/rust/tool_rust_agent",
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/rust/tool_rust_agent",
           "errors": []
         },
         "test": {
           "fixture": "rust_with_tools.al",
           "agent_name": "tool-rust-agent",
           "port": 9091,
-          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/rust/tool_rust_agent",
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/rust/tool_rust_agent",
           "tests": {
-            "code_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/rust/tool_rust_agent",
+            "code_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/rust/tool_rust_agent",
             "port": 9091,
             "syntax_validation": {
               "valid": true,
@@ -50,7 +50,7 @@
             "compilation": {
               "success": true,
               "build_time_ms": 1360.49485206604,
-              "binary_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/rust/tool_rust_agent/target/release/tool_rust_agent",
+              "binary_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/rust/tool_rust_agent/target/release/tool_rust_agent",
               "binary_size_bytes": 2995184,
               "errors": [],
               "warnings": [
@@ -183,16 +183,16 @@
         "generate": {
           "fixture": "rust_minimal.al",
           "generated": true,
-          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/rust/minimal_rust_agent",
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/rust/minimal_rust_agent",
           "errors": []
         },
         "test": {
           "fixture": "rust_minimal.al",
           "agent_name": "minimal-rust-agent",
           "port": 9090,
-          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/rust/minimal_rust_agent",
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/rust/minimal_rust_agent",
           "tests": {
-            "code_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/rust/minimal_rust_agent",
+            "code_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/rust/minimal_rust_agent",
             "port": 9090,
             "syntax_validation": {
               "valid": true,
@@ -217,7 +217,7 @@
             "compilation": {
               "success": true,
               "build_time_ms": 1411.409854888916,
-              "binary_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/rust/minimal_rust_agent/target/release/minimal_rust_agent",
+              "binary_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/rust/minimal_rust_agent/target/release/minimal_rust_agent",
               "binary_size_bytes": 2994928,
               "errors": [],
               "warnings": [

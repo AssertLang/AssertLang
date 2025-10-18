@@ -8,7 +8,7 @@ try:
 except ImportError:
     requests = None  # type: ignore
 
-from ..errors import E_RUNTIME, E_TIMEOUT, PromptwareError
+from ..errors import E_RUNTIME, E_TIMEOUT, AssertLangError
 from ..types import TimelineEvent
 
 
@@ -20,7 +20,7 @@ class TimelineReader:
 
         Args:
             run_id: Execution run ID (from mcp.run_start_v1)
-            daemon_url: URL of Promptware daemon
+            daemon_url: URL of AssertLang daemon
         """
         if requests is None:
             raise ImportError(
@@ -42,7 +42,7 @@ class TimelineReader:
             Timeline events as they become available
 
         Raises:
-            PromptwareError: If event streaming fails
+            AssertLangError: If event streaming fails
         """
         url = f"{self.daemon_url}/timeline/{self.run_id}"
         last_event_id = 0
@@ -67,7 +67,7 @@ class TimelineReader:
                 time.sleep(poll_interval)
 
             except requests.RequestException as e:
-                raise PromptwareError(E_RUNTIME, f"Failed to fetch timeline events: {e}") from e
+                raise AssertLangError(E_RUNTIME, f"Failed to fetch timeline events: {e}") from e
 
     def wait_for_completion(self, timeout: int = 60) -> Literal["success", "failure", "timeout"]:
         """Block until run completes.
@@ -79,14 +79,14 @@ class TimelineReader:
             Final run status
 
         Raises:
-            PromptwareError: If wait times out or status fetch fails
+            AssertLangError: If wait times out or status fetch fails
         """
         url = f"{self.daemon_url}/run/{self.run_id}/status"
         start_time = time.time()
 
         while True:
             if time.time() - start_time > timeout:
-                raise PromptwareError(E_TIMEOUT, f"Run {self.run_id} did not complete within {timeout}s")
+                raise AssertLangError(E_TIMEOUT, f"Run {self.run_id} did not complete within {timeout}s")
 
             try:
                 response = self.session.get(url, timeout=5)
@@ -100,7 +100,7 @@ class TimelineReader:
                 time.sleep(1.0)
 
             except requests.RequestException as e:
-                raise PromptwareError(E_RUNTIME, f"Failed to fetch run status: {e}") from e
+                raise AssertLangError(E_RUNTIME, f"Failed to fetch run status: {e}") from e
 
     def filter_by_phase(
         self, phase: Literal["call", "let", "if", "parallel", "fanout", "merge", "state"]
@@ -114,7 +114,7 @@ class TimelineReader:
             List of matching events
 
         Raises:
-            PromptwareError: If event fetch fails
+            AssertLangError: If event fetch fails
         """
         url = f"{self.daemon_url}/timeline/{self.run_id}"
 
@@ -125,4 +125,4 @@ class TimelineReader:
             return data.get("events", [])
 
         except requests.RequestException as e:
-            raise PromptwareError(E_RUNTIME, f"Failed to filter timeline events: {e}") from e
+            raise AssertLangError(E_RUNTIME, f"Failed to filter timeline events: {e}") from e

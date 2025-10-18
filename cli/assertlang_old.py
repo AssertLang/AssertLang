@@ -101,7 +101,7 @@ def run(source: str, hold: bool) -> None:
 @click.argument("payload", required=False)
 @click.option("--file", "payload_file", type=click.Path(exists=True), help="JSON payload file")
 def tool(tool: str, payload: str | None, payload_file: str | None) -> None:  # noqa: A002
-    """Run a Promptware tool directly (e.g., http)."""
+    """Run a AssertLang tool directly (e.g., http)."""
     import json as _json
 
     data = {}
@@ -192,7 +192,7 @@ def deps_trim_cache(default_ttl_days: int, dry_run: bool) -> None:
 
 @main.group()
 def dsl() -> None:
-    """Promptware DSL helpers."""
+    """AssertLang DSL helpers."""
 
 
 @dsl.command("format")

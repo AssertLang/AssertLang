@@ -273,7 +273,7 @@ See [`docs/SAFE_PATTERNS.md`](SAFE_PATTERNS.md) for patterns that work across al
 ```bash
 # 1. Clone repo
 git clone https://github.com/AssertLang/AssertLang.git
-cd promptware
+cd assertlang
 
 # 2. Write PW
 echo 'function add(x: int, y: int) -> int { return x + y; }' > hello.al

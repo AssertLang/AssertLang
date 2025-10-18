@@ -1,7 +1,7 @@
 {
   "name": "typescript-ast-parser",
   "version": "1.0.0",
-  "description": "TypeScript AST parser for Promptware",
+  "description": "TypeScript AST parser for AssertLang",
   "main": "typescript_ast_parser.js",
   "scripts": {
     "build": "tsc typescript_ast_parser.ts --module commonjs --target ES2020 --moduleResolution node",

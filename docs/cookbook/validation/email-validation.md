@@ -33,7 +33,7 @@ def send_email(email: str):
 
 Use contracts to enforce email format:
 
-```promptware
+```assertlang
 function send_email(email: String) -> Bool
   requires:
     len(email) > 0
@@ -54,7 +54,7 @@ end
 
 ### Simple Check
 
-```promptware
+```assertlang
 function is_valid_email(email: String) -> Bool
   do
     return (
@@ -82,7 +82,7 @@ def is_valid_email(email: str) -> bool:
 
 ### With Contracts
 
-```promptware
+```assertlang
 function validate_email(email: String) -> Result<String, String>
   requires:
     len(email) > 0
@@ -110,7 +110,7 @@ end
 
 ### RFC 5322 Basic Compliance
 
-```promptware
+```assertlang
 function validate_email_strict(email: String) -> Result<String, String>
   requires:
     len(email) > 0
@@ -169,7 +169,7 @@ end
 
 ### Corporate Email Only
 
-```promptware
+```assertlang
 function validate_corporate_email(
     email: String,
     allowed_domains: List<String>
@@ -224,7 +224,7 @@ else:
 
 ### Validate Multiple Emails
 
-```promptware
+```assertlang
 function validate_emails(emails: List<String>) -> Result<List<String>, String>
   requires:
     len(emails) > 0
@@ -316,7 +316,7 @@ class ContactForm(forms.Form):
 
 ### ❌ Too Strict
 
-```promptware
+```assertlang
 # Don't reject valid international domains
 function validate_email_bad(email: String) -> Bool
   requires:
@@ -329,7 +329,7 @@ end
 
 ### ❌ Regex in Contracts
 
-```promptware
+```assertlang
 # Don't use complex regex in contracts
 function validate_email_regex(email: String) -> Bool
   requires:
@@ -345,7 +345,7 @@ end
 
 ### ✅ Good Pattern
 
-```promptware
+```assertlang
 function validate_email_good(email: String) -> Result<String, String>
   requires:
     len(email) > 0
@@ -370,7 +370,7 @@ end
 
 ### Case Insensitive
 
-```promptware
+```assertlang
 function normalize_email(email: String) -> String
   requires:
     len(email) > 0
@@ -392,7 +392,7 @@ end
 
 ### With Suggestions
 
-```promptware
+```assertlang
 function validate_with_suggestions(email: String) -> Result<String, List<String>>
   do
     let result = validate_email_strict(email)

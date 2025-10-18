@@ -1,5 +1,5 @@
 """
-Exception classes for Promptware MCP client.
+Exception classes for AssertLang MCP client.
 """
 
 

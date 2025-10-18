@@ -20,7 +20,7 @@ AssertLang is a domain-specific language (`.al`) for writing language-agnostic s
 Install
 
 git clone <repo-url>
-cd promptware
+cd assertlang
 make install   # or `pip install -e .` once package is scaffolded
 
 Run a .al file
@@ -44,7 +44,7 @@ file app.py:
 EOF
 
 # Run it
-promptware run hello.al
+assertlang run hello.al
 
 Output:
 
@@ -84,16 +84,16 @@ See the /docs folder for:
 ⸻
 
 🔑 Core Commands
-	•	promptware run <file.al> → Full pipeline: .al DSL → app → validation
-	•	promptware change <task_id> "<delta>" → Apply patch + restart
+	•	assertlang run <file.al> → Full pipeline: .al DSL → app → validation
+	•	assertlang change <task_id> "<delta>" → Apply patch + restart
 	•	mcp list → Show tasks, status, URLs
 	•	mcp open <task_id> → Open artifacts and preview URL
 	•	mcp export <task_id> <dir> → Export source tree
 	•	mcp kill <task_id> → Stop and clean up
-	•	promptware deps check [--plan plan.json] → Inspect allowlists and merged plan dependencies
-	•	promptware deps trim-cache [--dry-run] → Prune dependency caches using allowlist TTL hints
-	•	promptware dsl format <path> [--check] → Canonicalise .al files
-	•	promptware dsl lint <path> → Surface DSL syntax/semantic issues
+	•	assertlang deps check [--plan plan.json] → Inspect allowlists and merged plan dependencies
+	•	assertlang deps trim-cache [--dry-run] → Prune dependency caches using allowlist TTL hints
+	•	assertlang dsl format <path> [--check] → Canonicalise .al files
+	•	assertlang dsl lint <path> → Surface DSL syntax/semantic issues
 
 ⸻
 

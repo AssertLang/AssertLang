@@ -138,7 +138,7 @@ AssertLang is a universal programming language compiler that translates PW sourc
 $ asl build calculator.al --lang python -o calculator.py
 
 ┌─────────────────────────────────────────────┐
-│  CLI (promptware/cli.py)                    │
+│  CLI (assertlang/cli.py)                    │
 │  • Parse arguments                          │
 │  • Call parse_al(source)                    │
 │  • Call generator.generate(ir)              │
@@ -396,7 +396,7 @@ class PythonGeneratorV2:
 
 ---
 
-### 5. CLI (`promptware/cli.py`)
+### 5. CLI (`assertlang/cli.py`)
 
 **Responsibility**: User interface for compilation
 
@@ -425,9 +425,9 @@ asl compile file.al -o output.json
 4. Write to output.json
 ```
 
-#### `promptware run`
+#### `assertlang run`
 ```bash
-promptware run file.al
+assertlang run file.al
 
 # Implementation:
 1. Read file.al
@@ -590,7 +590,7 @@ TYPE_MAPPINGS["mylang"] = {
 }
 ```
 
-3. **Update CLI**: `promptware/cli.py`
+3. **Update CLI**: `assertlang/cli.py`
 ```python
 build_parser.add_argument(
     '--lang',

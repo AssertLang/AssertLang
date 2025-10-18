@@ -1,5 +1,5 @@
 /**
- * MCP Client for calling Promptware services over HTTP.
+ * MCP Client for calling AssertLang services over HTTP.
  *
  * Provides both a reusable client class and a simple function-based API.
  */

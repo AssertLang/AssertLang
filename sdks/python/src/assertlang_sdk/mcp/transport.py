@@ -8,7 +8,7 @@ try:
 except ImportError:
     requests = None  # type: ignore
 
-from ..errors import E_JSON, E_RUNTIME, CompatibilityError, PromptwareError
+from ..errors import E_JSON, E_RUNTIME, CompatibilityError, AssertLangError
 from ..types import MCPEnvelope
 from ..version import __daemon_min_version__, __version__
 
@@ -20,7 +20,7 @@ class Transport:
         """Initialize transport.
 
         Args:
-            daemon_url: Base URL of Promptware daemon
+            daemon_url: Base URL of AssertLang daemon
         """
         if requests is None:
             raise ImportError(
@@ -31,7 +31,7 @@ class Transport:
         self.daemon_url = daemon_url.rstrip("/")
         self.session = requests.Session()
         self.session.headers.update(
-            {"Content-Type": "application/json", "User-Agent": f"promptware-sdk/{__version__}"}
+            {"Content-Type": "application/json", "User-Agent": f"assertlang-sdk/{__version__}"}
         )
 
         # Verify daemon compatibility on first connection
@@ -48,7 +48,7 @@ class Transport:
             MCP response envelope
 
         Raises:
-            PromptwareError: If HTTP request fails or response invalid
+            AssertLangError: If HTTP request fails or response invalid
         """
         url = f"{self.daemon_url}/mcp/{verb}"
 
@@ -56,18 +56,18 @@ class Transport:
             response = self.session.post(url, json=payload, timeout=60)
             response.raise_for_status()
         except requests.RequestException as e:
-            raise PromptwareError(E_RUNTIME, f"HTTP request failed: {e}") from e
+            raise AssertLangError(E_RUNTIME, f"HTTP request failed: {e}") from e
 
         try:
             envelope: MCPEnvelope = response.json()
         except json.JSONDecodeError as e:
-            raise PromptwareError(E_JSON, f"Invalid JSON response: {e}") from e
+            raise AssertLangError(E_JSON, f"Invalid JSON response: {e}") from e
 
         # Validate envelope structure
         if not isinstance(envelope, dict):
-            raise PromptwareError(E_JSON, "Response envelope must be dict")
+            raise AssertLangError(E_JSON, "Response envelope must be dict")
         if "ok" not in envelope or "version" not in envelope:
-            raise PromptwareError(E_JSON, "Response envelope missing 'ok' or 'version' field")
+            raise AssertLangError(E_JSON, "Response envelope missing 'ok' or 'version' field")
 
         return envelope
 

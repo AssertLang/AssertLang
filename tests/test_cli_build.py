@@ -13,9 +13,9 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 
 def run_cli_command(args):
-    """Run promptware CLI command and return (returncode, stdout, stderr)."""
+    """Run assertlang CLI command and return (returncode, stdout, stderr)."""
     result = subprocess.run(
-        ["python3", "-m", "promptware.cli"] + args,
+        ["python3", "-m", "assertlang.cli"] + args,
         capture_output=True,
         text=True,
         cwd=Path(__file__).parent.parent

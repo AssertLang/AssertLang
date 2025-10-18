@@ -1,7 +1,7 @@
 """
-Promptware Intermediate Representation (IR)
+AssertLang Intermediate Representation (IR)
 
-This module defines the complete IR node structure for the Promptware universal
+This module defines the complete IR node structure for the AssertLang universal
 code translation system. The IR is language-agnostic and designed following
 LLVM IR principles.
 

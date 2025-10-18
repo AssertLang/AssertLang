@@ -1,7 +1,7 @@
-"""Promptware SDK error taxonomy."""
+"""AssertLang SDK error taxonomy."""
 
 
-class PromptwareError(Exception):
+class AssertLangError(Exception):
     """Base exception for all SDK errors."""
 
     def __init__(self, code: str, message: str):
@@ -10,7 +10,7 @@ class PromptwareError(Exception):
         super().__init__(f"{code}: {message}")
 
 
-class CompatibilityError(PromptwareError):
+class CompatibilityError(AssertLangError):
     """Raised when SDK and daemon versions are incompatible."""
 
     def __init__(self, sdk_version: str, daemon_version: str, min_daemon_version: str):

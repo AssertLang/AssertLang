@@ -6,7 +6,7 @@
 - **Status**: 100% Complete
 - **Adapters**: 38/38 working
 - **Registry**: Dynamic import via `importlib`
-- **Client**: `promptware/client.py`
+- **Client**: `assertlang/client.py`
 - **Server**: Generated via `mcp_server_generator.py`
 - **Tests**: All passing
 
@@ -14,7 +14,7 @@
 - **Status**: 100% Complete
 - **Adapters**: 38/38 working (5/5 execution tests passing)
 - **Registry**: Dynamic require via `createRequire()`
-- **Client**: `promptware-js/client.js`
+- **Client**: `assertlang-js/client.js`
 - **Server**: Generated via `mcp_server_generator_nodejs.py`
 - **Tests**: http, auth, conditional, logger, transform all verified
 - **Cross-language**: Python ↔ Node.js verified working
@@ -24,7 +24,7 @@
 ### .NET/C#
 - **Status**: 100% Complete ✅
 - **Adapters**: 38/38 exist (`Adapter.cs` files)
-- **Client**: ✅ `promptware-dotnet/MCPClient.cs` created
+- **Client**: ✅ `assertlang-dotnet/MCPClient.cs` created
 - **Server Generator**: ✅ `mcp_server_generator_dotnet.py` created
 - **Build System**: ✅ Wraps adapters in namespace during copy
 - **Tests**: Working with Python client
@@ -33,7 +33,7 @@
 ### Go
 - **Status**: 100% Complete ✅
 - **Adapters**: 38/38 exist (`adapter_go.go` files)
-- **Client**: ✅ `promptware-go/client.go` created
+- **Client**: ✅ `assertlang-go/client.go` created
 - **Server Generator**: ✅ `mcp_server_generator_go.py` created
 - **Build System**: ✅ Changes package declaration during copy
 - **Tests**: Working with Python client
@@ -100,14 +100,14 @@ var toolHandlers = map[string]func(...) {
 ## Implementation Pattern for New Languages
 
 ### For Dynamic Languages (Ruby, PHP, etc.):
-1. Create `promptware-{lang}/client.{ext}`
-2. Create `promptware-{lang}/registry.{ext}` (use dynamic require/import)
+1. Create `assertlang-{lang}/client.{ext}`
+2. Create `assertlang-{lang}/registry.{ext}` (use dynamic require/import)
 3. Create `language/mcp_server_generator_{lang}.py`
 4. Test with existing 38 adapters
 5. Time: ~2 hours per language
 
 ### For Static Languages (Rust, C++, etc.):
-1. Create `promptware-{lang}/client.{ext}`
+1. Create `assertlang-{lang}/client.{ext}`
 2. Create `language/mcp_server_generator_{lang}.py`
 3. Create `scripts/build_{lang}_server.sh` that:
    - Copies tool adapter sources

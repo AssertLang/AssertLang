@@ -16,7 +16,7 @@ User reported seeing development files on GitHub that shouldn't be publicly visi
 - Debug/test files in root (debug_*.py, test_*.pw, demo_*.pw)
 - Temporary scripts (rebrand.sh, fix_*.sh, etc.)
 - Training datasets (training_dataset*.json)
-- References to "Promptware" in file names and content
+- References to "AssertLang" in file names and content
 
 ---
 
@@ -295,7 +295,7 @@ HEAD branch: feature/multi-agent-contracts-pivot
 - 25 directories including ml/, pw-syntax-mcp-server/, reverse_parsers/, runners/, servers/, toolbuilder/, toolgen/, validation/
 - 100+ .md files in root (SESSION_*, PHASE_*, ARCHITECTURE_*, etc.)
 - 30+ debug/test files in root
-- References to "Promptware" everywhere
+- References to "AssertLang" everywhere
 - Unprofessional, cluttered appearance
 
 **After:**
@@ -325,7 +325,7 @@ HEAD branch: feature/multi-agent-contracts-pivot
 - ✅ No session/phase documents visible
 - ✅ No experimental directories visible
 - ✅ No temporary scripts visible
-- ✅ No "Promptware" references
+- ✅ No "AssertLang" references
 - ✅ Consistent "AssertLang" branding
 - ✅ All .pw files renamed to .al
 - ✅ 100% test coverage (302/302 tests)
@@ -370,7 +370,7 @@ git checkout f977270
 ✅ 17 legitimate source directories
 ✅ No development clutter
 ✅ Professional appearance
-✅ No "Promptware" references
+✅ No "AssertLang" references
 ✅ Ready for public release
 
 ### User Experience:

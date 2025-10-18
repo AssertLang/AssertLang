@@ -1,4 +1,4 @@
-module github.com/promptware/promptware-go
+module github.com/assertlang/assertlang-go
 
 go 1.21
 

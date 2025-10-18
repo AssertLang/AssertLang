@@ -1,4 +1,4 @@
-"""CLI utilities for Promptware."""
+"""CLI utilities for AssertLang."""
 
 # Existing validation utilities
 from .validate_contract import (

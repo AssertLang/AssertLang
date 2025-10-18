@@ -127,7 +127,7 @@ from workflow_contracts import (
     validate_active_state,
     validate_state_transition
 )
-from promptware.runtime.contracts import ContractViolationError
+from assertlang.runtime.contracts import ContractViolationError
 
 
 # Define state schema
@@ -327,7 +327,7 @@ Create `conditional_workflow.py`:
 from typing import TypedDict
 from langgraph.graph import StateGraph, END
 from workflow_contracts import validate_state_transition
-from promptware.runtime.contracts import ContractViolationError
+from assertlang.runtime.contracts import ContractViolationError
 
 
 class PaymentState(TypedDict):

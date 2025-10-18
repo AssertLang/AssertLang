@@ -1,5 +1,5 @@
 """
-LangGraph integration for Promptware contracts.
+LangGraph integration for AssertLang contracts.
 
 Enables LangGraph state machines to use PW contracts for validated state management.
 

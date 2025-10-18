@@ -797,7 +797,7 @@ pw unfold user_service.pw.json --lang python -o user_service.py
 ✅ **MCP Converters**: Complete (translators/ir_converter.py)
 ✅ **Language Generators**: Complete (5 languages - Python, Go, Rust, TypeScript, C#)
 ✅ **End-to-End Pipeline**: Tested - PW → IR → MCP → All 5 languages
-✅ **CLI**: Working - `asl build`, `asl compile`, `promptware run`
+✅ **CLI**: Working - `asl build`, `asl compile`, `assertlang run`
 
 ### Working Features (v2.1.0b3)
 

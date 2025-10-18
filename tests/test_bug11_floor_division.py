@@ -11,7 +11,7 @@ as a comment otherwise.
 """
 
 import sys
-sys.path.insert(0, '/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware')
+sys.path.insert(0, '/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang')
 
 import pytest
 from dsl.al_parser import Lexer, Parser, TokenType

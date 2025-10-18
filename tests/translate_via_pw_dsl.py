@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-CORRECT Promptware Translation Pipeline using PW DSL as bridge.
+CORRECT AssertLang Translation Pipeline using PW DSL as bridge.
 
 This is the PROPER architecture:
 1. Python → IR → PW DSL (text format)
@@ -34,7 +34,7 @@ def translate_python_to_go_via_pw(input_path: str, output_path: str, save_pw_dsl
         save_pw_dsl: If True, save intermediate PW DSL to file
     """
     print("╔══════════════════════════════════════════════════════════════╗")
-    print("║  Promptware Universal Translation: Python → PW DSL → Go     ║")
+    print("║  AssertLang Universal Translation: Python → PW DSL → Go     ║")
     print("╚══════════════════════════════════════════════════════════════╝")
     print()
     print(f"Input:  {input_path}")
@@ -147,7 +147,7 @@ def translate_python_to_go_via_pw(input_path: str, output_path: str, save_pw_dsl
     print("✨ Universal Translation System: WORKING AS DESIGNED ✨")
 
 if __name__ == "__main__":
-    input_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_code_original.py"
-    output_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_code_from_python_via_pw.go"
+    input_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_code_original.py"
+    output_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_code_from_python_via_pw.go"
 
     translate_python_to_go_via_pw(input_file, output_file, save_pw_dsl=True)

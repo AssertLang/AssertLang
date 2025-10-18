@@ -23,7 +23,7 @@
 
 Development code with full contract checking is safe but slower:
 
-```promptware
+```assertlang
 function process_item(item: Item) -> Result<String, String>
   requires:
     item.price > 0.0
@@ -135,7 +135,7 @@ spec:
 ### Direct Pattern Matching vs. Functions
 
 **Slow: Function calls**
-```promptware
+```assertlang
 function get_value(opt: Option<Int>) -> Int
   do
     return option_unwrap_or(opt, 0)  # Function call overhead
@@ -144,7 +144,7 @@ end
 ```
 
 **Fast: Inline pattern matching**
-```promptware
+```assertlang
 function get_value_fast(opt: Option<Int>) -> Int
   do
     if opt is Some(val):
@@ -159,7 +159,7 @@ end
 ### Chaining vs. Explicit Checks
 
 **Slow: Multiple function calls**
-```promptware
+```assertlang
 function process(opt: Option<Int>) -> Int
   do
     let doubled = option_map(opt, fn(x) -> x * 2)
@@ -170,7 +170,7 @@ end
 ```
 
 **Fast: Single pattern match**
-```promptware
+```assertlang
 function process_fast(opt: Option<Int>) -> Int
   do
     if opt is Some(val):
@@ -189,7 +189,7 @@ end
 ### Reuse Containers
 
 **Slow: Repeated allocations**
-```promptware
+```assertlang
 function sum_list(items: List<Int>) -> Int
   do
     let result = 0
@@ -204,7 +204,7 @@ end
 ```
 
 **Fast: Direct computation**
-```promptware
+```assertlang
 function sum_list_fast(items: List<Int>) -> Int
   do
     let result = 0
@@ -219,7 +219,7 @@ end
 ### Avoid Unnecessary Intermediate Values
 
 **Slow: Multiple intermediate variables**
-```promptware
+```assertlang
 function compute(a: Int, b: Int) -> Int
   do
     let x = a + b
@@ -231,7 +231,7 @@ end
 ```
 
 **Fast: Direct computation**
-```promptware
+```assertlang
 function compute_fast(a: Int, b: Int) -> Int
   do
     return ((a + b) * 2) + 10
@@ -246,7 +246,7 @@ end
 ### Process in Batches
 
 **Slow: One-by-one**
-```promptware
+```assertlang
 function process_items(items: List<Item>) -> List<Result<String, String>>
   do
     let results = []
@@ -261,7 +261,7 @@ end
 ```
 
 **Fast: Batch validation**
-```promptware
+```assertlang
 function process_items_batch(items: List<Item>) -> List<Result<String, String>>
   requires:
     # Validate batch once
@@ -484,7 +484,7 @@ else:
 
 ### Cache Expensive Operations
 
-```promptware
+```assertlang
 # Without caching: Compute every time
 function fibonacci(n: Int) -> Int
   do

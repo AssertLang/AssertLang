@@ -75,7 +75,7 @@ fi
 # Create PR via gh CLI
 echo "Creating PR with title: $PR_TITLE"
 gh pr create \
-  --repo Promptware-dev/promptware \
+  --repo AssertLang-dev/assertlang \
   --base main \
   --head "3CH0xyz:$CURRENT_BRANCH" \
   --title "$PR_TITLE" \

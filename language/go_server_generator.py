@@ -4,7 +4,7 @@ DEPRECATED: Use language.mcp_server_generator_go instead.
 This module is deprecated and will be removed in a future version.
 Use the new unified generator system in language.mcp_server_generator_go.
 
-Go MCP Server Generator for Promptware agents.
+Go MCP Server Generator for AssertLang agents.
 
 Generates Go HTTP server-based MCP servers from .al agent definitions.
 """

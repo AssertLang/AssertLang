@@ -6,8 +6,8 @@ Complete guide to installing and configuring AssertLang.
 
 ```bash
 # Clone repository
-git clone https://github.com/promptware/promptware.git
-cd promptware
+git clone https://github.com/assertlang/assertlang.git
+cd assertlang
 
 # Install
 pip install -e .
@@ -17,31 +17,31 @@ pip install -e .
 
 ### Option 1: Add bin/ to PATH (Recommended)
 
-Add AssertLang's bin directory to your PATH for single-word `promptware` command:
+Add AssertLang's bin directory to your PATH for single-word `assertlang` command:
 
 ```bash
 # Add to ~/.bashrc or ~/.zshrc
-export PATH="$HOME/path/to/promptware/bin:$PATH"
+export PATH="$HOME/path/to/assertlang/bin:$PATH"
 
 # Reload shell
 source ~/.bashrc  # or ~/.zshrc
 ```
 
-Now you can use `promptware` from anywhere:
+Now you can use `assertlang` from anywhere:
 
 ```bash
-promptware --version
-promptware list-tools
-promptware generate agent.al --lang python
+assertlang --version
+assertlang list-tools
+assertlang generate agent.al --lang python
 ```
 
 ### Option 2: Symlink to /usr/local/bin
 
 ```bash
-sudo ln -s $(pwd)/bin/promptware /usr/local/bin/promptware
+sudo ln -s $(pwd)/bin/assertlang /usr/local/bin/assertlang
 
 # Test
-promptware --version
+assertlang --version
 ```
 
 ### Option 3: Use Python Module
@@ -49,8 +49,8 @@ promptware --version
 If you prefer not to modify PATH:
 
 ```bash
-python3 -m promptware.cli --version
-python3 -m promptware.cli generate agent.al --lang python
+python3 -m assertlang.cli --version
+python3 -m assertlang.cli generate agent.al --lang python
 ```
 
 ## System Requirements
@@ -66,7 +66,7 @@ Install runtimes for the languages you want to use:
 
 **Python:**
 ```bash
-# Already installed if you can run promptware
+# Already installed if you can run assertlang
 python3 --version
 ```
 
@@ -127,7 +127,7 @@ uvicorn>=0.24.0
 ### Production Features (Optional)
 
 ```bash
-pip install promptware[production]
+pip install assertlang[production]
 ```
 
 Includes:
@@ -137,7 +137,7 @@ Includes:
 ### AI Features (Optional)
 
 ```bash
-pip install promptware[ai]
+pip install assertlang[ai]
 ```
 
 Includes:
@@ -152,7 +152,7 @@ export ANTHROPIC_API_KEY="your-key-here"
 ### Observability Features (Optional)
 
 ```bash
-pip install promptware[observability]
+pip install assertlang[observability]
 ```
 
 Includes:
@@ -163,7 +163,7 @@ Includes:
 ### Development Tools (Optional)
 
 ```bash
-pip install promptware[dev]
+pip install assertlang[dev]
 ```
 
 Includes:
@@ -177,19 +177,19 @@ Verify your installation:
 
 ```bash
 # Check CLI
-promptware --version
+assertlang --version
 
 # List available tools
-promptware list-tools
+assertlang list-tools
 
 # Create test agent
-promptware init test --template basic
+assertlang init test --template basic
 
 # Validate
-promptware validate test.al
+assertlang validate test.al
 
 # Generate server
-promptware generate test.al --lang python
+assertlang generate test.al --lang python
 
 # Clean up
 rm test.al
@@ -223,42 +223,42 @@ LOG_LEVEL=INFO
 
 ```bash
 # Add to ~/.bashrc
-eval "$(_PROMPTWARE_COMPLETE=bash_source promptware)"
+eval "$(_ASSERTLANG_COMPLETE=bash_source assertlang)"
 ```
 
 #### Zsh
 
 ```bash
 # Add to ~/.zshrc
-eval "$(_PROMPTWARE_COMPLETE=zsh_source promptware)"
+eval "$(_ASSERTLANG_COMPLETE=zsh_source assertlang)"
 ```
 
 #### Fish
 
 ```bash
-# Add to ~/.config/fish/completions/promptware.fish
-_PROMPTWARE_COMPLETE=fish_source promptware | source
+# Add to ~/.config/fish/completions/assertlang.fish
+_ASSERTLANG_COMPLETE=fish_source assertlang | source
 ```
 
 ## Troubleshooting
 
 ### Command Not Found
 
-If `promptware` command is not found:
+If `assertlang` command is not found:
 
 1. Check PATH includes bin directory:
    ```bash
-   echo $PATH | grep promptware
+   echo $PATH | grep assertlang
    ```
 
 2. Use absolute path:
    ```bash
-   ~/path/to/promptware/bin/promptware --version
+   ~/path/to/assertlang/bin/assertlang --version
    ```
 
 3. Use Python module:
    ```bash
-   python3 -m promptware.cli --version
+   python3 -m assertlang.cli --version
    ```
 
 ### Import Errors
@@ -267,11 +267,11 @@ If you get module import errors:
 
 ```bash
 # Reinstall in development mode
-cd /path/to/promptware
+cd /path/to/assertlang
 pip install -e . --force-reinstall
 
 # Or add to PYTHONPATH
-export PYTHONPATH="/path/to/promptware:$PYTHONPATH"
+export PYTHONPATH="/path/to/assertlang:$PYTHONPATH"
 ```
 
 ### Permission Denied
@@ -279,8 +279,8 @@ export PYTHONPATH="/path/to/promptware:$PYTHONPATH"
 If you get permission errors:
 
 ```bash
-# Make bin/promptware executable
-chmod +x bin/promptware
+# Make bin/assertlang executable
+chmod +x bin/assertlang
 
 # Or install to user directory
 pip install --user -e .
@@ -336,16 +336,16 @@ To completely remove AssertLang:
 
 ```bash
 # Uninstall pip package
-pip uninstall promptware
+pip uninstall assertlang
 
 # Remove source (if cloned)
-rm -rf /path/to/promptware
+rm -rf /path/to/assertlang
 
 # Remove from PATH (edit ~/.bashrc or ~/.zshrc)
-# Remove: export PATH="$HOME/path/to/promptware/bin:$PATH"
+# Remove: export PATH="$HOME/path/to/assertlang/bin:$PATH"
 
 # Remove symlink (if created)
-sudo rm /usr/local/bin/promptware
+sudo rm /usr/local/bin/assertlang
 ```
 
 ## Upgrade
@@ -353,7 +353,7 @@ sudo rm /usr/local/bin/promptware
 To upgrade to the latest version:
 
 ```bash
-cd /path/to/promptware
+cd /path/to/assertlang
 
 # Pull latest changes
 git pull origin main
@@ -371,5 +371,5 @@ pip install -e . --upgrade
 ## Support
 
 - **Documentation**: [docs/](./README.md)
-- **Issues**: https://github.com/promptware/promptware/issues
-- **Discussions**: https://github.com/promptware/promptware/discussions
+- **Issues**: https://github.com/assertlang/assertlang/issues
+- **Discussions**: https://github.com/assertlang/assertlang/discussions

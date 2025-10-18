@@ -1,5 +1,5 @@
 """
-Promptware Contract Runtime Validation
+AssertLang Contract Runtime Validation
 
 This module provides runtime enforcement of Design-by-Contract assertions:
 - Preconditions (@requires) - Checked at function entry

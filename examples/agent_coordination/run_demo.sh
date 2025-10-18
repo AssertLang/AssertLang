@@ -1,12 +1,12 @@
 #!/bin/bash
-# Promptware Multi-Agent Coordination Demo
+# AssertLang Multi-Agent Coordination Demo
 # Shows that Agent A (Python/CrewAI) and Agent B (JavaScript/LangGraph)
 # produce IDENTICAL outputs from the same PW contract
 
 set -e
 
 echo "╔════════════════════════════════════════════════════════════════╗"
-echo "║     Promptware: Multi-Agent Contract Coordination Demo        ║"
+echo "║     AssertLang: Multi-Agent Contract Coordination Demo        ║"
 echo "╚════════════════════════════════════════════════════════════════╝"
 echo ""
 echo "This demo proves that two agents from different frameworks"

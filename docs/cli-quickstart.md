@@ -5,8 +5,8 @@ Get started with AssertLang in 5 minutes.
 ## Installation
 
 ```bash
-git clone https://github.com/promptware/promptware.git
-cd promptware
+git clone https://github.com/assertlang/assertlang.git
+cd assertlang
 pip install -e .
 
 # Add to PATH for global access
@@ -18,7 +18,7 @@ export PATH="$(pwd)/bin:$PATH"
 ### 1. Create Agent
 
 ```bash
-promptware init hello-world --template basic
+assertlang init hello-world --template basic
 ```
 
 This creates `hello-world.al`:
@@ -58,7 +58,7 @@ expose api.call@v1 (
 ### 3. Validate
 
 ```bash
-promptware validate hello-world.al --verbose
+assertlang validate hello-world.al --verbose
 ```
 
 Output:
@@ -77,7 +77,7 @@ Output:
 ### 4. Generate Server
 
 ```bash
-promptware generate hello-world.al --lang python
+assertlang generate hello-world.al --lang python
 ```
 
 Output:
@@ -151,7 +151,7 @@ curl -X POST http://localhost:3000/mcp \
 
 ```bash
 # Create API agent
-promptware init api-service --template api --port 8080
+assertlang init api-service --template api --port 8080
 
 # Generated agent includes http, auth, logger tools
 cat api-service.al
@@ -161,13 +161,13 @@ cat api-service.al
 
 ```bash
 # Create AI agent
-promptware init chatbot --template ai
+assertlang init chatbot --template ai
 
 # Set API key
 export ANTHROPIC_API_KEY="your-key-here"
 
 # Generate and run
-promptware generate chatbot.al --lang python
+assertlang generate chatbot.al --lang python
 cd generated/chatbot
 pip install -r requirements.txt
 python chatbot_server.py
@@ -177,9 +177,9 @@ python chatbot_server.py
 
 ```bash
 # Generate same agent in multiple languages
-promptware generate my-agent.al --lang python --output ./servers/python
-promptware generate my-agent.al --lang nodejs --output ./servers/nodejs
-promptware generate my-agent.al --lang go --output ./servers/go
+assertlang generate my-agent.al --lang python --output ./servers/python
+assertlang generate my-agent.al --lang nodejs --output ./servers/nodejs
+assertlang generate my-agent.al --lang go --output ./servers/go
 
 # Each server is production-ready with:
 # - Error handling
@@ -193,20 +193,20 @@ promptware generate my-agent.al --lang go --output ./servers/go
 
 ```bash
 # Create agent
-promptware init <name> [--template basic|api|workflow|ai] [--port 3000]
+assertlang init <name> [--template basic|api|workflow|ai] [--port 3000]
 
 # Validate agent
-promptware validate <file.al> [--verbose]
+assertlang validate <file.al> [--verbose]
 
 # List available tools
-promptware list-tools [--lang python|nodejs|go|csharp|rust] [--category "HTTP & APIs"]
+assertlang list-tools [--lang python|nodejs|go|csharp|rust] [--category "HTTP & APIs"]
 
 # Generate server
-promptware generate <file.al> [--lang python] [--output ./dir] [--build]
+assertlang generate <file.al> [--lang python] [--output ./dir] [--build]
 
 # Get help
-promptware help [command]
-promptware --version
+assertlang help [command]
+assertlang --version
 ```
 
 ## Templates
@@ -282,6 +282,6 @@ expose chat.message@v1 (
 ## Next Steps
 
 - [Full CLI Reference](./cli-guide.md)
-- [Writing .al Agents](./promptware-dsl-spec.md)
+- [Writing .al Agents](./assertlang-dsl-spec.md)
 - [Production Deployment](./production-hardening.md)
 - [Tool Development](./tool-development.md)

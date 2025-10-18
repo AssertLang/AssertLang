@@ -165,7 +165,7 @@ policy:
 ### Filesystem Scopes
 
 All filesystem policies are scoped to the **ephemeral workspace directory**:
-- Workspace: `/tmp/promptware/<task_id>/` (Linux/macOS) or `C:\Temp\promptware\<task_id>\` (Windows)
+- Workspace: `/tmp/assertlang/<task_id>/` (Linux/macOS) or `C:\Temp\assertlang\<task_id>\` (Windows)
 - Adapters cannot access:
   - Parent directories (`../`)
   - Absolute paths outside workspace

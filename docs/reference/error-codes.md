@@ -614,7 +614,7 @@ function test(x: int) -> int {
 
 **Example**:
 ```python
-from promptware.sdk import MCPClient
+from assertlang.sdk import MCPClient
 
 client = MCPClient("http://localhost:3000")
 client.call_verb("user.create", {"name": "Alice"})
@@ -769,7 +769,7 @@ else:
 
 ```python
 import pytest
-from promptware.runtime.contracts import ContractViolationError
+from assertlang.runtime.contracts import ContractViolationError
 
 def test_sqrt_rejects_negative():
     """Test that sqrt rejects negative values."""
@@ -794,7 +794,7 @@ def test_sqrt_accepts_positive():
 **For production (performance-sensitive code)**:
 
 ```python
-from promptware.runtime.contracts import set_validation_mode, ValidationMode
+from assertlang.runtime.contracts import set_validation_mode, ValidationMode
 
 # Disable all contracts
 set_validation_mode(ValidationMode.DISABLED)
@@ -809,11 +809,11 @@ set_validation_mode(ValidationMode.FULL)
 **Via environment variable**:
 ```bash
 # Disable contracts
-export PROMPTWARE_DISABLE_CONTRACTS=1
+export ASSERTLANG_DISABLE_CONTRACTS=1
 python app.py
 
 # Enable contracts (default)
-unset PROMPTWARE_DISABLE_CONTRACTS
+unset ASSERTLANG_DISABLE_CONTRACTS
 python app.py
 ```
 
@@ -824,7 +824,7 @@ python app.py
 **See which contracts were tested:**
 
 ```python
-from promptware.runtime.contracts import get_coverage, reset_coverage
+from assertlang.runtime.contracts import get_coverage, reset_coverage
 
 # Reset before test suite
 reset_coverage()

@@ -461,7 +461,7 @@ Maximum validation:
 ### Validate Contract
 
 ```bash
-promptware validate contract.al
+assertlang validate contract.al
 
 # Output:
 ✓ Syntax valid
@@ -490,7 +490,7 @@ Coverage: 5/5 clauses tested (100%)
 ### Generate Documentation
 
 ```bash
-promptware docs contract.al -o docs/
+assertlang docs contract.al -o docs/
 
 # Generates:
 # docs/UserService.md - Full API documentation
@@ -528,7 +528,7 @@ promptware docs contract.al -o docs/
 
 **Tasks:**
 1. Build contract testing framework
-2. Implement `promptware validate` command
+2. Implement `assertlang validate` command
 3. Implement `asl test` command
 4. Track coverage of contract clauses
 5. Generate test reports
@@ -586,7 +586,7 @@ function createUser(name: string) -> User {
 4. ✅ Runtime validates invariants
 5. ✅ Effects are declared and tracked
 6. ✅ Error messages include clause names
-7. ✅ `promptware validate` command works
+7. ✅ `assertlang validate` command works
 8. ✅ `asl test` command works
 9. ✅ Documentation generator works
 10. ✅ All tests pass (100% coverage)

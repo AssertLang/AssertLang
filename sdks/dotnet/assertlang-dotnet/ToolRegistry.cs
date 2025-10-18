@@ -2,7 +2,7 @@ using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
 using System.Reflection;
 
-namespace Promptware;
+namespace AssertLang;
 
 /// <summary>
 /// Tool registry for discovering and executing C# tool adapters
@@ -14,10 +14,10 @@ public class ToolRegistry
     private readonly Dictionary<string, Tool> _cache = new();
     private readonly Dictionary<string, Dictionary<string, object>> _schemaCache = new();
 
-    public ToolRegistry(string promptwareRoot)
+    public ToolRegistry(string assertlangRoot)
     {
-        _toolsDir = Path.Combine(promptwareRoot, "tools");
-        _schemasDir = Path.Combine(promptwareRoot, "schemas", "tools");
+        _toolsDir = Path.Combine(assertlangRoot, "tools");
+        _schemasDir = Path.Combine(assertlangRoot, "schemas", "tools");
     }
 
     /// <summary>

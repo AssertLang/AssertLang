@@ -369,7 +369,7 @@ service UserService {
 4. ✅ Postconditions work with `old` keyword
 5. ✅ Invariants are checked automatically
 6. ✅ Effects are declared and trackable
-7. ✅ CLI can validate contracts (`promptware validate contract.al`)
+7. ✅ CLI can validate contracts (`assertlang validate contract.al`)
 8. ✅ Contracts generate useful documentation
 
 ---

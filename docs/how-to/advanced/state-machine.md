@@ -38,7 +38,7 @@ Multi-agent systems and workflows often involve complex state transitions:
 
 Use PW contracts to model state machines with guaranteed valid transitions:
 
-```promptware
+```assertlang
 # State definition
 enum OrderState:
   Pending
@@ -72,7 +72,7 @@ Contracts ensure:
 
 ### Simple Enum States
 
-```promptware
+```assertlang
 enum TrafficLight:
   Red
   Yellow
@@ -92,7 +92,7 @@ end
 
 ### States with Data
 
-```promptware
+```assertlang
 type WorkflowState:
   status: String
   progress: Float
@@ -118,7 +118,7 @@ end
 
 ### Complex State Types
 
-```promptware
+```assertlang
 type OrderData:
   order_id: String
   items: List<String>
@@ -138,7 +138,7 @@ end
 
 ### Basic Transition Validation
 
-```promptware
+```assertlang
 enum GameState:
   Menu
   Playing
@@ -194,7 +194,7 @@ end
 
 ### Transition with Data Validation
 
-```promptware
+```assertlang
 type Order:
   state: String
   items: List<String>
@@ -244,7 +244,7 @@ end
 
 ### Enforce Invariants Across All States
 
-```promptware
+```assertlang
 type WorkflowState:
   status: String
   progress: Float
@@ -299,7 +299,7 @@ end
 
 ### Detecting Terminal States
 
-```promptware
+```assertlang
 enum ProcessState:
   Pending
   Running
@@ -333,7 +333,7 @@ end
 
 ### Preventing Transitions from Terminal States
 
-```promptware
+```assertlang
 type TaskState:
   status: String
   result: Option<String>
@@ -386,7 +386,7 @@ end
 
 ### Complete State Machine
 
-```promptware
+```assertlang
 # State definition
 enum OrderStatus:
   Draft
@@ -590,7 +590,7 @@ Draft/Pending/Confirmed/Processing → cancel_order() → Cancelled ← Terminal
 
 ### Define State for LangGraph
 
-```promptware
+```assertlang
 # workflow_state.al
 type AgentWorkflowState:
   current_step: String
@@ -801,7 +801,7 @@ def test_terminal_states():
 ### 1. Define Clear States
 
 Use enums for discrete states:
-```promptware
+```assertlang
 enum Status:
   Idle
   Running
@@ -819,7 +819,7 @@ Every transition should have:
 ### 3. Use Immutable State Updates
 
 Return new state, don't mutate:
-```promptware
+```assertlang
 function update_state(state: State) -> State
   # Return NEW state, don't modify input
   do
@@ -831,7 +831,7 @@ end
 ### 4. Document State Diagrams
 
 Include state transition diagram in comments:
-```promptware
+```assertlang
 # State Machine: Order Processing
 #
 #   Draft → Pending → Confirmed → Processing → Shipped → Delivered

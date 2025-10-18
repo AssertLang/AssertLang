@@ -6,7 +6,7 @@ This script demonstrates the reverse parsing capability:
 1. Parse Go code → IR using GoParserV2
 2. Generate PW DSL from IR using PWGenerator
 
-Author: Promptware Translation Agent
+Author: AssertLang Translation Agent
 Date: 2025-10-05
 """
 
@@ -169,8 +169,8 @@ def reverse_parse_go_to_pw(go_file: str, output_file: str) -> dict:
 def main():
     """Main entry point."""
     # File paths
-    go_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_sentient_maze.go"
-    output_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_sentient_maze_from_go.al"
+    go_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_sentient_maze.go"
+    output_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_sentient_maze_from_go.al"
 
     # Run reverse parsing
     results = reverse_parse_go_to_pw(go_file, output_file)

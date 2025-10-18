@@ -1,5 +1,5 @@
 """
-Node.js Expert Agent for Promptware Bidirectional Testing System.
+Node.js Expert Agent for AssertLang Bidirectional Testing System.
 
 This agent validates Node.js code generation, manages server lifecycle,
 and tests MCP protocol compliance for Node.js-generated servers.
@@ -117,7 +117,7 @@ class NodeJSExpert:
         package_json = work_dir / "package.json"
         if not package_json.exists():
             package_data = {
-                "name": "promptware-test-agent",
+                "name": "assertlang-test-agent",
                 "version": "1.0.0",
                 "description": "Generated MCP agent for testing",
                 "main": "server.js",

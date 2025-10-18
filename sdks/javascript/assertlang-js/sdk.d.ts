@@ -1,5 +1,5 @@
 /**
- * TypeScript definitions for Promptware SDK
+ * TypeScript definitions for AssertLang SDK
  */
 
 import { EventEmitter } from 'events';

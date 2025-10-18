@@ -364,7 +364,7 @@ python3 tests/test_no_placeholders_final.py
 ## Next Steps (Future Work)
 
 ### Short-Term Enhancements
-1. CLI tool (`promptware translate file.py --to=go`)
+1. CLI tool (`assertlang translate file.py --to=go`)
 2. Batch translation (entire directories)
 3. More test coverage (real GitHub repos)
 
