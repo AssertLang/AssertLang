@@ -181,7 +181,7 @@ if __name__ == "__main__":
     import sys
 
     if len(sys.argv) < 2:
-        print("Usage: python -m promptware.cli.generate_docs <contract.al> [output.md]")
+        print("Usage: python -m asl.cli.generate_docs <contract.al> [output.md]")
         sys.exit(1)
 
     file_path = sys.argv[1]

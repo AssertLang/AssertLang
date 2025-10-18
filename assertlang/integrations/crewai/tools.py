@@ -141,7 +141,7 @@ class ContractTool:
             subprocess.run(
                 [
                     "python3",
-                    "promptware/cli.py",
+                    "asl/cli.py",
                     "build",
                     pw_file,
                     "--lang",

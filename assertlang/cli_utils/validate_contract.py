@@ -9,8 +9,8 @@ Validates .al files for contract syntax and semantic correctness:
 - Best practices
 
 Usage:
-    promptware validate contract.al
-    promptware validate contract.al --verbose
+    asl validate contract.al
+    asl validate contract.al --verbose
 """
 
 from dataclasses import dataclass

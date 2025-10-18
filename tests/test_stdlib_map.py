@@ -166,7 +166,7 @@ class TestMapFullStdlib:
 
     def test_full_map_stdlib(self):
         """Test Map implementation from stdlib/types.al parses."""
-        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/types.al") as f:
+        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/stdlib/types.al") as f:
             pw_code = f.read()
 
         ir = parse_al(pw_code)
@@ -177,7 +177,7 @@ class TestMapFullStdlib:
 
     def test_map_functions_present(self):
         """Test all required Map functions present."""
-        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/types.al") as f:
+        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/stdlib/types.al") as f:
             pw_code = f.read()
 
         ir = parse_al(pw_code)
@@ -237,7 +237,7 @@ class TestMapCompleteness:
 
     def test_map_api_completeness(self):
         """Test all required methods implemented."""
-        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/types.al") as f:
+        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/stdlib/types.al") as f:
             pw_code = f.read()
 
         ir = parse_al(pw_code)
