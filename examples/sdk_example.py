@@ -1,5 +1,5 @@
 """
-Example: Using the Promptware Python SDK
+Example: Using the AssertLang Python SDK
 
 Demonstrates all SDK features:
 - Dynamic verb discovery
@@ -212,9 +212,9 @@ def convenience_function():
 
 
 if __name__ == "__main__":
-    print("Promptware SDK Examples\n")
+    print("AssertLang SDK Examples\n")
     print("Make sure you have an agent running on http://localhost:3000")
-    print("Or use: promptware generate test.al --lang python && cd generated/test && python test_server.py\n")
+    print("Or use: assertlang generate test.al --lang python && cd generated/test && python test_server.py\n")
 
     try:
         basic_usage()

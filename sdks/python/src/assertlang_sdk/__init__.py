@@ -1,4 +1,4 @@
-"""Promptware SDK - Host integration for Promptware daemon."""
+"""AssertLang SDK - Host integration for AssertLang daemon."""
 
 from .errors import (
     E_BUILD,
@@ -10,7 +10,7 @@ from .errors import (
     E_RUNTIME,
     E_TIMEOUT,
     CompatibilityError,
-    PromptwareError,
+    AssertLangError,
 )
 from .mcp import MCP, mcp
 from .timeline import TimelineReader
@@ -24,7 +24,7 @@ __all__ = [
     # Timeline
     "TimelineReader",
     # Errors
-    "PromptwareError",
+    "AssertLangError",
     "CompatibilityError",
     "E_RUNTIME",
     "E_POLICY",

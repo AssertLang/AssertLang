@@ -1,5 +1,5 @@
 """
-Agent-specific DSL parser extensions for Promptware.
+Agent-specific DSL parser extensions for AssertLang.
 
 Extends the core parser to handle:
 - `agent <name>` directive

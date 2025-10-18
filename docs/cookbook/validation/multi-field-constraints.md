@@ -41,7 +41,7 @@ def create_event(start_date: str, end_date: str):
 
 Use contracts for explicit multi-field constraints:
 
-```promptware
+```assertlang
 type Event:
   name: String
   start_date: String
@@ -77,7 +77,7 @@ end
 
 ### Date Range Validation
 
-```promptware
+```assertlang
 function validate_date_range(
     start_date: String,
     end_date: String
@@ -98,7 +98,7 @@ end
 
 ### Min/Max Validation
 
-```promptware
+```assertlang
 type RangeFilter:
   min_value: Int
   max_value: Int
@@ -117,7 +117,7 @@ end
 
 ### Password Confirmation
 
-```promptware
+```assertlang
 function validate_password_match(
     password: String,
     password_confirm: String
@@ -141,7 +141,7 @@ end
 
 ### Order Total Matches Line Items
 
-```promptware
+```assertlang
 type LineItem:
   product_id: String
   quantity: Int
@@ -204,7 +204,7 @@ end
 
 ### Contact Information Required
 
-```promptware
+```assertlang
 type ContactInfo:
   email: Option<String>
   phone: Option<String>
@@ -247,7 +247,7 @@ end
 
 ### Payment Method Selection
 
-```promptware
+```assertlang
 type Payment:
   card_number: Option<String>
   paypal_email: Option<String>
@@ -291,7 +291,7 @@ end
 
 ### Discount Limits
 
-```promptware
+```assertlang
 type Order:
   subtotal: Float
   discount_type: String  # "percentage" | "fixed"
@@ -483,7 +483,7 @@ def create_event_bad(start: str, end: str):
 
 ### ✅ Validate Relationships
 
-```promptware
+```assertlang
 # Good: Explicit cross-field validation
 function create_event_good(start: String, end: String) -> Result<Event, String>
   do
@@ -517,7 +517,7 @@ def validate_contact_bad(email: str, phone: str):
 
 ### ✅ Strong At-Least-One
 
-```promptware
+```assertlang
 # Good: Verify at least one has value
 function validate_contact_good(
     email: Option<String>,
@@ -642,7 +642,7 @@ def test_payment_method_mutually_exclusive():
 
 ### Short-Circuit Evaluation
 
-```promptware
+```assertlang
 # Check cheapest constraints first
 function validate_fast(start: String, end: String) -> Result<Bool, String>
   do

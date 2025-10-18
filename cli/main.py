@@ -1,26 +1,26 @@
 #!/usr/bin/env python3
 """
-DEPRECATED: This CLI has been replaced by promptware.cli
+DEPRECATED: This CLI has been replaced by assertlang.cli
 
 This module is deprecated and will be removed in a future version.
-The new CLI is in promptware/cli.py and includes:
-- Configuration management (promptware config)
+The new CLI is in assertlang/cli.py and includes:
+- Configuration management (assertlang config)
 - Safety features (--yes, --dry-run, --quiet)
 - NO_COLOR support
 - Improved UX and error handling
 
-Use 'promptware' command instead (automatically uses promptware.cli via setup.py).
+Use 'assertlang' command instead (automatically uses assertlang.cli via setup.py).
 
 ---
 
-OLD Promptware CLI - Command-line interface for agent generation and management.
+OLD AssertLang CLI - Command-line interface for agent generation and management.
 
 Usage:
-    promptware generate <agent.al>              Generate MCP server
-    promptware generate <agent.al> --lang go    Generate for specific language
-    promptware run <agent.al>                   Generate and run server
+    assertlang generate <agent.al>              Generate MCP server
+    assertlang generate <agent.al> --lang go    Generate for specific language
+    assertlang run <agent.al>                   Generate and run server
     asl test <agent.al>                  Test agent definition
-    promptware version                          Show version
+    assertlang version                          Show version
 """
 
 import argparse
@@ -308,7 +308,7 @@ def command_mcp_config(args):
 
 def command_version(args):
     """Show version information."""
-    print("Promptware v0.3.0")
+    print("AssertLang v0.3.0")
     print("Agent-to-agent communication DSL")
     print("\nSupported languages:")
     print("  • Python (FastAPI) - Full support")
@@ -324,14 +324,14 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  promptware generate my_agent.al
-  promptware generate my_agent.al --lang nodejs
-  promptware generate my_agent.al -o custom_server.py
-  promptware run my_agent.al
+  assertlang generate my_agent.al
+  assertlang generate my_agent.al --lang nodejs
+  assertlang generate my_agent.al -o custom_server.py
+  assertlang run my_agent.al
   asl test my_agent.al
-  promptware version
+  assertlang version
 
-For more info: https://github.com/3CH0xyz/promptware
+For more info: https://github.com/3CH0xyz/assertlang
         """,
     )
 

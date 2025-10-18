@@ -4,7 +4,7 @@ Runs without pytest dependency
 """
 
 import sys
-sys.path.insert(0, '/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware')
+sys.path.insert(0, '/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang')
 
 from language.rust_generator_v2 import generate_rust
 from dsl.ir import (

@@ -169,7 +169,7 @@ Agents need to work in two environments:
 
 **Flow:**
 ```python
-# CLI or API: promptware run review.analyze@v1 --repo facebook/react --pr-number 123
+# CLI or API: assertlang run review.analyze@v1 --repo facebook/react --pr-number 123
 
 1. Same tool execution as Mode 1:
    - github_fetch_pr → real PR data

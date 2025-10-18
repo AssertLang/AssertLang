@@ -1,7 +1,7 @@
 {
   "start_time": 1759538081.2936919,
-  "fixtures_dir": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/fixtures",
-  "output_dir": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated",
+  "fixtures_dir": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/fixtures",
+  "output_dir": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated",
   "fixtures_tested": 11,
   "fixtures_passed": 11,
   "fixtures_failed": 0,
@@ -18,16 +18,16 @@
         "generate": {
           "fixture": "nodejs_minimal.al",
           "generated": true,
-          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-test-agent_server.py",
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/minimal-test-agent_server.py",
           "errors": []
         },
         "test": {
           "fixture": "nodejs_minimal.al",
           "agent_name": "minimal-test-agent",
           "port": 20100,
-          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-test-agent_server.py",
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/minimal-test-agent_server.py",
           "tests": {
-            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-test-agent_server.py",
+            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/minimal-test-agent_server.py",
             "port": 20100,
             "syntax_validation": {
               "valid": true,
@@ -135,16 +135,16 @@
         "generate": {
           "fixture": "python_complex.al",
           "generated": true,
-          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/complex-test-agent_server.py",
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/complex-test-agent_server.py",
           "errors": []
         },
         "test": {
           "fixture": "python_complex.al",
           "agent_name": "complex-test-agent",
           "port": 23472,
-          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/complex-test-agent_server.py",
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/complex-test-agent_server.py",
           "tests": {
-            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/complex-test-agent_server.py",
+            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/complex-test-agent_server.py",
             "port": 23472,
             "syntax_validation": {
               "valid": true,
@@ -479,16 +479,16 @@
         "generate": {
           "fixture": "python_with_tools.al",
           "generated": true,
-          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/tool-test-agent_server.py",
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/tool-test-agent_server.py",
           "errors": []
         },
         "test": {
           "fixture": "python_with_tools.al",
           "agent_name": "tool-test-agent",
           "port": 23471,
-          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/tool-test-agent_server.py",
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/tool-test-agent_server.py",
           "tests": {
-            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/tool-test-agent_server.py",
+            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/tool-test-agent_server.py",
             "port": 23471,
             "syntax_validation": {
               "valid": true,
@@ -720,16 +720,16 @@
         "generate": {
           "fixture": "go_minimal.al",
           "generated": true,
-          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-go-agent_server.py",
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/minimal-go-agent_server.py",
           "errors": []
         },
         "test": {
           "fixture": "go_minimal.al",
           "agent_name": "minimal-go-agent",
           "port": 8080,
-          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-go-agent_server.py",
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/minimal-go-agent_server.py",
           "tests": {
-            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-go-agent_server.py",
+            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/minimal-go-agent_server.py",
             "port": 8080,
             "syntax_validation": {
               "valid": true,
@@ -838,16 +838,16 @@
         "generate": {
           "fixture": "nodejs_with_tools.al",
           "generated": true,
-          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/tools-test-agent_server.py",
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/tools-test-agent_server.py",
           "errors": []
         },
         "test": {
           "fixture": "nodejs_with_tools.al",
           "agent_name": "tools-test-agent",
           "port": 20101,
-          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/tools-test-agent_server.py",
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/tools-test-agent_server.py",
           "tests": {
-            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/tools-test-agent_server.py",
+            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/tools-test-agent_server.py",
             "port": 20101,
             "syntax_validation": {
               "valid": true,
@@ -984,16 +984,16 @@
         "generate": {
           "fixture": "dotnet_with_tools.al",
           "generated": true,
-          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/dotnet-http-agent_server.py",
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/dotnet-http-agent_server.py",
           "errors": []
         },
         "test": {
           "fixture": "dotnet_with_tools.al",
           "agent_name": "dotnet-http-agent",
           "port": 5001,
-          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/dotnet-http-agent_server.py",
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/dotnet-http-agent_server.py",
           "tests": {
-            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/dotnet-http-agent_server.py",
+            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/dotnet-http-agent_server.py",
             "port": 5001,
             "syntax_validation": {
               "valid": true,
@@ -1114,16 +1114,16 @@
         "generate": {
           "fixture": "python_minimal.al",
           "generated": true,
-          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-test-agent_server.py",
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/minimal-test-agent_server.py",
           "errors": []
         },
         "test": {
           "fixture": "python_minimal.al",
           "agent_name": "minimal-test-agent",
           "port": 23470,
-          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-test-agent_server.py",
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/minimal-test-agent_server.py",
           "tests": {
-            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-test-agent_server.py",
+            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/minimal-test-agent_server.py",
             "port": 23470,
             "syntax_validation": {
               "valid": true,
@@ -1256,16 +1256,16 @@
         "generate": {
           "fixture": "dotnet_minimal.al",
           "generated": true,
-          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-dotnet-agent_server.py",
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/minimal-dotnet-agent_server.py",
           "errors": []
         },
         "test": {
           "fixture": "dotnet_minimal.al",
           "agent_name": "minimal-dotnet-agent",
           "port": 5002,
-          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-dotnet-agent_server.py",
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/minimal-dotnet-agent_server.py",
           "tests": {
-            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-dotnet-agent_server.py",
+            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/minimal-dotnet-agent_server.py",
             "port": 5002,
             "syntax_validation": {
               "valid": true,
@@ -1374,16 +1374,16 @@
         "generate": {
           "fixture": "rust_with_tools.al",
           "generated": true,
-          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/tool-rust-agent_server.py",
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/tool-rust-agent_server.py",
           "errors": []
         },
         "test": {
           "fixture": "rust_with_tools.al",
           "agent_name": "tool-rust-agent",
           "port": 9091,
-          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/tool-rust-agent_server.py",
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/tool-rust-agent_server.py",
           "tests": {
-            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/tool-rust-agent_server.py",
+            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/tool-rust-agent_server.py",
             "port": 9091,
             "syntax_validation": {
               "valid": true,
@@ -1546,16 +1546,16 @@
         "generate": {
           "fixture": "rust_minimal.al",
           "generated": true,
-          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-rust-agent_server.py",
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/minimal-rust-agent_server.py",
           "errors": []
         },
         "test": {
           "fixture": "rust_minimal.al",
           "agent_name": "minimal-rust-agent",
           "port": 9090,
-          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-rust-agent_server.py",
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/minimal-rust-agent_server.py",
           "tests": {
-            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/minimal-rust-agent_server.py",
+            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/minimal-rust-agent_server.py",
             "port": 9090,
             "syntax_validation": {
               "valid": true,
@@ -1688,16 +1688,16 @@
         "generate": {
           "fixture": "go_with_tools.al",
           "generated": true,
-          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/go-http-agent_server.py",
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/go-http-agent_server.py",
           "errors": []
         },
         "test": {
           "fixture": "go_with_tools.al",
           "agent_name": "go-http-agent",
           "port": 8081,
-          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/go-http-agent_server.py",
+          "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/go-http-agent_server.py",
           "tests": {
-            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tests/bidirectional/generated/go-http-agent_server.py",
+            "server_path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tests/bidirectional/generated/go-http-agent_server.py",
             "port": 8081,
             "syntax_validation": {
               "valid": true,

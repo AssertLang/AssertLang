@@ -50,7 +50,7 @@ RELEASE_NOTES="RELEASE_NOTES_${VERSION_TAG}.md"
 if [[ ! -f "$RELEASE_NOTES" ]]; then
   echo "==> Generating release notes"
   cat > "$RELEASE_NOTES" <<EOF
-# Promptware $VERSION_TAG
+# AssertLang $VERSION_TAG
 
 **Release Date:** $(date +%Y-%m-%d)
 **Type:** $(echo "$VERSION_NUM" | grep -q 'b' && echo "Beta" || echo "Stable")
@@ -72,7 +72,7 @@ $(git log --oneline "$(git describe --tags --abbrev=0 2>/dev/null || echo 'HEAD~
 ## Installation
 
 \`\`\`bash
-pip install promptware-dev==$VERSION_NUM
+pip install assertlang-dev==$VERSION_NUM
 \`\`\`
 
 ---
@@ -123,9 +123,9 @@ git push upstream main --tags || {
 # 9. Create GitHub release
 echo "==> Creating GitHub release"
 gh release create "$VERSION_TAG" \
-  --repo Promptware-dev/promptware \
+  --repo AssertLang-dev/assertlang \
   --notes-file "$RELEASE_NOTES" \
-  --title "Promptware $VERSION_TAG" \
+  --title "AssertLang $VERSION_TAG" \
   || echo "WARNING: GitHub release creation failed (may need manual creation)"
 
 # 10. Build and publish to PyPI
@@ -134,10 +134,10 @@ python -m build
 
 echo "==> Publishing to PyPI"
 if command -v twine >/dev/null 2>&1; then
-  twine check dist/*promptware*${VERSION_NUM}*
-  twine upload dist/*promptware*${VERSION_NUM}* || {
+  twine check dist/*assertlang*${VERSION_NUM}*
+  twine upload dist/*assertlang*${VERSION_NUM}* || {
     echo "ERROR: PyPI upload failed. Manual intervention needed:" >&2
-    echo "  twine upload dist/*promptware*${VERSION_NUM}*" >&2
+    echo "  twine upload dist/*assertlang*${VERSION_NUM}*" >&2
     exit 1
   }
 else
@@ -147,15 +147,15 @@ fi
 
 # 11. Verify release
 echo "==> Verifying release"
-echo "  PyPI: https://pypi.org/project/promptware-dev/$VERSION_NUM/"
-echo "  GitHub: https://github.com/Promptware-dev/promptware/releases/tag/$VERSION_TAG"
+echo "  PyPI: https://pypi.org/project/assertlang-dev/$VERSION_NUM/"
+echo "  GitHub: https://github.com/AssertLang-dev/assertlang/releases/tag/$VERSION_TAG"
 
 echo ""
 echo "✅ Release $VERSION_TAG complete!"
 echo ""
 echo "Next steps:"
-echo "  1. Verify PyPI page: https://pypi.org/project/promptware-dev/$VERSION_NUM/"
-echo "  2. Verify GitHub release: https://github.com/Promptware-dev/promptware/releases/tag/$VERSION_TAG"
-echo "  3. Test installation: pip install promptware-dev==$VERSION_NUM"
+echo "  1. Verify PyPI page: https://pypi.org/project/assertlang-dev/$VERSION_NUM/"
+echo "  2. Verify GitHub release: https://github.com/AssertLang-dev/assertlang/releases/tag/$VERSION_TAG"
+echo "  3. Test installation: pip install assertlang-dev==$VERSION_NUM"
 echo "  4. Update Current_Work.md with release summary"
 echo "  5. Announce release (Discord, Twitter, etc.)"

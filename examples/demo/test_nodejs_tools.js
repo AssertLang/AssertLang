@@ -3,7 +3,7 @@
  *
  * Tests that the Node.js tool registry actually executes real tools.
  */
-import { getRegistry } from '../../promptware-js/registry.js';
+import { getRegistry } from '../../assertlang-js/registry.js';
 
 const registry = getRegistry();
 
@@ -35,7 +35,7 @@ async function testStorageTool() {
     backend: 'fs',
     op: 'put',
     params: {
-      path: '/tmp/promptware-test.txt',
+      path: '/tmp/assertlang-test.txt',
       content: 'Hello from Node.js tool!'
     }
   });
@@ -52,7 +52,7 @@ async function testStorageTool() {
     backend: 'fs',
     op: 'get',
     params: {
-      path: '/tmp/promptware-test.txt'
+      path: '/tmp/assertlang-test.txt'
     }
   });
 
@@ -68,7 +68,7 @@ async function testStorageTool() {
   await registry.executeTool('storage', {
     backend: 'fs',
     op: 'delete',
-    params: { path: '/tmp/promptware-test.txt' }
+    params: { path: '/tmp/assertlang-test.txt' }
   });
 
   return true;

@@ -47,7 +47,7 @@ def test_nodejs_to_python():
     print("="*60)
 
     # Use Node.js client library to call Python server
-    nodejs_client_dir = project_root / "promptware-js"
+    nodejs_client_dir = project_root / "assertlang-js"
 
     result = subprocess.run(
         ["node", "-e", """

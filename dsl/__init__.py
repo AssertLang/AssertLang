@@ -1,7 +1,7 @@
 """
-Promptware DSL Core Module
+AssertLang DSL Core Module
 
-This module contains the intermediate representation (IR) for the Promptware
+This module contains the intermediate representation (IR) for the AssertLang
 universal code translation system. The IR serves as a language-agnostic bridge
 between all supported programming languages.
 

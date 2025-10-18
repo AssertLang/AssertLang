@@ -36,7 +36,7 @@ def search_database(query: str, limit: int):
 
 Use contracts to validate tool calls:
 
-```promptware
+```assertlang
 function search_database(query: String, limit: Int) -> Result<List<String>, String>
   requires:
     len(query) > 0
@@ -78,7 +78,7 @@ def search_database(query: str, limit: int) -> Result[List[str], str]:
 
 ### Simple Tool with Validation
 
-```promptware
+```assertlang
 type SearchResult:
   title: String
   url: String
@@ -103,7 +103,7 @@ end
 
 ### Tool with Complex Validation
 
-```promptware
+```assertlang
 type EmailRequest:
   recipient: String
   subject: String
@@ -267,7 +267,7 @@ workflow.add_node("tools", tool_node)
 ## Real-World Example: Database Tool
 
 **Contract:**
-```promptware
+```assertlang
 # database_tools.al
 type QueryParams:
   table: String
@@ -396,7 +396,7 @@ def search(query: str, limit: int):
 
 ### ✅ Contract Validation
 
-```promptware
+```assertlang
 # Good: Contract enforces valid inputs
 function search(query: String, limit: Int) -> Result<List<String>, String>
   requires:
@@ -421,7 +421,7 @@ def search(query: str, limit: int):
 
 ### ✅ Postcondition Enforced
 
-```promptware
+```assertlang
 # Good: Postcondition guarantees result size
 function search(query: String, limit: Int) -> Result<List<String>, String>
   ensures:

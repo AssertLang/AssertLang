@@ -267,11 +267,11 @@
   </text>
 
   <text x="700" y="600" font-family="monospace" font-size="14" fill="#8b949e" text-anchor="middle">
-    Install: pip install promptware-dev
+    Install: pip install assertlang-dev
   </text>
 
   <text x="700" y="630" font-family="monospace" font-size="13" fill="#c9d1d9" text-anchor="middle">
-    promptware build calculator.pw --lang python  # Instant translation ✨
+    assertlang build calculator.pw --lang python  # Instant translation ✨
   </text>
 
   <text x="700" y="670" font-family="monospace" font-size="12" fill="#79c0ff" text-anchor="middle">
@@ -283,6 +283,6 @@
   </text>
 
   <text x="700" y="735" font-family="Arial" font-size="12" fill="#8b949e" text-anchor="middle">
-    github.com/Promptware-dev/promptware • pypi.org/project/promptware-dev
+    github.com/AssertLang-dev/assertlang • pypi.org/project/assertlang-dev
   </text>
 </svg>

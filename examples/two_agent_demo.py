@@ -178,7 +178,7 @@ def demo_error_handling():
 
 if __name__ == "__main__":
     print()
-    print("Promptware Two-Agent Coordination Demo")
+    print("AssertLang Two-Agent Coordination Demo")
     print()
     print("Prerequisites:")
     print("1. Install dependencies: pip3 install fastapi uvicorn requests")

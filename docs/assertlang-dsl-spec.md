@@ -119,7 +119,7 @@ lang python
 start python app.py
 
 file app.py:
-  from promptware import http
+  from assertlang import http
 
 assume downstream services respond within 200ms
 

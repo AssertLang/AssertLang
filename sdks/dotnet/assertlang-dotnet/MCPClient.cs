@@ -1,10 +1,10 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Promptware;
+namespace AssertLang;
 
 /// <summary>
-/// MCP Client for calling Promptware services over HTTP
+/// MCP Client for calling AssertLang services over HTTP
 /// </summary>
 public class MCPClient
 {

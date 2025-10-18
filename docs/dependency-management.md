@@ -25,11 +25,11 @@ AssertLang prepares language-specific environments immediately before `run.start
 - When `deps.node.packages` is non-empty, run `npm init -y` (if `package.json` is missing) followed by `npm install --no-fund --no-audit --save=false <packages>`.
 - Set `npm_config_cache` / `NPM_CONFIG_CACHE` to `.mcpd/cache/node/<hash>/` keyed by the requested packages so tarballs are reused.
 - Add `node_modules/.bin` to `PATH` and ensure `/opt/homebrew/bin:/usr/local/bin` precede the existing PATH so `node` is discoverable inside Python venvs.
-- If the allowlist specifies `registry.cache_ttl_days`, the daemon exports `PROMPTWARE_NODE_CACHE_TTL_DAYS` for runners to honour cache retention policies.
+- If the allowlist specifies `registry.cache_ttl_days`, the daemon exports `ASSERTLANG_NODE_CACHE_TTL_DAYS` for runners to honour cache retention policies.
 
 ### Go
 - Ensure `.mcpd/<task>/env/go` exists (for source + logging); shared caches live under `.mcpd/cache/go/<hash>/` where `<hash>` reflects the requested modules.
-- Generate `source/go.mod` if absent (using `deps.go.module_name` or `promptwareapp`).
+- Generate `source/go.mod` if absent (using `deps.go.module_name` or `assertlangapp`).
 - For each allowlisted module run `go get <module>` followed by `go mod tidy` with `GOMODCACHE`, `GOCACHE`, `GOPATH`, and `GO111MODULE=on` pointing to the shared cache directories.
 - Return the three cache environment variables so the runner inherits the hydrated caches on future runs.
 
@@ -38,7 +38,7 @@ AssertLang prepares language-specific environments immediately before `run.start
 - Render `deps/AssertLangDeps.csproj` containing `<PackageReference>` entries for each allowlisted package (version optional).
 - Execute `dotnet restore` with `NUGET_PACKAGES` pointed at the shared cache. When the allowlist declares private feeds, the daemon renders a `NuGet.Config` (and passes `--configfile`) so restores respect those sources.
 - Return `NUGET_PACKAGES` and `DOTNET_ROOT` so the runner can reuse the hydrated cache.
-- Expose `PROMPTWARE_DOTNET_CACHE_TTL_DAYS` when the allowlist includes `cache_ttl_days`, enabling downstream tooling to prune shared caches.
+- Expose `ASSERTLANG_DOTNET_CACHE_TTL_DAYS` when the allowlist includes `cache_ttl_days`, enabling downstream tooling to prune shared caches.
 
 ### Rust
 - Create `.mcpd/<task>/env/rust` for bootstrap manifests; `CARGO_HOME` and `RUSTUP_HOME` point to `.mcpd/cache/rust/<hash>/` where `<hash>` reflects the crate list.
@@ -95,8 +95,8 @@ rust:
 
 ### Private Registry Hooks
 - Allowlist entries can inject environment overrides via an `env` block (e.g., `GO_ENV`, `PIP_INDEX_URL`, `NPM_CONFIG_REGISTRY`). The daemon merges these values into the subprocess environment during dependency prep.
-- Node registries may specify `token_env` and `cache_ttl_days`; `_prepare_dependencies` pulls tokens from the host environment, sets `PROMPTWARE_NODE_CACHE_TTL_DAYS`, and keeps credentials scoped to the install command.
-- `.NET` feeds can list private sources with optional `token_env`, `username_env`, or `password_env`. The daemon emits a temporary `NuGet.Config` with `<packageSourceCredentials>` and exports `PROMPTWARE_DOTNET_CACHE_TTL_DAYS` for downstream usage.
+- Node registries may specify `token_env` and `cache_ttl_days`; `_prepare_dependencies` pulls tokens from the host environment, sets `ASSERTLANG_NODE_CACHE_TTL_DAYS`, and keeps credentials scoped to the install command.
+- `.NET` feeds can list private sources with optional `token_env`, `username_env`, or `password_env`. The daemon emits a temporary `NuGet.Config` with `<packageSourceCredentials>` and exports `ASSERTLANG_DOTNET_CACHE_TTL_DAYS` for downstream usage.
 - Rust registries support `token_env`, prompting `_prepare_dependencies` to write `.cargo/config.toml` entries and expose `CARGO_REGISTRIES_<NAME>_TOKEN` during `cargo fetch`.
 - Future enhancements will expand mirror support and retention policies (e.g., cache pruning) beyond the current TTL hints.
 
@@ -108,10 +108,10 @@ rust:
 ## Future Improvements
 - Shared caches keyed by dependency manifest hashes so repeated tasks reuse downloads without breaking isolation.
 - Private registry support (custom npm registries, NuGet feeds, Cargo registries) driven by allowlist metadata.
-- CLI helpers (`promptware deps check`, `promptware deps trim-cache`) to inspect the merged dependency view and manage caches without editing YAML manually.
+- CLI helpers (`assertlang deps check`, `assertlang deps trim-cache`) to inspect the merged dependency view and manage caches without editing YAML manually.
 
 ## CLI Helpers
-- Run `promptware deps check [--plan plan.json]` (or the underlying `python scripts/show_dependency_allowlist.py`) to emit a JSON summary of the current allowlist, optional merged plan + registry deps, and any violations before invoking `run.start@v1`.
-- Use `promptware deps trim-cache [--dry-run] [--default-ttl-days N]` to prune `.mcpd/cache` based on allowlist TTL hints; the daemon automatically invokes the same logic on startup, but the CLI command lets operators inspect proposed removals or tune policies.
+- Run `assertlang deps check [--plan plan.json]` (or the underlying `python scripts/show_dependency_allowlist.py`) to emit a JSON summary of the current allowlist, optional merged plan + registry deps, and any violations before invoking `run.start@v1`.
+- Use `assertlang deps trim-cache [--dry-run] [--default-ttl-days N]` to prune `.mcpd/cache` based on allowlist TTL hints; the daemon automatically invokes the same logic on startup, but the CLI command lets operators inspect proposed removals or tune policies.
 
 Keep this document current as new languages or caching strategies land.

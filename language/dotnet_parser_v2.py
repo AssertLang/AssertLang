@@ -1,7 +1,7 @@
 """
 .NET Parser V2 - Arbitrary C# Code to IR
 
-This parser converts arbitrary C# code into Promptware IR, enabling universal
+This parser converts arbitrary C# code into AssertLang IR, enabling universal
 code translation. It handles:
 - Classes and properties
 - Methods and functions
@@ -73,7 +73,7 @@ class ParseContext:
 
 class DotNetParserV2:
     """
-    Parse arbitrary C# code into Promptware IR.
+    Parse arbitrary C# code into AssertLang IR.
 
     Supports:
     - Classes and structs

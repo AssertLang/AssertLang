@@ -1,5 +1,5 @@
 """
-MCP Server Generator for Promptware agents.
+MCP Server Generator for AssertLang agents.
 
 Generates FastAPI-based MCP servers from .al agent definitions.
 """
@@ -243,7 +243,7 @@ error_counter = meter.create_counter(
 # MCP Server for agent: {agent.name}
 app = FastAPI(
     title="{agent.name}",
-    description="Promptware MCP Agent",
+    description="AssertLang MCP Agent",
     version="v1"
 )
 
@@ -582,7 +582,7 @@ def _generate_mcp_endpoint(agent: AgentDefinition) -> str:
             param_name = param["name"]
             param_type = param["type"]
 
-            # Convert Promptware types to JSON Schema types
+            # Convert AssertLang types to JSON Schema types
             json_schema_type = param_type
             if param_type == "int":
                 json_schema_type = "integer"

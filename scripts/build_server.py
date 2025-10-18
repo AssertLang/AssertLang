@@ -17,10 +17,10 @@ from typing import List
 class ServerBuilder:
     """Builds MCP servers for compile-time languages."""
 
-    def __init__(self, project_dir: Path, promptware_root: Path):
+    def __init__(self, project_dir: Path, assertlang_root: Path):
         self.project_dir = project_dir
-        self.promptware_root = promptware_root
-        self.tools_dir = promptware_root / "tools"
+        self.assertlang_root = assertlang_root
+        self.tools_dir = assertlang_root / "tools"
 
     def detect_language(self) -> str:
         """Detect language from project files."""
@@ -194,22 +194,22 @@ def main():
     parser = argparse.ArgumentParser(description="Build MCP server for compile-time languages")
     parser.add_argument("project_dir", type=Path, help="Server project directory")
     parser.add_argument("--tools", nargs="+", required=True, help="List of tools to include")
-    parser.add_argument("--promptware-root", type=Path, help="Promptware root directory")
+    parser.add_argument("--assertlang-root", type=Path, help="AssertLang root directory")
 
     args = parser.parse_args()
 
-    # Default promptware root to script's parent directory
-    if args.promptware_root is None:
-        args.promptware_root = Path(__file__).parent.parent
+    # Default assertlang root to script's parent directory
+    if args.assertlang_root is None:
+        args.assertlang_root = Path(__file__).parent.parent
 
     if not args.project_dir.exists():
         print(f"✗ Project directory not found: {args.project_dir}")
         sys.exit(1)
 
-    builder = ServerBuilder(args.project_dir, args.promptware_root)
+    builder = ServerBuilder(args.project_dir, args.assertlang_root)
 
     print("=" * 60)
-    print("Promptware Server Builder")
+    print("AssertLang Server Builder")
     print("=" * 60)
 
     success = builder.build(args.tools)

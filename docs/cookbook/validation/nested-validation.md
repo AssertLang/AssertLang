@@ -46,7 +46,7 @@ def create_order(order_data: dict):
 
 Use AssertLang contracts for hierarchical validation:
 
-```promptware
+```assertlang
 type Address:
   street: String
   city: String
@@ -78,7 +78,7 @@ end
 
 ### Two-Level Nesting
 
-```promptware
+```assertlang
 type Address:
   street: String
   city: String
@@ -143,7 +143,7 @@ end
 
 ### Validate Array of Objects
 
-```promptware
+```assertlang
 type LineItem:
   product_id: String
   quantity: Int
@@ -223,7 +223,7 @@ end
 
 ### Three-Level Hierarchy
 
-```promptware
+```assertlang
 type ContactInfo:
   phone: String
   email: String
@@ -335,7 +335,7 @@ end
 
 ### Handling Option Types
 
-```promptware
+```assertlang
 type ShippingAddress:
   street: String
   city: String
@@ -534,7 +534,7 @@ def validate_bad(order: dict) -> bool:
 
 ### ✅ Validate All Levels
 
-```promptware
+```assertlang
 # Good: Validate entire hierarchy
 function validate_good(order: Order) -> Result<Order, List<String>>
   do
@@ -575,7 +575,7 @@ def validate_bad(company: Company) -> bool:
 
 ### ✅ Preserve Error Context
 
-```promptware
+```assertlang
 # Good: Include path to failed field
 function validate_good(company: Company) -> Result<Company, List<String>>
   do
@@ -607,7 +607,7 @@ end
 
 ### Early Exit on Critical Errors
 
-```promptware
+```assertlang
 function validate_fast(order: Order) -> Result<Order, String>
   do
     # Check critical fields first

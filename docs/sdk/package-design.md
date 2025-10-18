@@ -8,47 +8,47 @@ This document defines the package naming, versioning, and structure for AssertLa
 
 ### Python SDK
 
-**Package name**: `promptware-sdk`
+**Package name**: `assertlang-sdk`
 
 **Rationale**:
 - Clear, descriptive name indicating SDK purpose
 - Hyphenated format follows Python packaging conventions (e.g., `google-cloud-sdk`, `aws-cdk`)
-- Distinguishes from core `promptware` package (reserved for CLI/daemon)
+- Distinguishes from core `assertlang` package (reserved for CLI/daemon)
 
 **Import structure**:
 ```python
-from promptware_sdk import mcp
-from promptware_sdk.timeline import TimelineReader
-from promptware_sdk.errors import AssertLangError, E_RUNTIME
+from assertlang_sdk import mcp
+from assertlang_sdk.timeline import TimelineReader
+from assertlang_sdk.errors import AssertLangError, E_RUNTIME
 ```
 
 **PyPI registration**:
-- Package: `promptware-sdk`
-- Import: `promptware_sdk` (underscores per PEP 8)
+- Package: `assertlang-sdk`
+- Import: `assertlang_sdk` (underscores per PEP 8)
 
 ---
 
 ### Node.js SDK
 
-**Package name**: `@promptware/sdk`
+**Package name**: `@assertlang/sdk`
 
 **Rationale**:
 - Scoped package format follows modern npm conventions (e.g., `@google-cloud/functions`, `@aws-sdk/client-s3`)
-- `@promptware` namespace reserves future packages (`@promptware/cli`, `@promptware/tools`)
+- `@assertlang` namespace reserves future packages (`@assertlang/cli`, `@assertlang/tools`)
 - Short, memorable scope
 
 **Import structure**:
 ```javascript
 // ESM
-import { mcp, TimelineReader } from '@promptware/sdk';
+import { mcp, TimelineReader } from '@assertlang/sdk';
 
 // CommonJS
-const { mcp, TimelineReader } = require('@promptware/sdk');
+const { mcp, TimelineReader } = require('@assertlang/sdk');
 ```
 
 **npm registration**:
-- Package: `@promptware/sdk`
-- Scope: `@promptware` (requires npm org/user account)
+- Package: `@assertlang/sdk`
+- Scope: `@assertlang` (requires npm org/user account)
 
 ---
 
@@ -96,11 +96,11 @@ Both SDKs follow [Semantic Versioning 2.0](https://semver.org/):
 
 ## Package Structure
 
-### Python SDK (`promptware-sdk`)
+### Python SDK (`assertlang-sdk`)
 
 **Directory layout**:
 ```
-promptware_sdk/
+assertlang_sdk/
 ├── __init__.py           # Public API exports
 ├── mcp/
 │   ├── __init__.py       # MCP verb wrappers
@@ -117,7 +117,7 @@ promptware_sdk/
 └── version.py            # SDK version metadata
 ```
 
-**Public API** (`promptware_sdk/__init__.py`):
+**Public API** (`assertlang_sdk/__init__.py`):
 ```python
 from .mcp import mcp
 from .timeline import TimelineReader
@@ -141,7 +141,7 @@ __all__ = [
 
 ---
 
-### Node.js SDK (`@promptware/sdk`)
+### Node.js SDK (`@assertlang/sdk`)
 
 **Directory layout**:
 ```
@@ -186,7 +186,7 @@ export { version } from './version';
 
 ### MCP Verb Wrappers
 
-**Python** (`promptware_sdk/mcp/verbs.py`):
+**Python** (`assertlang_sdk/mcp/verbs.py`):
 ```python
 class MCP:
     def plan_create_v1(self, source: str, format: str = 'dsl') -> dict:
@@ -236,7 +236,7 @@ export const mcp = new MCP();
 
 ### Timeline Helpers
 
-**Python** (`promptware_sdk/timeline/reader.py`):
+**Python** (`assertlang_sdk/timeline/reader.py`):
 ```python
 class TimelineReader:
     def __init__(self, run_id: str):
@@ -278,7 +278,7 @@ class TimelineReader {
 
 ### Error Taxonomy
 
-**Python** (`promptware_sdk/errors.py`):
+**Python** (`assertlang_sdk/errors.py`):
 ```python
 class AssertLangError(Exception):
     """Base exception for all SDK errors."""
@@ -326,7 +326,7 @@ requires = ["setuptools>=61", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "promptware-sdk"
+name = "assertlang-sdk"
 version = "0.1.0"
 description = "Host SDK for AssertLang MCP integration"
 requires-python = ">=3.10"
@@ -366,7 +366,7 @@ twine upload dist/*
 **`package.json`**:
 ```json
 {
-  "name": "@promptware/sdk",
+  "name": "@assertlang/sdk",
   "version": "0.1.0",
   "description": "Host SDK for AssertLang MCP integration",
   "main": "dist/index.js",
@@ -419,10 +419,10 @@ npm publish --access public
 
 ```bash
 # From PyPI (after publish)
-pip install promptware-sdk
+pip install assertlang-sdk
 
 # From source (development)
-git clone https://github.com/promptware/sdk-python.git
+git clone https://github.com/assertlang/sdk-python.git
 cd sdk-python
 pip install -e .
 ```
@@ -431,10 +431,10 @@ pip install -e .
 
 ```bash
 # From npm (after publish)
-npm install @promptware/sdk
+npm install @assertlang/sdk
 
 # From source (development)
-git clone https://github.com/promptware/sdk-js.git
+git clone https://github.com/assertlang/sdk-js.git
 cd sdk-js
 npm install
 npm link
@@ -476,7 +476,7 @@ npm link
 ### Monorepo Option (Recommended)
 
 ```
-promptware/
+assertlang/
 ├── cli/                  # AssertLang CLI/daemon (existing)
 ├── language/             # DSL parser/interpreter (existing)
 ├── runners/              # Multi-language runners (existing)
@@ -484,7 +484,7 @@ promptware/
 ├── sdks/                 # SDKs (new)
 │   ├── python/
 │   │   ├── pyproject.toml
-│   │   ├── src/promptware_sdk/
+│   │   ├── src/assertlang_sdk/
 │   │   └── tests/
 │   └── javascript/
 │       ├── package.json
@@ -497,11 +497,11 @@ promptware/
 
 ```
 # Core repository
-github.com/promptware/promptware
+github.com/assertlang/assertlang
 
 # SDK repositories
-github.com/promptware/sdk-python
-github.com/promptware/sdk-js
+github.com/assertlang/sdk-python
+github.com/assertlang/sdk-js
 ```
 
 **Recommendation**: Start with monorepo in Wave 2, split to separate repos if SDKs gain independent release cycles.
@@ -531,7 +531,7 @@ twine check dist/*
 twine upload --repository testpypi dist/*
 
 # Verify install
-pip install --index-url https://test.pypi.org/simple/ promptware-sdk
+pip install --index-url https://test.pypi.org/simple/ assertlang-sdk
 
 # Upload to PyPI
 twine upload dist/*
@@ -545,7 +545,7 @@ npm run build
 
 # Test package locally
 npm pack
-npm install -g promptware-sdk-0.1.0.tgz
+npm install -g assertlang-sdk-0.1.0.tgz
 
 # Publish to npm
 npm publish --access public
@@ -555,7 +555,7 @@ npm publish --access public
 
 ## Open Questions
 
-1. **Namespace ownership**: Who owns `@promptware` npm scope and `promptware-sdk` PyPI package?
+1. **Namespace ownership**: Who owns `@assertlang` npm scope and `assertlang-sdk` PyPI package?
 2. **Repository hosting**: Monorepo vs separate repos for SDKs?
 3. **Release automation**: Automate version bumping and publishing via GitHub Actions?
 4. **Compatibility guarantees**: Should SDK `0.x` versions maintain backward compatibility with older daemon versions?

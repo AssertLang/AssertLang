@@ -14,12 +14,12 @@ This directory contains client SDKs in multiple languages that make it easy to i
 
 **Installation**:
 ```bash
-pip install promptware
+pip install assertlang
 ```
 
 **Usage**:
 ```python
-from promptware.sdk import Agent
+from assertlang.sdk import Agent
 
 # Connect to MCP server
 agent = Agent("http://localhost:3000", max_retries=5)
@@ -43,12 +43,12 @@ profile = agent.user.get(user_id=user['user_id'])
 
 **Installation**:
 ```bash
-npm install @promptware/client
+npm install @assertlang/client
 ```
 
 **Usage**:
 ```javascript
-import { Agent } from '@promptware/client';
+import { Agent } from '@assertlang/client';
 
 // Connect to MCP server
 const agent = new Agent('http://localhost:3000', {
@@ -86,7 +86,7 @@ go get github.com/AssertLang/AssertLang/sdks/go
 import "github.com/AssertLang/AssertLang/sdks/go"
 
 // Connect to MCP server
-agent := promptware.NewAgent("http://localhost:3000")
+agent := assertlang.NewAgent("http://localhost:3000")
 
 // Call verbs
 result, err := agent.Call("user.create@v1", map[string]interface{}{
@@ -183,7 +183,7 @@ All SDKs include test utilities:
 
 ```python
 # Python
-from promptware.sdk import Agent
+from assertlang.sdk import Agent
 agent = Agent("http://localhost:3000")
 health = agent.health()  # Returns health status
 ```
@@ -196,7 +196,7 @@ const health = await agent.health();  // Returns health status
 
 ```go
 // Go
-agent := promptware.NewAgent("http://localhost:3000")
+agent := assertlang.NewAgent("http://localhost:3000")
 health, err := agent.Health()  // Returns health status
 ```
 

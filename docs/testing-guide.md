@@ -37,7 +37,7 @@ asl test http://localhost:3000 --auto --coverage
 Use the testing framework programmatically:
 
 ```python
-from promptware.testing import AgentTester
+from assertlang.testing import AgentTester
 
 # Create tester
 tester = AgentTester("http://localhost:3000")
@@ -229,7 +229,7 @@ tester.export_coverage_report("coverage.json")
 Define custom test cases for specific scenarios:
 
 ```python
-from promptware.testing import TestCase
+from assertlang.testing import TestCase
 
 # Define custom tests
 custom_tests = [
@@ -503,7 +503,7 @@ Always test agents during development:
 
 ```bash
 # Generate agent
-promptware generate my-agent.al
+assertlang generate my-agent.al
 
 # Start agent
 cd generated/my-agent

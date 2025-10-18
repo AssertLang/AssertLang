@@ -1,5 +1,5 @@
 """
-Comprehensive tests for the Promptware Universal Type System.
+Comprehensive tests for the AssertLang Universal Type System.
 
 Tests cover:
 - Cross-language type mappings

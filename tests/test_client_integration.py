@@ -1,5 +1,5 @@
 """
-Integration tests for Promptware MCP client library.
+Integration tests for AssertLang MCP client library.
 
 Tests client against a real generated HTTP server.
 """

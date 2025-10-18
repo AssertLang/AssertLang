@@ -33,4 +33,4 @@ This catalog lists the AssertLang tool specifications currently checked in under
 ## Next Steps
 - Extend specs with additional adapters (Node, Go, Rust, .NET) so multi-runtime programs can be generated automatically.
 - Capture generated artifacts (schemas, adapters, tests) in an index to keep the catalog in sync.
-- Wire `promptware toolgen --list` to surface this table programmatically for downstream tooling.
+- Wire `assertlang toolgen --list` to surface this table programmatically for downstream tooling.

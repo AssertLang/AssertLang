@@ -1,6 +1,6 @@
 # AssertLang CLI Guide
 
-Complete guide to using the `promptware` command-line interface.
+Complete guide to using the `assertlang` command-line interface.
 
 ## Installation
 
@@ -8,8 +8,8 @@ Complete guide to using the `promptware` command-line interface.
 
 ```bash
 # Clone repository
-git clone https://github.com/promptware/promptware.git
-cd promptware
+git clone https://github.com/assertlang/assertlang.git
+cd assertlang
 
 # Install in development mode
 pip install -e .
@@ -18,13 +18,13 @@ pip install -e .
 ### From PyPI (when published)
 
 ```bash
-pip install promptware
+pip install assertlang
 ```
 
 ### Verify Installation
 
 ```bash
-promptware --version
+assertlang --version
 # Output: AssertLang 0.1.0
 ```
 
@@ -34,36 +34,36 @@ promptware --version
 
 ```bash
 # Create from basic template
-promptware init my-agent
+assertlang init my-agent
 
 # Create API agent
-promptware init api-service --template api --port 8080
+assertlang init api-service --template api --port 8080
 
 # Create AI agent
-promptware init chatbot --template ai
+assertlang init chatbot --template ai
 ```
 
 ### 2. Validate Agent
 
 ```bash
 # Basic validation
-promptware validate my-agent.al
+assertlang validate my-agent.al
 
 # Detailed validation with verbose output
-promptware validate my-agent.al --verbose
+assertlang validate my-agent.al --verbose
 ```
 
 ### 3. Generate Server
 
 ```bash
 # Generate Python server
-promptware generate my-agent.al --lang python
+assertlang generate my-agent.al --lang python
 
 # Generate Go server
-promptware generate my-agent.al --lang go
+assertlang generate my-agent.al --lang go
 
 # Generate Node.js server with custom output
-promptware generate my-agent.al --lang typescript --output ./servers/nodejs
+assertlang generate my-agent.al --lang typescript --output ./servers/nodejs
 ```
 
 ### 4. Build & Run
@@ -198,13 +198,13 @@ Coverage: 100.0%
 ✨ Testing complete!
 ```
 
-### `promptware generate`
+### `assertlang generate`
 
 Generate MCP server from .al file.
 
 **Usage:**
 ```bash
-promptware generate <file.al> [OPTIONS]
+assertlang generate <file.al> [OPTIONS]
 ```
 
 **Options:**
@@ -218,19 +218,19 @@ promptware generate <file.al> [OPTIONS]
 **Examples:**
 ```bash
 # Python server (default)
-promptware generate agent.al
+assertlang generate agent.al
 
 # Preview without writing files
-promptware generate agent.al --dry-run
+assertlang generate agent.al --dry-run
 
 # Go server with build (skip confirmation)
-promptware generate agent.al --lang go --build --yes
+assertlang generate agent.al --lang go --build --yes
 
 # Quiet mode for CI/CD
-promptware generate agent.al --quiet --yes
+assertlang generate agent.al --quiet --yes
 
 # Rust server with custom output
-promptware generate agent.al --lang rust --output ./production/rust-server
+assertlang generate agent.al --lang rust --output ./production/rust-server
 ```
 
 **Safety Features:**
@@ -241,13 +241,13 @@ promptware generate agent.al --lang rust --output ./production/rust-server
 - **Quiet Mode** - Use `--quiet/-q` for minimal output (only errors)
 - **NO_COLOR Support** - Respects `NO_COLOR` environment variable for plain text output
 
-### `promptware validate`
+### `assertlang validate`
 
 Validate .al file syntax and structure.
 
 **Usage:**
 ```bash
-promptware validate <file.al> [OPTIONS]
+assertlang validate <file.al> [OPTIONS]
 ```
 
 **Options:**
@@ -256,10 +256,10 @@ promptware validate <file.al> [OPTIONS]
 **Examples:**
 ```bash
 # Basic validation
-promptware validate agent.al
+assertlang validate agent.al
 
 # Detailed output
-promptware validate agent.al --verbose
+assertlang validate agent.al --verbose
 ```
 
 **Output (verbose):**
@@ -276,13 +276,13 @@ promptware validate agent.al --verbose
   Tools: http, auth, logger
 ```
 
-### `promptware list-tools`
+### `assertlang list-tools`
 
 List all available tools that can be used in .al agents.
 
 **Usage:**
 ```bash
-promptware list-tools [OPTIONS]
+assertlang list-tools [OPTIONS]
 ```
 
 **Options:**
@@ -302,13 +302,13 @@ promptware list-tools [OPTIONS]
 **Examples:**
 ```bash
 # List all tools
-promptware list-tools
+assertlang list-tools
 
 # List Python tools only
-promptware list-tools --lang python
+assertlang list-tools --lang python
 
 # List HTTP & API tools
-promptware list-tools --category "HTTP & APIs"
+assertlang list-tools --category "HTTP & APIs"
 ```
 
 **Output:**
@@ -327,13 +327,13 @@ promptware list-tools --category "HTTP & APIs"
 Total: 38 tools
 ```
 
-### `promptware init`
+### `assertlang init`
 
 Create new .al agent from template.
 
 **Usage:**
 ```bash
-promptware init <name> [OPTIONS]
+assertlang init <name> [OPTIONS]
 ```
 
 **Options:**
@@ -350,22 +350,22 @@ promptware init <name> [OPTIONS]
 **Examples:**
 ```bash
 # Basic agent
-promptware init my-agent
+assertlang init my-agent
 
 # API service on port 8080
-promptware init api-service --template api --port 8080
+assertlang init api-service --template api --port 8080
 
 # AI chatbot
-promptware init chatbot --template ai
+assertlang init chatbot --template ai
 ```
 
-### `promptware config`
+### `assertlang config`
 
 Manage global and per-project configuration.
 
 **Usage:**
 ```bash
-promptware config <subcommand> [OPTIONS]
+assertlang config <subcommand> [OPTIONS]
 ```
 
 **Subcommands:**
@@ -375,22 +375,22 @@ promptware config <subcommand> [OPTIONS]
 Set configuration value.
 
 ```bash
-promptware config set <key> <value> [--project]
+assertlang config set <key> <value> [--project]
 ```
 
 **Examples:**
 ```bash
 # Set default language globally
-promptware config set defaults.language rust
+assertlang config set defaults.language rust
 
 # Set default language for current project only
-promptware config set defaults.language nodejs --project
+assertlang config set defaults.language nodejs --project
 
 # Set auto-confirm for generate command
-promptware config set generate.auto_confirm true
+assertlang config set generate.auto_confirm true
 
 # Set default port
-promptware config set init.port 8080
+assertlang config set init.port 8080
 ```
 
 #### `config get`
@@ -398,16 +398,16 @@ promptware config set init.port 8080
 Get configuration value.
 
 ```bash
-promptware config get <key>
+assertlang config get <key>
 ```
 
 **Examples:**
 ```bash
 # Get default language
-promptware config get defaults.language
+assertlang config get defaults.language
 
 # Get init port
-promptware config get init.port
+assertlang config get init.port
 ```
 
 #### `config unset`
@@ -415,16 +415,16 @@ promptware config get init.port
 Remove configuration value.
 
 ```bash
-promptware config unset <key> [--project]
+assertlang config unset <key> [--project]
 ```
 
 **Examples:**
 ```bash
 # Remove global language default
-promptware config unset defaults.language
+assertlang config unset defaults.language
 
 # Remove project-level setting
-promptware config unset defaults.language --project
+assertlang config unset defaults.language --project
 ```
 
 #### `config list`
@@ -432,7 +432,7 @@ promptware config unset defaults.language --project
 List all configuration values.
 
 ```bash
-promptware config list
+assertlang config list
 ```
 
 **Output:**
@@ -457,16 +457,16 @@ promptware config list
 Show path to config file.
 
 ```bash
-promptware config path [--project]
+assertlang config path [--project]
 ```
 
 **Examples:**
 ```bash
 # Show global config file path
-promptware config path
+assertlang config path
 
 # Show project config file path
-promptware config path --project
+assertlang config path --project
 ```
 
 #### `config edit`
@@ -474,13 +474,13 @@ promptware config path --project
 Open config file in editor.
 
 ```bash
-promptware config edit [--project]
+assertlang config edit [--project]
 ```
 
 **Configuration Files:**
 
-- **Global**: `~/.config/promptware/config.toml` (XDG-compliant)
-- **Project**: `.promptware/config.toml` (in current directory)
+- **Global**: `~/.config/assertlang/config.toml` (XDG-compliant)
+- **Project**: `.assertlang/config.toml` (in current directory)
 
 **Precedence:**
 
@@ -512,40 +512,40 @@ auto_confirm = false
 port = 8080
 ```
 
-### `promptware help`
+### `assertlang help`
 
 Show help for commands.
 
 **Usage:**
 ```bash
-promptware help [COMMAND]
+assertlang help [COMMAND]
 ```
 
 **Examples:**
 ```bash
 # General help
-promptware help
+assertlang help
 
 # Command-specific help
-promptware help generate
-promptware help validate
-promptware help config
+assertlang help generate
+assertlang help validate
+assertlang help config
 ```
 
-### `promptware version`
+### `assertlang version`
 
 Show version information.
 
 **Usage:**
 ```bash
-promptware --version
+assertlang --version
 ```
 
 ## Environment Variables
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `PROMPTWARE_HOME` | AssertLang installation directory | Auto-detected |
+| `ASSERTLANG_HOME` | AssertLang installation directory | Auto-detected |
 | `XDG_CONFIG_HOME` | Base directory for config files | `~/.config` |
 | `NO_COLOR` | Disable colored output | Not set |
 | `ANTHROPIC_API_KEY` | API key for AI-powered agents | None |
@@ -559,21 +559,21 @@ promptware --version
 
 ```bash
 # 1. Set up preferences (optional)
-promptware config set defaults.language python
+assertlang config set defaults.language python
 
 # 2. Create agent
-promptware init my-service --template api
+assertlang init my-service --template api
 
 # 3. Edit my-service.al (customize verbs, tools)
 
 # 4. Validate
-promptware validate my-service.al --verbose
+assertlang validate my-service.al --verbose
 
 # 5. Preview generation (dry-run)
-promptware generate my-service.al --dry-run
+assertlang generate my-service.al --dry-run
 
 # 6. Generate development server
-promptware generate my-service.al
+assertlang generate my-service.al
 
 # 7. Run and test
 cd generated/my-service
@@ -585,10 +585,10 @@ python my-service_server.py
 
 ```bash
 # 1. Validate agent
-promptware validate my-service.al
+assertlang validate my-service.al
 
 # 2. Generate production server (skip confirmation for CI)
-promptware generate my-service.al --lang go --output ./production --yes --quiet
+assertlang generate my-service.al --lang go --output ./production --yes --quiet
 
 # 3. Build
 python3 scripts/build_server.py my-service.al go
@@ -601,39 +601,39 @@ python3 scripts/build_server.py my-service.al go
 
 ```bash
 # Use --yes and --quiet for automated pipelines
-promptware generate agent.al --yes --quiet
+assertlang generate agent.al --yes --quiet
 
 # Or set config for entire project
-promptware config set generate.auto_confirm true --project
+assertlang config set generate.auto_confirm true --project
 
 # Disable colored output
 export NO_COLOR=1
-promptware generate agent.al --yes
+assertlang generate agent.al --yes
 ```
 
 ### Multi-Language Workflow
 
 ```bash
 # Generate servers in all languages
-promptware generate agent.al --lang python --output ./servers/python
-promptware generate agent.al --lang typescript --output ./servers/nodejs
-promptware generate agent.al --lang go --output ./servers/go
-promptware generate agent.al --lang csharp --output ./servers/csharp
-promptware generate agent.al --lang rust --output ./servers/rust
+assertlang generate agent.al --lang python --output ./servers/python
+assertlang generate agent.al --lang typescript --output ./servers/nodejs
+assertlang generate agent.al --lang go --output ./servers/go
+assertlang generate agent.al --lang csharp --output ./servers/csharp
+assertlang generate agent.al --lang rust --output ./servers/rust
 ```
 
 ## Troubleshooting
 
 ### Command Not Found
 
-If `promptware` command is not found after installation:
+If `assertlang` command is not found after installation:
 
 ```bash
 # Ensure pip bin directory is in PATH
 export PATH="$HOME/.local/bin:$PATH"
 
 # Or use python -m
-python3 -m promptware.cli --help
+python3 -m assertlang.cli --help
 ```
 
 ### Import Errors
@@ -645,7 +645,7 @@ If you get import errors:
 pip install -e .
 
 # Or add to PYTHONPATH
-export PYTHONPATH="/path/to/promptware:$PYTHONPATH"
+export PYTHONPATH="/path/to/assertlang:$PYTHONPATH"
 ```
 
 ### Build Failures (Compiled Languages)
@@ -668,26 +668,26 @@ python3 scripts/build_server.py agent.al go
 
 ```bash
 # Add to ~/.bashrc
-eval "$(_PROMPTWARE_COMPLETE=bash_source promptware)"
+eval "$(_ASSERTLANG_COMPLETE=bash_source assertlang)"
 ```
 
 ### Zsh
 
 ```bash
 # Add to ~/.zshrc
-eval "$(_PROMPTWARE_COMPLETE=zsh_source promptware)"
+eval "$(_ASSERTLANG_COMPLETE=zsh_source assertlang)"
 ```
 
 ### Fish
 
 ```bash
-# Add to ~/.config/fish/completions/promptware.fish
-_PROMPTWARE_COMPLETE=fish_source promptware | source
+# Add to ~/.config/fish/completions/assertlang.fish
+_ASSERTLANG_COMPLETE=fish_source assertlang | source
 ```
 
 ## Next Steps
 
-- [Writing .al Agents](./promptware-dsl-spec.md)
+- [Writing .al Agents](./assertlang-dsl-spec.md)
 - [Production Deployment](./production-hardening.md)
 - [Tool Development](./tool-development.md)
 - [API Reference](./api-reference.md)

@@ -9,8 +9,8 @@ const app = express();
 app.use(express.json());
 
 // Tool registry imports
-// NOTE: Update this path to point to your promptware-js installation
-import { getRegistry } from '../../../promptware-js/registry.js';
+// NOTE: Update this path to point to your assertlang-js installation
+import { getRegistry } from '../../../assertlang-js/registry.js';
 const toolRegistry = getRegistry();
 
 // Tool executor setup

@@ -219,7 +219,7 @@ def test_error_toggle_dotnet_template_returns_bool():
 
 @pytest.mark.skipif(shutil.which("dotnet") is None, reason="dotnet CLI not available")
 @pytest.mark.skipif(
-    os.environ.get("PROMPTWARE_RUN_DOTNET_SMOKE") != "1", reason="dotnet smoke test disabled"
+    os.environ.get("ASSERTLANG_RUN_DOTNET_SMOKE") != "1", reason="dotnet smoke test disabled"
 )
 def test_error_toggle_dotnet_template_compiles(tmp_path):
     project_dir = tmp_path / "dotnet_adapter"

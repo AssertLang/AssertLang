@@ -112,7 +112,7 @@ from research_contracts import (
     validate_research_query,
     validate_research_results
 )
-from promptware.runtime.contracts import ContractViolationError
+from assertlang.runtime.contracts import ContractViolationError
 
 
 class ResearchAgent:
@@ -212,7 +212,7 @@ from research_contracts import (
     validate_research_results,
     validate_article_draft
 )
-from promptware.runtime.contracts import ContractViolationError
+from assertlang.runtime.contracts import ContractViolationError
 
 
 class ResearchPipeline:
@@ -368,7 +368,7 @@ Create `robust_pipeline.py`:
 ```python
 from crewai import Agent, Task
 from research_contracts import validate_research_query
-from promptware.runtime.contracts import ContractViolationError
+from assertlang.runtime.contracts import ContractViolationError
 import time
 
 
@@ -468,7 +468,7 @@ Create `test_research_pipeline.py`:
 import pytest
 from research_pipeline import ResearchPipeline
 from research_agent import ResearchAgent
-from promptware.runtime.contracts import ContractViolationError
+from assertlang.runtime.contracts import ContractViolationError
 
 
 class TestResearchAgent:

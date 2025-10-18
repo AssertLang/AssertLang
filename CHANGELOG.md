@@ -386,9 +386,9 @@ asl compile file.al -o file.json
 - Shareable with AI agents
 - Default output: `<input>.al.json`
 
-**`promptware run`** - Direct PW execution
+**`assertlang run`** - Direct PW execution
 ```bash
-promptware run file.al
+assertlang run file.al
 ```
 - Compiles to Python and executes
 - Ideal for quick testing
@@ -518,7 +518,7 @@ None - fully backward compatible with v2.0.
 - **NO_COLOR Support**: Respects `NO_COLOR` environment variable for plain text output
 
 #### Configuration Management
-- **Config Command**: New `promptware config` command for managing preferences
+- **Config Command**: New `assertlang config` command for managing preferences
   - `config set <key> <value>` - Set configuration values
   - `config get <key>` - Get configuration values
   - `config unset <key>` - Remove configuration values
@@ -526,8 +526,8 @@ None - fully backward compatible with v2.0.
   - `config path` - Show config file path
   - `config edit` - Open config file in editor
 - **Configuration Files**:
-  - Global config: `~/.config/promptware/config.toml` (XDG-compliant)
-  - Project config: `.promptware/config.toml`
+  - Global config: `~/.config/assertlang/config.toml` (XDG-compliant)
+  - Project config: `.assertlang/config.toml`
 - **Precedence System**: CLI args > Project config > Global config > Defaults
 - **TOML/JSON Support**: Configuration files support both TOML (preferred) and JSON formats
 - **Dot-Notation Access**: Use dot notation for nested keys (e.g., `defaults.language`)
@@ -541,11 +541,11 @@ None - fully backward compatible with v2.0.
 
 ### Changed
 - **Version**: Bumped to 1.1.0
-- **CLI Entry Point**: Now uses `promptware.cli:main` (old `cli/main.py` deprecated)
+- **CLI Entry Point**: Now uses `assertlang.cli:main` (old `cli/main.py` deprecated)
 - **Generator System**: Unified generator system (`mcp_server_generator_*.py`)
 
 ### Deprecated
-- `cli/main.py` - Old CLI implementation (replaced by `promptware/cli.py`)
+- `cli/main.py` - Old CLI implementation (replaced by `assertlang/cli.py`)
 - `language/nodejs_server_generator.py` - Old Node.js generator (use `mcp_server_generator_nodejs.py`)
 - `language/go_server_generator.py` - Old Go generator (use `mcp_server_generator_go.py`)
 
@@ -603,14 +603,14 @@ None - fully backward compatible with v2.0.
 
 #### Client SDKs
 
-**Python SDK** (`promptware.sdk`):
+**Python SDK** (`assertlang.sdk`):
 - Circuit breaker pattern
 - Automatic retries with exponential backoff
 - Connection pooling
 - Dynamic verb discovery via Proxy pattern
 - Type hints and dataclasses
 
-**Node.js SDK** (`@promptware/client`):
+**Node.js SDK** (`@assertlang/client`):
 - Same features as Python SDK
 - JavaScript Proxy for dynamic method calls
 - EventEmitter for circuit breaker state
@@ -630,13 +630,13 @@ None - fully backward compatible with v2.0.
   - System (plugin-manager, marketplace-uploader)
 
 #### CLI Commands
-- `promptware init <name>` - Create new agent from template
-- `promptware generate <file.al>` - Generate MCP server
-- `promptware validate <file.al>` - Validate agent syntax
+- `assertlang init <name>` - Create new agent from template
+- `assertlang generate <file.al>` - Generate MCP server
+- `assertlang validate <file.al>` - Validate agent syntax
 - `asl test <url>` - Test running agent
-- `promptware list-tools` - List available tools
-- `promptware help` - Show help
-- `promptware --version` - Show version
+- `assertlang list-tools` - List available tools
+- `assertlang help` - Show help
+- `assertlang --version` - Show version
 
 #### Agent Definition Language (.al)
 - Declarative agent definitions
@@ -672,15 +672,15 @@ git pull origin main
 pip install -e .
 
 # Configure preferences (optional)
-promptware config set defaults.language python
-promptware config list
+assertlang config set defaults.language python
+assertlang config list
 ```
 
 ### Migration Guide
 
 #### From Old CLI
 If you were using `cli/main.py` directly:
-- Now use `promptware` command (installed via setup.py)
+- Now use `assertlang` command (installed via setup.py)
 - Old CLI still works but is deprecated
 - Update scripts to use new safety flags
 

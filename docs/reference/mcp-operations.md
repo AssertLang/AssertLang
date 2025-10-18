@@ -14,7 +14,7 @@ AssertLang exposes an MCP server that allows AI assistants (like Claude) to pars
 - AI-native architecture for contract validation
 
 **Status**:
-- Server: ✅ Available (`promptware-mcp-server`)
+- Server: ✅ Available (`assertlang-mcp-server`)
 - Python client: ✅ Complete
 - JavaScript client: ✅ Complete
 - Operations: 23 available
@@ -26,10 +26,10 @@ AssertLang exposes an MCP server that allows AI assistants (like Claude) to pars
 ### Install MCP Server
 
 ```bash
-pip install promptware
+pip install assertlang
 
 # MCP server included
-promptware-mcp-server --version
+assertlang-mcp-server --version
 ```
 
 ### Configure Claude Desktop
@@ -39,8 +39,8 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
 ```json
 {
   "mcpServers": {
-    "promptware": {
-      "command": "promptware-mcp-server",
+    "assertlang": {
+      "command": "assertlang-mcp-server",
       "args": [],
       "env": {}
     }
@@ -232,7 +232,7 @@ Suggestion: Add postcondition to validate result
 {
   "success": true,
   "language": "python",
-  "code": "from promptware.runtime.contracts import check_precondition, check_postcondition\n\ndef add(x: int, y: int) -> int:\n    check_precondition(x > 0, \"positive\", f\"Expected x > 0, got x = {x}\")\n    \n    __result = x + y\n    \n    check_postcondition(__result > 0, \"result_positive\", f\"Expected result > 0, got result = {__result}\")\n    \n    return __result\n"
+  "code": "from assertlang.runtime.contracts import check_precondition, check_postcondition\n\ndef add(x: int, y: int) -> int:\n    check_precondition(x > 0, \"positive\", f\"Expected x > 0, got x = {x}\")\n    \n    __result = x + y\n    \n    check_postcondition(__result > 0, \"result_positive\", f\"Expected result > 0, got result = {__result}\")\n    \n    return __result\n"
 }
 ```
 
@@ -389,7 +389,7 @@ Would you like me to generate the fixed code?
 ### Python Script Integration
 
 ```python
-from promptware.mcp import MCPClient
+from assertlang.mcp import MCPClient
 
 client = MCPClient()
 
@@ -424,7 +424,7 @@ print(js_code)
 ### JavaScript Integration
 
 ```javascript
-const { MCPClient } = require('@promptware/mcp');
+const { MCPClient } = require('@assertlang/mcp');
 
 const client = new MCPClient();
 
@@ -499,12 +499,12 @@ console.log('JavaScript:', jsCode);
 ```json
 {
   "mcpServers": {
-    "promptware": {
-      "command": "promptware-mcp-server",
+    "assertlang": {
+      "command": "assertlang-mcp-server",
       "args": ["--debug", "--port", "3000"],
       "env": {
-        "PROMPTWARE_CACHE_DIR": "/tmp/promptware",
-        "PROMPTWARE_LOG_LEVEL": "INFO"
+        "ASSERTLANG_CACHE_DIR": "/tmp/assertlang",
+        "ASSERTLANG_LOG_LEVEL": "INFO"
       }
     }
   }
@@ -517,9 +517,9 @@ console.log('JavaScript:', jsCode);
 - `--host <host>` - Bind to specific host (default: localhost)
 
 **Environment Variables**:
-- `PROMPTWARE_CACHE_DIR` - Cache directory
-- `PROMPTWARE_LOG_LEVEL` - Log level (DEBUG, INFO, WARN, ERROR)
-- `PROMPTWARE_MAX_FILE_SIZE` - Max PW file size (default: 1MB)
+- `ASSERTLANG_CACHE_DIR` - Cache directory
+- `ASSERTLANG_LOG_LEVEL` - Log level (DEBUG, INFO, WARN, ERROR)
+- `ASSERTLANG_MAX_FILE_SIZE` - Max PW file size (default: 1MB)
 
 ---
 

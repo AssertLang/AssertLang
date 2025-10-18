@@ -59,7 +59,7 @@ pw_tree = pw_function(name="add", params=[...], body=[...])
 ```bash
 # Clone the repository
 git clone https://github.com/AssertLang/AssertLang.git
-cd promptware
+cd assertlang
 
 # Install dependencies
 pip install -e .
@@ -772,7 +772,7 @@ Download/access from GitHub:
 ```bash
 # Clone the repository
 git clone https://github.com/AssertLang/AssertLang.git
-cd promptware/.vscode/extensions/pw-language/
+cd assertlang/.vscode/extensions/pw-language/
 
 # Files included:
 # - package.json                    Extension manifest

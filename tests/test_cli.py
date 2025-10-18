@@ -14,7 +14,7 @@ def test_cli_version():
     )
 
     assert result.returncode == 0
-    assert "Promptware v0.3.0" in result.stdout
+    assert "AssertLang v0.3.0" in result.stdout
     assert "Python" in result.stdout
     assert "Node.js" in result.stdout
     assert "Go" in result.stdout

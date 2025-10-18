@@ -1,5 +1,5 @@
 """
-Promptware Testing Framework
+AssertLang Testing Framework
 
 Provides comprehensive testing capabilities for MCP agents:
 - Auto-generated test fixtures from verb schemas

@@ -16,7 +16,7 @@ from language.tool_executor import ToolExecutor
 # MCP Server for agent: user-service
 app = FastAPI(
     title="user-service",
-    description="Promptware MCP Agent",
+    description="AssertLang MCP Agent",
     version="v1"
 )
 

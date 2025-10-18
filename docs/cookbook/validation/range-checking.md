@@ -29,7 +29,7 @@ def set_volume(level: int):
 
 Use contracts to enforce min/max bounds:
 
-```promptware
+```assertlang
 function set_volume(level: Int) -> Int
   requires:
     level >= 0
@@ -49,7 +49,7 @@ end
 
 ### Integer Range
 
-```promptware
+```assertlang
 function validate_range(
     value: Int,
     min_val: Int,
@@ -73,7 +73,7 @@ end
 
 ### Float Range
 
-```promptware
+```assertlang
 function validate_float_range(
     value: Float,
     min_val: Float,
@@ -101,7 +101,7 @@ end
 
 ### Percentage (0-100)
 
-```promptware
+```assertlang
 function validate_percentage(value: Float) -> Result<Float, String>
   do
     if value < 0.0:
@@ -119,7 +119,7 @@ end
 
 ### Age Validation
 
-```promptware
+```assertlang
 function validate_age(age: Int) -> Result<Int, String>
   do
     return validate_range(age, 0, 150)
@@ -148,7 +148,7 @@ end
 
 ### Temperature Range
 
-```promptware
+```assertlang
 function validate_temperature_celsius(temp: Float) -> Result<Float, String>
   do
     # Absolute zero: -273.15°C
@@ -168,7 +168,7 @@ end
 
 ### HTTP Status Code
 
-```promptware
+```assertlang
 function validate_http_status(code: Int) -> Result<Int, String>
   do
     if code < 100:
@@ -190,7 +190,7 @@ end
 
 ### Safe Array Access
 
-```promptware
+```assertlang
 function validate_index(
     index: Int,
     array_length: Int
@@ -231,7 +231,7 @@ end
 
 ### Inclusive Range [min, max]
 
-```promptware
+```assertlang
 function in_range_inclusive(
     value: Int,
     min_val: Int,
@@ -247,7 +247,7 @@ end
 
 ### Exclusive Range (min, max)
 
-```promptware
+```assertlang
 function in_range_exclusive(
     value: Int,
     min_val: Int,
@@ -263,7 +263,7 @@ end
 
 ### Half-Open Range [min, max)
 
-```promptware
+```assertlang
 function in_range_half_open(
     value: Int,
     min_val: Int,
@@ -283,7 +283,7 @@ end
 
 ### Non-Contiguous Ranges
 
-```promptware
+```assertlang
 function validate_port_number(port: Int) -> Result<Int, String>
   do
     # Valid port range: 0-65535
@@ -308,7 +308,7 @@ end
 
 ### Business Hours Range
 
-```promptware
+```assertlang
 function validate_business_hour(hour: Int) -> Result<Int, String>
   do
     if hour < 0 or hour > 23:
@@ -448,7 +448,7 @@ def submit_rating(product_id: str, rating: int) -> dict:
 
 ### ❌ Off-by-One Errors
 
-```promptware
+```assertlang
 # Bad: Allows index == length (out of bounds!)
 function validate_index_bad(index: Int, length: Int) -> Bool
   do
@@ -459,7 +459,7 @@ end
 
 ### ✅ Correct Bounds
 
-```promptware
+```assertlang
 # Good: index must be < length
 function validate_index_good(index: Int, length: Int) -> Result<Int, String>
   do
@@ -473,7 +473,7 @@ end
 
 ### ❌ Swapped Min/Max
 
-```promptware
+```assertlang
 # Bad: No validation that min <= max
 function validate_bad(value: Int, min_val: Int, max_val: Int) -> Bool
   do
@@ -485,7 +485,7 @@ end
 
 ### ✅ Validate Min/Max
 
-```promptware
+```assertlang
 # Good: Ensure min <= max
 function validate_good(value: Int, min_val: Int, max_val: Int) -> Result<Int, String>
   requires:

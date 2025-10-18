@@ -2,7 +2,7 @@
 """
 Two-Service Demo Runner
 
-Demonstrates service-to-service communication using Promptware MCP over HTTP.
+Demonstrates service-to-service communication using AssertLang MCP over HTTP.
 
 Architecture:
     Order Service (port 23451) --> User Service (port 23450)
@@ -222,7 +222,7 @@ def demo_metadata_inspection():
 def main():
     """Run the two-service demo."""
     print("=" * 60)
-    print("Promptware Two-Service Demo")
+    print("AssertLang Two-Service Demo")
     print("Service-to-Service Communication via MCP over HTTP")
     print("=" * 60)
 
@@ -267,7 +267,7 @@ def main():
             print("3. ✓ Tool integration works (storage, http)")
             print("4. ✓ Service-to-service calls work via MCP client")
             print("5. ✓ Metadata tracking works (mode, tools_executed, timestamp)")
-            print("\nPromptware: Universal polyglot service protocol ✨")
+            print("\nAssertLang: Universal polyglot service protocol ✨")
 
             return 0
 

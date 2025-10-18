@@ -580,10 +580,10 @@ Execute PW directly:
 
 ```bash
 # Run (compiles to Python and executes)
-promptware run file.al
+assertlang run file.al
 
 # With verbose output
-promptware run file.al --verbose
+assertlang run file.al --verbose
 ```
 
 ---

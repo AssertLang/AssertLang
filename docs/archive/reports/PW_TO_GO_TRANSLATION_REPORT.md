@@ -288,7 +288,7 @@ These are **expected limitations** when translating Python → Go, not bugs:
    - Infer concrete types from context
 
 8. **Add runtime helpers package** (2 hours)
-   - Create `promptware_runtime.go` with helpers
+   - Create `assertlang_runtime.go` with helpers
    - Include `contains()`, `enumerate()`, etc.
 
 ---

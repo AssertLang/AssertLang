@@ -1,7 +1,7 @@
 """
-Rust Parser V2: Arbitrary Rust code → Promptware IR
+Rust Parser V2: Arbitrary Rust code → AssertLang IR
 
-This parser converts arbitrary Rust code into the Promptware intermediate
+This parser converts arbitrary Rust code into the AssertLang intermediate
 representation (IR), enabling universal code translation between Rust and
 any other supported language.
 
@@ -58,7 +58,7 @@ from dsl.ir import (
 
 
 class RustParserV2:
-    """Parse arbitrary Rust code into Promptware IR."""
+    """Parse arbitrary Rust code into AssertLang IR."""
 
     def __init__(self):
         self.current_file: Optional[str] = None

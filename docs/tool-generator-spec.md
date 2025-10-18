@@ -85,5 +85,5 @@ For each tool spec the generator produces:
 
 ## Next Steps
 1. Author `toolgen.spec.schema.json` describing the manifest structure.
-2. Build `promptware toolgen` CLI that validates the manifest and renders the artifacts above.
+2. Build `assertlang toolgen` CLI that validates the manifest and renders the artifacts above.
 3. Pilot with the Logger tool spec, then expand to the rest of the catalog.

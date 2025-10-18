@@ -1,5 +1,5 @@
 """
-Tests for Promptware IR (Intermediate Representation)
+Tests for AssertLang IR (Intermediate Representation)
 
 This test suite validates:
 1. IR node creation and initialization

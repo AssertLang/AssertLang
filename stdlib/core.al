@@ -1,4 +1,4 @@
-# Promptware Standard Library - Core Types
+# AssertLang Standard Library - Core Types
 # Option<T> and Result<T,E> for safe error handling
 
 # ============================================================================

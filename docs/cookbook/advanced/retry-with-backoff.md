@@ -38,7 +38,7 @@ for i in range(10):
 
 Exponential backoff with jitter:
 
-```promptware
+```assertlang
 function retry_with_backoff<T>(
     operation: function() -> Result<T, String>,
     max_attempts: Int,
@@ -77,7 +77,7 @@ end
 
 ### Simple Retry
 
-```promptware
+```assertlang
 function retry_simple<T>(
     operation: function() -> Result<T, String>,
     max_attempts: Int
@@ -111,7 +111,7 @@ end
 
 ### With Maximum Delay Cap
 
-```promptware
+```assertlang
 function retry_exponential<T>(
     operation: function() -> Result<T, String>,
     max_attempts: Int,
@@ -158,7 +158,7 @@ end
 
 ### Prevent Thundering Herd
 
-```promptware
+```assertlang
 function retry_with_jitter<T>(
     operation: function() -> Result<T, String>,
     max_attempts: Int,
@@ -209,7 +209,7 @@ end
 
 ### Only Retry Transient Errors
 
-```promptware
+```assertlang
 function is_retryable_error(error: String) -> Bool
   do
     # Retry on specific error patterns
@@ -280,7 +280,7 @@ end
 
 ### Fail Fast After Multiple Failures
 
-```promptware
+```assertlang
 type CircuitState:
   is_open: Bool
   failure_count: Int

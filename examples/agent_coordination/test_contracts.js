@@ -1,9 +1,9 @@
 // Test contract enforcement
-const { ContractViolationError, setValidationMode, ValidationMode } = require('../../promptware/runtime/contracts.js');
+const { ContractViolationError, setValidationMode, ValidationMode } = require('../../assertlang/runtime/contracts.js');
 
 // Inline the generated functions for testing
 function add(a, b) {
-    const { shouldCheckPreconditions } = require('../../promptware/runtime/contracts.js');
+    const { shouldCheckPreconditions } = require('../../assertlang/runtime/contracts.js');
     if (shouldCheckPreconditions()) {
         if (!(((a > 0) && (b > 0)))) {
             throw new ContractViolationError({
@@ -19,7 +19,7 @@ function add(a, b) {
 }
 
 function divide(a, b) {
-    const { shouldCheckPreconditions } = require('../../promptware/runtime/contracts.js');
+    const { shouldCheckPreconditions } = require('../../assertlang/runtime/contracts.js');
     if (shouldCheckPreconditions()) {
         if (!((b !== 0))) {
             throw new ContractViolationError({

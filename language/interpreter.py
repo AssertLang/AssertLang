@@ -10,7 +10,7 @@ from tools import run_tool
 
 
 class PWExecutionError(RuntimeError):
-    """Raised when executing a Promptware plan fails."""
+    """Raised when executing a AssertLang plan fails."""
 
     def __init__(self, message: str, *, code: str = "E_RUNTIME") -> None:
         super().__init__(message)

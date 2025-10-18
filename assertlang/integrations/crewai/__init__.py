@@ -1,5 +1,5 @@
 """
-CrewAI integration for Promptware contracts.
+CrewAI integration for AssertLang contracts.
 
 Enables CrewAI agents to use PW contracts for type-safe coordination.
 

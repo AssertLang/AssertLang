@@ -34,7 +34,7 @@ Pydantic is Python's standard for data validation, but writing duplicate validat
 
 AssertLang can generate Pydantic models directly from type definitions:
 
-```promptware
+```assertlang
 # user.al
 type User:
   name: String
@@ -63,7 +63,7 @@ This ensures your Pydantic models and PW contracts stay in sync.
 
 ### Basic Type Definition
 
-```promptware
+```assertlang
 # models.al
 type User:
   name: String
@@ -75,7 +75,7 @@ end
 
 ### With Documentation
 
-```promptware
+```assertlang
 type Product:
   # Product identifier
   id: String
@@ -95,7 +95,7 @@ Documentation becomes Pydantic `Field(description=...)`.
 
 ### With Validation Contracts
 
-```promptware
+```assertlang
 function create_user(name: String, email: String, age: Int) -> User
   requires:
     len(name) > 0
@@ -167,7 +167,7 @@ print("✅ Generated models.py")
 
 ### Define API with PW Contracts
 
-```promptware
+```assertlang
 # api_contracts.al
 type CreateUserRequest:
   name: String
@@ -244,7 +244,7 @@ def create_user_endpoint(req: CreateUserRequest):
 
 ### Optional Fields
 
-```promptware
+```assertlang
 type UserProfile:
   user_id: String
   bio: Option<String>
@@ -263,7 +263,7 @@ class UserProfile(BaseModel):
 
 ### Lists and Maps
 
-```promptware
+```assertlang
 type Order:
   order_id: String
   items: List<String>
@@ -284,7 +284,7 @@ class Order(BaseModel):
 
 ### Nested Types
 
-```promptware
+```assertlang
 type Address:
   street: String
   city: String
@@ -321,7 +321,7 @@ class Customer(BaseModel):
 
 ### Define Agent Input/Output Contracts
 
-```promptware
+```assertlang
 # agents/research_agent.al
 type ResearchQuery:
   topic: String
@@ -406,7 +406,7 @@ print(f"Confidence: {result.confidence}")
 
 LangGraph uses TypedDict for state machines. Generate TypedDict instead of Pydantic:
 
-```promptware
+```assertlang
 # workflow_state.al
 type WorkflowState:
   current_step: String
@@ -461,7 +461,7 @@ workflow.add_node("process", process_step)
 
 ### Define Types and Contracts
 
-```promptware
+```assertlang
 # ecommerce.al
 type Product:
   id: String
@@ -592,7 +592,7 @@ def checkout_cart(user_id: str, payment_method: str):
 
 Pydantic models should be data containers, not behavior:
 
-```promptware
+```assertlang
 # Good: Simple data types
 type User:
   name: String
@@ -607,7 +607,7 @@ end
 
 Let Pydantic handle types, PW contracts handle business rules:
 
-```promptware
+```assertlang
 function create_order(items: List<CartItem>, total: Float) -> Order
   requires:
     len(items) > 0       # Business rule
@@ -623,7 +623,7 @@ end
 
 Documentation becomes Pydantic `Field(description=...)`:
 
-```promptware
+```assertlang
 type Order:
   # Unique order identifier (UUID format)
   order_id: String
@@ -649,7 +649,7 @@ watch -n 1 asl build models.al --lang pydantic -o models.py
 
 Track schema versions for API compatibility:
 
-```promptware
+```assertlang
 type UserV1:
   name: String
   email: String
@@ -686,7 +686,7 @@ end
 ### Issue: "Cannot generate Pydantic for generic types"
 
 **Problem:**
-```promptware
+```assertlang
 type Container<T>:
   value: T
 end
@@ -698,7 +698,7 @@ end
 ```
 
 **Solution:** Use concrete types:
-```promptware
+```assertlang
 type StringContainer:
   value: String
 end
@@ -719,7 +719,7 @@ end
 ```
 
 **Solution:** Use Option in PW:
-```promptware
+```assertlang
 type User:
   name: String
   age: Option<Int>  # Generates Optional[int]

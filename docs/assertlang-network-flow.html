@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Promptware Traffic Flow</title>
+  <title>AssertLang Traffic Flow</title>
   <style>
     body { font-family: Arial, sans-serif; background: #f9f9fb; color: #222; }
     .diagram { display: flex; flex-direction: column; align-items: center; margin-top: 30px; }
@@ -14,7 +14,7 @@
 </head>
 <body>
   <div class="diagram">
-    <div class="title">Promptware Networking Flow</div>
+    <div class="title">AssertLang Networking Flow</div>
 
     <div class="box">1. Prompt (User / Agent)</div>
     <div class="arrow">⬇️</div>
@@ -25,7 +25,7 @@
     <div class="box">3. Internal Bind: <br><b>UDS Socket</b> (/run/mcpd/sock/&lt;task_id&gt;.sock)<br><small>(Fallback: high-range TCP 61000–64999)</small></div>
     <div class="arrow">⬇️</div>
 
-    <div class="box highlight">4. Promptware Gateway <br>Listens on <b>Port 23456</b><br><small>Stable, public-facing</small></div>
+    <div class="box highlight">4. AssertLang Gateway <br>Listens on <b>Port 23456</b><br><small>Stable, public-facing</small></div>
     <div class="arrow">⬇️</div>
 
     <div class="box">5. User Access: <br>http://127.0.0.1:23456/apps/&lt;task_id&gt;/</div>

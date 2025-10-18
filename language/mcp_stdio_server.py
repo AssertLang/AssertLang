@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Native stdio MCP server for Promptware agents.
+Native stdio MCP server for AssertLang agents.
 
 Implements the MCP protocol directly over stdin/stdout.
 """
@@ -65,7 +65,7 @@ def load_agent_definition(agent_file: str) -> Dict[str, Any]:
                 param_type = param.get("type", "string")
                 param_required = param.get("required", False)
 
-                # Convert Promptware types to JSON Schema types
+                # Convert AssertLang types to JSON Schema types
                 json_schema_type = param_type
                 if param_type == "int":
                     json_schema_type = "integer"
@@ -375,7 +375,7 @@ Analyze the above data and provide your response in the required JSON format.
                         "tools": {}
                     },
                     "serverInfo": {
-                        "name": f"promptware-{self.agent_info.get('agent_name', 'agent')}",
+                        "name": f"assertlang-{self.agent_info.get('agent_name', 'agent')}",
                         "version": "0.3.0"
                     }
                 }

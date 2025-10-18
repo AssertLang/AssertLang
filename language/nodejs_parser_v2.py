@@ -1,7 +1,7 @@
 """
 Node.js Parser V2: Arbitrary JavaScript/TypeScript → IR
 
-Parses arbitrary JavaScript and TypeScript code into Promptware IR.
+Parses arbitrary JavaScript and TypeScript code into AssertLang IR.
 Supports:
 - Functions (regular, arrow, async)
 - Classes (properties, methods, constructor)

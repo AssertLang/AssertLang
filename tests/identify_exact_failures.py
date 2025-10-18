@@ -267,7 +267,7 @@ async function fetchData(url) {
 
 def main():
     print("\n" + "="*70)
-    print("PROMPTWARE V2 - EXACT FAILURE PATTERN IDENTIFICATION")
+    print("ASSERTLANG V2 - EXACT FAILURE PATTERN IDENTIFICATION")
     print("="*70)
     print("\nAnalyzing test results to identify specific issues...\n")
 

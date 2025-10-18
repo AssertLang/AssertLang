@@ -1,5 +1,5 @@
 /**
- * Promptware SDK - Production-ready client library for MCP agents (Node.js).
+ * AssertLang SDK - Production-ready client library for MCP agents (Node.js).
  *
  * Features:
  * - Dynamic verb discovery with autocomplete

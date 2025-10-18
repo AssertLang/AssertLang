@@ -32,7 +32,7 @@
 ```bash
 # Clone repository
 git clone https://github.com/AssertLang/AssertLang.git
-cd promptware
+cd assertlang
 
 # Install Python dependencies
 pip install -e .
@@ -44,7 +44,7 @@ python3 -m pytest tests/ -v
 ### Project Structure
 
 ```
-promptware/
+assertlang/
 ├── dsl/                    # Core PW language implementation
 │   ├── ir.py              # IR data structures
 │   ├── pw_parser.py       # PW → IR parser
@@ -64,7 +64,7 @@ promptware/
 │   ├── dotnet_parser_v2.py
 │   └── dotnet_generator_v2.py
 │
-├── promptware/             # CLI and SDK
+├── assertlang/             # CLI and SDK
 │   ├── cli.py             # Command-line interface
 │   └── sdk.py             # Python SDK
 │
@@ -280,7 +280,7 @@ TYPE_MAPPINGS["mylang"] = {
 }
 ```
 
-4. **Update CLI** (`promptware/cli.py`):
+4. **Update CLI** (`assertlang/cli.py`):
 ```python
 build_parser.add_argument(
     '--lang',
@@ -575,7 +575,7 @@ python3 -m pytest tests/integration/ -v
 # Test CLI commands
 asl build examples/calculator_cli.al --lang python
 asl compile examples/calculator_cli.al
-promptware run examples/calculator_cli.al
+assertlang run examples/calculator_cli.al
 ```
 
 #### 2. Update Documentation
@@ -586,7 +586,7 @@ vim CHANGELOG.md  # Add release notes
 
 # Update version numbers
 vim setup.py  # version="2.1.0b3"
-vim promptware/__init__.py  # __version__ = "2.1.0b3"
+vim assertlang/__init__.py  # __version__ = "2.1.0b3"
 
 # Create release summary
 vim RELEASE_SUMMARY_v2.1.0b3.md

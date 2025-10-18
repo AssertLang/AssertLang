@@ -107,7 +107,7 @@ Each example includes generated code:
 ```bash
 # Clone repository
 git clone https://github.com/AssertLang/AssertLang.git
-cd promptware
+cd assertlang
 
 # Install dependencies
 pip install -e .

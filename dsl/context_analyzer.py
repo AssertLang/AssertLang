@@ -1,5 +1,5 @@
 """
-Promptware Context Analyzer
+AssertLang Context Analyzer
 
 This module provides context-aware analysis for the universal code translation system.
 It tracks cross-function dependencies, data flow, and variable usage patterns to enable

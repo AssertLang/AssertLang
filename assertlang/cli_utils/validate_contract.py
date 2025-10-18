@@ -1,5 +1,5 @@
 """
-Contract validation for Promptware.
+Contract validation for AssertLang.
 
 Validates .al files for contract syntax and semantic correctness:
 - Syntax correctness

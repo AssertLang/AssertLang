@@ -1,4 +1,4 @@
-# Promptware DSL Demo
+# AssertLang DSL Demo
 # Demonstrates: sequential calls, variable assignment, conditionals, state management
 
 call http as fetch_repo {

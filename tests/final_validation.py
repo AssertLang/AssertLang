@@ -236,7 +236,7 @@ def test_all_languages():
 
 def main():
     print("\n" + "=" * 70)
-    print("FINAL VALIDATION: Promptware V2 Universal Code Translation")
+    print("FINAL VALIDATION: AssertLang V2 Universal Code Translation")
     print("=" * 70)
 
     tests = [

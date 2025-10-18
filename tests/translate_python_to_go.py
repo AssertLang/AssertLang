@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Translate Python file to Go using Promptware V2 system.
+Translate Python file to Go using AssertLang V2 system.
 
 This script demonstrates the complete translation pipeline:
 Python → IR → Go
@@ -23,7 +23,7 @@ def translate_python_to_go(input_path: str, output_path: str):
         input_path: Path to input Python file
         output_path: Path to output Go file
     """
-    print(f"=== Promptware Python → Go Translation ===")
+    print(f"=== AssertLang Python → Go Translation ===")
     print(f"Input:  {input_path}")
     print(f"Output: {output_path}")
     print()
@@ -81,7 +81,7 @@ def translate_python_to_go(input_path: str, output_path: str):
     print("\n✓ Translation complete!")
 
 if __name__ == "__main__":
-    input_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_code_original.py"
-    output_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_code_from_python.go"
+    input_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_code_original.py"
+    output_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_code_from_python.go"
 
     translate_python_to_go(input_file, output_file)

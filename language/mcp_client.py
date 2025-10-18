@@ -1,5 +1,5 @@
 """
-MCP Client Library for Promptware agents.
+MCP Client Library for AssertLang agents.
 
 Enables agents to call MCP verbs on other agents.
 """

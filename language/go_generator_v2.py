@@ -1,7 +1,7 @@
 """
 Go Generator V2 - IR → Idiomatic Go Code
 
-This generator converts Promptware's Intermediate Representation (IR) into
+This generator converts AssertLang's Intermediate Representation (IR) into
 production-quality, idiomatic Go code. Unlike V1 (which generated MCP servers),
 V2 generates arbitrary Go code with full language support.
 

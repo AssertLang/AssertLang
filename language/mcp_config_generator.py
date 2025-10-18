@@ -2,7 +2,7 @@
 Generate MCP server configurations for editors (Cursor, Windsurf, etc).
 
 Editors like Cursor and Windsurf have built-in MCP client support.
-This module generates config files so editors can connect to Promptware agents.
+This module generates config files so editors can connect to AssertLang agents.
 """
 
 import json
@@ -132,7 +132,7 @@ def generate_agent_mcp_config(
     import sys
 
     if use_python:
-        # Use Python directly to run the CLI (works without promptware in PATH)
+        # Use Python directly to run the CLI (works without assertlang in PATH)
         # Find cli/main.py relative to pw_file
         project_root = pw_file.parent
         while not (project_root / "cli" / "main.py").exists():
@@ -154,7 +154,7 @@ def generate_agent_mcp_config(
                 env={"PYTHONPATH": str(project_root.absolute())}
             )
         else:
-            # Fallback to promptware command
+            # Fallback to assertlang command
             return MCPServerConfig(
                 name=agent_name,
                 command="assertlang",
@@ -243,7 +243,7 @@ Or manually add:
 1. Copy the content from {config_path}
 2. Paste into your Cursor settings
 
-Your Promptware agents are now available in Cursor!
+Your AssertLang agents are now available in Cursor!
 Use them via the MCP menu or chat interface.
 """
 
@@ -258,7 +258,7 @@ Setup Steps:
 2. Go to Settings → Extensions → MCP
 3. The config at {config_path} will be loaded automatically
 
-Your Promptware agents are now available in Windsurf!
+Your AssertLang agents are now available in Windsurf!
 """
 
     elif editor == "cline":
@@ -274,7 +274,7 @@ Setup Steps:
 4. Search for "Cline MCP"
 5. The config at {config_path} will be used
 
-Your Promptware agents are now available in Cline!
+Your AssertLang agents are now available in Cline!
 """
 
     return f"Configuration generated at: {config_path}"

@@ -1,5 +1,5 @@
 /**
- * Promptware Contract Runtime - JavaScript
+ * AssertLang Contract Runtime - JavaScript
  *
  * Runtime validation for Design-by-Contract in JavaScript.
  * Provides identical behavior to the Python contract runtime.

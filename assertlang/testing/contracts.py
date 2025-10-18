@@ -1,5 +1,5 @@
 """
-Contract testing utilities for Promptware.
+Contract testing utilities for AssertLang.
 
 Provides helper functions for testing contracts:
 - assert_precondition_passes/fails

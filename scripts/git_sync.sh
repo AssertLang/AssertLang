@@ -24,9 +24,9 @@ fi
 
 # Verify we're not pushing to upstream accidentally
 REMOTE_URL="$(git remote get-url origin 2>/dev/null || echo '')"
-if [[ "$REMOTE_URL" == *"Promptware-dev/promptware"* ]]; then
+if [[ "$REMOTE_URL" == *"AssertLang-dev/assertlang"* ]]; then
   echo "ERROR: origin points to upstream. Fix remote configuration:" >&2
-  echo "  git remote set-url origin git@github.com:3CH0xyz/promptware.git" >&2
+  echo "  git remote set-url origin git@github.com:3CH0xyz/assertlang.git" >&2
   exit 1
 fi
 

@@ -1,7 +1,7 @@
 # AssertLang DSL Formatter & Linter Plan
 
 ## Formatter (`pwfmt`, CLI skeleton)
-- `promptware dsl format <file>`
+- `assertlang dsl format <file>`
 - Normalise directives (keyword + single space, arguments sorted where applicable).
 - Canonical indentation: directives at column 0; block bodies indented by two spaces.
 - Ensure blank line separation between logical sections (files, calls, control blocks).
@@ -20,7 +20,7 @@
 - Provide an idempotent operation: running pwfmt multiple times should not change output.
 
 ## Linter (`pwlint`, CLI skeleton)
-- `promptware dsl lint <file>` (exit code 0/1).
+- `assertlang dsl lint <file>` (exit code 0/1).
 - Undefined tool aliases, unused tool outputs, missing `start` or `file` directives.
 - Reference validation: `${alias.path}` must resolve; flag circular dependencies.
 - Control-flow warnings: empty branches, unreachable `else`, improper indentation.
@@ -34,4 +34,4 @@
 - Suggestions for repeated payload keys, duplicate deps.
 - Provide exit codes (0 success, 1 warnings, 2 errors) for CI integration.
 
-First iteration can embed formatter/linter in CLI (`promptware dsl format/lint`).
+First iteration can embed formatter/linter in CLI (`assertlang dsl format/lint`).

@@ -19,11 +19,11 @@ const require = createRequire(import.meta.url);
  */
 export class ToolRegistry {
   constructor() {
-    // Point to the main Promptware tools directory
-    // __dirname is promptware-js/, so dirname(__dirname) is Promptware/
-    const promptwareRoot = dirname(__dirname);
-    this.toolsDir = join(promptwareRoot, 'tools');
-    this.schemasDir = join(promptwareRoot, 'schemas', 'tools');
+    // Point to the main AssertLang tools directory
+    // __dirname is assertlang-js/, so dirname(__dirname) is AssertLang/
+    const assertlangRoot = dirname(__dirname);
+    this.toolsDir = join(assertlangRoot, 'tools');
+    this.schemasDir = join(assertlangRoot, 'schemas', 'tools');
     this._cache = new Map();
     this._schemaCache = new Map();
   }

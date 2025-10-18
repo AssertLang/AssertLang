@@ -1,5 +1,5 @@
 """
-Promptware IR Semantic Validator
+AssertLang IR Semantic Validator
 
 This module provides semantic validation for IR trees. It ensures that:
 1. Type consistency - Types are used correctly

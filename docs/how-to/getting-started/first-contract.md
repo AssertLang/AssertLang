@@ -11,7 +11,7 @@
 - Generate Python code with contracts
 - Test the generated code
 
-**Prerequisites**: AssertLang installed (`pip install promptware`)
+**Prerequisites**: AssertLang installed (`pip install assertlang`)
 
 **Time**: 10 minutes
 
@@ -55,7 +55,7 @@ function subtract(x: int, y: int) -> int {
 Check syntax and structure:
 
 ```bash
-promptware validate calculator.al
+assertlang validate calculator.al
 ```
 
 **Expected output**:
@@ -92,7 +92,7 @@ cat calculator.py
 
 **Output** (formatted):
 ```python
-from promptware.runtime.contracts import check_precondition, check_postcondition
+from assertlang.runtime.contracts import check_precondition, check_postcondition
 
 def add(x: int, y: int) -> int:
     # Preconditions
@@ -152,7 +152,7 @@ Create `test_calculator.py`:
 
 ```python
 from calculator import add, subtract
-from promptware.runtime.contracts import ContractViolationError
+from assertlang.runtime.contracts import ContractViolationError
 import pytest
 
 def test_add_valid():
@@ -231,7 +231,7 @@ Contract Violation: Precondition
 ## What You Learned
 
 ✅ **Write contracts** - Use `@requires` and `@ensures`
-✅ **Validate syntax** - Use `promptware validate`
+✅ **Validate syntax** - Use `assertlang validate`
 ✅ **Generate code** - Use `asl build`
 ✅ **Test contracts** - Verify violations are caught
 
@@ -272,20 +272,20 @@ asl build calculator.al --lang rust -o calculator.rs
 
 ## Troubleshooting
 
-**Problem**: `promptware: command not found`
+**Problem**: `assertlang: command not found`
 
 **Fix**: Install AssertLang
 ```bash
-pip install promptware
+pip install assertlang
 ```
 
 ---
 
-**Problem**: `ModuleNotFoundError: No module named 'promptware'`
+**Problem**: `ModuleNotFoundError: No module named 'assertlang'`
 
-**Fix**: Ensure promptware is installed in your Python environment
+**Fix**: Ensure assertlang is installed in your Python environment
 ```bash
-python -m pip install promptware
+python -m pip install assertlang
 ```
 
 ---
@@ -304,7 +304,7 @@ python -m pip install promptware
 **Fix**: Import runtime module
 ```python
 # At top of file
-from promptware.runtime.contracts import check_precondition, check_postcondition
+from assertlang.runtime.contracts import check_precondition, check_postcondition
 ```
 
 ---

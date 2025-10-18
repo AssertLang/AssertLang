@@ -142,7 +142,7 @@ This directory contains comprehensive tests for the AssertLang universal code tr
 ```bash
 asl build file.al --lang python -o file.py
 asl compile file.al -o file.json
-promptware run file.al
+assertlang run file.al
 ```
 
 ---

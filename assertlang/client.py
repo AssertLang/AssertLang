@@ -1,5 +1,5 @@
 """
-MCP Client for calling Promptware services over HTTP.
+MCP Client for calling AssertLang services over HTTP.
 
 Provides both a reusable client class and a simple function-based API.
 """
@@ -10,7 +10,7 @@ from .transport import HTTPTransport
 
 class MCPClient:
     """
-    MCP client for calling Promptware services.
+    MCP client for calling AssertLang services.
 
     Example:
         >>> client = MCPClient("http://localhost:23450")

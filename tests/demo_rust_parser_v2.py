@@ -2,7 +2,7 @@
 """
 Demo: Rust Parser V2 - Arbitrary Rust → IR
 
-Demonstrates parsing real-world Rust code into Promptware IR.
+Demonstrates parsing real-world Rust code into AssertLang IR.
 """
 
 from language.rust_parser_v2 import parse_rust_code
@@ -211,7 +211,7 @@ def demo_real_world_adapter():
     print("=" * 80 + "\n")
 
     # Read actual adapter file
-    adapter_path = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/tools/storage/adapters/adapter_rust.rs"
+    adapter_path = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/tools/storage/adapters/adapter_rust.rs"
 
     try:
         with open(adapter_path, 'r') as f:

@@ -1,11 +1,11 @@
 blank_issues_enabled: true
 contact_links:
   - name: 💬 Discussions
-    url: https://github.com/Promptware-dev/promptware/discussions
+    url: https://github.com/AssertLang-dev/assertlang/discussions
     about: Ask questions and discuss ideas with the community
   - name: 📚 Documentation
-    url: https://github.com/Promptware-dev/promptware/tree/main/docs
+    url: https://github.com/AssertLang-dev/assertlang/tree/main/docs
     about: Read the documentation for guides and references
   - name: 🚀 Quick Start
-    url: https://github.com/Promptware-dev/promptware#readme
-    about: Get started with Promptware quickly
+    url: https://github.com/AssertLang-dev/assertlang#readme
+    about: Get started with AssertLang quickly

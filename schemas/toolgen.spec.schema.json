@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://assertlang.dev/schemas/toolgen.spec.schema.json",
-  "title": "Promptware Tool Generator Spec",
+  "title": "AssertLang Tool Generator Spec",
   "type": "object",
   "required": ["tool"],
   "properties": {

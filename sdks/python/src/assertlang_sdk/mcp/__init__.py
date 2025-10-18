@@ -1,4 +1,4 @@
-"""MCP verb wrappers for Promptware SDK."""
+"""MCP verb wrappers for AssertLang SDK."""
 
 from .verbs import MCP
 

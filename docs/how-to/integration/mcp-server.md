@@ -64,7 +64,7 @@
 Check that MCP server is installed:
 
 ```bash
-promptware-mcp-server --version
+assertlang-mcp-server --version
 ```
 
 **Expected output**:
@@ -74,7 +74,7 @@ AssertLang MCP Server 2.2.0
 
 **If not found**:
 ```bash
-pip install --upgrade promptware
+pip install --upgrade assertlang
 ```
 
 ---
@@ -92,8 +92,8 @@ pip install --upgrade promptware
 ```json
 {
   "mcpServers": {
-    "promptware": {
-      "command": "promptware-mcp-server",
+    "assertlang": {
+      "command": "assertlang-mcp-server",
       "args": [],
       "env": {}
     }
@@ -106,12 +106,12 @@ pip install --upgrade promptware
 ```json
 {
   "mcpServers": {
-    "promptware": {
-      "command": "promptware-mcp-server",
+    "assertlang": {
+      "command": "assertlang-mcp-server",
       "args": ["--debug"],
       "env": {
-        "PROMPTWARE_CACHE_DIR": "/tmp/promptware",
-        "PROMPTWARE_LOG_LEVEL": "INFO"
+        "ASSERTLANG_CACHE_DIR": "/tmp/assertlang",
+        "ASSERTLANG_LOG_LEVEL": "INFO"
       }
     }
   }
@@ -224,7 +224,7 @@ function sqrt(x: float) -> float {
 
 **Expected response**:
 ```python
-from promptware.runtime.contracts import check_precondition, check_postcondition
+from assertlang.runtime.contracts import check_precondition, check_postcondition
 
 def sqrt(x: float) -> float:
     check_precondition(x >= 0.0, "non_negative", "x >= 0.0", "sqrt",
@@ -363,17 +363,17 @@ function calculate_discount(price: float, percent: float) -> float {
 ```json
 {
   "mcpServers": {
-    "promptware": {
-      "command": "promptware-mcp-server",
+    "assertlang": {
+      "command": "assertlang-mcp-server",
       "args": [
         "--debug",           // Enable debug logging
         "--port", "3000",    // Custom port
         "--host", "localhost"  // Bind to specific host
       ],
       "env": {
-        "PROMPTWARE_CACHE_DIR": "/tmp/promptware",
-        "PROMPTWARE_LOG_LEVEL": "DEBUG",
-        "PROMPTWARE_MAX_FILE_SIZE": "5242880"  // 5MB max
+        "ASSERTLANG_CACHE_DIR": "/tmp/assertlang",
+        "ASSERTLANG_LOG_LEVEL": "DEBUG",
+        "ASSERTLANG_MAX_FILE_SIZE": "5242880"  // 5MB max
       }
     }
   }
@@ -397,8 +397,8 @@ function calculate_discount(price: float, percent: float) -> float {
    ```json
    {
      "mcpServers": {
-       "promptware": {
-         "command": "promptware-mcp-server"
+       "assertlang": {
+         "command": "assertlang-mcp-server"
        }
      }
    }
@@ -408,7 +408,7 @@ function calculate_discount(price: float, percent: float) -> float {
 
 4. **Verify MCP server installed**:
    ```bash
-   which promptware-mcp-server
+   which assertlang-mcp-server
    ```
 
 ---
@@ -420,13 +420,13 @@ function calculate_discount(price: float, percent: float) -> float {
 
 2. **Test server manually**:
    ```bash
-   promptware-mcp-server --debug
+   assertlang-mcp-server --debug
    ```
 
 3. **Reinstall**:
    ```bash
-   pip uninstall promptware
-   pip install promptware
+   pip uninstall assertlang
+   pip install assertlang
    ```
 
 ---
@@ -445,7 +445,7 @@ function calculate_discount(price: float, percent: float) -> float {
 
 3. **Clear cache**:
    ```bash
-   rm -rf /tmp/promptware/*
+   rm -rf /tmp/assertlang/*
    ```
 
 ---

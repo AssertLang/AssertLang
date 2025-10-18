@@ -38,7 +38,7 @@ tools/
 - Manual validation (until automated tests land):
 ```
 dotnet script <<'CSX'
-#r "./.promptware/tmp/AssertLangAdapters.dll"
+#r "./.assertlang/tmp/AssertLangAdapters.dll"
 Console.WriteLine(AssertLang.ApiAuth.Adapter.Handle(new()
 {
   ["type"] = "apiKey",

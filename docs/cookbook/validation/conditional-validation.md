@@ -35,7 +35,7 @@ def validate_payment(payment: dict):
 
 Use contracts for declarative conditional validation:
 
-```promptware
+```assertlang
 type Payment:
   method: String  # "credit_card" | "paypal" | "bank_transfer"
   card_number: Option<String>
@@ -70,7 +70,7 @@ end
 
 ### If-Then Validation
 
-```promptware
+```assertlang
 type ShippingInfo:
   method: String
   address: Option<String>
@@ -100,7 +100,7 @@ end
 
 ### Age-Dependent Validation
 
-```promptware
+```assertlang
 type UserRegistration:
   name: String
   age: Int
@@ -152,7 +152,7 @@ end
 
 ### Discount Type Validation
 
-```promptware
+```assertlang
 type Discount:
   discount_type: String  # "percentage" | "fixed_amount"
   value: Float
@@ -195,7 +195,7 @@ end
 
 ### Account Type Validation
 
-```promptware
+```assertlang
 type Account:
   account_type: String  # "personal" | "business"
   name: String
@@ -252,7 +252,7 @@ end
 
 ### Complex Dependencies
 
-```promptware
+```assertlang
 type EmployeeForm:
   employee_type: String  # "full_time" | "part_time" | "contractor"
   salary: Option<Float>
@@ -429,7 +429,7 @@ def validate_bad(emp: Employee) -> bool:
 
 ### ✅ Handle All Cases
 
-```promptware
+```assertlang
 # Good: Explicit handling of all cases
 function validate_good(emp: Employee) -> Result<Employee, String>
   do
@@ -471,7 +471,7 @@ def update_user(data):
 
 ### ✅ Shared Validation
 
-```promptware
+```assertlang
 # Good: Same validation for create and update
 function validate_account(account: Account) -> Result<Account, List<String>>
   do

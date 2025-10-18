@@ -45,7 +45,7 @@ Python → IR → PW DSL (text) → IR → Go
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│              PROMPTWARE UNIVERSAL TRANSLATION SYSTEM             │
+│              ASSERTLANG UNIVERSAL TRANSLATION SYSTEM             │
 │                                                                  │
 │  Python Code ──┐                                  ┌── Python    │
 │  Node.js Code ─┤                                  ├── Node.js   │

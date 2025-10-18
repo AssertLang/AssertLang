@@ -29,7 +29,7 @@ def create_user(name: str, email: str, age: int):
 
 Combine Pydantic (type validation) + PW contracts (business rules):
 
-```promptware
+```assertlang
 function create_user(name: String, email: String, age: Int) -> User
   requires:
     len(name) > 0
@@ -54,7 +54,7 @@ end
 ### Generate Models and Contracts
 
 **Step 1: Define in AssertLang**
-```promptware
+```assertlang
 # api_types.al
 type User:
   id: String
@@ -76,7 +76,7 @@ asl build api_types.al --lang pydantic -o models.py
 ```
 
 **Step 3: Write contracts**
-```promptware
+```assertlang
 # user_service.al
 function create_user_validated(req: CreateUserRequest) -> Result<User, String>
   requires:
@@ -137,7 +137,7 @@ def create_user_endpoint(req: CreateUserRequest):
 
 ### Complete User API
 
-```promptware
+```assertlang
 # user_crud.al
 type User:
   id: String
@@ -314,7 +314,7 @@ def list_users_endpoint(skip: int = 0, limit: int = 100):
 
 ### Search with Validation
 
-```promptware
+```assertlang
 function search_users(
     query: String,
     min_age: Int,
@@ -360,7 +360,7 @@ def search_users_endpoint(
 
 ### Posts for Users
 
-```promptware
+```assertlang
 type Post:
   id: String
   user_id: String

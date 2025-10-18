@@ -1,4 +1,4 @@
-# Promptware Standard Library - Collections
+# AssertLang Standard Library - Collections
 # List<T>, Map<K,V>, Set<T> with Rust-inspired APIs
 
 import stdlib.core  # For Option<T>

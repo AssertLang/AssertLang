@@ -16,7 +16,7 @@
 
 ## File
 - Extension: `.pw`
-- Run: `promptware run myscript.pw`
+- Run: `assertlang run myscript.pw`
 
 ## Port
 - Default: 23456
@@ -25,7 +25,7 @@
 
 ## Example
 ```bash
-promptware run "create a calculator that adds two numbers"
+assertlang run "create a calculator that adds two numbers"
 ```
 
 

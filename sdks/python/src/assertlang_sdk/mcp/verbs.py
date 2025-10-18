@@ -2,19 +2,19 @@
 
 from typing import Any, Literal
 
-from ..errors import E_JSON, E_RUNTIME, PromptwareError
+from ..errors import E_JSON, E_RUNTIME, AssertLangError
 from ..types import MCPEnvelope
 from .transport import Transport
 
 
 class MCP:
-    """MCP verb wrapper for Promptware daemon integration."""
+    """MCP verb wrapper for AssertLang daemon integration."""
 
     def __init__(self, daemon_url: str = "http://localhost:8765"):
         """Initialize MCP client.
 
         Args:
-            daemon_url: URL of Promptware daemon (default: http://localhost:8765)
+            daemon_url: URL of AssertLang daemon (default: http://localhost:8765)
         """
         self.transport = Transport(daemon_url)
 
@@ -31,7 +31,7 @@ class MCP:
             Parsed plan AST
 
         Raises:
-            PromptwareError: If plan creation fails
+            AssertLangError: If plan creation fails
         """
         payload = {"source": source, "format": format}
         response = self.transport.call_verb("plan.create@v1", payload)
@@ -48,7 +48,7 @@ class MCP:
             run_id for tracking execution
 
         Raises:
-            PromptwareError: If execution fails to start
+            AssertLangError: If execution fails to start
         """
         payload = {"plan": plan, "state": state or {}}
         response = self.transport.call_verb("run.start@v1", payload)
@@ -69,7 +69,7 @@ class MCP:
             Check result with actual_status_code and success flag
 
         Raises:
-            PromptwareError: If HTTP check fails or times out
+            AssertLangError: If HTTP check fails or times out
         """
         payload = {"url": url, "status_code": status_code, "timeout_sec": timeout_sec}
         response = self.transport.call_verb("httpcheck.assert@v1", payload)
@@ -88,7 +88,7 @@ class MCP:
             Completion metadata
 
         Raises:
-            PromptwareError: If report fails
+            AssertLangError: If report fails
         """
         payload = {"run_id": run_id, "status": status}
         response = self.transport.call_verb("report.finish@v1", payload)
@@ -104,16 +104,16 @@ class MCP:
             Response data payload
 
         Raises:
-            PromptwareError: If envelope contains error
+            AssertLangError: If envelope contains error
         """
         if not envelope["ok"]:
             error = envelope.get("error", {})
             code = error.get("code", E_RUNTIME)
             message = error.get("message", "Unknown error")
-            raise PromptwareError(code, message)
+            raise AssertLangError(code, message)
 
         data = envelope.get("data")
         if data is None:
-            raise PromptwareError(E_JSON, "Response envelope missing 'data' field")
+            raise AssertLangError(E_JSON, "Response envelope missing 'data' field")
 
         return data

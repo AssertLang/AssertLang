@@ -1,5 +1,5 @@
 /**
- * Example: Using the Promptware Node.js SDK
+ * Example: Using the AssertLang Node.js SDK
  *
  * Demonstrates all SDK features:
  * - Dynamic verb discovery
@@ -16,7 +16,7 @@ import {
   InvalidParamsError,
   ConnectionError,
   CircuitBreakerError,
-} from '../promptware-js/sdk.js';
+} from '../assertlang-js/sdk.js';
 
 async function basicUsage() {
   console.log('=== Basic Usage ===\n');
@@ -226,9 +226,9 @@ async function convenienceFunction() {
 
 // Main execution
 (async () => {
-  console.log('Promptware SDK Examples\n');
+  console.log('AssertLang SDK Examples\n');
   console.log('Make sure you have an agent running on http://localhost:3000');
-  console.log('Or use: promptware generate test.al --lang python && cd generated/test && python test_server.py\n');
+  console.log('Or use: assertlang generate test.al --lang python && cd generated/test && python test_server.py\n');
 
   try {
     await basicUsage();

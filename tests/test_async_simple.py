@@ -5,7 +5,7 @@ Tests all parsers and generators for async support.
 """
 
 import sys
-sys.path.insert(0, '/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware')
+sys.path.insert(0, '/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang')
 
 from language.python_parser_v2 import PythonParserV2
 from language.nodejs_parser_v2 import NodeJSParserV2

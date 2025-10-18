@@ -11,7 +11,7 @@ from langchain_core.messages import HumanMessage, SystemMessage
 # MCP Server for agent: ai-code-reviewer
 app = FastAPI(
     title="ai-code-reviewer",
-    description="Promptware MCP Agent",
+    description="AssertLang MCP Agent",
     version="v1"
 )
 

@@ -2,7 +2,7 @@
 """
 End-to-end DevOps Pipeline Demo
 
-Demonstrates all Promptware features:
+Demonstrates all AssertLang features:
 - AI-powered code review (LangChain + Claude)
 - Observability (OpenTelemetry traces + metrics)
 - Multi-agent communication (MCP)
@@ -177,7 +177,7 @@ async def demo_agent_communication():
 async def main():
     """Run all demos."""
     print("\n" + "="*70)
-    print(" " * 10 + "PROMPTWARE DEVOPS SUITE DEMO")
+    print(" " * 10 + "ASSERTLANG DEVOPS SUITE DEMO")
     print(" " * 5 + "AI + Observability + Workflows + Agent Communication")
     print("="*70)
 

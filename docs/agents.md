@@ -12,7 +12,7 @@ When starting work on AssertLang:
 2. **Check the test suite** — Run `python3 -m pytest tests/ -q` to validate your local environment.
 3. **Review recent commits** — `git log --oneline -10` shows the last 10 changes and helps orient to active areas.
 4. **Identify your focus area**:
-   - DSL work → `language/`, `docs/promptware-dsl-*.md`
+   - DSL work → `language/`, `docs/assertlang-dsl-*.md`
    - Tool adapters → `tools/`, `docs/toolgen-*.md`, adapter smoke tests in `tests/tools/`
    - Runner protocol → `runners/`, `docs/development-guide.md`
    - SDK design → `docs/sdk/`
@@ -86,7 +86,7 @@ This appends an entry to the mission progress file on `planning/master-plan` usi
 ### Documentation Updates
 
 - If you change runner protocol, update `docs/development-guide.md`.
-- If you add DSL syntax, update `docs/promptware-dsl-spec.md` and regenerate examples.
+- If you add DSL syntax, update `docs/assertlang-dsl-spec.md` and regenerate examples.
 - If you introduce new toolgen templates, document them in `docs/toolgen-*-adapter-template.md`.
 
 ---

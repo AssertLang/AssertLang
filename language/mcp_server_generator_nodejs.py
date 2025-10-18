@@ -72,7 +72,7 @@ app.use(express.json());
         imports += """
 
 // Tool registry imports
-import { getRegistry } from './promptware-js/registry.js';
+import { getRegistry } from './assertlang-js/registry.js';
 const toolRegistry = getRegistry();"""
 
     return imports

@@ -130,7 +130,7 @@ class Deploy_Service_V1Workflow:
 # MCP Server for agent: deployment-manager
 app = FastAPI(
     title="deployment-manager",
-    description="Promptware MCP Agent",
+    description="AssertLang MCP Agent",
     version="v1"
 )
 

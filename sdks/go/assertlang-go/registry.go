@@ -1,4 +1,4 @@
-package promptware
+package assertlang
 
 import (
 	"encoding/json"
@@ -26,10 +26,10 @@ type Tool struct {
 }
 
 // NewToolRegistry creates a new tool registry
-func NewToolRegistry(promptwareRoot string) *ToolRegistry {
+func NewToolRegistry(assertlangRoot string) *ToolRegistry {
 	return &ToolRegistry{
-		ToolsDir:    filepath.Join(promptwareRoot, "tools"),
-		SchemasDir:  filepath.Join(promptwareRoot, "schemas", "tools"),
+		ToolsDir:    filepath.Join(assertlangRoot, "tools"),
+		SchemasDir:  filepath.Join(assertlangRoot, "schemas", "tools"),
 		cache:       make(map[string]*Tool),
 		schemaCache: make(map[string]map[string]interface{}),
 	}

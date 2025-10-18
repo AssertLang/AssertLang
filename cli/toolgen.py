@@ -1,6 +1,6 @@
 """Tool generator CLI scaffolder.
 
-This module defines the skeleton for the Promptware tool generator. It parses a
+This module defines the skeleton for the AssertLang tool generator. It parses a
 `toolgen.yaml` specification, validates it against a forthcoming schema, and
 prepares to render tool artifacts (schemas, adapters, tests, docs). Actual
 rendering logic will be filled in incrementally as templates land.
@@ -4046,7 +4046,7 @@ def _update_registry(spec: ToolSpec, repo_root: Path) -> Path:
 )
 @click.option("--dry-run", is_flag=True, help="Report artifacts without writing them")
 def toolgen(spec: Path, output_root: Path, dry_run: bool) -> None:
-    # Scaffold Promptware tools from a tool generator spec.
+    # Scaffold AssertLang tools from a tool generator spec.
     spec_obj = _load_spec(spec)
     _validate_spec(spec_obj)
     result = _render_artifacts(spec_obj, output_root, dry_run)

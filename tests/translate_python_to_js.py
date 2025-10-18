@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Translate Python file to JavaScript using Promptware translation system.
+Translate Python file to JavaScript using AssertLang translation system.
 
 Translation path: Python → IR → JavaScript
 """
@@ -91,11 +91,11 @@ def translate_python_to_javascript(
 def main():
     """Main entry point."""
     # Configuration
-    input_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_code_original.py"
-    output_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_code_from_python.js"
+    input_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_code_original.py"
+    output_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_code_from_python.js"
 
     print("=" * 70)
-    print("Promptware Universal Code Translation System")
+    print("AssertLang Universal Code Translation System")
     print("Python → JavaScript Translation")
     print("=" * 70)
     print()

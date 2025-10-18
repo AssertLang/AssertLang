@@ -1,4 +1,4 @@
-"""Promptware runtime support modules."""
+"""AssertLang runtime support modules."""
 
 from assertlang.runtime.contracts import (
     ContractViolationError,

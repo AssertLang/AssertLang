@@ -23,7 +23,7 @@
 
 Handling optional values and variants often requires verbose if-else chains:
 
-```promptware
+```assertlang
 function get_user_name(user: Option<User>) -> String
   do
     if user != None:
@@ -49,7 +49,7 @@ Problems:
 
 Pattern matching with the `is` operator:
 
-```promptware
+```assertlang
 function get_user_name(user: Option<User>) -> String
   do
     if user is Some(u):
@@ -73,7 +73,7 @@ end
 
 ### Pattern Matching Syntax
 
-```promptware
+```assertlang
 if <value> is <pattern>:
   # pattern matched
 else:
@@ -83,7 +83,7 @@ end
 
 ### Match Simple Variants
 
-```promptware
+```assertlang
 enum Status:
   Active
   Inactive
@@ -105,7 +105,7 @@ end
 
 ### Match with Option
 
-```promptware
+```assertlang
 function describe_option(opt: Option<Int>) -> String
   do
     if opt is Some(value):
@@ -124,7 +124,7 @@ end
 
 ### Extract Values from Variants
 
-```promptware
+```assertlang
 enum Result<T, E>:
   Ok(value: T)
   Err(error: E)
@@ -147,7 +147,7 @@ end
 
 ### Wildcard Pattern (Ignore Value)
 
-```promptware
+```assertlang
 function is_some(opt: Option<Int>) -> Bool
   do
     if opt is Some(_):
@@ -166,7 +166,7 @@ end
 
 ### Unwrap with Pattern Matching
 
-```promptware
+```assertlang
 function unwrap_or_default(opt: Option<Int>, default: Int) -> Int
   do
     if opt is Some(val):
@@ -180,7 +180,7 @@ end
 
 ### Chain Operations
 
-```promptware
+```assertlang
 function process_optional(opt: Option<Int>) -> Option<Int>
   do
     if opt is Some(val):
@@ -198,7 +198,7 @@ end
 
 ### Nested Options
 
-```promptware
+```assertlang
 function flatten_option(nested: Option<Option<Int>>) -> Option<Int>
   do
     if nested is Some(inner):
@@ -221,7 +221,7 @@ end
 
 ### Error Handling
 
-```promptware
+```assertlang
 function divide(a: Int, b: Int) -> Result<Int, String>
   do
     if b == 0:
@@ -249,7 +249,7 @@ end
 
 ### Propagate Errors
 
-```promptware
+```assertlang
 function compute(x: Int, y: Int) -> Result<Int, String>
   do
     let result1 = divide(x, y)
@@ -279,7 +279,7 @@ end
 
 ### Pattern Matching with Guards
 
-```promptware
+```assertlang
 function classify_number(opt: Option<Int>) -> String
   do
     if opt is Some(val):
@@ -300,7 +300,7 @@ end
 
 ### Multiple Guards
 
-```promptware
+```assertlang
 function validate_age(opt: Option<Int>) -> Result<Int, String>
   do
     if opt is Some(age):
@@ -326,7 +326,7 @@ end
 
 ### Define Custom Enums
 
-```promptware
+```assertlang
 enum HttpResponse:
   Success(code: Int, body: String)
   Redirect(location: String)
@@ -337,7 +337,7 @@ end
 
 ### Pattern Match Custom Enums
 
-```promptware
+```assertlang
 function handle_response(response: HttpResponse) -> String
   do
     if response is Success(code, body):
@@ -357,7 +357,7 @@ end
 
 ### Nested Pattern Matching
 
-```promptware
+```assertlang
 enum ApiResult:
   Success(data: Option<String>)
   Failure(error: String)
@@ -387,7 +387,7 @@ end
 
 ### Order State Machine with Pattern Matching
 
-```promptware
+```assertlang
 enum OrderStatus:
   Draft(items: List<String>)
   Pending(order_id: String, items: List<String>)
@@ -425,7 +425,7 @@ end
 
 ### Validate State Transitions
 
-```promptware
+```assertlang
 function can_ship(status: OrderStatus) -> Result<String, String>
   do
     if status is Confirmed(order_id, total):
@@ -449,7 +449,7 @@ end
 
 ### 1. Handle All Cases
 
-```promptware
+```assertlang
 # Good: Handles all cases
 function handle_option(opt: Option<Int>) -> String
   do
@@ -474,7 +474,7 @@ end
 
 ### 2. Use Wildcards for Ignored Values
 
-```promptware
+```assertlang
 # Good: Explicit wildcard
 function is_ok(res: Result<Int, String>) -> Bool
   do
@@ -501,7 +501,7 @@ end
 
 ### 3. Extract Early, Return Early
 
-```promptware
+```assertlang
 # Good: Extract and return early
 function get_user_email(user: Option<User>) -> String
   do
@@ -531,7 +531,7 @@ end
 
 ### 4. Use Guards for Complex Conditions
 
-```promptware
+```assertlang
 # Good: Guards make complex conditions readable
 function classify_result(res: Result<Int, String>) -> String
   do
@@ -563,7 +563,7 @@ end
 ### Python Generation
 
 **AssertLang:**
-```promptware
+```assertlang
 function unwrap_option(opt: Option<Int>) -> Int
   do
     if opt is Some(val):
@@ -605,7 +605,7 @@ function unwrapOption(opt) {
 
 ### Using Pattern Matching
 
-```promptware
+```assertlang
 function get_value_or_zero(opt: Option<Int>) -> Int
   do
     if opt is Some(val):
@@ -619,7 +619,7 @@ end
 
 ### Using Option Methods
 
-```promptware
+```assertlang
 function get_value_or_zero_method(opt: Option<Int>) -> Int
   do
     return option_unwrap_or(opt, 0)
@@ -637,7 +637,7 @@ end
 
 ### Safe Array Access
 
-```promptware
+```assertlang
 function safe_get(items: List<String>, index: Int) -> Option<String>
   do
     if index >= 0 and index < len(items):
@@ -663,7 +663,7 @@ end
 
 ### Chaining Computations
 
-```promptware
+```assertlang
 function parse_int(s: String) -> Option<Int>
   # Parses string to int (simplified)
   do
@@ -690,7 +690,7 @@ end
 
 ### Error Recovery
 
-```promptware
+```assertlang
 function divide_with_fallback(a: Int, b: Int, fallback: Int) -> Int
   do
     let result = divide(a, b)
@@ -742,7 +742,7 @@ def test_handle_result_guards():
 - Works with Option, Result, custom enums
 
 **Syntax:**
-```promptware
+```assertlang
 if value is Variant(extracted_value):
   # use extracted_value
 else:

@@ -22,8 +22,8 @@ def reverse_translate_js():
     print("REVERSE TRANSLATION: JavaScript → Python")
     print("=" * 80)
 
-    js_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_code_from_python.js"
-    output_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/roundtrip_from_js.py"
+    js_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_code_from_python.js"
+    output_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/roundtrip_from_js.py"
 
     try:
         # Parse JS → IR
@@ -61,8 +61,8 @@ def reverse_translate_go():
     print("REVERSE TRANSLATION: Go → Python")
     print("=" * 80)
 
-    go_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_code_from_python.go"
-    output_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/roundtrip_from_go.py"
+    go_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_code_from_python.go"
+    output_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/roundtrip_from_go.py"
 
     try:
         # Parse Go → IR
@@ -100,8 +100,8 @@ def reverse_translate_rust():
     print("REVERSE TRANSLATION: Rust → Python")
     print("=" * 80)
 
-    rust_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_code_from_python.rs"
-    output_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/roundtrip_from_rust.py"
+    rust_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_code_from_python.rs"
+    output_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/roundtrip_from_rust.py"
 
     try:
         # Parse Rust → IR
@@ -139,8 +139,8 @@ def reverse_translate_csharp():
     print("REVERSE TRANSLATION: C# → Python")
     print("=" * 80)
 
-    cs_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/test_code_from_python.cs"
-    output_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/roundtrip_from_csharp.py"
+    cs_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_code_from_python.cs"
+    output_file = "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/roundtrip_from_csharp.py"
 
     try:
         # Parse C# → IR
@@ -174,7 +174,7 @@ def reverse_translate_csharp():
 
 def main():
     """Run all reverse translations"""
-    print("\n🔄 PROMPTWARE REVERSE TRANSLATION TEST")
+    print("\n🔄 ASSERTLANG REVERSE TRANSLATION TEST")
     print("Translating generated code back to Python")
     print("=" * 80)
 

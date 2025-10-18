@@ -1,7 +1,7 @@
 """
-Promptware testing utilities.
+AssertLang testing utilities.
 
-This module provides utilities for testing Promptware code and contracts.
+This module provides utilities for testing AssertLang code and contracts.
 """
 
 from assertlang.testing.contracts import (

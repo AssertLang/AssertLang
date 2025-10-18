@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 # MCP Server for agent: code-reviewer
 app = FastAPI(
     title="code-reviewer",
-    description="Promptware MCP Agent",
+    description="AssertLang MCP Agent",
     version="v1"
 )
 

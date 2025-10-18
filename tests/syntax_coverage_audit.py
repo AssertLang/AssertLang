@@ -861,7 +861,7 @@ def print_audit_summary(language: str, results: List[AuditResult]):
 def main():
     """Run comprehensive syntax coverage audit"""
     print("\n" + "="*70)
-    print("  PROMPTWARE SYNTAX COVERAGE AUDIT")
+    print("  ASSERTLANG SYNTAX COVERAGE AUDIT")
     print("  Goal: Identify missing patterns to improve 83% → 88-93% accuracy")
     print("="*70 + "\n")
 

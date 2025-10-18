@@ -40,7 +40,7 @@ function agentBTask(input) {
 Use AssertLang contracts for deterministic coordination:
 
 **1. Define shared contract:**
-```promptware
+```assertlang
 # data_processor_contract.al
 type InputData:
   raw_text: String
@@ -125,7 +125,7 @@ function agentBTask(rawText) {
 ### Research → Analysis → Summary (3 Agents)
 
 **Shared Contracts:**
-```promptware
+```assertlang
 # research_pipeline.al
 type ResearchQuery:
   topic: String
@@ -256,7 +256,7 @@ result = crew.kickoff({"topic": "AI Safety", "depth": 3, "sources_required": 5})
 ### Python Agent → JavaScript Agent
 
 **Contract (Shared):**
-```promptware
+```assertlang
 type ProcessRequest:
   data: String
   options: Map<String, String>
@@ -275,7 +275,7 @@ function process_request(req: ProcessRequest) -> Result<ProcessResponse, String>
   do
     return Ok(ProcessResponse(
       processed=req.data.upper(),
-      metadata={"processed_by": "promptware"}
+      metadata={"processed_by": "assertlang"}
     ))
   end
 end
@@ -357,7 +357,7 @@ assert python_output.keys() == js_output.keys()
 
 ## Error Handling Across Agents
 
-```promptware
+```assertlang
 type AgentError:
   agent_name: String
   error_code: String
@@ -448,7 +448,7 @@ function jsAgent(input) {
 
 ### ✅ Shared Contract
 
-```promptware
+```assertlang
 # Good: Both agents use same contract
 function process(data: String) -> Result<Output, String>
   ensures:
@@ -470,7 +470,7 @@ def crewai_specific_agent(input: CrewAITask):
 
 ### ✅ Framework-Agnostic Contracts
 
-```promptware
+```assertlang
 # Good: Pure business logic in contracts
 function process_task(input: TaskData) -> Result<TaskResult, String>
   # Works in ANY framework

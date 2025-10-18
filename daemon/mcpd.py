@@ -513,7 +513,7 @@ class MCPDaemon:
         start_req["env"] = env_map
         if effective_policy:
             start_req["policy"] = effective_policy
-            env_map.setdefault("PROMPTWARE_POLICY", json.dumps(effective_policy))
+            env_map.setdefault("ASSERTLANG_POLICY", json.dumps(effective_policy))
         # Prefer starting via python runner for stable process supervision and logging
         start_started = time.perf_counter()
         if plan_lang in {"python", "node", "nextjs", "cpp", "rust", "java"}:
@@ -1017,8 +1017,8 @@ class MCPDaemon:
                     ttl = registry_cfg.get("cache_ttl_days")
                     if ttl is not None:
                         ttl_str = str(ttl)
-                        npm_env["PROMPTWARE_NODE_CACHE_TTL_DAYS"] = ttl_str
-                        updates["PROMPTWARE_NODE_CACHE_TTL_DAYS"] = ttl_str
+                        npm_env["ASSERTLANG_NODE_CACHE_TTL_DAYS"] = ttl_str
+                        updates["ASSERTLANG_NODE_CACHE_TTL_DAYS"] = ttl_str
                 npm_cache = self._shared_cache_dir("node", packages or ["default"])
                 npm_env["npm_config_cache"] = str(npm_cache)
                 npm_env["NPM_CONFIG_CACHE"] = str(npm_cache)
@@ -1078,7 +1078,7 @@ class MCPDaemon:
                 go_env.update(self._allowlist_env("go"))
                 gomod_path = source_dir / "go.mod"
                 if not gomod_path.exists():
-                    module_name = go_cfg.get("module_name") or "promptwareapp"
+                    module_name = go_cfg.get("module_name") or "assertlangapp"
                     gomod_content = "module " + module_name + "\n\ngo 1.22\n"
                     gomod_path.write_text(gomod_content, encoding="utf-8")
                 for mod in modules:
@@ -1124,7 +1124,7 @@ class MCPDaemon:
                 cache_ttl = allow_entry.get("cache_ttl_days")
                 if cache_ttl is not None:
                     ttl_str = str(cache_ttl)
-                    updates["PROMPTWARE_DOTNET_CACHE_TTL_DAYS"] = ttl_str
+                    updates["ASSERTLANG_DOTNET_CACHE_TTL_DAYS"] = ttl_str
                 if packages:
                     if not (
                         shutil.which("dotnet") or Path(dotnet_root).joinpath("dotnet").exists()
@@ -1132,7 +1132,7 @@ class MCPDaemon:
                         raise DependencyError("dotnet SDK not available")
                     deps_dir = env_root / "deps"
                     deps_dir.mkdir(parents=True, exist_ok=True)
-                    proj_path = deps_dir / "PromptwareDeps.csproj"
+                    proj_path = deps_dir / "AssertLangDeps.csproj"
                     target_framework = (
                         dotnet_cfg.get("target_framework")
                         or allow_entry.get("target_framework")
@@ -1166,7 +1166,7 @@ class MCPDaemon:
                     )
                     restore_env.update(self._allowlist_env("dotnet"))
                     if cache_ttl is not None:
-                        restore_env["PROMPTWARE_DOTNET_CACHE_TTL_DAYS"] = str(cache_ttl)
+                        restore_env["ASSERTLANG_DOTNET_CACHE_TTL_DAYS"] = str(cache_ttl)
                     feeds = allow_entry.get("feeds")
                     config_path = None
                     if isinstance(feeds, list) and feeds:
@@ -1272,7 +1272,7 @@ class MCPDaemon:
                             deps_lines.append(f'{name} = "*"')
                     cargo_toml.write_text(
                         "[package]\n"
-                        'name = "promptware_bootstrap"\n'
+                        'name = "assertlang_bootstrap"\n'
                         'version = "0.1.0"\n'
                         'edition = "2021"\n\n'
                         "[dependencies]\n" + "\n".join(deps_lines) + "\n",

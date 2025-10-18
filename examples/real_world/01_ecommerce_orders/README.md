@@ -463,7 +463,7 @@ Logic must return boolean. Catches type errors ✅
 
 ## Questions?
 
-- **Contracts not triggering?** Check `PROMPTWARE_VALIDATE` environment variable
+- **Contracts not triggering?** Check `ASSERTLANG_VALIDATE` environment variable
 - **Need more examples?** See other real-world examples in `examples/`
 - **Want to contribute?** See `CONTRIBUTING.md`
 
