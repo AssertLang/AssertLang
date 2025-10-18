@@ -2,7 +2,7 @@
   "name": "al-language",
   "displayName": "AssertLang Language Support",
   "description": "Syntax highlighting and file icons for AssertLang (.al) files - executable contracts for multi-agent systems",
-  "version": "0.0.3",
+  "version": "1.0.1",
   "publisher": "AssertLang",
   "engines": {
     "vscode": "^1.60.0"
