@@ -1,4 +1,4 @@
-# Calculator CLI - Real-world program testing PW features
+# Calculator CLI - Real-world program testing AssertLang features
 #
 # Features tested:
 # - Functions with parameters and return types

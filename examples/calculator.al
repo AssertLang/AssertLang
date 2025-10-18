@@ -1,13 +1,13 @@
 // ============================================================================
-// Calculator - PW Native Language Example
+// Calculator - AssertLang Example
 //
-// This demonstrates PW's new C-style syntax for general-purpose programming.
+// This demonstrates AssertLang's C-style syntax for general-purpose programming.
 // Compile to: Python, Go, Rust, TypeScript, or C#
 //
 // Usage:
-//   pw build calculator.pw --lang python -o calculator.py
-//   pw build calculator.pw --lang go -o calculator.go
-//   pw build calculator.pw --lang rust -o calculator.rs
+//   asl build calculator.al --lang python -o calculator.py
+//   asl build calculator.al --lang go -o calculator.go
+//   asl build calculator.al --lang rust -o calculator.rs
 // ============================================================================
 
 // Basic arithmetic operations

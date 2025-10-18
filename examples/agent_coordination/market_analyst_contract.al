@@ -1,5 +1,5 @@
 // Market Analyst Agent Contract
-// Demonstrates CrewAI integration with PW contracts
+// Demonstrates CrewAI integration with AssertLang contracts
 
 class MarketReport {
     sector: string;

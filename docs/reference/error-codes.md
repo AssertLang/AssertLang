@@ -8,7 +8,7 @@
 
 AssertLang errors fall into 4 categories:
 1. **Contract Violations** - Runtime contract failures (precondition, postcondition, invariant)
-2. **Parse Errors** - Syntax errors in `.pw` files
+2. **Parse Errors** - Syntax errors in `.al` files
 3. **Validation Errors** - Structural issues in contracts
 4. **MCP Errors** - MCP server/client communication errors
 
@@ -19,7 +19,7 @@ AssertLang errors fall into 4 categories:
 | Error Type | When | Example |
 |------------|------|---------|
 | `ContractViolationError` | Runtime contract check fails | `Precondition 'positive' failed: x = -5` |
-| `ALParseError` | Syntax error in `.pw` file | `Unexpected token at line 5, column 10` |
+| `ALParseError` | Syntax error in `.al` file | `Unexpected token at line 5, column 10` |
 | `ValidationError` | Invalid contract structure | `Duplicate function definition: add` |
 | `MCPError` | MCP communication fails | `Connection refused: localhost:3000` |
 
@@ -360,7 +360,7 @@ def add(self, item):
 
 ## Parse Errors
 
-**Syntax errors in `.pw` files.**
+**Syntax errors in `.al` files.**
 
 ### ALParseError
 

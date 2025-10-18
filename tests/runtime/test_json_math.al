@@ -1,4 +1,4 @@
-// Test PW Runtime - JSON and Math Operations
+// Test AssertLang Runtime - JSON and Math Operations
 // Tests: json.parse, json.stringify, json.stringify_pretty
 // Tests: math.abs, math.ceil, math.floor, math.round, math.sqrt, math.max, math.min
 
