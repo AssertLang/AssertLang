@@ -1,0 +1,8 @@
+# Ignore SVG icon (PNG is used)
+icons/al-icon.svg
+
+# Ignore build artifacts
+*.vsix
+
+# Ignore macOS files
+.DS_Store

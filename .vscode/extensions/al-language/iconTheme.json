@@ -1,0 +1,11 @@
+{
+  "iconDefinitions": {
+    "al-icon": {
+      "iconPath": "./icons/al-icon.svg"
+    }
+  },
+  "fileExtensions": {
+    "al": "al-icon"
+  },
+  "fileNames": {}
+}

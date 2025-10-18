@@ -42,13 +42,12 @@ venv.bak/
 .vscode/settings.json
 .vscode/launch.json
 .vscode/tasks.json
-# Keep: .vscode/extensions/pw-language/ (our extension)
+# Keep: .vscode/extensions/ (our AL language extension)
 
 # Personal config and development files (NEVER commit these)
 .cursor/
 .claude/
 .archive/
-.vscode/
 
 # Development docs now in .github/ (not root)
 
