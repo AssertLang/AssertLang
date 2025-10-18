@@ -1,0 +1,57 @@
+{
+  "name": "al-language",
+  "displayName": "AssertLang Language Support",
+  "description": "Syntax highlighting and file icons for AssertLang (.al) files - executable contracts for multi-agent systems",
+  "version": "0.0.3",
+  "publisher": "AssertLang",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "assertlang",
+    "al",
+    "contracts",
+    "multi-agent",
+    "dsl",
+    "syntax highlighting"
+  ],
+  "icon": "icons/al-icon.png",
+  "galleryBanner": {
+    "color": "#1e1e1e",
+    "theme": "dark"
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "al",
+        "aliases": [
+          "AssertLang",
+          "AL"
+        ],
+        "extensions": [
+          ".al"
+        ],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icons/al-icon.svg",
+          "dark": "./icons/al-icon.svg"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "al",
+        "scopeName": "source.al",
+        "path": "./syntaxes/al.tmLanguage.json"
+      }
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AssertLang/AssertLang.git"
+  },
+  "license": "MIT"
+}
