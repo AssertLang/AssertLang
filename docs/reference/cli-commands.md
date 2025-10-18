@@ -7,7 +7,7 @@
 ## Overview
 
 AssertLang provides a comprehensive CLI for working with contracts:
-- **Build** - Compile PW → Python/Go/Rust/JavaScript
+- **Build** - Compile AssertLang → Python/Go/Rust/JavaScript
 - **Validate** - Check contract syntax and correctness
 - **Generate** - Create MCP servers from agents
 - **Test** - Integration and load testing
@@ -30,11 +30,11 @@ assertlang --version
 
 | Command | Purpose | Example |
 |---------|---------|---------|
-| `build` | Compile PW to target language | `asl build file.al -o file.py` |
-| `compile` | Compile PW to MCP JSON | `asl compile file.pw` |
-| `run` | Execute PW file | `assertlang run file.pw` |
-| `validate` | Check contract syntax | `assertlang validate file.pw` |
-| `generate` | Generate MCP server | `assertlang generate agent.pw` |
+| `build` | Compile AssertLang to target language | `asl build file.al -o file.py` |
+| `compile` | Compile AssertLang to MCP JSON | `asl compile file.al` |
+| `run` | Execute AssertLang file | `assertlang run file.al` |
+| `validate` | Check contract syntax | `assertlang validate file.al` |
+| `generate` | Generate MCP server | `assertlang generate agent.al` |
 | `test` | Test MCP agent | `asl test http://localhost:3000 --auto` |
 | `list-tools` | Show available tools | `assertlang list-tools` |
 | `init` | Create new project | `assertlang init my-agent` |
@@ -109,7 +109,7 @@ asl build contract.al -o contract.py --verbose
 Output:
 ```
 ℹ Reading: contract.al
-ℹ Parsing PW code...
+ℹ Parsing AssertLang code...
 ✓ Parsed: 5 functions, 2 classes
 ℹ Converting to MCP...
 ℹ Generating python code...
@@ -176,7 +176,7 @@ class User(BaseModel):
 
 ## compile
 
-**Compile PW to MCP JSON intermediate representation.**
+**Compile AssertLang to MCP JSON intermediate representation.**
 
 ### Syntax
 ```bash
@@ -187,7 +187,7 @@ asl compile <file.al> [OPTIONS]
 
 | Option | Short | Values | Default | Description |
 |--------|-------|--------|---------|-------------|
-| `--output` | `-o` | path | `<input>.pw.json` | Output JSON file |
+| `--output` | `-o` | path | `<input>.al.json` | Output JSON file |
 | `--verbose` | `-v` | - | - | Verbose output |
 
 ### Examples
@@ -198,7 +198,7 @@ asl compile user.al
 ```
 Output:
 ```
-✓ Compiled user.al → user.pw.json
+✓ Compiled user.al → user.al.json
 ```
 
 **Custom output:**
@@ -213,10 +213,10 @@ asl compile contract.al --verbose
 Output:
 ```
 ℹ Reading: contract.al
-ℹ Parsing PW code...
+ℹ Parsing AssertLang code...
 ℹ Converting to MCP JSON...
-ℹ Written: contract.pw.json (3241 chars)
-✓ Compiled contract.al → contract.pw.json
+ℹ Written: contract.al.json (3241 chars)
+✓ Compiled contract.al → contract.al.json
 ```
 
 ### JSON Output Format
@@ -250,7 +250,7 @@ Output:
 
 ## run
 
-**Execute PW file directly (compile + run).**
+**Execute AssertLang file directly (compile + run).**
 
 ### Syntax
 ```bash
@@ -277,7 +277,7 @@ assertlang run program.al --verbose
 Output:
 ```
 ℹ Reading: program.al
-ℹ Parsing PW code...
+ℹ Parsing AssertLang code...
 ℹ Generating Python code...
 ℹ Executing...
 ────────────────────────────────────────────────────────────
@@ -288,7 +288,7 @@ Result: 42
 ### Use Cases
 
 1. **Quick testing** - Test contracts without saving generated code
-2. **Script execution** - Run PW scripts directly
+2. **Script execution** - Run AssertLang scripts directly
 3. **Development** - Rapid iteration during development
 
 ---
@@ -316,7 +316,7 @@ assertlang validate order.al
 ```
 Output:
 ```
-🔍 Validating order.pw...
+🔍 Validating order.al...
 ✓ Syntax valid
 ```
 
@@ -326,7 +326,7 @@ assertlang validate order.al --verbose
 ```
 Output:
 ```
-🔍 Validating order.pw...
+🔍 Validating order.al...
 ✓ Syntax valid
 
 📋 Contract Details:
@@ -350,7 +350,7 @@ assertlang validate broken.al
 ```
 Output:
 ```
-🔍 Validating broken.pw...
+🔍 Validating broken.al...
 ✗ Validation failed: Unexpected token at line 5, column 10
 
   Line 5:     @requires positive x > 0
@@ -390,7 +390,7 @@ assertlang generate user-service.al --lang python
 ```
 Output:
 ```
-📖 Reading user-service.pw...
+📖 Reading user-service.al...
 ✓ Parsed agent: user-service
   Port: 3000
   Verbs: 4
@@ -427,7 +427,7 @@ assertlang generate agent.al --dry-run
 ```
 Output:
 ```
-📖 Reading agent.pw...
+📖 Reading agent.al...
 ✓ Parsed agent: my-agent
 
 ℹ Dry-run mode - no files will be written
@@ -656,7 +656,7 @@ Output:
   3. Generate: assertlang generate my-agent.al --lang python
 ```
 
-Generated `my-agent.pw`:
+Generated `my-agent.al`:
 ```pw
 agent my-agent
 
@@ -673,7 +673,7 @@ expose task.execute@v1 (
 ```bash
 assertlang init api-service --template api --port 8080
 ```
-Generated `api-service.pw`:
+Generated `api-service.al`:
 ```pw
 agent api-service
 
@@ -694,7 +694,7 @@ expose api.call@v1 (
 ```bash
 assertlang init assistant --template ai
 ```
-Generated `assistant.pw`:
+Generated `assistant.al`:
 ```pw
 agent assistant
 
@@ -982,7 +982,7 @@ ASSERTLANG_DISABLE_CONTRACTS=1 python generated_code.py
 
 ## See Also
 
-- **[Contract Syntax](contract-syntax.md)** - PW language reference
+- **[Contract Syntax](contract-syntax.md)** - AssertLang language reference
 - **[Runtime API](runtime-api.md)** - Python/JavaScript runtime
 - **[MCP Operations](mcp-operations.md)** - MCP server API
 - **[Quickstart](../../QUICKSTART.md)** - Get started in 5 minutes

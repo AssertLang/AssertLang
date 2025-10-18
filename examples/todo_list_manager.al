@@ -1,4 +1,4 @@
-# Todo List Manager - Real-world program testing PW features
+# Todo List Manager - Real-world program testing AssertLang features
 #
 # Features tested:
 # - Classes with multiple properties
@@ -210,7 +210,7 @@ function create_sample_todos() -> TodoListManager {
 
     let todo3 = manager.add_todo(
         "Add new feature",
-        "Implement class support in PW language",
+        "Implement class support in AssertLang",
         2
     );
 

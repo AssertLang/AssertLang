@@ -1,4 +1,4 @@
-# Simple Web API - Real-world program testing PW features
+# Simple Web API - Real-world program testing AssertLang features
 #
 # Features tested:
 # - HTTP request/response handling

@@ -1,5 +1,5 @@
 // Data Processor LangGraph Agent Contract
-// Demonstrates LangGraph state machine integration with PW contracts
+// Demonstrates LangGraph state machine integration with AssertLang contracts
 
 // State schema for LangGraph StateGraph
 class ProcessorState {

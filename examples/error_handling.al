@@ -1,4 +1,4 @@
-// Error Handling Example - PW Native Syntax
+// Error Handling Example - AssertLang
 // Demonstrates try/catch with C-style brace syntax
 
 function safe_divide(a: int, b: int) -> int {

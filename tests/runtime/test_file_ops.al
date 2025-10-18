@@ -1,4 +1,4 @@
-// Test PW Runtime - File Operations
+// Test AssertLang Runtime - File Operations
 // Tests: file.write, file.read, file.exists, file.delete
 
 function main() -> int {
@@ -6,7 +6,7 @@ function main() -> int {
 
     // Test 1: file.write
     print("\n1. Testing file.write...");
-    file.write("test_data.txt", "Hello from PW!");
+    file.write("test_data.txt", "Hello from AssertLang!");
     print("✅ file.write successful");
 
     // Test 2: file.exists (should be true)

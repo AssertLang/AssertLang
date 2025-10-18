@@ -75,52 +75,52 @@ Suggestion: Add postcondition to validate result
 
 | Operation | Description | Input | Output |
 |-----------|-------------|-------|--------|
-| `parse_al_contract` | Parse PW file to IR | PW code (string) | IR JSON |
-| `validate_contract` | Check contract correctness | PW code (string) | Validation result |
-| `explain_contract` | Explain contract in plain English | PW code (string) | Explanation |
+| `parse_al_contract` | Parse AL file to IR | AL code (string) | IR JSON |
+| `validate_contract` | Check contract correctness | AL code (string) | Validation result |
+| `explain_contract` | Explain contract in plain English | AL code (string) | Explanation |
 
 ### Code Generation
 
 | Operation | Description | Input | Output |
 |-----------|-------------|-------|--------|
-| `generate_python` | Generate Python code | PW code (string) | Python code |
-| `generate_javascript` | Generate JavaScript code | PW code (string) | JavaScript code |
-| `generate_go` | Generate Go code | PW code (string) | Go code |
-| `generate_rust` | Generate Rust code | PW code (string) | Rust code |
-| `generate_typescript` | Generate TypeScript code | PW code (string) | TypeScript code |
+| `generate_python` | Generate Python code | AL code (string) | Python code |
+| `generate_javascript` | Generate JavaScript code | AL code (string) | JavaScript code |
+| `generate_go` | Generate Go code | AL code (string) | Go code |
+| `generate_rust` | Generate Rust code | AL code (string) | Rust code |
+| `generate_typescript` | Generate TypeScript code | AL code (string) | TypeScript code |
 
 ### Validation
 
 | Operation | Description | Input | Output |
 |-----------|-------------|-------|--------|
-| `check_syntax` | Validate PW syntax | PW code (string) | Syntax errors |
-| `check_preconditions` | Verify preconditions | PW code (string) | Precondition analysis |
-| `check_postconditions` | Verify postconditions | PW code (string) | Postcondition analysis |
-| `check_invariants` | Verify invariants | PW code (string) | Invariant analysis |
+| `check_syntax` | Validate AL syntax | AL code (string) | Syntax errors |
+| `check_preconditions` | Verify preconditions | AL code (string) | Precondition analysis |
+| `check_postconditions` | Verify postconditions | AL code (string) | Postcondition analysis |
+| `check_invariants` | Verify invariants | AL code (string) | Invariant analysis |
 
 ### Testing
 
 | Operation | Description | Input | Output |
 |-----------|-------------|-------|--------|
-| `run_contract_tests` | Execute test suite | PW + test code | Test results |
-| `generate_test_cases` | Auto-generate tests | PW code (string) | Test code |
-| `check_coverage` | Contract test coverage | PW + tests | Coverage report |
+| `run_contract_tests` | Execute test suite | AL + test code | Test results |
+| `generate_test_cases` | Auto-generate tests | AL code (string) | Test code |
+| `check_coverage` | Contract test coverage | AL + tests | Coverage report |
 
 ### Analysis
 
 | Operation | Description | Input | Output |
 |-----------|-------------|-------|--------|
-| `analyze_complexity` | Contract complexity metrics | PW code (string) | Metrics |
-| `suggest_contracts` | Suggest missing contracts | PW code (string) | Suggestions |
-| `find_contract_violations` | Find potential violations | PW + usage | Violation report |
+| `analyze_complexity` | Contract complexity metrics | AL code (string) | Metrics |
+| `suggest_contracts` | Suggest missing contracts | AL code (string) | Suggestions |
+| `find_contract_violations` | Find potential violations | AL + usage | Violation report |
 
 ### Debugging
 
 | Operation | Description | Input | Output |
 |-----------|-------------|-------|--------|
 | `explain_contract_error` | Explain contract violation | Error message | Explanation + fix |
-| `debug_contract` | Debug failing contract | PW + error | Debug info |
-| `trace_contract_check` | Trace contract execution | PW + input values | Execution trace |
+| `debug_contract` | Debug failing contract | AL + error | Debug info |
+| `trace_contract_check` | Trace contract execution | AL + input values | Execution trace |
 
 ---
 
@@ -240,7 +240,7 @@ Suggestion: Add postcondition to validate result
 
 ### check_syntax
 
-**Validate PW syntax without parsing.**
+**Validate AssertLang syntax without parsing.**
 
 **Request**:
 ```json
@@ -470,7 +470,7 @@ console.log('JavaScript:', jsCode);
 ```
 
 **Error Types**:
-- `ParseError` - Syntax error in PW code
+- `ParseError` - Syntax error in AssertLang code
 - `ValidationError` - Contract validation failed
 - `GenerationError` - Code generation failed
 - `RuntimeError` - MCP server error
@@ -519,13 +519,13 @@ console.log('JavaScript:', jsCode);
 **Environment Variables**:
 - `ASSERTLANG_CACHE_DIR` - Cache directory
 - `ASSERTLANG_LOG_LEVEL` - Log level (DEBUG, INFO, WARN, ERROR)
-- `ASSERTLANG_MAX_FILE_SIZE` - Max PW file size (default: 1MB)
+- `ASSERTLANG_MAX_FILE_SIZE` - Max AssertLang file size (default: 1MB)
 
 ---
 
 ## See Also
 
-- **[Contract Syntax](contract-syntax.md)** - Write PW contracts
+- **[Contract Syntax](contract-syntax.md)** - Write AssertLang contracts
 - **[Runtime API](runtime-api.md)** - Python/JavaScript runtime
 - **[CLI Commands](cli-commands.md)** - Command-line tools
 - **[MCP Integration Guide](../guides/mcp/integration.md)** - Complete MCP setup guide

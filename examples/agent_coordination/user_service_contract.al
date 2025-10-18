@@ -1,4 +1,4 @@
-// PW Contract: User Service
+// AssertLang Contract: User Service
 // This contract defines EXACTLY what both agents must do
 // Any agent implementing this will have identical behavior
 
@@ -84,7 +84,7 @@ function formatUser(user: User) -> string {
 // Main coordination function
 // Both agents will execute this
 function main() -> int {
-    print("=== PW Contract: User Service ===");
+    print("=== AssertLang Contract: User Service ===");
     print("");
 
     // Test 1: Valid user

@@ -1,6 +1,6 @@
 # AssertLang Standard Library - Core Types (Simplified for Runtime)
 # Temporary version without "is" pattern matching syntax
-# TODO: Replace with full core.pw once parser supports pattern matching
+# TODO: Replace with full core.al once parser supports pattern matching
 
 # ============================================================================
 # Option<T> - Represents an optional value (Some or None)
