@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """
-Promptware CLI - Command-line interface for the Promptware framework.
+AssertLang CLI - Command-line interface for the AssertLang framework.
 
 Usage:
-    promptware generate <file.al> [--lang LANGUAGE] [--output DIR]
-    promptware validate <file.al>
+    asl generate <file.al> [--lang LANGUAGE] [--output DIR]
+    asl validate <file.al>
     asl test <agent-url> [--auto] [--load] [--coverage]
-    promptware list-tools [--lang LANGUAGE]
-    promptware init <name> [--template TEMPLATE]
-    promptware ai-guide
-    promptware version
-    promptware help [COMMAND]
+    asl list-tools [--lang LANGUAGE]
+    asl init <name> [--template TEMPLATE]
+    asl ai-guide
+    asl version
+    asl help [COMMAND]
 
 Commands:
     generate    Generate MCP server from .al file
@@ -87,34 +87,34 @@ def confirm_action(message: str, default: bool = False, auto_yes: bool = False) 
 def create_parser() -> argparse.ArgumentParser:
     """Create the main argument parser."""
     parser = argparse.ArgumentParser(
-        prog='promptware',
-        description='Promptware - AI-native MCP agent framework',
+        prog='asl',
+        description='AssertLang - AI-native MCP agent framework',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
   # Generate Python MCP server
-  promptware generate agent.al --lang python
+  asl generate agent.al --lang python
 
   # Generate Go server with custom output directory
-  promptware generate agent.al --lang go --output ./build
+  asl generate agent.al --lang go --output ./build
 
   # Validate .al file syntax
-  promptware validate agent.al
+  asl validate agent.al
 
   # List all available tools
-  promptware list-tools
+  asl list-tools
 
   # Create new agent from template
-  promptware init my-agent --template basic
+  asl init my-agent --template basic
 
-For more help: promptware help <command>
+For more help: asl help <command>
         """
     )
 
     parser.add_argument(
         '--version',
         action='version',
-        version=f'Promptware {__version__}'
+        version=f'AssertLang {__version__}'
     )
 
     # Subcommands
@@ -255,7 +255,7 @@ For more help: promptware help <command>
     init_parser = subparsers.add_parser(
         'init',
         help='Create new .al agent from template',
-        description='Initialize a new Promptware agent project.'
+        description='Initialize a new AssertLang agent project.'
     )
     init_parser.add_argument(
         'name',
@@ -280,7 +280,7 @@ For more help: promptware help <command>
     config_parser = subparsers.add_parser(
         'config',
         help='Manage configuration',
-        description='View and modify Promptware configuration.'
+        description='View and modify AssertLang configuration.'
     )
     config_subparsers = config_parser.add_subparsers(
         dest='config_action', help='Config actions')
@@ -412,7 +412,7 @@ For more help: promptware help <command>
     subparsers.add_parser(
         'ai-guide',
         help='Show AI agent onboarding guide',
-        description='Display the comprehensive guide for AI coding agents to understand Promptware.'
+        description='Display the comprehensive guide for AI coding agents to understand AssertLang.'
     )
 
     # Help command
@@ -615,18 +615,18 @@ tokio = {{ version = "1", features = ["full"] }}
         if not args.quiet:
             print(success(f"Created: {file_path.name}"))
 
-    # Copy promptware-js for Node.js projects
+    # Copy asl-js for Node.js projects
     if args.lang == 'nodejs':
-        promptware_js_src = project_root / "promptware-js"
-        promptware_js_dest = output_dir / "promptware-js"
-        if promptware_js_src.exists():
-            shutil.copytree(promptware_js_src,
-                            promptware_js_dest, dirs_exist_ok=True)
+        asl_js_src = project_root / "asl-js"
+        asl_js_dest = output_dir / "asl-js"
+        if asl_js_src.exists():
+            shutil.copytree(asl_js_src,
+                            asl_js_dest, dirs_exist_ok=True)
             if not args.quiet:
-                print(success("Copied: promptware-js/"))
+                print(success("Copied: asl-js/"))
         else:
             print(
-                error(f"Warning: promptware-js directory not found at {promptware_js_src}"))
+                error(f"Warning: asl-js directory not found at {asl_js_src}"))
 
     # Auto-install dependencies (Python and Node.js)
     if args.lang == 'python' and (output_dir / 'requirements.txt').exists():
@@ -706,7 +706,7 @@ def cmd_validate(args) -> int:
 
     # Try contract validation first (for .al files with contracts)
     try:
-        from assertlang.cli.validate_contract import validate_contract, print_validation_result
+        from assertlang.cli_utils.validate_contract import validate_contract, print_validation_result
 
         result = validate_contract(str(pw_file), verbose=args.verbose)
         print_validation_result(result, verbose=args.verbose)
@@ -873,7 +873,7 @@ def cmd_list_tools(args) -> int:
         print("✗ Error: Tools directory not found", file=sys.stderr)
         return 1
 
-    print("🛠️  Available Promptware Tools\n")
+    print("🛠️  Available AssertLang Tools\n")
 
     # Scan tools directory
     tool_dirs = sorted([d for d in tools_dir.iterdir()
@@ -1015,8 +1015,8 @@ expose chat.message@v1 (
     print(f"✓ Created: {output_file}")
     print("\n📝 Next steps:")
     print(f"  1. Edit {output_file} to customize your agent")
-    print(f"  2. Validate: promptware validate {output_file}")
-    print(f"  3. Generate: promptware generate {output_file} --lang python")
+    print(f"  2. Validate: asl validate {output_file}")
+    print(f"  3. Generate: asl generate {output_file} --lang python")
 
     return 0
 
@@ -1030,7 +1030,7 @@ def cmd_config(args) -> int:
     config = get_config()
 
     if not args.config_action:
-        print("Usage: promptware config <action>")
+        print("Usage: asl config <action>")
         print("\nActions:")
         print("  set <key> <value>    Set configuration value")
         print("  get <key>            Get configuration value")
@@ -1039,9 +1039,9 @@ def cmd_config(args) -> int:
         print("  edit                 Open config file in editor")
         print("  path                 Show config file path")
         print("\nExamples:")
-        print("  promptware config set defaults.language go")
-        print("  promptware config get defaults.language")
-        print("  promptware config list")
+        print("  asl config set defaults.language go")
+        print("  asl config get defaults.language")
+        print("  asl config list")
         return 1
 
     if args.config_action == 'set':
@@ -1083,7 +1083,7 @@ def cmd_config(args) -> int:
         # Create file if it doesn't exist
         if not config_file.exists():
             config_file.parent.mkdir(parents=True, exist_ok=True)
-            config_file.write_text("# Promptware configuration\n")
+            config_file.write_text("# AssertLang configuration\n")
 
         # Open in editor
         editor = os.environ.get('EDITOR', 'nano')
@@ -1449,7 +1449,7 @@ def cmd_ai_guide(args) -> int:
     print()
     print(colored("Copy this entire output and paste it to any AI coding agent.", "ℹ"))
     print(colored(
-        "They will understand how to help you build services with Promptware.", "ℹ"))
+        "They will understand how to help you build services with AssertLang.", "ℹ"))
 
     return 0
 
@@ -1460,7 +1460,7 @@ def cmd_help(args) -> int:
         'generate': """
 Generate MCP server from .al file
 
-Usage: promptware generate <file.al> [OPTIONS]
+Usage: asl generate <file.al> [OPTIONS]
 
 Options:
   --lang LANGUAGE     Target language (python, nodejs, go, csharp, rust)
@@ -1468,20 +1468,20 @@ Options:
   --build             Build the server after generation
 
 Examples:
-  promptware generate agent.al --lang python
-  promptware generate agent.al --lang go --output ./build --build
+  asl generate agent.al --lang python
+  asl generate agent.al --lang go --output ./build --build
 """,
         'validate': """
 Validate .al file syntax
 
-Usage: promptware validate <file.al> [OPTIONS]
+Usage: asl validate <file.al> [OPTIONS]
 
 Options:
   --verbose          Show detailed validation output
 
 Examples:
-  promptware validate agent.al
-  promptware validate agent.al --verbose
+  asl validate agent.al
+  asl validate agent.al --verbose
 """,
         'test': """
 Test running MCP agent
@@ -1513,29 +1513,29 @@ Examples:
         'list-tools': """
 List all available tools
 
-Usage: promptware list-tools [OPTIONS]
+Usage: asl list-tools [OPTIONS]
 
 Options:
   --lang LANGUAGE    Show tools for specific language
   --category CAT     Filter by category
 
 Examples:
-  promptware list-tools
-  promptware list-tools --lang python
-  promptware list-tools --category "HTTP & APIs"
+  asl list-tools
+  asl list-tools --lang python
+  asl list-tools --category "HTTP & APIs"
 """,
         'init': """
 Create new .al agent from template
 
-Usage: promptware init <name> [OPTIONS]
+Usage: asl init <name> [OPTIONS]
 
 Options:
   --template TYPE    Agent template (basic, api, workflow, ai)
   --port PORT        Server port (default: 3000)
 
 Examples:
-  promptware init my-agent
-  promptware init api-agent --template api --port 8080
+  asl init my-agent
+  asl init api-agent --template api --port 8080
 """
     }
 

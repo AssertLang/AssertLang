@@ -204,7 +204,7 @@ class TestListFullStdlib:
 
     def test_full_list_stdlib(self):
         """Test that full List implementation from stdlib/types.al parses."""
-        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/types.al") as f:
+        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/stdlib/types.al") as f:
             pw_code = f.read()
 
         ir = parse_al(pw_code)
@@ -219,7 +219,7 @@ class TestListFullStdlib:
 
     def test_list_functions_present(self):
         """Test that all required List functions are present."""
-        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/types.al") as f:
+        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/stdlib/types.al") as f:
             pw_code = f.read()
 
         ir = parse_al(pw_code)
@@ -351,7 +351,7 @@ class TestListCompleteness:
 
     def test_list_api_completeness(self):
         """Test that all required API methods are implemented."""
-        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/types.al") as f:
+        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/stdlib/types.al") as f:
             pw_code = f.read()
 
         ir = parse_al(pw_code)

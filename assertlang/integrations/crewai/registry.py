@@ -93,7 +93,7 @@ class ContractRegistry:
             subprocess.run(
                 [
                     "python",
-                    "promptware/cli.py",
+                    "asl/cli.py",
                     "build",
                     contract_path,
                     "--lang",

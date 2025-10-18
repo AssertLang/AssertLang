@@ -156,7 +156,7 @@ class TestSetFullStdlib:
 
     def test_full_set_stdlib(self):
         """Test Set implementation from stdlib/types.al parses."""
-        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/types.al") as f:
+        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/stdlib/types.al") as f:
             pw_code = f.read()
 
         ir = parse_al(pw_code)
@@ -167,7 +167,7 @@ class TestSetFullStdlib:
 
     def test_set_functions_present(self):
         """Test all required Set functions present."""
-        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/types.al") as f:
+        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/stdlib/types.al") as f:
             pw_code = f.read()
 
         ir = parse_al(pw_code)
@@ -241,7 +241,7 @@ class TestSetCompleteness:
 
     def test_set_api_completeness(self):
         """Test all required methods implemented."""
-        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/types.al") as f:
+        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/stdlib/types.al") as f:
             pw_code = f.read()
 
         ir = parse_al(pw_code)
@@ -252,7 +252,7 @@ class TestSetCompleteness:
 
     def test_all_collections_present(self):
         """Test List, Map, and Set all in same file."""
-        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/types.al") as f:
+        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/stdlib/types.al") as f:
             pw_code = f.read()
 
         ir = parse_al(pw_code)

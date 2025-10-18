@@ -1,5 +1,5 @@
 """
-Promptware configuration management.
+AssertLang configuration management.
 
 Supports global and per-project configuration files.
 """
@@ -18,12 +18,12 @@ except ImportError:
 
 
 class Config:
-    """Promptware configuration manager."""
+    """AssertLang configuration manager."""
 
     def __init__(self):
         self.global_config_dir = self._get_config_dir()
         self.global_config_file = self.global_config_dir / "config.toml"
-        self.project_config_file = Path(".promptware") / "config.toml"
+        self.project_config_file = Path(".assertlang") / "config.toml"
 
         # Default configuration
         self.defaults = {

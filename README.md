@@ -8,15 +8,34 @@
 
 [![PyPI](https://img.shields.io/pypi/v/assertlang?style=flat-square&logo=pypi&logoColor=white)](https://pypi.org/project/assertlang/)
 [![Tests](https://github.com/AssertLang/AssertLang/actions/workflows/test.yml/badge.svg)](https://github.com/AssertLang/AssertLang/actions/workflows/test.yml)
-[![Code Quality](https://github.com/AssertLang/AssertLang/actions/workflows/lint.yml/badge.svg)](https://github.com/AssertLang/AssertLang/actions/workflows/lint.yml)
-[![Build](https://github.com/AssertLang/AssertLang/actions/workflows/build.yml/badge.svg)](https://github.com/AssertLang/AssertLang/actions/workflows/build.yml)
-[![codecov](https://codecov.io/gh/AssertLang/AssertLang/branch/main/graph/badge.svg)](https://codecov.io/gh/AssertLang/AssertLang)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg?style=flat-square&logo=python&logoColor=white)](https://www.python.org/downloads/)
 
 </p>
 
 <p align="center"><strong>Executable contracts for multi-agent systems.</strong> Define agent behavior once in AL, agents from different frameworks (CrewAI, LangGraph, AutoGen) execute identical logic. <strong>Deterministic coordination guaranteed.</strong></p>
+
+<p align="center">
+  <a href="https://assertlang.dev">Website</a> •
+  <a href="#quick-start">Quick Start</a> •
+  <a href="#why-i-built-this">Why I Built This</a> •
+  <a href="examples/agent_coordination/">Examples</a> •
+  <a href="#contributing">Contribute</a>
+</p>
+
+---
+
+## 👋 Hey there!
+
+I'm David, and I built AssertLang. Full disclosure: **I'm not a "real" software engineer.** I'm a broadcast tech from Hamilton who saw a problem and decided to try building a solution.
+
+**The honest truth:** I couldn't have built this alone. Claude Code helped massively. But that's kind of the point—if someone like me can build something that actually works, maybe we're onto something useful here.
+
+**What I'm hoping for:** Genuine feedback. Does this solve a real problem for you? Is it useful? What's broken? What should I add? I'm not trying to build a unicorn startup—I'm trying to see if this idea is actually helpful to developers building multi-agent systems.
+
+**Current status:** v0.0.3 - Core transpiler works (5 languages!), 134/134 stdlib tests passing, CLI functional. Some integration tests still need work. It's early, but it's real.
+
+⭐ **If you find this interesting, please star the repo!** It helps me know I'm building something people actually want.
 
 ---
 
@@ -32,7 +51,6 @@ def create_user(name, email):
     if not name:  # Agent A's validation
         raise ValueError("Missing name")
     # ... creates user
-
 ```
 
 ```javascript
@@ -139,8 +157,8 @@ asl build hello_contract.al --lang python -o crewai_agent.py
 # For LangGraph (JavaScript)
 asl build hello_contract.al --lang javascript -o langgraph_agent.js
 
-# For AutoGen (Python)
-asl build hello_contract.al --lang python -o autogen_agent.py
+# For custom agents (Go, Rust, C#)
+asl build hello_contract.al --lang go -o agent.go
 ```
 
 ### 4. Use in your agent framework
@@ -160,83 +178,46 @@ agent = Agent(
 result = greet("Alice")  # "Hello, Alice!"
 ```
 
-**LangGraph example:**
-```javascript
-import { StateGraph } from "@langchain/langgraph";
-import { greet } from './langgraph_agent.js';  // Uses AL contract
+---
 
-const greetNode = async (state) => {
-    // Guaranteed to match CrewAI agent behavior
-    return { greeting: greet(state.name) };
-};
-```
+## 💡 Why I Built This
+
+I've been watching the multi-agent AI space explode. Everyone's building agents with CrewAI, LangGraph, AutoGen—but they can't talk to each other reliably.
+
+When Agent A (Python) and Agent B (JavaScript) are supposed to do the same thing, they interpret it differently. Same task, different validation, different errors, chaos.
+
+I thought: **What if agents could share executable contracts?** Not just type schemas, but actual behavior. Write it once, transpile to any language, guarantee identical execution.
+
+So I built it. With a lot of help from Claude Code (seriously, this wouldn't exist without it).
+
+**Is it useful?** That's what I'm trying to figure out. If you're building multi-agent systems and this solves a problem for you, I want to hear about it. If it doesn't, I want to hear that too.
 
 ---
 
-## 🎨 VS Code Extension
+## ✨ What Actually Works (v0.0.3)
 
-Get syntax highlighting and file icons for `.al` files:
+I'm trying to be transparent about what's ready vs. what's still cooking:
 
-### Installation
+### ✅ Production Ready:
+- **5 Language Transpilation:** Python, JavaScript, Go, Rust, C# all compile successfully
+- **Standard Library:** 134/134 tests passing (Option, Result, List, Map, Set)
+- **CLI:** Full end-to-end workflow (`pip install` → `asl build` → working code)
+- **Proof of Concept:** Real examples showing 100% identical behavior (not fake!)
+- **Framework Integration:** CrewAI and LangGraph examples working
 
-**Option 1: CLI (Recommended)**
-```bash
-asl install-vscode
+### 🚧 In Progress:
+- Additional framework integrations (AutoGen, LangChain)
+- VS Code extension improvements
+- More comprehensive integration tests
+- Performance optimizations
+
+### 📊 Test Results (Verified):
 ```
-
-**Option 2: Manual**
-```bash
-cp -r .vscode/extensions/al-language ~/.vscode/extensions/assertlang.al-language
+✅ 134/134 stdlib tests passing (100%)
+✅ 1457 total tests collected
+✅ 5 languages verified working
+✅ End-to-end CLI workflow tested
 ```
-
-**Features:**
-- Syntax highlighting for AL contracts
-- File icons for `.al` files
-- Language configuration (brackets, comments, auto-closing)
-
-Restart VS Code after installation to activate the extension.
-
----
-
-## Why This Matters
-
-### Without AssertLang Contracts
-
-**Scenario:** Two agents need to validate user input
-
-Agent A decides:
-```python
-if not name or len(name) > 100:
-    raise ValueError("Invalid name")
-```
-
-Agent B decides:
-```javascript
-if (name.length === 0 || name.length > 50) {  // Different limit!
-    throw new Error("Bad name");  // Different error!
-}
-```
-
-**Result:**
-- ❌ Inconsistent validation (100 vs 50 chars)
-- ❌ Different error messages
-- ❌ System unreliable
-- ❌ Debugging nightmare
-
-### With AssertLang Contracts
-
-**Both agents implement:**
-```al
-if (str.length(name) < 1 || str.length(name) > 100) {
-    return ValidationError("name", "Name must be 1-100 characters");
-}
-```
-
-**Result:**
-- ✅ Identical validation
-- ✅ Identical errors
-- ✅ System reliable
-- ✅ Easy to maintain
 
 ---
 
@@ -253,7 +234,7 @@ cat > task_contract.al
 # Both agents transpile from same contract
 asl build task_contract.al --lang python
 asl build task_contract.al --lang javascript
-# Guaranteed coordination
+# Guaranteed coordination ✅
 ```
 
 ### 2. Framework Migration
@@ -275,34 +256,16 @@ asl build task_contract.al --lang javascript
 - Each team generates their language
 - Behavior guaranteed identical
 
-### 4. Enterprise Multi-Agent Systems
-
-**Challenge:** 10+ agents in different languages need consistent business logic
-
-**Solution:** AL contracts enforce consistency across all agents
-
 ---
 
-## Framework Support
-
-| Framework | Language | Status | Example |
-|-----------|----------|--------|---------|
-| **CrewAI** | Python | ✅ Ready | [See example](examples/agent_coordination/agent_a_crewai.py) |
-| **LangGraph** | JavaScript/TypeScript | ✅ Ready | [See example](examples/agent_coordination/agent_b_langgraph.js) |
-| **AutoGen** | Python | 🟡 Coming soon | Planned Q1 2025 |
-| **LangChain** | Python/JavaScript | 🟡 Coming soon | Planned Q1 2025 |
-| **Custom** | Any language | ✅ Ready | Transpile to Python/JS/Go/Rust/C# |
-
----
-
-## Language Support
+## 🌍 Language Support
 
 AL contracts transpile to:
 
 | Language | Status | Use For |
 |----------|--------|---------|
 | **Python** | ✅ Production | CrewAI, AutoGen, LangChain |
-| **JavaScript/TypeScript** | ✅ Production | LangGraph, Node.js agents |
+| **JavaScript** | ✅ Production | LangGraph, Node.js agents |
 | **Go** | ✅ Production | High-performance agents |
 | **Rust** | ✅ Production | Performance-critical agents |
 | **C#** | ✅ Production | Windows/enterprise agents |
@@ -310,11 +273,75 @@ AL contracts transpile to:
 **All languages:**
 - 100% semantic equivalence
 - Deterministic behavior
-- Full test coverage
+- Full type annotations
+- Production-ready code generation
 
 ---
 
-## How It Works
+## 🤝 Contributing
+
+**I need your help!** Here's the honest truth: this is a solo project (with AI assistance), and I'm figuring things out as I go.
+
+### Ways You Can Help:
+
+**1. Try it out and tell me what breaks**
+```bash
+pip install assertlang
+asl build --help
+# Then let me know what happened!
+```
+
+**2. Open issues for:**
+- Bugs you find (there are definitely bugs!)
+- Features you need (what's missing?)
+- Documentation that's confusing (where did you get stuck?)
+- Ideas for improvement (what would make this more useful?)
+
+**3. Contribute code:**
+- Fix bugs
+- Add framework integrations
+- Improve documentation
+- Write examples
+
+**4. Share feedback:**
+- Does this solve a real problem for you?
+- What frameworks do you use?
+- What languages do you need?
+- What's your multi-agent coordination pain point?
+
+### I Promise:
+
+- **Respond to all issues** (might take a day or two, but I'll respond)
+- **Be open to feedback** (tell me what's wrong, I won't be offended)
+- **Give credit** (every contributor gets recognized)
+- **Keep it simple** (no corporate BS, just building something useful)
+
+**Not sure where to start?** Look for issues tagged `good-first-issue` or just open an issue saying "I want to help!" and I'll find something.
+
+---
+
+## 📚 Real-World Example
+
+See complete working example: [examples/agent_coordination/](examples/agent_coordination/)
+
+**What's included:**
+- User service contract (validation, creation, formatting)
+- CrewAI agent (Python) implementation
+- LangGraph agent (JavaScript) implementation
+- Proof of identical behavior (100% match on all tests)
+- Integration guides
+
+**Run it yourself:**
+```bash
+cd examples/agent_coordination
+python agent_a_crewai.py      # Agent A output
+node agent_b_langgraph.js      # Agent B output
+# Compare - they're identical!
+```
+
+---
+
+## 📊 How It Works
 
 ```
 ┌─────────────────────────────────────────────────┐
@@ -346,212 +373,20 @@ All execute IDENTICAL logic
 
 ---
 
-## Contract Features
+## 💬 Get in Touch
 
-### ✅ Deterministic Validation
-```al
-if (str.length(name) < 1) {
-    return ValidationError("name", "Required");
-}
-```
+**Want to chat about multi-agent systems?** I'm always happy to talk!
 
-### ✅ Type Safety
-```al
-function process(data: list<string>) -> map<string, int>
-```
+- **GitHub Issues:** [Open an issue](https://github.com/AssertLang/AssertLang/issues) (best way to reach me)
+- **GitHub Discussions:** [Start a discussion](https://github.com/AssertLang/AssertLang/discussions)
+- **Twitter/X:** [@davidhustler](https://twitter.com/davidhustler) (DMs open)
+- **Email:** hello@assertlang.dev
 
-### ✅ Error Handling
-```al
-try {
-    let result = risky_operation();
-    return result;
-} catch (error) {
-    return fallback_value;
-}
-```
-
-### ✅ Business Logic
-```al
-let discount = price * 0.1;
-if (is_premium_user) {
-    discount = discount * 2;
-}
-```
-
----
-
-## 📊 Comparison
-
-| Approach | Deterministic | Framework-Agnostic | Language-Agnostic | Verifiable |
-|----------|---------------|-------------------|-------------------|------------|
-| **Natural Language** | ❌ | ✅ | ✅ | ❌ |
-| **JSON Schema** | ⚠️ Types only | ✅ | ✅ | ⚠️ Partial |
-| **MCP** | ❌ | ⚠️ MCP only | ✅ | ❌ |
-| **LLM Interpretation** | ❌ | ✅ | ✅ | ❌ |
-| **AssertLang Contracts** | ✅ | ✅ | ✅ | ✅ |
-
----
-
-## Real-World Example
-
-See complete working example: [examples/agent_coordination/](examples/agent_coordination/)
-
-**What's included:**
-- User service contract (validation, creation, formatting)
-- CrewAI agent (Python) implementation
-- LangGraph agent (JavaScript) implementation
-- Proof of identical behavior (100% match on all tests)
-- Integration guides
-
-**Run it yourself:**
-```bash
-cd examples/agent_coordination
-python agent_a_crewai.py      # Agent A output
-node agent_b_langgraph.js      # Agent B output
-# Compare - they're identical!
-```
-
----
-
-## Technical Details
-
-### Contract Language (AL)
-
-**Simple C-style syntax:**
-```al
-function name(param: type) -> return_type {
-    // Logic here
-}
-```
-
-**Full language features:**
-- Variables: `let x = value`
-- Conditionals: `if`, `else`
-- Loops: `for`, `while`
-- Functions: `function name() {}`
-- Classes: `class Name {}`
-- Types: `string`, `int`, `float`, `bool`, `list`, `map`
-- Error handling: `try/catch/finally`
-
-### Transpilation
-
-**Command:**
-```bash
-asl build contract.al --lang <target> -o output.file
-```
-
-**Targets:**
-- `python` - Python 3.10+
-- `javascript` - ES2020+
-- `typescript` - TypeScript 4.0+
-- `go` - Go 1.18+
-- `rust` - Rust 2021
-- `csharp` - C# 10+
-
-**Output:**
-- Idiomatic code for target language
-- Full type annotations
-- Production-ready error handling
-
----
-
-## 🧪 Testing
-
-**Contract testing:**
-```bash
-# Run contract against test cases
-asl test contract.al
-
-# Verify transpiled outputs match
-asl verify contract.al --langs python,javascript
-```
-
-**Framework integration testing:**
-```bash
-# Test CrewAI integration
-pytest tests/integration/test_crewai.py
-
-# Test LangGraph integration
-npm test tests/integration/langgraph.test.js
-```
-
----
-
-## 📚 Documentation
-
-- **[Quick Start Guide](docs/quickstart.md)** - Get started in 5 minutes
-- **[Contract Syntax](docs/contract-syntax.md)** - AL language reference
-- **[Framework Integrations](docs/integrations/)** - CrewAI, LangGraph, AutoGen guides
-- **[Examples](examples/agent_coordination/)** - Real-world contracts
-- **[API Reference](docs/api.md)** - Complete API documentation
-
----
-
-## 🤝 Contributing
-
-AssertLang is MIT licensed and community-driven.
-
-**Ways to contribute:**
-- Add framework integrations (AutoGen, LangChain, etc.)
-- Improve documentation
-- Submit example contracts
-- Report bugs / request features
-- Star the repo ⭐
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
-
----
-
-## 🎯 Roadmap
-
-### Q4 2024
-- ✅ Core contract language
-- ✅ Python/JavaScript transpilation
-- ✅ CrewAI + LangGraph proof-of-concept
-
-### Q1 2025
-- [ ] AutoGen integration
-- [ ] LangChain integration
-- [ ] Contract validation enhancements
-- [ ] VS Code extension improvements
-
-### Q2 2025
-- [ ] Contract testing framework
-- [ ] Additional language targets (Java, PHP)
-- [ ] Cloud-hosted transpilation service
-- [ ] Enterprise support
-
----
-
-## 🌟 Why AssertLang?
-
-**For Multi-Agent Developers:**
-- Agents coordinate reliably
-- No more behavior drift
-- One source of truth
-
-**For Framework Authors:**
-- Enable cross-framework compatibility
-- Reduce integration complexity
-- Build on proven technology
-
-**For Enterprises:**
-- Consistent business logic across agents
-- Easier testing and verification
-- Reduced maintenance burden
-
----
-
-## 📊 Stats
-
-```
-✅ 134/134 tests passing (100%)
-✅ 5 languages supported
-✅ 2 frameworks integrated (CrewAI, LangGraph)
-✅ 100% identical behavior verified
-✅ 350K+ lines of production transpiler code
-✅ MIT licensed, open source
-```
+**I'm especially interested in hearing from you if:**
+- You're building multi-agent systems and hitting coordination problems
+- You've tried AssertLang and have feedback (good or bad!)
+- You want to contribute but aren't sure how
+- You have ideas for making this more useful
 
 ---
 
@@ -559,43 +394,53 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 MIT © AssertLang Contributors
 
-Built with ❤️ for the multi-agent AI community.
+Built with ❤️ (and lots of Claude Code assistance) for the multi-agent AI community.
 
 ---
 
-## 🚀 Get Started
+## 🙏 Acknowledgments
 
-```bash
-# Install
-pip install assertlang
-
-# Create a contract
-cat > my_contract.al << 'EOF'
-function hello(name: string) -> string {
-    return "Hello, " + name + "!";
-}
-EOF
-
-# Transpile for your framework
-asl build my_contract.al --lang python -o agent.py
-
-# Run
-python agent.py
-```
-
-**Questions?** [Open an issue](https://github.com/AssertLang/AssertLang/issues) • [Join discussions](https://github.com/AssertLang/AssertLang/discussions)
-
-**Love AssertLang?** ⭐ Star us on GitHub!
+**Huge thanks to:**
+- **Claude (Anthropic)** - for making it possible for non-"real" engineers to build real tools
+- **The multi-agent AI community** - for inspiration and showing the need for this
+- **Early testers** - for trying this out and giving honest feedback (you know who you are!)
+- **Everyone who's starred the repo** - it genuinely motivates me to keep building
 
 ---
 
-## 🔗 Links
+## 🎯 Current Status & Roadmap
 
-- **GitHub:** [github.com/AssertLang/AssertLang](https://github.com/AssertLang/AssertLang)
-- **PyPI:** [pypi.org/project/assertlang](https://pypi.org/project/assertlang/)
-- **Documentation:** [docs/](docs/)
-- **Examples:** [examples/agent_coordination/](examples/agent_coordination/)
+### v0.0.3 (Current) ✅
+- Core transpiler working (5 languages)
+- 134/134 stdlib tests passing
+- CLI functional end-to-end
+- CrewAI & LangGraph examples
+- Proof of identical behavior verified
+
+### v0.1.0 (Next) 🎯
+- [ ] Fix remaining integration test issues
+- [ ] Add AutoGen integration
+- [ ] Improve VS Code extension
+- [ ] Add more framework examples
+- [ ] Performance benchmarking
+
+### v0.2.0 (Future) 💭
+- [ ] Contract testing framework
+- [ ] Additional language targets (Java, PHP)
+- [ ] Cloud-hosted transpilation service
+- [ ] Enterprise support options
+
+**Want to influence the roadmap?** [Open an issue](https://github.com/AssertLang/AssertLang/issues) and tell me what you need!
 
 ---
 
-**Note:** AssertLang is under active development. The multi-agent contract system is production-ready, with additional framework integrations coming soon. Star the repo to follow progress!
+<p align="center">
+  <strong>Built by one person, trying to solve a real problem.</strong><br>
+  If this helps you, that makes it all worth it. ⭐
+</p>
+
+<p align="center">
+  <a href="https://github.com/AssertLang/AssertLang/issues/new">Report Bug</a> •
+  <a href="https://github.com/AssertLang/AssertLang/issues/new">Request Feature</a> •
+  <a href="https://assertlang.dev">Visit Website</a>
+</p>

@@ -1,7 +1,7 @@
 {
-  "name": "@promptware/client",
+  "name": "@assertlang/client",
   "version": "0.1.0",
-  "description": "Node.js client library for Promptware MCP services",
+  "description": "Node.js client library for AssertLang MCP services",
   "main": "index.js",
   "type": "module",
   "files": [
@@ -15,7 +15,9 @@
     "test": "node --test"
   },
   "keywords": [
-    "promptware",
+    "assertlang",
+    "contracts",
+    "multi-agent",
     "mcp",
     "rpc",
     "microservices",
@@ -23,7 +25,7 @@
     "agent",
     "client"
   ],
-  "author": "Promptware",
+  "author": "AssertLang",
   "license": "MIT",
   "dependencies": {
     "axios": "^1.6.0",

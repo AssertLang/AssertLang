@@ -12,7 +12,7 @@ import pytest
 from pathlib import Path
 import tempfile
 
-from assertlang.cli.validate_contract import (
+from assertlang.cli_utils.validate_contract import (
     validate_contract,
     ContractValidator,
     ValidationResult

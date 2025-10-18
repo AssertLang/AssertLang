@@ -250,7 +250,7 @@ class TestResultFullStdlib:
 
     def test_full_result_stdlib(self):
         """Test that full Result implementation from stdlib/core.al parses."""
-        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/core.al") as f:
+        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/stdlib/core.al") as f:
             pw_code = f.read()
 
         ir = parse_al(pw_code)
@@ -265,7 +265,7 @@ class TestResultFullStdlib:
 
     def test_result_functions_present(self):
         """Test that all required Result functions are present."""
-        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/core.al") as f:
+        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/stdlib/core.al") as f:
             pw_code = f.read()
 
         ir = parse_al(pw_code)
@@ -416,7 +416,7 @@ class TestResultDocumentation:
 
     def test_functions_have_docstrings(self):
         """Test that Result functions have docstrings."""
-        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/core.al") as f:
+        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/stdlib/core.al") as f:
             content = f.read()
 
         # Check for docstrings
@@ -426,7 +426,7 @@ class TestResultDocumentation:
 
     def test_error_handling_examples(self):
         """Test that documentation includes error handling examples."""
-        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/core.al") as f:
+        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/stdlib/core.al") as f:
             content = f.read()
 
         # Should have examples of Ok and Err
@@ -439,7 +439,7 @@ class TestResultCompleteness:
 
     def test_result_api_completeness(self):
         """Test that all required API methods are implemented."""
-        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/core.al") as f:
+        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/stdlib/core.al") as f:
             pw_code = f.read()
 
         ir = parse_al(pw_code)
@@ -463,7 +463,7 @@ class TestResultCompleteness:
 
     def test_both_option_and_result_present(self):
         """Test that both Option and Result are in same file."""
-        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/Promptware/stdlib/core.al") as f:
+        with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/stdlib/core.al") as f:
             pw_code = f.read()
 
         ir = parse_al(pw_code)
