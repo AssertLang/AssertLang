@@ -1580,24 +1580,14 @@ class PythonGeneratorV2:
                     # Return generator expression (without list())
                     return f"({body_expr} for {param_name} in {iterable})"
 
+        # BUG FIX #6: Use positional arguments for all constructors (including enum variants)
+        # Dataclasses support positional arguments, so no need for field_0=, field_1= syntax
         # Regular function call
-        if is_enum_variant and expr.args and not expr.kwargs:
-            # Enum variant constructor: Some(x) → Some(value=x)
-            # Use keyword argument for single-argument variants
-            if len(expr.args) == 1:
-                arg_value = self.generate_expression(expr.args[0])
-                return f"{func}(value={arg_value})"
-            else:
-                # Multiple arguments: use field_0, field_1, etc.
-                kwargs_list = [f"field_{i}={self.generate_expression(arg)}" for i, arg in enumerate(expr.args)]
-                return f"{func}({', '.join(kwargs_list)})"
-        else:
-            # Regular function call
-            args = [self.generate_expression(arg) for arg in expr.args]
-            kwargs = [f"{k}={self.generate_expression(v)}" for k, v in expr.kwargs.items()]
+        args = [self.generate_expression(arg) for arg in expr.args]
+        kwargs = [f"{k}={self.generate_expression(v)}" for k, v in expr.kwargs.items()]
 
-            all_args = args + kwargs
-            return f"{func}({', '.join(all_args)})"
+        all_args = args + kwargs
+        return f"{func}({', '.join(all_args)})"
 
     def generate_array(self, expr: IRArray) -> str:
         """Generate list literal."""
