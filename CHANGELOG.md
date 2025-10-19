@@ -5,6 +5,33 @@ All notable changes to AssertLang will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.3] - 2025-01-18
+
+### 🐛 Critical Bug Fix - Parser
+
+**Root Cause: Parser Incorrectly Treated `__init__` as Regular Method**
+- Fixed the parser to correctly recognize `function __init__` as a class constructor
+- Previously, the parser was placing `__init__` methods in the `methods[]` array instead of the `constructor` field in the IR (Intermediate Representation)
+- This caused JavaScript generators to output `__init__(...)` instead of `constructor(...)`
+- **Impact:** JavaScript classes now correctly use the `constructor` keyword - this was the root cause preventing JavaScript class instantiation from working properly
+
+### 🧪 Testing
+- Created comprehensive parser test (`test_parser_fix.py`) that validates:
+  - Parser correctly populates `IRClass.constructor` field for `__init__` methods
+  - JavaScript generator outputs `constructor()` keyword
+  - No `__init__` leaks into generated code
+  - Property assignments use correct syntax
+- Verified full pipeline: Parser → IR → Generator → Working JavaScript
+- All existing comprehensive tests continue to pass (33 test cases)
+- CLI `asl build` command verified to produce correct output
+
+### 📝 Technical Details
+- Modified `dsl/al_parser.py` lines 1363-1375: Added logic to detect `__init__` and assign to `constructor` field
+- This fix complements the v0.1.2 generator fixes by ensuring the IR structure is correct from the start
+- No changes to generators needed - they were already correctly handling constructors
+
+**This completes the JavaScript constructor fix - the issue was in the parser all along.**
+
 ## [0.1.2] - 2025-01-18
 
 ### 🐛 Critical Bug Fix
