@@ -26,7 +26,7 @@ except ImportError as exc:  # pragma: no cover - fail fast when dependency missi
     ) from exc
 
 
-@dataclass(slots=True)
+@dataclass
 class ToolSpec:
     raw: Dict[str, Any]
     path: Path
