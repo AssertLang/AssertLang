@@ -117,7 +117,13 @@ Thumbs.db
 *.swp
 .cache/
 
-# Personal and internal docs (root directory) - KEEP CLAUDE.md and Current_Work.md!
+# Promotional materials (internal planning only)
+.promotion/
+
+# Internal work tracking (don't publish to GitHub)
+CURRENT_WORK.md
+
+# Personal and internal docs (root directory) - KEEP CLAUDE.md!
 AI-AGENT-GUIDE.md
 ALIGNMENT_*.md
 COMPLETE_LANGUAGE_SUPPORT.md
