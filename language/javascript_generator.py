@@ -821,8 +821,14 @@ class JavaScriptGenerator:
         if isinstance(stmt.target, str) and stmt.var_type:
             self.variable_types[stmt.target] = stmt.var_type
 
-        # Use const for declarations, regular assignment otherwise
-        if stmt.is_declaration:
+        # BUG FIX #2: Property assignments (this.property) should never use 'const'
+        # Check if target is a property access (contains 'this.' or other object access)
+        is_property_assignment = isinstance(stmt.target, IRPropertyAccess) or (
+            isinstance(target, str) and ('.' in target or target.startswith('this'))
+        )
+
+        # Use const for variable declarations only, not for property assignments
+        if stmt.is_declaration and not is_property_assignment:
             return f"{self.indent()}const {target} = {value};"
         else:
             return f"{self.indent()}{target} = {value};"

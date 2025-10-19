@@ -5,6 +5,27 @@ All notable changes to AssertLang will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 2025-01-18
+
+### 🐛 Critical Bug Fix
+
+**JavaScript Constructor Property Assignment**
+- Fixed JavaScript constructors incorrectly using `const` for property assignments
+- Constructor property assignments like `this.width = width` were being generated as `const this.width = width`, causing syntax errors
+- Classes can now be properly instantiated with `new ClassName()` - properties are correctly set
+- **Impact:** JavaScript class instantiation is now fully functional - this was breaking all class usage in v0.1.1
+
+### 🧪 Testing
+- Added runtime tests to verify JavaScript constructors work correctly
+- Verified `new VideoSpec(width, height)` properly initializes instance properties
+- All existing tests continue to pass
+
+### 📝 Technical Details
+- Modified `language/javascript_generator.py` line 824-834: Property assignments no longer use `const` keyword
+- Detection logic added to distinguish between variable declarations and property assignments
+
+**This is a critical hotfix for v0.1.1 - all users should upgrade immediately.**
+
 ## [0.1.1] - 2025-01-18
 
 ### 🐛 Bug Fixes
