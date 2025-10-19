@@ -1363,7 +1363,14 @@ class Parser:
                 elif keyword == "function":
                     # Parse method (same as regular function)
                     method = self.parse_function()
-                    methods.append(method)
+
+                    # BUG FIX: Check if this is a constructor (__init__)
+                    if method.name == "__init__":
+                        if constructor is not None:
+                            raise self.error("Class can only have one constructor")
+                        constructor = method
+                    else:
+                        methods.append(method)
 
                 # Check if keyword is followed by colon (property with keyword name)
                 elif self.peek().type == TokenType.COLON:
