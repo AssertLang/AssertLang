@@ -39,7 +39,7 @@ Design Decisions:
    - Idiomatic naming (snake_case for functions/vars, PascalCase for types)
 """
 
-from typing import List, Set, Dict, Optional, Any
+from typing import List, Set, Dict, Optional, Any, Union
 
 from dsl.ir import (
     IRModule,
@@ -665,7 +665,7 @@ class RustGeneratorV2:
                 lines.append(stmt_lines)
         return lines
 
-    def _generate_statement(self, stmt: IRStatement, indent: int = 0) -> str | List[str]:
+    def _generate_statement(self, stmt: IRStatement, indent: int = 0) -> Union[str, List[str]]:
         """Generate a single statement."""
         base_indent = "    " * indent
 

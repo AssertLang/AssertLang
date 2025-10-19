@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 import yaml  # type: ignore
 
@@ -10,7 +10,7 @@ from language.interpreter import ActionExecutor
 from language.parser import PWProgram, parse_al
 
 
-def load_pw(path: Path) -> Dict[str, Any] | None:
+def load_pw(path: Path) -> Optional[Dict[str, Any]]:
     text = path.read_text(encoding="utf-8")
     try:
         data = yaml.safe_load(text)

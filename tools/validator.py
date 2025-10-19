@@ -2,12 +2,12 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, Tuple, Optional
 
 from jsonschema import Draft202012Validator
 
 
-def validate_with_schema(schema_path: Path, instance: Dict[str, Any]) -> Tuple[bool, str | None]:
+def validate_with_schema(schema_path: Path, instance: Dict[str, Any]) -> Tuple[bool, Optional[str]]:
     try:
         schema = json.loads(schema_path.read_text(encoding="utf-8"))
         validator = Draft202012Validator(schema)
