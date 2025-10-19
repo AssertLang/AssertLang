@@ -264,7 +264,7 @@ assertlang validate agent.al --verbose
 
 **Output (verbose):**
 ```
-🔍 Validating agent.pw...
+🔍 Validating agent.al...
 ✓ Syntax valid
 
 📋 Agent Details:

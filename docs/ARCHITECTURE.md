@@ -602,7 +602,7 @@ build_parser.add_argument(
 
 ### Adding PW Language Feature
 
-1. **Update spec**: `docs/PW_DSL_2.0_SPEC.md`
+1. **Update spec**: `docs/AL_DSL_2.0_SPEC.md`
 2. **Add IR node**: `dsl/ir.py`
 3. **Update parser**: `dsl/pw_parser.py`
 4. **Update all generators**: `language/*_generator_v2.py`

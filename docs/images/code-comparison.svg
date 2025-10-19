@@ -12,10 +12,10 @@
     <rect x="50" y="70" width="420" height="680" rx="8" fill="#161b22" stroke="#30363d" stroke-width="2"/>
     <rect x="50" y="70" width="420" height="40" rx="8" fill="#21262d"/>
     <text x="260" y="96" font-family="Arial" font-size="16" font-weight="bold" fill="#a371f7" text-anchor="middle">
-      calculator.pw (PW Native Language)
+      calculator.al (AssertLang)
     </text>
 
-    <text x="70" y="140" font-family="monospace" font-size="13" fill="#8b949e">// Write once in PW</text>
+    <text x="70" y="140" font-family="monospace" font-size="13" fill="#8b949e">// Write once in AssertLang</text>
 
     <text x="70" y="170" font-family="monospace" font-size="13" fill="#ff7b72">function</text>
     <text x="150" y="170" font-family="monospace" font-size="13" fill="#d2a8ff">add</text>
@@ -271,7 +271,7 @@
   </text>
 
   <text x="700" y="630" font-family="monospace" font-size="13" fill="#c9d1d9" text-anchor="middle">
-    assertlang build calculator.pw --lang python  # Instant translation ✨
+    asl build calculator.al --lang python  # Instant translation ✨
   </text>
 
   <text x="700" y="670" font-family="monospace" font-size="12" fill="#79c0ff" text-anchor="middle">

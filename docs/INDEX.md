@@ -8,7 +8,7 @@
 
 ### For Everyone
 
-📘 **[PW Language Guide](PW_LANGUAGE_GUIDE.md)** - **START HERE!**
+📘 **[PW Language Guide](AL_LANGUAGE_GUIDE.md)** - **START HERE!**
 - Complete instructional manual for both humans and AI agents
 - Installation, quick start, examples, CLI reference
 - VS Code extension setup and download links
@@ -21,7 +21,7 @@
 
 ### For Human Developers
 
-👨‍💻 **[PW Native Syntax](PW_NATIVE_SYNTAX.md)** - Language specification
+👨‍💻 **[PW Native Syntax](AL_NATIVE_SYNTAX.md)** - Language specification
 - Complete grammar and syntax rules
 - Type system documentation
 - Code examples
@@ -63,7 +63,7 @@
 
 ### Language Specification
 
-📖 **[PW Native Syntax Spec](PW_NATIVE_SYNTAX.md)** - Formal specification
+📖 **[PW Native Syntax Spec](AL_NATIVE_SYNTAX.md)** - Formal specification
 - Keywords and operators
 - Type system
 - Control flow
@@ -85,9 +85,9 @@
 ### Code Examples
 
 💻 **Working Examples:**
-- [`examples/calculator.pw`](../examples/calculator.al) - Basic arithmetic functions
-- [`/tmp/examples.pw`](../examples/) - Comprehensive syntax examples
-- [`/tmp/user_service.pw`](../examples/) - User validation service
+- [`examples/calculator.al`](../examples/calculator.al) - Basic arithmetic functions
+- [`/tmp/examples.al`](../examples/) - Comprehensive syntax examples
+- [`/tmp/user_service.al`](../examples/) - User validation service
 
 ### Generated Code
 
@@ -116,7 +116,7 @@ pip install -e .
 pw --version
 ```
 
-**See:** [PW Language Guide - Installation](PW_LANGUAGE_GUIDE.md#installation)
+**See:** [PW Language Guide - Installation](AL_LANGUAGE_GUIDE.md#installation)
 
 ### Install VS Code Extension
 
@@ -143,9 +143,9 @@ code --install-extension pw-language-0.1.0.vsix
 
 | Document | Purpose | Audience |
 |----------|---------|----------|
-| [PW_LANGUAGE_GUIDE.md](PW_LANGUAGE_GUIDE.md) | Complete manual | Everyone |
+| [AL_LANGUAGE_GUIDE.md](AL_LANGUAGE_GUIDE.md) | Complete manual | Everyone |
 | [QUICK_REFERENCE.md](QUICK_REFERENCE.md) | Cheat sheet | Everyone |
-| [PW_NATIVE_SYNTAX.md](PW_NATIVE_SYNTAX.md) | Language spec | Developers |
+| [AL_NATIVE_SYNTAX.md](AL_NATIVE_SYNTAX.md) | Language spec | Developers |
 | [VS_CODE_EXTENSION.md](VS_CODE_EXTENSION.md) | Editor setup | Developers |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | System design | Contributors |
 | [CURRENT_WORK.md](../CURRENT_WORK.md) | Latest status | Contributors |
@@ -154,7 +154,7 @@ code --install-extension pw-language-0.1.0.vsix
 
 | File | Description |
 |------|-------------|
-| `examples/calculator.pw` | Working PW example |
+| `examples/calculator.al` | Working AL example |
 | `.vscode/extensions/pw-language/` | VS Code extension |
 | `.vscode/extensions/pw-language/icons/pw-icon.svg` | PW logo |
 | `dsl/pw_parser.py` | PW compiler/parser |
@@ -173,10 +173,10 @@ code --install-extension pw-language-0.1.0.vsix
 ### I want to...
 
 **Learn PW basics**
-→ Read [PW Language Guide](PW_LANGUAGE_GUIDE.md)
+→ Read [PW Language Guide](AL_LANGUAGE_GUIDE.md)
 
 **Write my first PW program**
-→ Follow [Quick Start](PW_LANGUAGE_GUIDE.md#quick-start)
+→ Follow [Quick Start](AL_LANGUAGE_GUIDE.md#quick-start)
 
 **Get syntax highlighting in VS Code**
 → See [VS Code Extension](VS_CODE_EXTENSION.md)
@@ -191,7 +191,7 @@ code --install-extension pw-language-0.1.0.vsix
 → Read [MCP Server Docs](../pw-syntax-mcp-server/CURRENT_WORK.md)
 
 **Understand PW syntax rules**
-→ Read [PW Native Syntax](PW_NATIVE_SYNTAX.md)
+→ Read [PW Native Syntax](AL_NATIVE_SYNTAX.md)
 
 **Contribute to PW**
 → See `CONTRIBUTING.md`
@@ -206,19 +206,19 @@ code --install-extension pw-language-0.1.0.vsix
 ### 👨‍💻 Human Developers
 
 **Read:**
-1. [PW Language Guide](PW_LANGUAGE_GUIDE.md) - Complete manual
+1. [PW Language Guide](AL_LANGUAGE_GUIDE.md) - Complete manual
 2. [Quick Reference](QUICK_REFERENCE.md) - Syntax cheat sheet
 3. [VS Code Extension](VS_CODE_EXTENSION.md) - Editor setup
 
 **Then:**
 - Try examples in `examples/`
 - Install VS Code extension
-- Write your first `.pw` file
+- Write your first `.al` file
 
 ### 🤖 AI Agents
 
 **Read:**
-1. [PW Language Guide - For AI Agents](PW_LANGUAGE_GUIDE.md#for-ai-agents)
+1. [PW Language Guide - For AI Agents](AL_LANGUAGE_GUIDE.md#for-ai-agents)
 2. [MCP Server Docs](../pw-syntax-mcp-server/CURRENT_WORK.md)
 
 **Then:**
@@ -325,8 +325,8 @@ We plan to publish to the marketplace for one-click installation!
 ### Getting Help
 
 **Questions?**
-- Read the [FAQ](PW_LANGUAGE_GUIDE.md#faq)
-- Check [Troubleshooting](PW_LANGUAGE_GUIDE.md#troubleshooting)
+- Read the [FAQ](AL_LANGUAGE_GUIDE.md#faq)
+- Check [Troubleshooting](AL_LANGUAGE_GUIDE.md#troubleshooting)
 
 **Issues?**
 - Report bugs: https://github.com/AssertLang/AssertLang/issues
@@ -359,6 +359,6 @@ Free to use, modify, and distribute.
 
 ---
 
-**Start here:** [PW Language Guide](PW_LANGUAGE_GUIDE.md) 🚀
+**Start here:** [PW Language Guide](AL_LANGUAGE_GUIDE.md) 🚀
 
 **Questions?** Open an issue: https://github.com/AssertLang/AssertLang/issues

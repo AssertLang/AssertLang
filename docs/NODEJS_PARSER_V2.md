@@ -636,7 +636,7 @@ PYTHONPATH=. pytest tests/test_nodejs_parser_v2.py -v
 
 - **IR Specification**: `docs/IR_SPECIFICATION.md`
 - **Type System**: `docs/TYPE_SYSTEM.md`
-- **PW DSL 2.0 Spec**: `docs/PW_DSL_2.0_SPEC.md`
+- **PW DSL 2.0 Spec**: `docs/AL_DSL_2.0_SPEC.md`
 - **V2 Architecture**: `CLAUDE.md`
 
 ---

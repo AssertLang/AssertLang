@@ -837,7 +837,7 @@ class ParseError(Exception):
 
 **Documents to Update**:
 - [ ] `README.md` - Add loops, classes, arrays
-- [ ] `docs/PW_LANGUAGE_GUIDE.md` - Complete syntax reference
+- [ ] `docs/AL_LANGUAGE_GUIDE.md` - Complete syntax reference
 - [ ] `docs/QUICK_REFERENCE.md` - Add new features
 - [ ] `CURRENT_WORK.md` - Update status to v2.1
 - [ ] `CHANGELOG.md` - Document all changes

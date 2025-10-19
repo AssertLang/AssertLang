@@ -82,7 +82,7 @@ assertlang/
     ├── AI_AGENT_GUIDE.md  # For AI coding agents
     ├── ARCHITECTURE.md     # System architecture
     ├── DEVELOPMENT.md      # This file
-    ├── PW_DSL_2.0_SPEC.md # Language specification
+    ├── AL_DSL_2.0_SPEC.md # Language specification
     └── TYPE_SYSTEM.md      # Type system docs
 ```
 
@@ -98,7 +98,7 @@ Before writing code:
    ```bash
    cat Current_Work.md        # Current development status
    cat docs/ARCHITECTURE.md   # System architecture
-   cat docs/PW_DSL_2.0_SPEC.md  # Language spec
+   cat docs/AL_DSL_2.0_SPEC.md  # Language spec
    ```
 
 2. **Check for existing issues**:
@@ -174,7 +174,7 @@ python3 tests/test_new_feature.py
 # Update relevant documentation
 vim Current_Work.md        # Add to "Completed" section
 vim CHANGELOG.md           # Add to "Unreleased" section
-vim docs/PW_DSL_2.0_SPEC.md  # If language syntax changed
+vim docs/AL_DSL_2.0_SPEC.md  # If language syntax changed
 ```
 
 ### 5. Commit Your Changes
@@ -432,7 +432,7 @@ def test_feature():
 | `Current_Work.md` | Development status | Every session |
 | `docs/AI_AGENT_GUIDE.md` | For AI agents | When workflow changes |
 | `docs/ARCHITECTURE.md` | System design | When architecture changes |
-| `docs/PW_DSL_2.0_SPEC.md` | Language spec | When syntax changes |
+| `docs/AL_DSL_2.0_SPEC.md` | Language spec | When syntax changes |
 | `docs/TYPE_SYSTEM.md` | Type system | When types change |
 | `docs/DEVELOPMENT.md` | This file | When dev process changes |
 
@@ -759,7 +759,7 @@ ipython
 
 - [Architecture](ARCHITECTURE.md) - System design
 - [AI Agent Guide](AI_AGENT_GUIDE.md) - For AI coding agents
-- [PW Language Spec](PW_DSL_2.0_SPEC.md) - Complete language specification
+- [PW Language Spec](AL_DSL_2.0_SPEC.md) - Complete language specification
 - [Type System](TYPE_SYSTEM.md) - Type system details
 
 ### External Resources

@@ -5,13 +5,13 @@ Demonstrates LangChain integration with AssertLang agents.
 ## Overview
 
 This example shows how to build an AI-powered code review agent using:
-- **AssertLang** - Agent coordination via `.pw` DSL
+- **AssertLang** - Agent coordination via `.al` DSL
 - **LangChain** - LLM integration framework
 - **Claude 3.5 Sonnet** - Anthropic's latest model
 
 ## Files
 
-- `ai_code_reviewer.pw` - Agent definition with prompts
+- `ai_code_reviewer.al` - Agent definition with prompts
 - `ai_code_reviewer_server.py` - Generated FastAPI server
 - This README
 
@@ -46,7 +46,7 @@ expose review.analyze@v1:
 
 ## How It Works
 
-1. **Parser** - Parses `.pw` file and extracts AI configuration
+1. **Parser** - Parses `.al` file and extracts AI configuration
 2. **Generator** - Creates FastAPI server with LangChain handlers
 3. **Handler** - Calls Claude via LangChain with custom prompts
 4. **Response** - Returns structured analysis
@@ -233,7 +233,7 @@ python3 -m py_compile examples/ai_code_reviewer_server.py
 
 ## Related Examples
 
-- `demo_agent.pw` - Basic non-AI agent
+- `demo_agent.al` - Basic non-AI agent
 - `two_agent_demo.py` - Agent coordination
 - See `docs/agent-communication-guide.md` for more
 

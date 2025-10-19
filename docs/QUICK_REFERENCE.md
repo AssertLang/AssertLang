@@ -182,13 +182,13 @@ pw build <file.al> --lang <python|go|rust|typescript|csharp> -o <output>
 ### Compile to MCP JSON (agents)
 
 ```bash
-pw compile <file.al> -o <file.pw.json>
+pw compile <file.al> -o <file.al.json>
 ```
 
 ### Unfold MCP JSON (rarely needed)
 
 ```bash
-pw unfold <file.pw.json> --lang <language> -o <output>
+pw unfold <file.al.json> --lang <language> -o <output>
 ```
 
 ---
@@ -199,7 +199,7 @@ pw unfold <file.pw.json> --lang <language> -o <output>
 
 1. Open AssertLang folder in VS Code
 2. `Cmd+Shift+P` → `Developer: Reload Window`
-3. Open any `.pw` file
+3. Open any `.al` file
 
 ### Enable File Icons
 
@@ -230,10 +230,10 @@ my-project/
 
 ## Links
 
-- **Full Guide:** `docs/PW_LANGUAGE_GUIDE.md`
-- **Language Spec:** `docs/PW_NATIVE_SYNTAX.md`
+- **Full Guide:** `docs/AL_LANGUAGE_GUIDE.md`
+- **Language Spec:** `docs/AL_NATIVE_SYNTAX.md`
 - **VS Code Extension:** `docs/VS_CODE_EXTENSION.md`
-- **Examples:** `examples/calculator.pw`
+- **Examples:** `examples/calculator.al`
 - **GitHub:** https://github.com/AssertLang/AssertLang
 
 ---

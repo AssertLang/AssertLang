@@ -422,20 +422,8 @@ Early alpha release of AssertLang - executable contracts for multi-agent systems
 
 ### Breaking Changes
 
-**File Extension Change**
-- All contract files now use `.al` extension instead of `.pw`
-- Example: `contract.pw` → `contract.al`
-- Reflects the AssertLang brand identity
-
-**Module Naming**
-- `pw_parser` → `al_parser`
-- `pw_runtime` → `al_runtime`
-- `pw_generator` → `al_generator`
-- All internal references updated
-
 **Command Line Tool**
-- Primary command is now `asl` (AssertLang)
-- Old `pw` command deprecated
+- Uses `asl` command for all operations
 - Example: `asl build contract.al --lang python`
 
 ### Added
@@ -487,27 +475,6 @@ Early alpha release of AssertLang - executable contracts for multi-agent systems
 
 - 34 test files require Python 3.10+ (dataclass slots parameter)
 - Some tests use return statements instead of assertions (non-blocking)
-
-### Migration Guide
-
-**For Developers Using `.pw` Files:**
-```bash
-# Rename all .pw files to .al
-find . -name "*.pw" -exec sh -c 'mv "$1" "${1%.pw}.al"' _ {} \;
-
-# Update imports in your code
-sed -i 's/from dsl.pw_parser/from dsl.al_parser/g' **/*.py
-sed -i 's/from dsl.pw_runtime/from dsl.al_runtime/g' **/*.py
-```
-
-**For CLI Users:**
-```bash
-# Old command
-pw build contract.pw --lang python
-
-# New command
-asl build contract.al --lang python
-```
 
 ### Package Information
 

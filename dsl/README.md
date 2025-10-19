@@ -123,7 +123,7 @@ python3 tests/test_ir.py
 ## Documentation
 
 - See [docs/ARCHITECTURE.md](../docs/ARCHITECTURE.md) for system architecture
-- See [docs/PW_DSL_2.0_SPEC.md](../docs/PW_DSL_2.0_SPEC.md) for language specification
+- See [docs/AL_DSL_2.0_SPEC.md](../docs/AL_DSL_2.0_SPEC.md) for language specification
 - See [docs/TYPE_SYSTEM.md](../docs/TYPE_SYSTEM.md) for type system details
 
 ## Version

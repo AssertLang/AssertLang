@@ -580,7 +580,7 @@ AssertLang/
 - [Phase 1-4 Documentation](../Current_Work.md)
 - [IR Specification](./IR_SPECIFICATION.md)
 - [Type System Documentation](./TYPE_SYSTEM.md)
-- [PW DSL 2.0 Spec](./PW_DSL_2.0_SPEC.md)
+- [PW DSL 2.0 Spec](./AL_DSL_2.0_SPEC.md)
 
 ---
 

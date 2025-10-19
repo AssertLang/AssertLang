@@ -745,7 +745,7 @@ This compiles to Python, Go, Rust, TypeScript, and C# automatically!
                   ↓
 ┌─────────────────────────────────────────────────────────┐
 │  3. Convert to MCP JSON                                 │
-│     ir_to_mcp() → user_service.pw.json                  │
+│     ir_to_mcp() → user_service.al.json                  │
 └─────────────────┬───────────────────────────────────────┘
                   ↓
 ┌─────────────────────────────────────────────────────────┐
@@ -779,13 +779,13 @@ pw build user_service.al --lang csharp -o UserService.cs
 pw run user_service.al
 
 # Compile to MCP JSON (for AI agents/advanced use)
-pw compile user_service.al -o user_service.pw.json
+pw compile user_service.al -o user_service.al.json
 
 # Unfold MCP JSON to language (rarely needed)
-pw unfold user_service.pw.json --lang python -o user_service.py
+pw unfold user_service.al.json --lang python -o user_service.py
 ```
 
-**Note**: MCP JSON (`.pw.json`) is an internal format used by AI agents and the compiler. Most developers will never see it - just write `.pw` files and build directly to your target language.
+**Note**: MCP JSON (`.al.json`) is an internal format used by AI agents and the compiler. Most developers will never see it - just write `.al` files and build directly to your target language.
 
 ---
 

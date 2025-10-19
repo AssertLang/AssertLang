@@ -464,7 +464,7 @@ let result = option_map(step2, fn3)
 
 - [Result<T,E>](./Result.md) - For operations that can fail with typed errors
 - [stdlib README](./README.md) - Overview of the standard library
-- [PW_NATIVE_SYNTAX.md](../PW_NATIVE_SYNTAX.md) - Language syntax reference
+- [AL_NATIVE_SYNTAX.md](../AL_NATIVE_SYNTAX.md) - Language syntax reference
 
 ---
 

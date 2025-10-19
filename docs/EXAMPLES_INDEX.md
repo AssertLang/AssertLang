@@ -399,8 +399,8 @@ dotnet build /tmp/test.cs
 ## Additional Resources
 
 ### Documentation
-- [`docs/PW_LANGUAGE_GUIDE.md`](PW_LANGUAGE_GUIDE.md) - Complete language guide
-- [`docs/PW_NATIVE_SYNTAX.md`](PW_NATIVE_SYNTAX.md) - Formal syntax specification
+- [`docs/AL_LANGUAGE_GUIDE.md`](AL_LANGUAGE_GUIDE.md) - Complete language guide
+- [`docs/AL_NATIVE_SYNTAX.md`](AL_NATIVE_SYNTAX.md) - Formal syntax specification
 - [`docs/SAFE_PATTERNS.md`](SAFE_PATTERNS.md) - Safe programming patterns
 - [`docs/QUICK_REFERENCE.md`](QUICK_REFERENCE.md) - Quick syntax reference
 
@@ -408,7 +408,7 @@ dotnet build /tmp/test.cs
 All examples are in: `/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/examples/`
 
 ### Running Examples
-See the [PW Language Guide](PW_LANGUAGE_GUIDE.md#examples) for detailed instructions on compiling and running examples.
+See the [PW Language Guide](AL_LANGUAGE_GUIDE.md#examples) for detailed instructions on compiling and running examples.
 
 ---
 

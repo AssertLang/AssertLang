@@ -178,7 +178,7 @@ map         → Dict    → map       → HashMap  → Object     → Dictionary
 
 1. **Read documentation first**
    ```bash
-   cat docs/PW_DSL_2.0_SPEC.md  # Language specification
+   cat docs/AL_DSL_2.0_SPEC.md  # Language specification
    cat docs/ARCHITECTURE_V2.md   # System architecture
    ```
 
@@ -473,7 +473,7 @@ function get_number() -> int {
 1. **README.md** - Project overview and quick start
 2. **Current_Work.md** - Current development status
 3. **CHANGELOG.md** - What's new in each version
-4. **docs/PW_DSL_2.0_SPEC.md** - Complete language specification
+4. **docs/AL_DSL_2.0_SPEC.md** - Complete language specification
 5. **docs/ARCHITECTURE_V2.md** - System architecture
 6. **docs/TYPE_SYSTEM.md** - Type system details
 
@@ -600,7 +600,7 @@ assertlang run file.al --verbose
 ### For Architecture Questions
 
 1. Read `docs/ARCHITECTURE_V2.md`
-2. Check `docs/PW_DSL_2.0_SPEC.md`
+2. Check `docs/AL_DSL_2.0_SPEC.md`
 3. Look at example programs in `examples/`
 4. Review test files for usage patterns
 

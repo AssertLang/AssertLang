@@ -33,7 +33,7 @@ Write once in PW, compile to Python, Go, Rust, TypeScript, or C#.
 
 ### Two Use Cases
 
-**1. Human Developers** - Write `.pw` files, compile directly to your target language
+**1. Human Developers** - Write `.al` files, compile directly to your target language
 ```bash
 pw build calculator.al --lang python -o calculator.py
 ```
@@ -76,7 +76,7 @@ The extension is included in `.vscode/extensions/pw-language/` and loads automat
 
 1. Open the AssertLang folder in VS Code
 2. Press `Cmd+Shift+P` → `Developer: Reload Window`
-3. Open any `.pw` file - syntax highlighting should work!
+3. Open any `.al` file - syntax highlighting should work!
 
 **Option 2: Manual Installation**
 
@@ -100,10 +100,10 @@ Search for "PW Language Support" in the VS Code Extensions marketplace.
 
 ### Your First PW Program
 
-Create `hello.pw`:
+Create `hello.al`:
 
 ```pw
-// hello.al - Your first PW program
+// hello.al - Your first AL program
 function greet(name: string) -> string {
     return "Hello, " + name + "!";
 }
@@ -482,7 +482,7 @@ let y = 20    // Both work
 
 **1. Write PW Code**
 
-Create `calculator.pw`:
+Create `calculator.al`:
 
 ```pw
 function add(x: int, y: int) -> int {
@@ -583,7 +583,7 @@ pw build src/calculator.al --lang rust -o calculator.rs
 
 ### Overview
 
-AI agents should **compose PW programmatically** using MCP tools, not write raw `.pw` text files.
+AI agents should **compose PW programmatically** using MCP tools, not write raw `.al` text files.
 
 ### MCP Tool Composition
 
@@ -712,14 +712,14 @@ The PW VS Code extension provides:
 
 1. Open AssertLang folder in VS Code
 2. Press `Cmd+Shift+P` → `Developer: Reload Window`
-3. Open `examples/calculator.pw`
+3. Open `examples/calculator.al`
 4. See syntax highlighting!
 
 **Enable File Icons:**
 
 1. Press `Cmd+Shift+P` → `Preferences: File Icon Theme`
 2. Select `PW Icons`
-3. See purple "PW" icon next to `.pw` files
+3. See purple "AL" icon next to `.al` files
 
 ### Editor Features
 
@@ -791,7 +791,7 @@ Purple square with white "PW" text - feel free to use this for branding!
 
 ### Example 1: Calculator
 
-**File:** `examples/calculator.pw`
+**File:** `examples/calculator.al`
 
 ```pw
 // Basic calculator functions
@@ -824,7 +824,7 @@ pw build examples/calculator.al --lang python -o calculator.py
 
 ### Example 2: User Validation
 
-**File:** `examples/user_service.pw`
+**File:** `examples/user_service.al`
 
 ```pw
 // User validation functions
@@ -926,13 +926,13 @@ pw build calculator.al --lang csharp -o Calculator.cs
 Compile PW to MCP JSON (for AI agents/advanced use).
 
 ```bash
-pw compile <input.al> -o <output.pw.json>
+pw compile <input.al> -o <output.al.json>
 ```
 
 **Example:**
 
 ```bash
-pw compile calculator.al -o calculator.pw.json
+pw compile calculator.al -o calculator.al.json
 ```
 
 ### `pw unfold`
@@ -940,13 +940,13 @@ pw compile calculator.al -o calculator.pw.json
 Convert MCP JSON to target language (rarely needed).
 
 ```bash
-pw unfold <input.pw.json> --lang <language> -o <output>
+pw unfold <input.al.json> --lang <language> -o <output>
 ```
 
 **Example:**
 
 ```bash
-pw unfold calculator.pw.json --lang go -o calculator.go
+pw unfold calculator.al.json --lang go -o calculator.go
 ```
 
 ### `pw run`
@@ -997,13 +997,13 @@ A: No! PW compiles to native code in each language. There's no runtime, no VM, n
 
 ### Technical Questions
 
-**Q: What's the difference between `.pw` files and `.pw.json` files?**
+**Q: What's the difference between `.al` files and `.al.json` files?**
 
-A: `.pw` files are human-readable source code. `.pw.json` is the internal MCP format used by AI agents and the compiler.
+A: `.al` files are human-readable source code. `.al.json` is the internal MCP format used by AI agents and the compiler.
 
-**Q: Do I ever need to see `.pw.json` files?**
+**Q: Do I ever need to see `.al.json` files?**
 
-A: No! For human developers, just work with `.pw` files. The JSON format is for AI agents.
+A: No! For human developers, just work with `.al` files. The JSON format is for AI agents.
 
 **Q: Can I write PW code by hand?**
 
@@ -1086,7 +1086,7 @@ A: Check your syntax matches the examples. Some features (loops, classes) aren't
 
 **Q: Generated code doesn't compile**
 
-A: Report an issue! Include your `.pw` file and target language: https://github.com/AssertLang/AssertLang/issues
+A: Report an issue! Include your `.al` file and target language: https://github.com/AssertLang/AssertLang/issues
 
 ---
 
@@ -1094,9 +1094,9 @@ A: Report an issue! Include your `.pw` file and target language: https://github.
 
 ### Documentation
 
-- **Language Spec:** `docs/PW_NATIVE_SYNTAX.md`
+- **Language Spec:** `docs/AL_NATIVE_SYNTAX.md`
 - **Architecture:** `docs/ARCHITECTURE.md`
-- **This Guide:** `docs/PW_LANGUAGE_GUIDE.md`
+- **This Guide:** `docs/AL_LANGUAGE_GUIDE.md`
 
 ### Community
 

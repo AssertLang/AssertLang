@@ -38,7 +38,7 @@ We plan to publish to the VS Code Marketplace so anyone can install with one cli
    - Type: `Developer: Reload Window`
    - Press Enter
 
-4. Open any `.pw` file (e.g., `examples/calculator.pw`)
+4. Open any `.al` file (e.g., `examples/calculator.al`)
 
 **That's it!** Syntax highlighting should work automatically.
 
@@ -95,7 +95,7 @@ Full colorization for PW syntax:
 
 ### File Icons 🎨
 
-Purple "PW" icon next to `.pw` files in the file explorer.
+Purple "AL" icon next to `.al` files in the file explorer.
 
 **To enable:**
 1. `Cmd+Shift+P` → `Preferences: File Icon Theme`
@@ -403,7 +403,7 @@ See `CONTRIBUTING.md` for guidelines.
 ### Getting Help
 
 - **Setup issues:** See `SETUP.md`
-- **Language questions:** See `PW_LANGUAGE_GUIDE.md`
+- **Language questions:** See `AL_LANGUAGE_GUIDE.md`
 - **Bug reports:** https://github.com/AssertLang/AssertLang/issues
 - **Feature requests:** https://github.com/AssertLang/AssertLang/discussions
 

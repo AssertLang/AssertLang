@@ -15,8 +15,8 @@
 - 6 → AV, Networking, Concurrency, Security, Extensibility, Debugging
 
 ## File
-- Extension: `.pw`
-- Run: `assertlang run myscript.pw`
+- Extension: `.al`
+- Run: `assertlang run myscript.al`
 
 ## Port
 - Default: 23456

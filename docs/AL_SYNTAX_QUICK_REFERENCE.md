@@ -1053,11 +1053,11 @@ Before writing PW code, remember:
 
 ## See Also
 
-- [PW Native Syntax Specification](PW_NATIVE_SYNTAX.md) - Complete language reference
-- [PW Language Guide](PW_LANGUAGE_GUIDE.md) - Detailed explanations
+- [PW Native Syntax Specification](AL_NATIVE_SYNTAX.md) - Complete language reference
+- [PW Language Guide](AL_LANGUAGE_GUIDE.md) - Detailed explanations
 - [Safe Patterns](SAFE_PATTERNS.md) - Best practices
 - [Examples](../examples/) - Working code samples
 
 ---
 
-**Need Help?** Check the [bug reports](../Bugs/) for common issues or consult the full [PW DSL 2.0 Spec](PW_DSL_2.0_SPEC.md).
+**Need Help?** Check the [bug reports](../Bugs/) for common issues or consult the full [PW DSL 2.0 Spec](AL_DSL_2.0_SPEC.md).
