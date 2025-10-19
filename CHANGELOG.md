@@ -5,6 +5,39 @@ All notable changes to AssertLang will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2025-01-18
+
+### 🐛 Bug Fixes
+
+**JavaScript Code Generation**
+- Fixed missing `module.exports` statement - JavaScript modules now properly export all top-level functions, classes, and types for CommonJS/Node.js compatibility
+- Fixed `self` not being converted to `this` in class methods - JavaScript now correctly uses `this.property` instead of `self.property`
+- Fixed Python built-in functions not mapped to JavaScript equivalents:
+  - `str()` → `String()`
+  - `int()` → `Math.floor()`
+  - `float()` → `Number()`
+  - `bool()` → `Boolean()`
+  - `len()` → `.length`
+- Fixed missing `new` keyword for class constructor calls - Factory functions now correctly use `new ClassName(...)` syntax
+
+**Python Code Generation**
+- Fixed constructor calls using `field_0=`, `field_1=` syntax instead of clean positional arguments - Now generates idiomatic `ClassName(arg1, arg2)` instead of `ClassName(field_0=arg1, field_1=arg2)`
+
+### 🧪 Testing
+- Added comprehensive test suite with 33 test cases covering all bug fixes
+- Added real-world integration test using VideoSpec example from bug report
+- Verified no regressions in existing test suite
+- 100% test pass rate across all test suites
+
+### 📝 Documentation
+- Added `VERIFICATION_REPORT_v0.1.1.md` with complete testing documentation
+- Updated `CURRENT_WORK.md` with detailed fix information and architecture notes
+
+### 🔧 Technical Details
+- Modified `language/javascript_generator.py`: 4 bug fixes
+- Modified `language/python_generator_v2.py`: 1 bug fix
+- All changes are backward compatible with no breaking changes
+
 ## [0.0.1] - 2025-10-17
 
 ### 🎉 Initial Alpha Release

@@ -93,6 +93,7 @@ class JavaScriptGenerator:
         self.function_return_types: Dict[str, IRType] = {}
         self.method_return_types: Dict[str, Dict[str, IRType]] = {}
         self.current_class: Optional[str] = None
+        self.defined_classes: Set[str] = set()  # BUG FIX #5: Track class names for 'new' keyword
 
     # ========================================================================
     # Indentation Management
@@ -126,6 +127,7 @@ class JavaScriptGenerator:
             JavaScript source code as string
         """
         self.required_imports.clear()
+        self.defined_classes.clear()
         lines = []
 
         # Module docstring
@@ -138,6 +140,19 @@ class JavaScriptGenerator:
 
         # Track function return types
         self._register_function_signatures(module)
+
+        # BUG FIX #5: Track all class names for 'new' keyword detection
+        for cls in module.classes:
+            self.defined_classes.add(cls.name)
+        for type_def in module.types:
+            self.defined_classes.add(type_def.name)
+        for enum in module.enums:
+            # For generic enums, track variant names as classes
+            if enum.generic_params:
+                for variant in enum.variants:
+                    self.defined_classes.add(variant.name)
+            else:
+                self.defined_classes.add(enum.name)
 
         # Contract runtime import if needed
         if self.required_imports:
@@ -179,6 +194,36 @@ class JavaScriptGenerator:
             lines.append(self.generate_function(func))
             lines.append("")
             lines.append("")
+
+        # BUG FIX #1: Add module.exports for CommonJS compatibility
+        exports = []
+        # Export all top-level functions
+        for func in module.functions:
+            exports.append(func.name)
+        # Export all classes
+        for cls in module.classes:
+            exports.append(cls.name)
+        # Export all type definitions
+        for type_def in module.types:
+            exports.append(type_def.name)
+        # Export enums (either enum name or variant names for generic enums)
+        for enum in module.enums:
+            if enum.generic_params:
+                # Generic enums export their variant classes
+                for variant in enum.variants:
+                    exports.append(variant.name)
+                    # Also add the underscore version if it's a keyword
+                    if variant.name in ("None", "True", "False"):
+                        exports.append(f"{variant.name}_")
+            else:
+                # Regular enums export the enum itself
+                exports.append(enum.name)
+
+        if exports:
+            lines.append("")
+            lines.append("module.exports = {")
+            lines.append("    " + ",\n    ".join(exports))
+            lines.append("};")
 
         # Clean up and return
         result = "\n".join(lines)
@@ -964,6 +1009,9 @@ class JavaScriptGenerator:
             return self.generate_call(expr)
         elif isinstance(expr, IRPropertyAccess):
             obj = self.generate_expression(expr.object)
+            # BUG FIX #3: Convert Python's 'self' to JavaScript's 'this'
+            if obj == "self":
+                obj = "this"
             if expr.property == "length":
                 return f"{obj}.length"
             return f"{obj}.{expr.property}"
@@ -1061,6 +1109,45 @@ class JavaScriptGenerator:
                     string_arg = self.generate_expression(expr.args[0])
                     substr_arg = self.generate_expression(expr.args[1])
                     return f"{string_arg}.includes({substr_arg})"
+
+        # BUG FIX #4: Map Python built-in functions to JavaScript equivalents
+        if isinstance(expr.function, IRIdentifier):
+            func_name = expr.function.name
+
+            # Python built-ins to JavaScript mappings
+            if func_name == "str":
+                # str(x) → String(x)
+                if len(expr.args) == 1:
+                    arg = self.generate_expression(expr.args[0])
+                    return f"String({arg})"
+            elif func_name == "int":
+                # int(x) → Math.floor(x)
+                if len(expr.args) == 1:
+                    arg = self.generate_expression(expr.args[0])
+                    return f"Math.floor({arg})"
+            elif func_name == "float":
+                # float(x) → Number(x) or just x (JS numbers are all floats)
+                if len(expr.args) == 1:
+                    arg = self.generate_expression(expr.args[0])
+                    # In JavaScript, all numbers are already floating point
+                    # But we'll use Number() for explicit conversion
+                    return f"Number({arg})"
+            elif func_name == "bool":
+                # bool(x) → Boolean(x)
+                if len(expr.args) == 1:
+                    arg = self.generate_expression(expr.args[0])
+                    return f"Boolean({arg})"
+            elif func_name == "len":
+                # len(x) → x.length
+                if len(expr.args) == 1:
+                    arg = self.generate_expression(expr.args[0])
+                    return f"{arg}.length"
+
+            # BUG FIX #5: Add 'new' keyword for class constructor calls
+            if func_name in self.defined_classes:
+                # This is a constructor call - add 'new' keyword
+                args = [self.generate_expression(arg) for arg in expr.args]
+                return f"new {func_name}({', '.join(args)})"
 
         func = self.generate_expression(expr.function)
         args = [self.generate_expression(arg) for arg in expr.args]
