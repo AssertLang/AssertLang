@@ -94,6 +94,90 @@ class JavaScriptGenerator:
         self.method_return_types: Dict[str, Dict[str, IRType]] = {}
         self.current_class: Optional[str] = None
         self.defined_classes: Set[str] = set()  # BUG FIX #5: Track class names for 'new' keyword
+        self.reassigned_variables: Set[str] = set()  # BUG FIX: Track variables that are reassigned
+
+    # ========================================================================
+    # Type Analysis
+    # ========================================================================
+
+    def _is_integer_expression(self, expr: IRExpression) -> bool:
+        """Check if an expression has an integer type."""
+        if isinstance(expr, IRLiteral):
+            return expr.literal_type == LiteralType.INTEGER
+        elif isinstance(expr, IRIdentifier):
+            # Check if variable has int type
+            var_type = self.variable_types.get(expr.name)
+            if var_type and hasattr(var_type, 'name'):
+                return var_type.name == 'int'
+            return False
+        elif isinstance(expr, IRBinaryOp):
+            # Integer operations return integers if both operands are integers
+            if expr.op in [BinaryOperator.ADD, BinaryOperator.SUBTRACT, BinaryOperator.MULTIPLY,
+                          BinaryOperator.DIVIDE, BinaryOperator.MODULO]:
+                return self._is_integer_expression(expr.left) and self._is_integer_expression(expr.right)
+            return False
+        elif isinstance(expr, IRCall):
+            # Check if function returns int
+            return_type = self.function_return_types.get(expr.function)
+            if return_type and hasattr(return_type, 'name'):
+                return return_type.name == 'int'
+            return False
+        return False
+
+    # ========================================================================
+    # Variable Analysis
+    # ========================================================================
+
+    def _analyze_reassignments(self, statements: List[IRStatement]) -> Set[str]:
+        """
+        Analyze which variables are reassigned in a block of statements.
+
+        Returns a set of variable names that are reassigned (not just declared).
+        """
+        reassigned = set()
+        declared = set()
+
+        def analyze_stmt(stmt: IRStatement):
+            if isinstance(stmt, IRAssignment):
+                var_name = stmt.target if isinstance(stmt.target, str) else None
+                if var_name:
+                    if stmt.is_declaration:
+                        declared.add(var_name)
+                    else:
+                        # This is a reassignment
+                        reassigned.add(var_name)
+            elif isinstance(stmt, IRIf):
+                # Recursively analyze if/else blocks
+                if stmt.then_body:
+                    for s in stmt.then_body:
+                        analyze_stmt(s)
+                if stmt.else_body:
+                    for s in stmt.else_body:
+                        analyze_stmt(s)
+            elif isinstance(stmt, IRWhile):
+                if stmt.body:
+                    for s in stmt.body:
+                        analyze_stmt(s)
+            elif isinstance(stmt, IRFor) or isinstance(stmt, IRForCStyle):
+                if stmt.body:
+                    for s in stmt.body:
+                        analyze_stmt(s)
+            elif isinstance(stmt, IRTry):
+                if stmt.body:
+                    for s in stmt.body:
+                        analyze_stmt(s)
+                for catch in stmt.catches:
+                    if catch.body:
+                        for s in catch.body:
+                            analyze_stmt(s)
+                if stmt.finally_body:
+                    for s in stmt.finally_body:
+                        analyze_stmt(s)
+
+        for stmt in statements:
+            analyze_stmt(stmt)
+
+        return reassigned
 
     # ========================================================================
     # Indentation Management
@@ -469,6 +553,9 @@ class JavaScriptGenerator:
         """Generate class method."""
         lines = []
 
+        # BUG FIX: Analyze which variables are reassigned in this method
+        self.reassigned_variables = self._analyze_reassignments(method.body if method.body else [])
+
         # Register parameter types
         for param in method.params:
             self.variable_types[param.name] = param.param_type
@@ -509,6 +596,9 @@ class JavaScriptGenerator:
     def generate_function(self, func: IRFunction) -> str:
         """Generate standalone function with contract checks."""
         lines = []
+
+        # BUG FIX: Analyze which variables are reassigned in this function
+        self.reassigned_variables = self._analyze_reassignments(func.body if func.body else [])
 
         # Register parameter types
         for param in func.params:
@@ -808,8 +898,13 @@ class JavaScriptGenerator:
             if isinstance(stmt.target, str) and stmt.var_type:
                 self.variable_types[stmt.target] = stmt.var_type
 
+            # BUG FIX: Use let if variable is reassigned
             if stmt.is_declaration:
-                return f"{self.indent()}const {target} = {obj_literal};"
+                var_name = stmt.target if isinstance(stmt.target, str) else None
+                if var_name and var_name in self.reassigned_variables:
+                    return f"{self.indent()}let {target} = {obj_literal};"
+                else:
+                    return f"{self.indent()}const {target} = {obj_literal};"
             else:
                 return f"{self.indent()}{target} = {obj_literal};"
 
@@ -827,9 +922,16 @@ class JavaScriptGenerator:
             isinstance(target, str) and ('.' in target or target.startswith('this'))
         )
 
-        # Use const for variable declarations only, not for property assignments
+        # BUG FIX: Use const for variable declarations only if not reassigned
+        # Use let for variables that will be reassigned later
         if stmt.is_declaration and not is_property_assignment:
-            return f"{self.indent()}const {target} = {value};"
+            var_name = stmt.target if isinstance(stmt.target, str) else None
+            if var_name and var_name in self.reassigned_variables:
+                # Variable is reassigned later, use 'let'
+                return f"{self.indent()}let {target} = {value};"
+            else:
+                # Variable is never reassigned, use 'const'
+                return f"{self.indent()}const {target} = {value};"
         else:
             return f"{self.indent()}{target} = {value};"
 
@@ -1059,14 +1161,30 @@ class JavaScriptGenerator:
         left = self.generate_expression(expr.left)
         right = self.generate_expression(expr.right)
 
+        # BUG FIX: Handle division specially for integer types
+        # JavaScript's / is always float division, we need Math.floor() for integer division
+        if expr.op == BinaryOperator.DIVIDE:
+            # Check if both operands are integers
+            left_is_int = self._is_integer_expression(expr.left)
+            right_is_int = self._is_integer_expression(expr.right)
+
+            if left_is_int and right_is_int:
+                # Integer division: use Math.floor()
+                return f"Math.floor({left} / {right})"
+            else:
+                # Float division: use regular /
+                return f"({left} / {right})"
+
+        # Handle floor division explicitly
+        if expr.op == BinaryOperator.FLOOR_DIVIDE:
+            return f"Math.floor({left} / {right})"
+
         op_map = {
             BinaryOperator.ADD: "+",
             BinaryOperator.SUBTRACT: "-",
             BinaryOperator.MULTIPLY: "*",
-            BinaryOperator.DIVIDE: "/",
             BinaryOperator.MODULO: "%",
             BinaryOperator.POWER: "**",
-            BinaryOperator.FLOOR_DIVIDE: "//",
             BinaryOperator.EQUAL: "===",
             BinaryOperator.NOT_EQUAL: "!==",
             BinaryOperator.LESS_THAN: "<",
