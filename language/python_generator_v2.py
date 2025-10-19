@@ -161,7 +161,18 @@ class PythonGeneratorV2:
 
         # BUG FIX v0.1.5: Add AssertLang runtime imports
         lines.append("# AssertLang Runtime")
-        lines.append("from assertlang.runtime import Ok, Error, Result")
+
+        # BUG FIX v0.1.6: Detect and auto-import module functions (math, str, list)
+        needed_modules = self._detect_module_usage(module)
+        runtime_imports = ["Ok", "Error", "Result"]
+        if "math" in needed_modules:
+            runtime_imports.append("al_math as math")
+        if "str" in needed_modules:
+            runtime_imports.append("al_str as str")
+        if "list" in needed_modules:
+            runtime_imports.append("al_list as list")
+
+        lines.append(f"from assertlang.runtime import {', '.join(runtime_imports)}")
         lines.append("")
 
         # Special imports (enum, dataclass) - add to required
@@ -338,6 +349,118 @@ class PythonGeneratorV2:
         # Get required imports
         imports = self.type_system.get_required_imports(all_types, "python")
         self.required_imports.update(imports)
+
+    def _detect_module_usage(self, module: IRModule) -> set:
+        """
+        Detect which AssertLang stdlib modules (math, str, list) are used in the code.
+
+        BUG FIX v0.1.6: Auto-detect and import al_math, al_str, al_list when needed.
+
+        Returns:
+            set of module names that need to be imported ("math", "str", "list")
+        """
+        needed_modules = set()
+
+        def check_expression(expr):
+            """Recursively check expressions for module function calls."""
+            if expr is None:
+                return
+
+            if isinstance(expr, IRCall):
+                # Check if this is a module function call (e.g., math.round(), str.length())
+                if isinstance(expr.function, IRPropertyAccess):
+                    obj = expr.function.object
+                    if isinstance(obj, IRIdentifier):
+                        if obj.name in ("math", "str", "list"):
+                            needed_modules.add(obj.name)
+
+                # Recursively check arguments
+                for arg in expr.args:
+                    check_expression(arg)
+                for val in expr.kwargs.values():
+                    check_expression(val)
+
+            elif isinstance(expr, IRBinaryOp):
+                check_expression(expr.left)
+                check_expression(expr.right)
+
+            elif isinstance(expr, IRUnaryOp):
+                check_expression(expr.operand)
+
+            elif isinstance(expr, IRTernary):
+                check_expression(expr.condition)
+                check_expression(expr.true_value)
+                check_expression(expr.false_value)
+
+            elif isinstance(expr, IRArray):
+                for el in expr.elements:
+                    check_expression(el)
+
+            elif isinstance(expr, IRIndex):
+                check_expression(expr.object)
+                check_expression(expr.index)
+
+            elif isinstance(expr, IRPropertyAccess):
+                check_expression(expr.object)
+
+        def check_statement(stmt):
+            """Recursively check statements for module usage."""
+            if isinstance(stmt, IRAssignment):
+                check_expression(stmt.value)
+
+            elif isinstance(stmt, IRReturn):
+                check_expression(stmt.value)
+
+            elif isinstance(stmt, IRIf):
+                check_expression(stmt.condition)
+                if stmt.then_body:
+                    for s in stmt.then_body:
+                        check_statement(s)
+                if stmt.else_body:
+                    for s in stmt.else_body:
+                        check_statement(s)
+
+            elif isinstance(stmt, IRWhile):
+                check_expression(stmt.condition)
+                if stmt.body:
+                    for s in stmt.body:
+                        check_statement(s)
+
+            elif isinstance(stmt, IRFor):
+                check_expression(stmt.iterable)
+                if stmt.body:
+                    for s in stmt.body:
+                        check_statement(s)
+
+            elif isinstance(stmt, IRForCStyle):
+                check_expression(stmt.init)
+                check_expression(stmt.condition)
+                check_expression(stmt.increment)
+                if stmt.body:
+                    for s in stmt.body:
+                        check_statement(s)
+
+            elif isinstance(stmt, IRCall):
+                check_expression(stmt)
+
+        # Check all functions
+        for func in module.functions:
+            if func.body:
+                for stmt in func.body:
+                    check_statement(stmt)
+
+        # Check all class methods
+        for cls in module.classes:
+            if cls.constructor and cls.constructor.body:
+                for stmt in cls.constructor.body:
+                    check_statement(stmt)
+
+            for method in cls.methods:
+                if method.body:
+                    for stmt in method.body:
+                        check_statement(stmt)
+
+        return needed_modules
 
     def generate_import(self, imp: IRImport) -> str:
         """
