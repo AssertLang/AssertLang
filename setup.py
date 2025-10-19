@@ -9,7 +9,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="assertlang",
-    version="0.0.3",
+    version="0.1.6",
     author="AssertLang Contributors",
     author_email="hello@assertlang.dev",
     description="Executable contracts for multi-agent systems - deterministic coordination across frameworks and languages",
