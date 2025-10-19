@@ -25,17 +25,19 @@
 
 ---
 
-## 👋 Hey there!
+## Why AssertLang Exists
 
-I'm David, and I built AssertLang. Full disclosure: **I'm not a "real" software engineer.** I'm a broadcast tech from Hamilton who saw a problem and decided to try building a solution.
+I watched the multi-agent AI space explode in 2024. Everyone's building agents with CrewAI, LangGraph, AutoGen—but I kept seeing the same problem: **agents from different frameworks can't reliably coordinate**.
 
-**The honest truth:** I couldn't have built this alone. Claude Code helped massively. But that's kind of the point—if someone like me can build something that actually works, maybe we're onto something useful here.
+**The issue:** When Agent A (Python) and Agent B (JavaScript) are supposed to do the same thing, they interpret it differently. Same task, different validation logic, different error handling, chaos. JSON schemas only cover types, not behavior. Natural language is ambiguous. LLM interpretation is non-deterministic.
 
-**What I'm hoping for:** Genuine feedback. Does this solve a real problem for you? Is it useful? What's broken? What should I add? I'm not trying to build a unicorn startup—I'm trying to see if this idea is actually helpful to developers building multi-agent systems.
+**The insight:** What if agents could share **executable contracts**? Not just type schemas, but actual business logic. Write it once in a simple language, transpile to any target language, guarantee identical execution across all agents.
 
-**Current status:** v0.1.6 - **Production ready for Python!** Zero manual fixes required, enterprise validated (67/67 tests passed), auto-import runtime modules. Multi-language transpiler works (Python, JavaScript, TypeScript, Go, Rust, C#). Full MCP integration for multi-agent coordination.
+So I built AssertLang to solve this. It's production-ready for Python (v0.1.6), with support for JavaScript, TypeScript, Go, Rust, and C#.
 
-⭐ **If you find this interesting, please star the repo!** It helps me know I'm building something people actually want.
+**Current status:** v0.1.6 - **Production ready for Python!** Zero manual fixes required, enterprise validated (67/67 tests passed), auto-import runtime modules. Multi-language transpilation working. Full MCP integration for agent coordination.
+
+⭐ **If you're building multi-agent systems and this solves a real problem for you, star the repo!** Your feedback helps shape where this goes.
 
 ---
 
@@ -231,9 +233,9 @@ When Agent A (Python) and Agent B (JavaScript) are supposed to do the same thing
 
 I thought: **What if agents could share executable contracts?** Not just type schemas, but actual behavior. Write it once, transpile to any language, guarantee identical execution.
 
-So I built it. With a lot of help from Claude Code (seriously, this wouldn't exist without it).
+So I built it. Developed with Claude Code, which feels appropriate for a tool designed to help AI agents communicate better.
 
-**Is it useful?** That's what I'm trying to figure out. If you're building multi-agent systems and this solves a problem for you, I want to hear about it. If it doesn't, I want to hear that too.
+**Want to shape where this goes?** If you're building multi-agent systems, I want to hear about what works, what doesn't, and what's missing.
 
 ---
 
@@ -346,22 +348,22 @@ AL contracts transpile to:
 
 ## 🤝 Contributing
 
-**I need your help!** Here's the honest truth: this is a solo project (with AI assistance), and I'm figuring things out as I go.
+AssertLang is an open-source project built for the multi-agent community. Contributions are welcome!
 
-### Ways You Can Help:
+### Ways to Contribute:
 
-**1. Try it out and tell me what breaks**
+**1. Test and report:**
 ```bash
 pip install assertlang
 asl build --help
-# Then let me know what happened!
+# Found a bug or edge case? Open an issue!
 ```
 
 **2. Open issues for:**
-- Bugs you find (there are definitely bugs!)
-- Features you need (what's missing?)
-- Documentation that's confusing (where did you get stuck?)
-- Ideas for improvement (what would make this more useful?)
+- Bugs and unexpected behavior
+- Missing features your use case needs
+- Documentation improvements
+- Performance bottlenecks
 
 **3. Contribute code:**
 - Fix bugs
@@ -369,20 +371,20 @@ asl build --help
 - Improve documentation
 - Write examples
 
-**4. Share feedback:**
-- Does this solve a real problem for you?
-- What frameworks do you use?
+**4. Share your use case:**
+- What frameworks are you using?
 - What languages do you need?
-- What's your multi-agent coordination pain point?
+- What's your multi-agent coordination challenge?
+- How are you using AssertLang in production?
 
-### I Promise:
+### Project Commitments:
 
-- **Respond to all issues** (might take a day or two, but I'll respond)
-- **Be open to feedback** (tell me what's wrong, I won't be offended)
-- **Give credit** (every contributor gets recognized)
-- **Keep it simple** (no corporate BS, just building something useful)
+- **Responsive maintenance** - Issues get responses within 48 hours
+- **Open feedback** - All suggestions considered, honest technical discussions
+- **Contributor recognition** - Every contribution is acknowledged
+- **Clear roadmap** - Development priorities driven by real use cases
 
-**Not sure where to start?** Look for issues tagged `good-first-issue` or just open an issue saying "I want to help!" and I'll find something.
+**Want to contribute?** Look for issues tagged `good-first-issue` or open a new issue describing what you'd like to work on.
 
 ---
 
@@ -466,11 +468,11 @@ Built with ❤️ (and lots of Claude Code assistance) for the multi-agent AI co
 
 ## 🙏 Acknowledgments
 
-**Huge thanks to:**
-- **Claude (Anthropic)** - for making it possible for non-"real" engineers to build real tools
-- **The multi-agent AI community** - for inspiration and showing the need for this
-- **Early testers** - for trying this out and giving honest feedback (you know who you are!)
-- **Everyone who's starred the repo** - it genuinely motivates me to keep building
+**Thanks to:**
+- **Claude (Anthropic)** - AssertLang was built with Claude Code, demonstrating the power of AI-assisted development
+- **The multi-agent AI community** - for showing the need for deterministic cross-framework coordination
+- **Early testers** - for providing honest feedback and real-world validation
+- **Contributors and supporters** - your feedback drives the roadmap
 
 ---
 
@@ -507,8 +509,8 @@ Built with ❤️ (and lots of Claude Code assistance) for the multi-agent AI co
 ---
 
 <p align="center">
-  <strong>Built by one person, trying to solve a real problem.</strong><br>
-  If this helps you, that makes it all worth it. ⭐
+  <strong>Solving real coordination problems for multi-agent systems.</strong><br>
+  If this helps your project, star the repo to help others discover it! ⭐
 </p>
 
 <p align="center">
