@@ -5,6 +5,90 @@ All notable changes to AssertLang will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.4] - 2025-01-18
+
+### 🐛 Critical Bug Fixes - Production Feedback
+
+**Based on real-world usage: 380+ line broadcast production contracts**
+
+Two critical bugs fixed that were blocking production JavaScript usage:
+
+#### Bug #1: JavaScript `const`/`let` Assignment Error (P0 - CRITICAL)
+
+**Problem:**
+- JavaScript generator always used `const` for variable declarations
+- Variables that were reassigned later caused runtime errors: `TypeError: Assignment to constant variable`
+- **Impact:** JavaScript code compiled successfully but crashed at runtime
+
+**Fix:**
+- Added intelligent analysis to detect which variables are reassigned in a function
+- Variables that ARE reassigned now use `let` (mutable)
+- Variables that are NEVER reassigned use `const` (immutable)
+- Analysis works across all control flow: if/else, loops, try/catch
+
+**Example:**
+```javascript
+// BEFORE (v0.1.3):
+const result = "";  // ❌ Runtime error on reassignment
+
+// AFTER (v0.1.4):
+let result = "";  // ✅ Works correctly
+const minutes = Math.floor(total_seconds / 60);  // ✅ Never reassigned, uses const
+```
+
+**Files Modified:**
+- `language/javascript_generator.py`:
+  - Added `_analyze_reassignments()` method to scan function body
+  - Updated `generate_function()` and `generate_method()` to analyze before generation
+  - Modified `generate_assignment()` to choose `let` vs `const` based on analysis
+
+#### Bug #2: Integer Division Semantic Difference (P1 - HIGH)
+
+**Problem:**
+- JavaScript `/` operator does float division (90/60 = 1.5)
+- Python `//` operator does integer division (90//60 = 1)
+- AssertLang `/` should do integer division when both operands are integers
+- **Impact:** Calculations returned wrong values (countdown timers showed decimals)
+
+**Fix:**
+- Added type analysis to detect integer division (`int / int`)
+- Integer division automatically wrapped with `Math.floor()` for correct semantics
+- Float division continues to use regular `/` operator
+
+**Example:**
+```javascript
+// BEFORE (v0.1.3):
+const minutes = (total_seconds / 60);  // 90/60 = 1.5 ❌
+
+// AFTER (v0.1.4):
+const minutes = Math.floor(total_seconds / 60);  // 90/60 = 1 ✅
+```
+
+**Files Modified:**
+- `language/javascript_generator.py`:
+  - Added `_is_integer_expression()` method for type checking
+  - Modified `generate_binary_op()` to detect and handle integer division
+
+### 🧪 Testing
+
+**New Test Suite:** `tests/test_v0_1_4_fixes.py`
+- ✅ Variables reassigned use `let`, never reassigned use `const`
+- ✅ Integer division returns integers (Math.floor applied)
+- ✅ Float division returns floats (no Math.floor)
+- ✅ Real-world countdown timer code works correctly
+- ✅ All existing tests continue to pass
+
+**Real-World Validation:**
+- Tested with actual 380-line broadcast production contract code
+- Fixes confirmed by user who reported the bugs
+- No regressions
+
+### 📝 Technical Details
+
+**Known Limitation:** Type inference for computed values is limited (e.g., `let x = a - b; let y = x / 2`). This will be improved in future versions with enhanced type inference.
+
+**This release fixes all critical P0/P1 bugs blocking production JavaScript usage!**
+
 ## [0.1.3] - 2025-01-18
 
 ### 🐛 Critical Bug Fix - Parser

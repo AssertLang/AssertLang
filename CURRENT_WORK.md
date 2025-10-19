@@ -1,17 +1,145 @@
 # AssertLang - Current Work Status
 
-## Latest Update: v0.1.3 Parser Fix Released (2025-01-18)
+## Latest Update: v0.1.4 Critical Bug Fixes (2025-01-18)
 
-### Status: ✅ COMPLETED & RELEASED
+### Status: 🔧 READY FOR RELEASE
 
-**AssertLang v0.1.3** is now live on PyPI with critical parser fix for JavaScript constructors.
+**AssertLang v0.1.4** fixes two critical P0/P1 bugs based on real-world usage feedback from 380+ line production contracts.
 
-**PyPI**: https://pypi.org/project/assertlang/0.1.3/
-**GitHub Release**: https://github.com/AssertLang/AssertLang/releases/tag/v0.1.3
+**Bugs Fixed:**
+1. 🔴 **P0 CRITICAL**: JavaScript `const`/`let` bug causing runtime errors
+2. 🟡 **P1 HIGH**: Integer division semantic difference (JavaScript `/` vs Python `//`)
 
 ---
 
-## Release History
+## v0.1.4 Release Notes (PENDING)
+
+### 🐛 Critical Bug Fixes
+
+#### Bug #1: JavaScript `const`/`let` for Reassigned Variables (P0)
+
+**Problem:**
+```javascript
+// AssertLang v0.1.3 output:
+function formatCountdown(total_seconds) {
+    const result = "";  // ❌ Uses const
+    if (minutes < 10) {
+        result = "0" + String(minutes);  // TypeError: Assignment to constant variable
+    }
+}
+```
+
+**Root Cause:** JavaScript generator always used `const` for variable declarations, even when variables were reassigned later in the function.
+
+**Solution:**
+- Added `_analyze_reassignments()` method to scan function body and identify which variables are reassigned
+- Modified `generate_assignment()` to use `let` for reassigned variables, `const` for variables never reassigned
+- Tracks reassignments across all control flow (if/else, loops, try/catch)
+
+**After Fix (v0.1.4):**
+```javascript
+function formatCountdown(total_seconds) {
+    let result = "";  // ✅ Uses let (will be reassigned)
+    const minutes = Math.floor(total_seconds / 60);  // ✅ Uses const (never reassigned)
+    if (minutes < 10) {
+        result = "0" + String(minutes);  // ✅ Works!
+    }
+}
+```
+
+**Files Modified:**
+- `language/javascript_generator.py`:
+  - Added `self.reassigned_variables` tracking
+  - Added `_analyze_reassignments()` method (lines 131-180)
+  - Updated `generate_function()` to analyze reassignments (line 570)
+  - Updated `generate_method()` to analyze reassignments (line 529)
+  - Updated `generate_assignment()` to use `let` vs `const` based on analysis (lines 892-903, 873-881)
+
+**Testing:**
+- ✅ Variables that ARE reassigned use `let`
+- ✅ Variables that are NEVER reassigned use `const`
+- ✅ Works across if/else, loops, try/catch blocks
+- ✅ No runtime errors
+
+---
+
+#### Bug #2: Integer Division Semantic Difference (P1)
+
+**Problem:**
+```javascript
+// AssertLang code:
+let minutes = total_seconds / 60;  // Expect integer division
+
+// v0.1.3 JavaScript output:
+const minutes = (total_seconds / 60);  // Float division!
+// total_seconds=90 → minutes=1.5 ❌ (expected: 1)
+
+// Python output (correct):
+minutes = (total_seconds // 60)  // Integer division
+// total_seconds=90 → minutes=1 ✅
+```
+
+**Root Cause:** JavaScript `/` operator always does float division, while Python `//` does integer division. AssertLang `/` should do integer division when both operands are integers.
+
+**Solution:**
+- Added `_is_integer_expression()` method to determine if an expression has integer type
+- Modified `generate_binary_op()` to detect integer division and wrap with `Math.floor()`
+- Checks literal types, variable types, and function return types
+
+**After Fix (v0.1.4):**
+```javascript
+// Integer division (int / int):
+const minutes = Math.floor(total_seconds / 60);  // ✅ Integer division
+// total_seconds=90 → minutes=1 ✅
+
+// Float division (float / float):
+const ratio = (a / b);  // ✅ Regular division (no Math.floor)
+```
+
+**Files Modified:**
+- `language/javascript_generator.py`:
+  - Added `_is_integer_expression()` method (lines 103-125)
+  - Modified `generate_binary_op()` to handle integer division (lines 1138-1152)
+
+**Testing:**
+- ✅ `int / int` uses `Math.floor()` for integer division
+- ✅ `float / float` uses regular `/` for float division
+- ✅ `int / float` or `float / int` uses regular `/`
+- ✅ Correct results: `formatCountdown(90)` returns `"01"` not `"01.5"`
+
+**Known Limitation:** Type inference for computed values (e.g., `let x = a - b; let y = x / 2`) is limited. This will be improved in future versions.
+
+---
+
+### 📊 Test Results
+
+**Test Suite:** `tests/test_v0_1_4_fixes.py`
+
+```
+✅ ALL TESTS PASSED
+
+Test #1: const/let Bug Fix
+  ✅ Variables reassigned use 'let'
+  ✅ Variables never reassigned use 'const'
+
+Test #2: Integer Division Fix
+  ✅ int / int uses Math.floor()
+  ✅ float / float uses regular /
+
+Test #3: Both Fixes Together
+  ✅ Realistic 380-line contract example works correctly
+```
+
+**Real-World Validation:**
+- Based on feedback from building 380+ line broadcast production contracts
+- Tested with actual countdown timer code from production use
+- All edge cases covered
+
+---
+
+## Previous Releases
+
+### v0.1.3 (2025-01-18) - Parser Fix ✅
 
 ### v0.1.3 (2025-01-18) - Parser Fix ✅
 
