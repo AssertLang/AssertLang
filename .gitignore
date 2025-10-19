@@ -58,6 +58,9 @@ SESSION_*.md
 WEBSITE_FIX_REQUIREMENTS.md
 RELEASE_NOTES_*.md
 
+# Testing agent results (internal only)
+AssertLang-Testing-Agent-Results.md
+
 # Testing
 .pytest_cache/
 .coverage

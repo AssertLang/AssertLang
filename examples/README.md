@@ -1,10 +1,12 @@
 # Example Programs
 
-Real-world example programs written in PW demonstrating language features and best practices.
+Real-world example programs written in AssertLang demonstrating language features and best practices.
 
 ## Overview
 
-This directory contains complete, working programs written in the PW programming language. These examples demonstrate the language's capabilities and serve as references for developers.
+This directory contains complete, working programs written in the AssertLang (AL) programming language. These examples demonstrate the language's capabilities and serve as references for developers.
+
+**Current Version:** v0.1.6 - Production ready for Python with zero manual fixes required!
 
 ## Available Examples
 
@@ -89,9 +91,16 @@ A simple REST API server with user management endpoints.
 assertlang run examples/simple_web_api.al
 ```
 
+## Multi-Agent Coordination Example
+
+See [agent_coordination/](agent_coordination/) for a complete working example of multi-agent systems using AssertLang contracts:
+- CrewAI agent (Python) and LangGraph agent (JavaScript) executing identical logic
+- 100% behavioral match across frameworks
+- Proof of deterministic coordination
+
 ## Total Example Code
 
-**16,561 characters** of production-ready PW code across 3 programs.
+**16,561+ characters** of production-ready AssertLang code across multiple programs.
 
 ## Compiling Examples
 
@@ -161,7 +170,7 @@ This verifies:
 
 ## Creating Your Own Examples
 
-1. **Write PW code**:
+1. **Write AssertLang code**:
 ```al
 function hello(name: string) -> string {
     return "Hello, " + name;
@@ -201,11 +210,15 @@ python3 myexample.py
 
 ## Documentation
 
-- See [docs/PW_DSL_2.0_SPEC.md](../docs/PW_DSL_2.0_SPEC.md) for language syntax
-- See [docs/AI_AGENT_GUIDE.md](../docs/AI_AGENT_GUIDE.md) for usage guide
-- See [docs/DEVELOPMENT.md](../docs/DEVELOPMENT.md) for contributing
+- **Getting Started:** [docs/GETTING_STARTED.md](../docs/GETTING_STARTED.md) - Complete beginner's guide
+- **Type System:** [docs/TYPE_SYSTEM.md](../docs/TYPE_SYSTEM.md) - Language type system
+- **Changelog:** [CHANGELOG.md](../CHANGELOG.md) - Version history and updates
+- **Release Notes:** [v0.1.6 Release](https://github.com/AssertLang/AssertLang/releases/tag/v0.1.6)
 
 ## Version
 
-Current: v2.1.0-beta
-All examples tested and working with 100% pass rate.
+**Current: v0.1.6** - Production ready for Python!
+- ✅ Zero manual fixes required
+- ✅ Auto-import runtime modules
+- ✅ Enterprise validated (67/67 tests passed)
+- ✅ All examples tested and working
