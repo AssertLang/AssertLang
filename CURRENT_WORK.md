@@ -1,10 +1,13 @@
 # AssertLang - Current Work Status
 
-## Latest Update: v0.1.4 Critical Bug Fixes (2025-01-18)
+## Latest Update: v0.1.4 Critical Bug Fixes Released (2025-01-18)
 
-### Status: 🔧 READY FOR RELEASE
+### Status: ✅ COMPLETED & RELEASED
 
-**AssertLang v0.1.4** fixes two critical P0/P1 bugs based on real-world usage feedback from 380+ line production contracts.
+**AssertLang v0.1.4** is now live on PyPI with fixes for two critical P0/P1 bugs based on real-world usage feedback from 380+ line production contracts.
+
+**PyPI**: https://pypi.org/project/assertlang/0.1.4/
+**GitHub Release**: https://github.com/AssertLang/AssertLang/releases/tag/v0.1.4
 
 **Bugs Fixed:**
 1. 🔴 **P0 CRITICAL**: JavaScript `const`/`let` bug causing runtime errors
@@ -12,7 +15,7 @@
 
 ---
 
-## v0.1.4 Release Notes (PENDING)
+## v0.1.4 Release Notes (RELEASED 2025-01-18)
 
 ### 🐛 Critical Bug Fixes
 
