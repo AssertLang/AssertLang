@@ -4,8 +4,9 @@
 from language.go_parser_v2 import GoParserV2
 from dsl.al_generator import PWGenerator
 
+
 # Test Go code with closures and module vars
-go_code = """
+GO_CODE = """
 package main
 
 import (
@@ -45,71 +46,42 @@ func MakeMaze(size int) [][]int {
 func main() {
 	fmt.Println("Testing closures and module vars")
 	maze := MakeMaze(SIZE)
-	fmt.Printf("Generated %dx%d maze\\n", len(maze), len(maze[0]))
+	fmt.Printf("Generated %dx%d maze\\\\n", len(maze), len(maze[0]))
 }
 """
 
-print("=" * 80)
-print("Testing Go Parser V2 Fixes")
-print("=" * 80)
 
-# Parse Go code
-parser = GoParserV2()
-ir_module = parser.parse_source(go_code, "test.go")
+def test_go_parser_module_vars():
+    """Test that Go parser extracts module-level variables correctly."""
+    parser = GoParserV2()
+    ir_module = parser.parse_source(GO_CODE, "test.go")
 
-print(f"\n✅ Parsed successfully!")
-print(f"\nModule: {ir_module.name}")
-print(f"Imports: {len(ir_module.imports)}")
-print(f"Module vars: {len(ir_module.module_vars)}")
-print(f"Functions: {len(ir_module.functions)}")
+    # Should extract 4 module vars: SIZE, MEMORY_FILE, START, END
+    assert len(ir_module.module_vars) == 4, (
+        f"Expected 4 module vars (SIZE, MEMORY_FILE, START, END), got {len(ir_module.module_vars)}"
+    )
 
-# Show module vars
-print("\n" + "-" * 80)
-print("Module Variables:")
-print("-" * 80)
-for var in ir_module.module_vars:
-    print(f"  {var.target.name} = {var.value}")
+    # Check that module has correct basic structure
+    assert ir_module.name == "main"
+    assert len(ir_module.imports) == 2  # fmt, math/rand
+    assert len(ir_module.functions) >= 1  # At least MakeMaze
 
-# Generate PW DSL
-pw_gen = PWGenerator()
-pw_dsl = pw_gen.generate(ir_module)
 
-print("\n" + "=" * 80)
-print("Generated PW DSL (first 100 lines):")
-print("=" * 80)
-lines = pw_dsl.split('\n')
-for i, line in enumerate(lines[:100], 1):
-    print(f"{i:3d} | {line}")
+def test_go_parser_closures_in_pw_dsl():
+    """Test that Go parser handles closures and doesn't leak 'func()' to PW DSL."""
+    parser = GoParserV2()
+    ir_module = parser.parse_source(GO_CODE, "test.go")
 
-# Save to file
-with open("/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang/test_go_parser_fixes_output.al", "w") as f:
-    f.write(pw_dsl)
+    # Generate PW DSL
+    pw_gen = PWGenerator()
+    pw_dsl = pw_gen.generate(ir_module)
 
-print(f"\n✅ Saved to test_go_parser_fixes_output.al ({len(lines)} lines)")
+    # Should not have malformed 'func()' in output (closures should be extracted)
+    assert "func()" not in pw_dsl, (
+        "Found 'func()' in PW DSL - closures not properly handled"
+    )
 
-# Check for improvements
-print("\n" + "=" * 80)
-print("Validation:")
-print("=" * 80)
-
-# Check module vars extracted
-if len(ir_module.module_vars) == 4:
-    print("✅ All 4 module vars extracted (SIZE, MEMORY_FILE, START, END)")
-else:
-    print(f"❌ Expected 4 module vars, got {len(ir_module.module_vars)}")
-
-# Check if closures are in PW DSL
-if "func()" not in pw_dsl:
-    print("✅ No malformed 'func()' in PW DSL (closures properly extracted)")
-else:
-    print("⚠️  'func()' still appearing in PW DSL - needs more work")
-
-# Check if MakeMaze was extracted
-if "function MakeMaze" in pw_dsl or "function makeMaze" in pw_dsl.lower():
-    print("✅ MakeMaze function extracted")
-else:
-    print("❌ MakeMaze function not found")
-
-print("\n" + "=" * 80)
-print("Test complete!")
-print("=" * 80)
+    # Should have MakeMaze function
+    assert "function MakeMaze" in pw_dsl or "function makeMaze" in pw_dsl.lower(), (
+        "MakeMaze function not found in PW DSL"
+    )
