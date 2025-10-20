@@ -18,7 +18,6 @@
 <p align="center">
   <a href="https://assertlang.dev">Website</a> •
   <a href="#quick-start">Quick Start</a> •
-  <a href="#why-i-built-this">Why I Built This</a> •
   <a href="examples/agent_coordination/">Examples</a> •
   <a href="#contributing">Contribute</a>
 </p>
@@ -222,20 +221,6 @@ A testing agent ran a comprehensive 680-line enterprise medical system through A
 - ✅ Production-ready code generated
 
 [View Full v0.1.6 Release Notes →](https://github.com/AssertLang/AssertLang/releases/tag/v0.1.6)
-
----
-
-## 💡 Why I Built This
-
-I've been watching the multi-agent AI space explode. Everyone's building agents with CrewAI, LangGraph, AutoGen—but they can't talk to each other reliably.
-
-When Agent A (Python) and Agent B (JavaScript) are supposed to do the same thing, they interpret it differently. Same task, different validation, different errors, chaos.
-
-I thought: **What if agents could share executable contracts?** Not just type schemas, but actual behavior. Write it once, transpile to any language, guarantee identical execution.
-
-So I built it. Developed with Claude Code, which feels appropriate for a tool designed to help AI agents communicate better.
-
-**Want to shape where this goes?** If you're building multi-agent systems, I want to hear about what works, what doesn't, and what's missing.
 
 ---
 
