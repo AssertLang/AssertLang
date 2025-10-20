@@ -40,40 +40,7 @@ So I built AssertLang to solve this. It's production-ready for Python (v0.1.6), 
 
 ---
 
-## The Problem
-
-Multi-agent AI systems are growing fast ($5.25B → $52.62B by 2030), but agents can't reliably coordinate:
-
-**What happens today:**
-
-```python
-# Agent A (Python/CrewAI) interprets "create user"
-def create_user(name, email):
-    if not name:  # Agent A's validation
-        raise ValueError("Missing name")
-    # ... creates user
-```
-
-```javascript
-// Agent B (JavaScript/LangGraph) interprets same task differently
-function createUser(name, email) {
-    if (name === "")  // Agent B's validation (different!)
-        throw new Error("Name is required");
-    // ... creates user (differently)
-}
-```
-
-**Result:** ❌ Different validation, different errors, inconsistent behavior
-
-**Existing solutions:**
-- **MCP, A2A, ACP** - Handle messaging, NOT semantic contracts
-- **JSON Schema** - Types only, no business logic
-- **Natural language** - Ambiguous, unreliable
-- **LLM interpretation** - Non-deterministic
-
----
-
-## The Solution: AssertLang Contracts
+## How It Works
 
 **Define behavior once, execute everywhere:**
 
