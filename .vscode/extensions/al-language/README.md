@@ -2,13 +2,15 @@
 
 **Syntax highlighting and file icons for AssertLang (.al) contract files**
 
+Write executable contracts once, transpile to Python, JavaScript, TypeScript, Go, Rust, or C#. Deterministic multi-agent coordination for CrewAI, LangGraph, and AutoGen.
+
 ## Features
 
-- **Syntax Highlighting** - Full colorization for .al files
-- **File Icons** - AssertLang logo appears next to .al files
+- **Syntax Highlighting** - Full colorization for .al contract files
+- **File Icons** - AssertLang logo appears next to .al files in explorer
 - **Auto-closing** - Brackets, quotes, and parentheses
 - **Comment Toggling** - Use Cmd+/ or Ctrl+/ to toggle comments
-- **Code Folding** - Collapse/expand code blocks
+- **Code Folding** - Collapse/expand functions and classes
 
 ## Installation
 
@@ -57,8 +59,37 @@ If you want to install globally:
 
 MIT License - See LICENSE file in the AssertLang repository
 
+## Example Contract
+
+```al
+// user_service.al
+function createUser(name: string, email: string) -> Result<User, Error> {
+    if (str.length(name) < 1) {
+        return Error("name", "Name cannot be empty");
+    }
+
+    if (!str.contains(email, "@")) {
+        return Error("email", "Invalid email format");
+    }
+
+    return Ok(User(name, email));
+}
+```
+
+Transpile to any language:
+```bash
+asl build user_service.al --lang python -o user_service.py
+asl build user_service.al --lang javascript -o user_service.js
+```
+
 ## Links
 
+- **Website**: https://assertlang.dev
 - **GitHub**: https://github.com/AssertLang/AssertLang
-- **Documentation**: https://github.com/AssertLang/AssertLang/tree/main/docs
+- **Documentation**: https://github.com/AssertLang/AssertLang#readme
+- **Examples**: https://github.com/AssertLang/AssertLang/tree/main/examples
 - **Issues**: https://github.com/AssertLang/AssertLang/issues
+
+## About AssertLang
+
+AssertLang v0.1.6 is production-ready for Python with 67/67 tests passing and zero manual fixes required. Multi-language transpilation supports 6 target languages with proven deterministic coordination.

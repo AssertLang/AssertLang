@@ -1,8 +1,8 @@
 {
   "name": "al-language",
   "displayName": "AssertLang Language Support",
-  "description": "Syntax highlighting and file icons for AssertLang (.al) files - executable contracts for multi-agent systems",
-  "version": "1.0.1",
+  "description": "Syntax highlighting and file icons for AssertLang (.al) files - executable contracts for multi-agent systems (CrewAI, LangGraph, AutoGen)",
+  "version": "1.0.2",
   "publisher": "AssertLang",
   "engines": {
     "vscode": "^1.60.0"
@@ -15,6 +15,10 @@
     "al",
     "contracts",
     "multi-agent",
+    "crewai",
+    "langgraph",
+    "autogen",
+    "transpiler",
     "dsl",
     "syntax highlighting"
   ],
