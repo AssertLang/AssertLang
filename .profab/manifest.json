@@ -1,0 +1,34 @@
+{
+  "generated": "2026-01-26T21:15:00Z",
+  "device": "mac-mini-m4",
+  "monotonic": 1200000100020,
+  "project": {
+    "name": "AssertLang",
+    "path": "/Users/hustlermain/HUSTLER_CONTENT/HSTLR/DEV/AssertLang",
+    "description": "Executable contracts for multi-agent systems",
+    "purpose": "Define agent behavior once in AL, transpile to any language for deterministic coordination"
+  },
+  "tech_stack": {
+    "primary": "Python",
+    "frameworks": ["FastAPI", "pytest", "ruff"],
+    "package_manager": "pip/pyproject.toml",
+    "languages": ["Python", "AssertLang (.al)"],
+    "targets": ["Python", "JavaScript", "TypeScript", "Go", "Rust", "C#"]
+  },
+  "fabric_location": "/tmp/klystron-fabric.sock",
+  "key_files": {
+    "config": "pyproject.toml",
+    "main_module": "assertlang/",
+    "readme": "README.md",
+    "changelog": "CHANGELOG.md",
+    "examples": "examples/",
+    "tests": "tests/"
+  },
+  "scripts": {
+    "test": "pytest tests/",
+    "lint": "ruff check .",
+    "install": "pip install -e ."
+  },
+  "version": "0.1.6",
+  "pypi": "https://pypi.org/project/assertlang/"
+}
